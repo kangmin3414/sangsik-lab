@@ -1,0 +1,12 @@
+segs/
+tts38/
+frames/
+node_modules/
+package.json
+package-lock.json
+*.log
+_peek*.jpg
+_thumbs.jpg
+voice.wav
+mix.wav
+timeline_fake.json
