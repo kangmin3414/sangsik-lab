@@ -10,3 +10,6 @@ _thumbs.jpg
 voice.wav
 mix.wav
 timeline_fake.json
+r*.log
+render.log
+*.mp4
