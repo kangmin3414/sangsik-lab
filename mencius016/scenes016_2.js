@@ -1,31 +1,32 @@
 /* ---------- experiment 016, part 2: experiments 2-5, the summit, recap, HUD ---------- */
+const ZF16 = o => flip(o.x, ZC(o)); // Zero facing the executives (his cape trails to the right)
 
 // 22-23 experiment 2: see the big as small
 function hbigScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
-  if (k === 0) return expCard16(t, lt, a, 2, `<g>${`<circle cx="0" cy="0" r="62" fill="#fff" stroke="${INK}" stroke-width="8"/><circle cx="0" cy="0" r="44" fill="#CFE6F2"/><line x1="44" y1="44" x2="100" y2="100" stroke="${INK}" stroke-width="18" stroke-linecap="round"/>`}</g>`);
+  if (k === 0) return expCard16(t, lt, a, 2, `<g transform="scale(1.5)"><circle cx="-14" cy="-14" r="52" fill="#CFE6F2" stroke="${INK}" stroke-width="9"/><path d="M-40 -30 q14 -22 36 -24" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/><line x1="24" y1="24" x2="70" y2="70" stroke="${INK}" stroke-width="18" stroke-linecap="round"/></g>`);
   let h = meeting16(t) + slide16(960, 315, 1, t, {});
   const g = 1 + 0.25 * easeInOut(prog(lt, 0.2, 1.6));
   h += `<path d="M1180 900 L1500 ${f1(900 - 620 * g)} L1820 900 Z" fill="#8A93A0" opacity=".35"/>`;
   h += EX2({ t, seed: 1680, x: 1480, y: 900, s: 0.9 * g, pose: '팔짱', ex: exprAt([[0, '결심']], t), look: [-0.6, 0.3] });
   h += ZC({ t, seed: 1681, x: 560, y: 890, s: 0.3, pose: '움츠림', cape: 0.05, ex: exprAt([[0, '겁먹음']], t), look: [0.8, -0.8] });
-  h += pop(t, T0 + 0.5, t + 99, 1150, 230, label(0, 0, '산?!', { size: 46, bg: '#fff' }), { rot: 4 });
+  h += pop(t, T0 + 0.4, t + 99, 760, 620, bubble(0, 0, 300, 110, T8(0, 14, '산 같아…', { size: 42 })), { bob: 3 });
   return h;
 }
-// 24-25 "see the great man as small"
+// 24-25 "see the great man as small": the advice works on the same executive, in the same meeting room
 function hbigqScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
-  let h = ancient16(t);
   if (k === 0) {
-    h += MZ({ t, seed: 1682, x: 280, y: 880, s: 0.48, pose: '설명', ex: exprAt([[0, '미소']], t), look: [0.7, -0.2] });
-    h += quoteBig16(t, T0 + 0.1, 1000, 340, ['높은 사람을 만날 때는 그를 작게 보라.', '그 우뚝한 모습을 보지 마라.'], '『맹자』 진심 하', { w: 1180, size: 50 });
-    const sh = easeInOut(prog(lt, 0.5 * D, D)), gs = lerp(0.95, 0.5, sh);
-    h += EX2({ t, seed: 1683, x: 1460, y: 880, s: gs, pose: '팔짱', ex: exprAt([[0, '결심'], [0.7 * D, '놀람']], lt), look: [-0.6, 0] });
-    h += ZC({ t, seed: 1684, x: 900, y: 880, s: lerp(0.3, 0.42, sh), pose: '서기', cape: 0.05, ex: exprAt([[0, '걱정'], [0.8 * D, '기본']], lt), look: [0.8, -0.3] });
+    let h = meeting16(t) + slide16(960, 315, 1, t, {}) + dim16(0.25, '#2A1A1E');
+    const sh = easeInOut(prog(lt, 0.5 * D, D)), gs = lerp(1.0, 0.62, sh);
+    h += EX2({ t, seed: 1683, x: 1460, y: 900, s: gs, pose: '팔짱', ex: exprAt([[0, '결심'], [0.7 * D, '놀람']], lt), look: [-0.6, 0.3 * (1 - sh)] });
+    h += ZC({ t, seed: 1684, x: 640, y: 890, s: lerp(0.3, 0.46, sh), pose: '서기', cape: 0.05, ex: exprAt([[0, '걱정'], [0.8 * D, '기본']], lt), look: [0.8, -0.3 * (1 - sh)] });
+    h += quoteBig16(t, T0 + 0.1, 960, 300, ['높은 사람을 만날 때는 그를 작게 보라.', '그 우뚝한 모습을 보지 마라.'], '『맹자』 진심 하', { w: 1180, size: 50 });
     return h;
   }
+  let h = ancient16(t);
   const items = [['높은 집', 420, house16], ['가득 차린 상', 960, table16], ['수백 명의 시중', 1500, crowd16]];
-  items.forEach(([nm, x, fn], j) => { const at = 0.15 + j * 0.45, kk = prog(lt, at, at + 0.35);
+  items.forEach(([nm, x, fn], j) => { const at = 0.15 + j * 0.45;
     h += pop(t, T0 + at, t + 99, x, 470, fn(t) + T8(0, 200, nm, { size: 40, fill: NAVY }), {});
     const xk = prog(lt, at16(t, a, '저쪽에', 0) + j * 0.2, at16(t, a, '저쪽에', 0.4) + j * 0.2);
     if (xk > 0) h += `<g transform="translate(${x} 440)" opacity=".9"><path d="M-130 -130 L${f1(lerp(-130, 130, xk))} ${f1(lerp(-130, 130, xk))}" stroke="${RED}" stroke-width="16" stroke-linecap="round"/><path d="M130 -130 L${f1(lerp(130, -130, xk))} ${f1(lerp(-130, 130, xk))}" stroke="${RED}" stroke-width="16" stroke-linecap="round"/></g>`; });
@@ -71,9 +72,14 @@ function notebook16(x, y, t, lt, a, k) {
 function hlistScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   let h = office16(t);
-  if (k <= 1) {
-    h += notebook16(960, 440, t, lt, a, k);
-    h += ZC({ t, seed: 1700, x: 1660, y: 900, s: 0.36, pose: '턱괴기', cape: 0.05, ex: exprAt([[0, '생각']], t), look: [-0.8, -0.3] });
+  if (k <= 1) { // close-up of the notebook on Zero's desk; the pencil draws the divider, then fills the columns
+    h = BG('#B98B5E') + `<g opacity=".18">${[...Array(9)].map((_, i) => `<path d="M-600 ${i * 140} Q960 ${i * 140 + 40} 2520 ${i * 140}" fill="none" stroke="#6E4628" stroke-width="6"/>`).join('')}</g>`;
+    h += notebook16(960, 470, t, lt, a, k);
+    const dk = k === 0 ? easeInOut(prog(lt, 0.3, 1.6)) : 1;
+    if (k === 0) h += `<rect x="955" y="${f1(190 + 560 * dk)}" width="10" height="${f1(560 * (1 - dk))}" fill="#FFFDF4"/>`; // hide the divider until drawn
+    const rk = at16(t, a, '오른쪽', 0), right = lt >= rk, row = clamp(Math.floor((lt - (right ? rk : at16(t, a, '왼쪽', 0))) / 0.4), 0, 2);
+    const px = k === 0 ? 960 : (right ? 1300 : 800) + Math.sin(t * 9) * 14, py = k === 0 ? 190 + 560 * dk : 400 + row * 112;
+    h += `<g transform="translate(${f1(px)} ${f1(py)}) rotate(28)"><path d="M0 0 L-10 -40 L10 -40 Z" fill="#F2D2A0" stroke="${INK}" stroke-width="4"/><rect x="-10" y="-300" width="20" height="260" fill="#F7C548" stroke="${INK}" stroke-width="4"/><rect x="-10" y="-330" width="20" height="30" fill="#E88A8A" stroke="${INK}" stroke-width="4"/></g>`;
     return h;
   }
   if (k === 2) {
@@ -92,7 +98,6 @@ function hlistScene(t, lt, a) {
 function hslideScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   let h = meeting16(t) + slide16(960, 315, 1, t, { bad: k >= 1, note: k >= 1 });
-  h += `<rect x="560" y="560" width="800" height="40" rx="10" fill="#6A5240" stroke="${INK}" stroke-width="7"/>`;
   if (k === 0) {
     h += pop(t, T0 + 0.1, t + 99, 330, 150, label(0, 0, '수요일 · 리허설', { size: 42, bg: '#fff' }), { rot: -3 });
     const sk = easeInOut(prog(lt, at16(t, a, '콩알', -0.8), at16(t, a, '콩알', 0.4)));
@@ -108,34 +113,33 @@ function hslideScene(t, lt, a) {
   return h;
 }
 const zoom16 = (inner, cx, cy, z) => `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(${f1(z * 1000) / 1000}) translate(${f1(-cx)} ${f1(-cy)})">${inner}</g>`;
-// 35-36 experiment 3
+// 35-36 experiment 3: an uneasy conscience starves the 氣 — back at the rehearsal, in front of that slide
 function hselfScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) return expCard16(t, lt, a, 3, `<g><rect x="-70" y="-90" width="140" height="180" rx="20" fill="#CFE6F2" stroke="${INK}" stroke-width="8"/><path d="M-30 0 l22 22 l40 -44" fill="none" stroke="#2E9E5B" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></g>`);
-  let h = ancient16(t);
-  h += quoteBig16(t, T0 + 0.1, 1000, 340, ['행동이 마음에 떳떳하지 않으면,', '그 기운은 굶주린다.'], '『맹자』 공손추 상', { w: 1100 });
+  let h = meeting16(t) + slide16(960, 315, 1, t, { bad: true, note: true }) + dim16(0.3, '#2A1A1E');
   const def = easeInOut(prog(lt, 0.45 * D, D));
-  h += ZC({ t, seed: 1720, x: 960, y: 880, s: lerp(0.46, 0.34, def), pose: '움츠림', cape: 0, ex: exprAt([[0, '걱정'], [0.5 * D, '지친']], lt), look: [0, 0.6] });
-  h += MZ({ t, seed: 1721, x: 300, y: 880, s: 0.46, pose: '서기', ex: exprAt([[0, '진지' in E ? '진지' : '결심']], t), look: [0.7, 0] });
-  if (def > 0.2) h += pop(t, T0 + 0.6 * D, t + 99, 1180, 560, label(0, 0, '꼬르륵…', { size: 38, bg: '#fff' }), { rot: 4, bob: 3 });
+  h += ZC({ t, seed: 1720, x: 1500, y: 880, s: lerp(0.4, 0.26, def), pose: '움츠림', cape: 0, ex: exprAt([[0, '걱정'], [0.5 * D, '지친']], lt), look: [-0.6, 0.4] });
+  if (def > 0.2) h += pop(t, T0 + 0.6 * D, t + 99, 1500, 620, label(0, 0, '꼬르륵…', { size: 38, bg: '#fff' }), { rot: 4, bob: 3 });
+  h += quoteBig16(t, T0 + 0.1, 820, 300, ['행동이 마음에 떳떳하지 않으면,', '그 기운은 굶주린다.'], '『맹자』 공손추 상', { w: 1100 });
   return h;
 }
-// 37-39 Confucius → Zengzi: the great courage
 function hselfqScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) {
     let h = ancient16(t);
     h += P14(1340, 880, 0.5, '#A89A80', { t, seed: 1730, pose: '서기', ex: exprAt([[0, '기본']], t), look: [-0.7, 0], patches: true });
-    h += ZC({ t, seed: 1731, x: 760, y: 880, s: 0.4, pose: '움츠림', cape: 0, ex: exprAt([[0, '겁먹음']], t), look: [0.8, 0], shiver: true });
-    h += pop(t, T0 + 0.1, t + 99, 900, 250, label(0, 0, '곧지 못하면 → 허름한 사람 앞에서도 떤다', { size: 40, bg: '#FFB0A0' }), {});
+    h += scroll16(700 - 40, 880 - 150 * 0.5, 0.7) + JC({ t, seed: 1731, x: 700, y: 880, s: 0.5, pose: '움츠림', ex: exprAt([[0, '겁먹음']], t), look: [0.8, 0], shiver: true, sweat: true });
+    h += pop(t, T0 + 0.3, t + 99, 700, 420, label(0, 0, '들킬까 봐…', { size: 36, bg: '#fff' }), { rot: -3 }) + pop(t, T0 + 0.5, t + 99, 1340, 420, label(0, 0, '허름한 옷의 사람', { size: 34, bg: '#fff' }), { rot: 3 });
+    h += pop(t, T0 + 0.1, t + 99, 960, 220, label(0, 0, '곧지 못하면 → 허름한 사람 앞에서도 떤다', { size: 40, bg: '#FFB0A0' }), {});
     return h;
   }
   if (k === 1) {
     let h = ancient16(t, { dusk: true });
     for (let i = 0; i < 22; i++) { const x = 1100 + (i % 11) * 80, y = 880 - Math.floor(i / 11) * 40; h += P14(x, y, 0.26, '#8A7A60', { t, seed: 1740 + i, pose: '서기', ex: exprAt([[0, '결심']], t), look: [-0.7, 0], still: true }); }
     const x = lerp(300, 820, easeInOut(prog(lt, 0.2, D)));
-    h += shadow(x, 884, 70) + ZC({ t, seed: 1732, x, y: 880, s: 0.48, pose: walkPose(t * 6, 0.8), cape: 0.35, ex: exprAt([[0, '결심']], t), look: [0.8, 0] });
-    h += pop(t, T0 + 0.1, t + 99, 900, 250, label(0, 0, '곧다면 → 천만 명이 막아서도 간다', { size: 42, bg: YEL }), {});
+    h += shadow(x, 884, 70) + MZ({ t, seed: 1732, x, y: 880, s: 0.48, pose: walkPose(t * 6, 0.8), ex: exprAt([[0, '결심']], t), look: [0.8, 0] });
+    h += pop(t, T0 + 0.1, t + 99, 900, 220, label(0, 0, '곧다면 → 천만 명이 막아서도 간다', { size: 42, bg: YEL }), {});
     return h;
   }
   let h = labBg(t);
@@ -144,18 +148,18 @@ function hselfqScene(t, lt, a) {
   h += pop(t, T0 + at16(t, a, '숨길 게', 0), t + 99, 980, 220, label(0, 0, '당당함 = 숨길 게 없음', { size: 48, bg: MINT }), {});
   return h;
 }
-// 40-41 value affirmation (Creswell et al. 2005)
+// 40-41 value affirmation (Creswell et al. 2005): judges sit behind their table
 function hvalueScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   let h = labBg(t);
   if (k === 0) {
-    h += `<rect x="1100" y="560" width="640" height="34" rx="10" fill="#6A5240" stroke="${INK}" stroke-width="6"/>`;
-    for (let j = 0; j < 3; j++) h += P14(1240 + j * 180, 560, 0.4, '#3A4048', { t, seed: 1750 + j, pose: '팔짱', ex: exprAt([[0, '결심']], t), look: [-0.7, 0.1] });
-    h += pop(t, T0 + 0.2, t + 99, 1420, 260, label(0, 0, '심사위원', { size: 36, bg: '#fff' }), {});
+    for (let j = 0; j < 3; j++) h += P14(1240 + j * 180, 720, 0.4, '#3A4048', { t, seed: 1750 + j, pose: '앉기', ex: exprAt([[0, '결심']], t), look: [-0.7, 0.1] });
+    h += `<rect x="1100" y="650" width="640" height="30" rx="8" fill="#6A5240" stroke="${INK}" stroke-width="6"/><rect x="1120" y="680" width="600" height="110" fill="#584332" stroke="${INK}" stroke-width="6"/><rect x="1130" y="790" width="22" height="90" fill="#4A3828" stroke="${INK}" stroke-width="5"/><rect x="1688" y="790" width="22" height="90" fill="#4A3828" stroke="${INK}" stroke-width="5"/>`;
+    h += pop(t, T0 + 0.2, t + 99, 1420, 380, label(0, 0, '심사위원', { size: 36, bg: '#fff' }), {});
     h += P14(700, 880, 0.5, '#7FA8D6', { t, seed: 1753, pose: '서기', ex: exprAt([[0, '걱정']], t), look: [0.7, -0.2] });
     const wk = at16(t, a, '절반에게', 0);
-    h += pop(t, T0 + wk, t + 99, 420, 420, card14(0, 0, 400, 240, T8(0, -50, '내가 가장', { size: 38 }) + T8(0, 6, '중요하게 여기는 가치', { size: 34 }) + T8(0, 76, '"정직, 가족…"', { size: 34, fill: '#C2410C' }), { bg: '#FFF7D6' }), { rot: -3 });
-    h += pop(t, T0 + 0.3, t + 99, 700, 200, label(0, 0, '85명 · 즉석 발표', { size: 40, bg: YEL }), { rot: -2 });
+    h += pop(t, T0 + wk, t + 99, 380, 470, card14(0, 0, 400, 240, T8(0, -50, '내가 가장', { size: 38 }) + T8(0, 6, '중요하게 여기는 가치', { size: 34 }) + T8(0, 76, '"정직, 가족…"', { size: 34, fill: '#C2410C' }), { bg: '#FFF7D6' }), { rot: -3 });
+    h += pop(t, T0 + 0.3, t + 99, 700, 230, label(0, 0, '85명 · 즉석 발표', { size: 40, bg: YEL }), { rot: -2 });
     return h;
   }
   const bars = [['통제 집단', 0.85, '#8C98A4'], ['가치를 쓴 집단', 0.45, MINT]];
@@ -166,49 +170,48 @@ function hvalueScene(t, lt, a) {
   h += T8(1740, 900, '개념도', { anchor: 'end', size: 26, fill: '#9FB4D8', w: 700 });
   return h;
 }
-// 42-44 telling the team lead
+// 42-44 telling the team lead (he sits behind his desk); that evening, outside, the cape catches the wind
 function hfixScene(t, lt, a) {
   const k = a.k || 1, D = D16(a), T0 = t - lt;
   if (k <= 2) {
-    let h = office16(t) + desk12(1300, 760, t, 1) + chair12(1380, 900, 0.56);
+    let h = office16(t) + chair12(1380, 900, 0.56);
     h += TLD({ t, seed: 1760, x: 1380, y: 900, s: 0.56, pose: '앉기', ex: exprAt(k === 1 ? [[0, '기본'], [0.6 * D, '놀람']] : [[0, '미소']], lt), look: [-0.7, -0.2] });
-    h += ZC({ t, seed: 1761, x: 760, y: 890, s: 0.52, pose: k === 1 ? '내밀기' : '서기', cape: k === 1 ? 0.05 : 0.15, ex: exprAt(k === 1 ? [[0, '결심']] : [[0, '미안'], [0.5 * D, '미소']], lt), look: [0.7, 0] });
-    if (k === 1) h += `<g transform="translate(905 ${f1(890 + (300 - 560) * 0.52)}) rotate(-6)"><rect x="-50" y="-64" width="100" height="128" rx="6" fill="#fff" stroke="${INK}" stroke-width="5"/><path d="M-30 -30 L30 -30 M-30 -6 L30 -6 M-30 18 L14 18" stroke="#9CB3C8" stroke-width="6"/><circle cx="20" cy="44" r="14" fill="none" stroke="${RED16}" stroke-width="5"/></g>`;
-    if (k === 2) h += pop(t, T0 + 0.4 * D, t + 99, 1380, 300, label(0, 0, '휴…', { size: 42, bg: '#fff' }), { rot: 3 });
+    h += desk12(1340, 790, t, 1);
+    h += ZC({ t, seed: 1761, x: 820, y: 890, s: 0.56, pose: k === 1 ? '내밀기' : '서기', cape: k === 1 ? 0.05 : 0.15, ex: exprAt(k === 1 ? [[0, '결심']] : [[0, '미안'], [0.5 * D, '미소']], lt), look: [0.7, 0] });
+    if (k === 1) h += `<g transform="translate(985 ${f1(890 + (300 - 560) * 0.56)}) rotate(-6)"><rect x="-50" y="-64" width="100" height="128" rx="6" fill="#fff" stroke="${INK}" stroke-width="5"/><path d="M-30 -30 L30 -30 M-30 -6 L30 -6 M-30 18 L14 18" stroke="#9CB3C8" stroke-width="6"/><circle cx="20" cy="44" r="14" fill="none" stroke="${RED16}" stroke-width="5"/></g>`;
+    if (k === 2) h += pop(t, T0 + 0.4 * D, t + 99, 1380, 420, label(0, 0, '휴…', { size: 42, bg: '#fff' }), { rot: 3 });
     return h;
   }
-  let h = office16(t, { night: true }) + dim16(0.25);
-  const lift = 0.15 + 0.4 * easeOut(prog(lt, 0.4, 2.2));
-  for (let i = 0; i < 5; i++) { const ph = (t * 0.7 + i / 5) % 1; h += `<path d="M${f1(1900 - ph * 1500)} ${520 + i * 40} q40 -18 80 0 q40 18 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="${f1(Math.sin(ph * Math.PI) * 0.6 * 100) / 100}"/>`; }
-  h += ZC({ t, seed: 1762, x: 900, y: 890, s: 0.58, pose: '허리', cape: lift, ex: exprAt([[0, '놀람'], [1.2, '미소']], lt), look: [-0.5, -0.3] });
+  let h = streetNight12(t);
+  const lift = 0.15 + 0.45 * easeOut(prog(lt, 0.4, 2.2)), x = lerp(500, 1000, prog(lt, 0, D + 1));
+  for (let i = 0; i < 6; i++) { const ph = (t * 0.7 + i / 6) % 1; h += `<path d="M${f1(1950 - ph * 1600)} ${480 + i * 50} q40 -18 80 0 q40 18 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="${f1(Math.sin(ph * Math.PI) * 0.6 * 100) / 100}"/>`; }
+  h += shadow(x, 894, 70) + ZC({ t, seed: 1762, x, y: 890, s: 0.58, pose: walkPose(t * 6, 0.6), cape: lift, ex: exprAt([[0, '놀람'], [1.2, '미소']], lt), look: [0.5, -0.3] });
+  h += pop(t, T0 + 0.2, t + 99, 330, 150, label(0, 0, '퇴근길', { size: 42, bg: '#fff' }), { rot: -3 });
   return h;
 }
 // 45-47 experiment 4: Thursday night, trying to be charismatic overnight
 function hrushScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) return expCard16(t, lt, a, 4, sprout16(0, 80, 1.3, t, { grow: 0.7 }));
-  let h = nightRoom12(t) + `<rect x="1000" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/>`;
-  h += `<g transform="translate(1280 600)"><rect x="-170" y="-110" width="340" height="210" rx="12" fill="#1F2D44" stroke="${INK}" stroke-width="7"/><rect x="-150" y="-92" width="300" height="172" rx="6" fill="#8FDBFF"/>`;
-  h += P14(0, 70, 0.28, '#2F3540', { t, seed: 1770, pose: '주먹', ex: exprAt([[0, '결심']], t), still: true }) + `<path d="M-200 100 L200 100 L230 120 L-230 120 Z" fill="#9AA6B2" stroke="${INK}" stroke-width="6"/></g>`;
-  h += `<circle cx="1280" cy="600" r="300" fill="url(#screenGlow)" opacity=".5"/>`;
+  let h = room16(t) + laptop16(t, 1300, 730, 1, 'speech') + `<circle cx="1300" cy="620" r="280" fill="url(#screenGlow)" opacity=".45"/>`;
   if (k === 1) {
     h += ZC({ t, seed: 1771, x: 720, y: 900, s: 0.56, pose: '주먹', cape: 0.2 + 0.2 * Math.abs(Math.sin(t * 6)), ex: exprAt([[0, '결심']], t), look: [0.7, -0.2] });
     h += pop(t, T0 + at16(t, a, '목소리를', 0), t + 99, 560, 300, label(0, 0, '(굵게) 에헴… 여러분!', { size: 40, bg: '#fff' }), { rot: -3 });
-    h += pop(t, T0 + 0.3, t + 99, 1500, 200, label(0, 0, '연설 영상 12개째', { size: 34, bg: YEL }), { rot: 3 });
+    h += pop(t, T0 + 0.3, t + 99, 1300, 330, label(0, 0, '연설 영상 12개째', { size: 34, bg: YEL }), { rot: 3 });
     return h;
   }
   h += ZC({ t, seed: 1772, x: 720, y: 900, s: 0.6, pose: '만세', cape: 0.5 + 0.3 * Math.sin(t * 9), ex: exprAt([[0, '신남']], t), look: [0.3, -0.4] });
   h += pop(t, T0 + 0.2, t + 99, 480, 250, label(0, 0, '하루 만에!', { size: 50, bg: YEL }), { rot: -5, wobble: 2 });
   return h;
 }
-// 48-52 the farmer of Song
+// 48-52 the farmer of Song (the doctor calls in on the laptop; Zero plays the farmer in the fable)
 function hsongScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) {
-    let h = nightRoom12(t);
-    h += doctor(520, 960, 0.6, { t, expr: '미소', talk: env(t) });
-    h += ZC({ t, seed: 1780, x: 1400, y: 900, s: 0.5, pose: '주먹', cape: 0.3, ex: exprAt([[0, '결심'], [0.4 * D, '놀람']], lt), look: [-0.7, 0] });
-    h += pop(t, T0 + 0.5 * D, t + 99, 960, 200, label(0, 0, '송나라 농부?', { size: 48, bg: YEL }), {});
+    let h = room16(t) + laptop16(t, 1300, 730, 1, 'doctor') + `<circle cx="1300" cy="620" r="280" fill="url(#screenGlow)" opacity=".35"/>`;
+    h += pop(t, T0 + 0.1, t + 99, 1300, 470, label(0, 0, '박사님 · 영상통화', { size: 32, bg: '#fff' }), {});
+    h += ZC({ t, seed: 1780, x: 720, y: 900, s: 0.56, pose: '주먹', cape: 0.3, ex: exprAt([[0, '결심'], [0.4 * D, '놀람']], lt), look: [0.7, 0] });
+    h += pop(t, T0 + 0.5 * D, t + 99, 720, 330, label(0, 0, '송나라 농부?', { size: 44, bg: YEL }), { rot: -3 });
     return h;
   }
   if (k === 1) {
@@ -234,7 +237,7 @@ function hsongScene(t, lt, a) {
     return h;
   }
   let h = BG('#2A1A1E') + BG('url(#dots)');
-  h += pop(t, T0 + 0.1, t + 99, 960, 360, big(0, 0, [[['조장', YEL], [' 助長', '#fff']]], { size: 150, sw: 24 }), { noPop: false, inDur: 0.4 });
+  h += pop(t, T0 + 0.1, t + 99, 960, 360, big(0, 0, [[['조장', YEL], [' 助長', '#fff']]], { size: 150, sw: 24 }), { inDur: 0.4 });
   h += pop(t, T0 + 0.5, t + 99, 960, 560, label(0, 0, '자라는 걸(長) 돕는다(助)', { size: 46, bg: '#fff' }), {});
   for (let i = 0; i < 5; i++) h += sprout16(640 + i * 160, 860, 0.7, t, { tall: 1, dead: 1 });
   return h;
@@ -259,22 +262,23 @@ function hsongqScene(t, lt, a) {
   h += pop(t, T0 + 0.2, t + 99, 960, 150, label(0, 0, '옳은 일이 하나하나 쌓여서', { size: 46, bg: MINT }), {});
   return h;
 }
-// 55-56 three rehearsals, then sleep
+// 55-56 three rehearsals, laptop shut, then sleep
 function hsmallScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
-  let h = nightRoom12(t);
   if (k === 0) {
-    h += `<rect x="1000" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><g transform="translate(1280 660)"><path d="M-170 40 L170 40 L200 60 L-200 60 Z" fill="#9AA6B2" stroke="${INK}" stroke-width="6"/><rect x="-170" y="${f1(-170 + 210 * prog(lt, 0.1, 0.7))}" width="340" height="${f1(210 * (1 - prog(lt, 0.1, 0.7)) + 1)}" rx="10" fill="#1F2D44" stroke="${INK}" stroke-width="6"/></g>`;
+    let h = room16(t) + laptop16(t, 1300, 730, 1 - easeInOut(prog(lt, 0.1, 0.7)), 'speech');
     const n = Math.min(3, Math.floor(prog(lt, 0.6, 0.7 * D) * 3.2));
     h += ZC({ t, seed: 1800, x: 720, y: 900, s: 0.56, pose: '설명', cape: 0.3, ex: exprAt([[0, '결심']], t), look: [0.6, 0] });
     for (let i = 0; i < 3; i++) h += `<circle cx="${560 + i * 110}" cy="250" r="40" fill="${i < n ? MINT : 'none'}" stroke="#fff" stroke-width="6"/>` + (i < n ? T8(560 + i * 110, 266, '✓', { size: 44, fill: NAVY }) : '');
     h += pop(t, T0 + 0.2, t + 99, 670, 150, label(0, 0, '소리 내어 딱 세 번', { size: 40, bg: '#fff' }), {});
     return h;
   }
-  h += `<rect x="520" y="700" width="900" height="160" rx="30" fill="#3B4A7A" stroke="${INK}" stroke-width="8"/><ellipse cx="640" cy="700" rx="110" ry="40" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
-  h += ZC({ t, seed: 1801, x: 760, y: 720, s: 0.44, rot: 90, ex: exprAt([[0, '미소']], t), noBlink: true });
-  h += `<path d="M700 690 Q1000 650 1400 690 L1400 860 L700 860 Z" fill="#5C7AD6" stroke="${INK}" stroke-width="8"/>`;
-  h += pop(t, T0 + 0.3, t + 99, 1500, 300, label(0, 0, '23:40', { size: 44, bg: '#fff' }), {});
+  let h = nightRoom12(t) + dim16(0.2);
+  h += `<rect x="460" y="690" width="1000" height="170" rx="30" fill="#3B4A7A" stroke="${INK}" stroke-width="8"/><rect x="430" y="840" width="1060" height="60" rx="20" fill="#E3E8F4" stroke="${INK}" stroke-width="8"/><ellipse cx="1300" cy="700" rx="120" ry="40" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+  h += ZC({ t, seed: 1801, x: 1060, y: 708, s: 0.44, rot: 90, ex: { expr: '미소', prev: '미소', k: 1, blink: 0 }, noBlink: true });
+  h += `<path d="M450 700 Q760 670 1140 690 L1150 860 L450 860 Z" fill="#5C7AD6" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+  for (let i = 0; i < 3; i++) { const q = ((t * 0.5 + i / 3) % 1); h += `<text x="${f1(1400 + q * 120 + i * 10)}" y="${f1(560 - q * 200)}" font-family="${FONT}" font-weight="900" font-size="${f1(40 + q * 40)}" fill="#fff" stroke="${INK}" stroke-width="4" paint-order="stroke fill" opacity="${f1(Math.sin(q * Math.PI) * 100) / 100}">Z</text>`; }
+  h += pop(t, T0 + 0.3, t + 99, 420, 260, label(0, 0, '23:40', { size: 44, bg: '#fff' }), {});
   return h;
 }
 // 57-60 experiment 5: Friday, the presentation
@@ -282,22 +286,21 @@ function hpresScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) return expCard16(t, lt, a, 5, `<g transform="translate(0 40)">${HALO(`<g transform="translate(-200 -380)">${capeLocal16(t, 0.7)}</g>`)}</g>`);
   if (k === 1) {
-    let h = BG('#E9E4DA') + floor16(880, '#8E7B66') + `<rect x="1080" y="220" width="380" height="660" fill="#8A6A4A" stroke="${INK}" stroke-width="9"/><circle cx="1120" cy="560" r="16" fill="${GOLD16}" stroke="${INK}" stroke-width="5"/>` + T8(1270, 190, '대회의실', { size: 40 });
-    const open = easeInOut(prog(lt, 0.6 * D, D));
-    if (open > 0) h += `<rect x="1080" y="220" width="${f1(380 * open)}" height="660" fill="#FFF7DA"/>`;
-    h += ZC({ t, seed: 1810, x: 860, y: 890, s: 0.6, pose: open > 0 ? '문고리' : '허리', cape: 0.35, ex: exprAt([[0, '결심']], t), look: [0.7, 0] });
+    const open = easeInOut(prog(lt, 0.6 * D, D)), lw = 380 * (1 - 0.75 * open);
+    let h = BG('#E9E4DA') + floor16(880, '#8E7B66') + `<rect x="1070" y="210" width="400" height="670" fill="#FFF7DA" stroke="${INK}" stroke-width="9"/>` + T8(1270, 190, '대회의실', { size: 40 });
+    if (open > 0) h += `<rect x="1080" y="220" width="380" height="660" fill="url(#warm)" opacity="${f1(open * 0.8 * 100) / 100}"/>`;
+    h += `<path d="M${f1(1460 - lw)} ${f1(220 - 30 * open)} L1460 220 L1460 880 L${f1(1460 - lw)} ${f1(880 + 30 * open)} Z" fill="#8A6A4A" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><circle cx="${f1(1460 - lw + 40 * (1 - open * 0.5))}" cy="560" r="16" fill="${GOLD16}" stroke="${INK}" stroke-width="5"/>`;
+    h += ZC({ t, seed: 1810, x: 980, y: 890, s: 0.6, pose: open > 0 || lt > 0.5 * D ? '문고리' : '허리', cape: 0.35, ex: exprAt([[0, '결심']], t), look: [0.7, 0] });
     h += pop(t, T0 + 0.1, t + 99, 330, 150, label(0, 0, '금요일', { size: 44, bg: '#fff' }), { rot: -3 });
     return h;
   }
-  let h = meeting16(t) + slide16(960, 315, 1, t, { fixed: true }) + `<rect x="300" y="640" width="900" height="40" rx="10" fill="#6A5240" stroke="${INK}" stroke-width="7"/>`;
-  h += EX1({ t, seed: 1811, x: 520, y: 880, s: 0.5, pose: k === 2 ? '서기' : '서기', ex: exprAt([[0, '미소']], t), look: [0.8, -0.2], tilt: k === 2 ? Math.sin(t * 5) * 4 : 0 });
-  h += EX2({ t, seed: 1812, x: 860, y: 880, s: 0.5, pose: '팔짱', ex: exprAt([[0, k === 3 ? '찡그림' : '기본']], t), look: [0.8, -0.2] });
-  h += ZC({ t, seed: 1813, x: 1520, y: 890, s: 0.58, pose: '설명', cape: 0.4, ex: exprAt([[0, '결심']], t), look: [-0.8, 0] });
-  if (k === 2) h += pop(t, T0 + 0.2, t + 99, 520, 260, label(0, 0, '👍', { size: 50, bg: MINT }), { bob: 3 });
-  if (k === 3) h += pop(t, T0 + 0.2, t + 99, 860, 260, label(0, 0, '너무 낙관적?', { size: 40, bg: '#FFB0A0' }), { rot: 3 });
+  let h = friday16(t, { nod: k === 2, e2: k === 3 ? '찡그림' : '기본' });
+  h += ZF16({ t, seed: 1813, x: 1520, y: 890, s: 0.58, pose: '설명', cape: 0.4, ex: exprAt([[0, '결심']], t), look: [0.8, 0] });
+  if (k === 2) h += pop(t, T0 + 0.2, t + 99, 470, 430, label(0, 0, '좋네요!', { size: 40, bg: MINT }), { bob: 3 });
+  if (k === 3) h += pop(t, T0 + 0.2, t + 99, 850, 430, label(0, 0, '너무 낙관적?', { size: 40, bg: '#FFB0A0' }), { rot: 3 });
   return h;
 }
-// 61-63 不動心: praise and blame are wind
+// 61-63 不動心: Mencius' answer, then praise and blame blow across the meeting room like wind
 function hbudongScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   if (k === 0) {
@@ -308,26 +311,25 @@ function hbudongScene(t, lt, a) {
     h += pop(t, T0 + at16(t, a, '나는 마흔에', 0), t + 99, 600, 330, label(0, 0, '나는 마흔에 부동심(不動心)', { size: 38, bg: YEL }), { rot: -2 });
     return h;
   }
-  let h = mountain16(t) + dim16(0.15);
-  const wind = k === 2 ? 1 : 0.6;
-  for (let i = 0; i < 8; i++) { const ph = (t * 0.6 + i / 8) % 1, y = 300 + (i * 97) % 500, praise = i % 2 === 0;
-    h += `<g transform="translate(${f1(2000 - ph * 2300)} ${y})" opacity="${f1(Math.sin(ph * Math.PI) * 100) / 100}">${praise ? `<path d="M0 10 c-14 -18 -36 -4 -18 14 l18 16 l18 -16 c18 -18 -4 -32 -18 -14 Z" fill="${PINK}" stroke="${INK}" stroke-width="4"/>` : `<path d="M-30 0 L20 0 M8 -12 L20 0 L8 12" stroke="#5A6B7A" stroke-width="7" stroke-linecap="round" fill="none"/>`}</g>`; }
+  let h = friday16(t, { e2: '찡그림' }) + dim16(0.18, '#2A1A1E');
+  for (let i = 0; i < 10; i++) { const ph = (t * 0.45 + i / 10) % 1, praise = i % 2 === 0, x0 = praise ? 520 : 900, y = 380 + (i * 61) % 360;
+    const x = lerp(x0, 2000, ph), op = Math.sin(ph * Math.PI);
+    h += `<g transform="translate(${f1(x)} ${f1(y + Math.sin(ph * 9 + i) * 20)})" opacity="${f1(op * 100) / 100}">${praise ? `<path d="M0 10 c-14 -18 -36 -4 -18 14 l18 16 l18 -16 c18 -18 -4 -32 -18 -14 Z" fill="${PINK}" stroke="${INK}" stroke-width="4"/>` : `<path d="M-30 0 L20 0 M8 -12 L20 0 L8 12" stroke="#5A6B7A" stroke-width="7" stroke-linecap="round" fill="none"/>`}</g>`; }
   if (k === 1) {
-    h += pop(t, T0 + at16(t, a, '뜻밖의', 0), t + 99, 600, 280, label(0, 0, '뜻밖의 칭찬', { size: 44, bg: PINK, color: '#fff' }), { rot: -3 });
-    h += pop(t, T0 + at16(t, a, '완벽하려다', 0), t + 99, 1320, 280, label(0, 0, '완벽하려다 듣는 비방', { size: 44, bg: '#C3CDD8' }), { rot: 3 });
+    h += pop(t, T0 + at16(t, a, '뜻밖의', 0), t + 99, 470, 430, label(0, 0, '뜻밖의 칭찬', { size: 40, bg: PINK, color: '#fff' }), { rot: -3 });
+    h += pop(t, T0 + at16(t, a, '완벽하려다', 0), t + 99, 900, 430, label(0, 0, '완벽하려다 듣는 비방', { size: 38, bg: '#C3CDD8' }), { rot: 3 });
   }
-  h += ZC({ t, seed: 1822, x: 960, y: 860, s: 0.5, pose: '허리', cape: 0.55 + 0.3 * wind * (0.5 + 0.5 * Math.sin(t * 3)), ex: exprAt([[0, k === 2 ? '미소' : '결심']], t), look: [0.3, 0], still: true });
-  if (k === 2) h += pop(t, T0 + at16(t, a, '망토는', 0), t + 99, 960, 200, label(0, 0, '망토는 흔들려도, 사람은 그대로', { size: 46, bg: YEL }), {});
+  h += ZF16({ t, seed: 1822, x: 1520, y: 890, s: 0.58, pose: '허리', cape: 0.55 + 0.25 * (0.5 + 0.5 * Math.sin(t * 3)), ex: exprAt([[0, k === 2 ? '미소' : '결심']], t), look: [0.6, 0], still: true });
+  if (k === 2) h += pop(t, T0 + at16(t, a, '망토는', 0), t + 99, 1300, 200, label(0, 0, '망토는 흔들려도, 사람은 그대로', { size: 44, bg: YEL }), {});
   return h;
 }
-// 64-65 Zero answers; the corrected chart
+// 64-65 Zero answers; then the corrected chart comes up on the screen
 function hpres2Scene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
-  let h = meeting16(t) + slide16(960, 315, 1, t, { fixed: k === 1 }) + `<rect x="300" y="640" width="900" height="40" rx="10" fill="#6A5240" stroke="${INK}" stroke-width="7"/>`;
-  h += EX1({ t, seed: 1811, x: 520, y: 880, s: 0.5, pose: '서기', ex: exprAt([[0, '미소']], t), look: [0.8, -0.2] });
-  h += EX2({ t, seed: 1812, x: 860, y: 880, s: 0.5, pose: k === 1 ? '서기' : '팔짱', ex: exprAt([[0, k === 1 ? '미소' : '생각']], t), look: [0.8, -0.2] });
-  h += ZC({ t, seed: 1813, x: 1520, y: 890, s: 0.6, pose: k === 1 ? '허리' : '설명', cape: k === 1 ? 0.6 + 0.1 * Math.sin(t * 4) : 0.45, ex: exprAt([[0, k === 1 ? '뿌듯' : '미소']], t), look: [-0.8, 0] });
-  if (k === 1) h += pop(t, T0 + at16(t, a, '숨길 게', 0), t + 99, 1520, 250, label(0, 0, '숨길 게 없으니까', { size: 42, bg: MINT }), { rot: -2 });
+  const sw = k === 0 ? 0 : easeInOut(prog(lt, 0.1, 0.8));
+  let h = friday16(t, { swap: sw, e2: k === 1 && lt > 0.5 * D ? '미소' : '생각' });
+  h += ZF16({ t, seed: 1813, x: 1520, y: 890, s: 0.6, pose: k === 1 ? '허리' : '설명', cape: k === 1 ? 0.6 + 0.1 * Math.sin(t * 4) : 0.45, ex: exprAt([[0, k === 1 ? '뿌듯' : '미소']], t), look: [0.8, 0] });
+  if (k === 1) h += pop(t, T0 + at16(t, a, '숨길 게', 0), t + 99, 1520, 330, label(0, 0, '숨길 게 없으니까', { size: 42, bg: MINT }), { rot: -2 });
   return h;
 }
 // 66-68 the summit
@@ -341,16 +343,16 @@ function hpeakScene(t, lt, a) {
   if (k === 0) h += pop(t, T0 + 0.2, t + 99, 420, 170, label(0, 0, '토요일 저녁', { size: 44, bg: '#fff' }), { rot: -3 });
   return h;
 }
-// 69-71 "when Heaven is about to give a great task"
+// 69-71 "when Heaven is about to give a great task": a steep climb (Zero stays upright on the slope)
 function hheavenScene(t, lt, a) {
   const k = a.k || 0, D = D16(a), T0 = t - lt;
   let h = BG('#1F1A2E') + BG('url(#dots)');
   if (k <= 1) {
-    h += `<path d="M-600 1000 L300 960 L900 640 L1500 300 L2520 260 L2520 1480 L-600 1480 Z" fill="#3A3150" stroke="${INK}" stroke-width="7"/>`;
+    h += `<path d="M-600 1000 L300 960 L1500 300 L2520 260 L2520 1480 L-600 1480 Z" fill="#3A3150" stroke="${INK}" stroke-width="7"/>`;
     const p = k === 0 ? 0.3 + 0.2 * prog(lt, 0, D) : 0.5 + 0.4 * prog(lt, 0, D), x = lerp(300, 1500, p), y = lerp(960, 300, p);
-    h += ZC({ t, seed: 1840, x, y: y + 4, s: 0.44, pose: walkPose(t * 5, 0.6), cape: k === 0 ? 0.2 : 0.6, ex: exprAt([[0, k === 0 ? '지친' : '결심']], t), look: [0.7, -0.4], rot: -18, sweat: k === 0 });
+    h += ZC({ t, seed: 1840, x, y: y + 6, s: 0.44, pose: walkPose(t * 5, 0.6), cape: k === 0 ? 0.2 : 0.6, ex: exprAt([[0, k === 0 ? '지친' : '결심']], t), look: [0.7, -0.4], sweat: k === 0 });
     if (k === 0) h += quoteBig16(t, T0 + 0.1, 640, 260, ['하늘이 큰일을 맡기려 할 때는,', '먼저 그 마음을 괴롭히고, 몸을 고단하게 한다.'], '『맹자』 고자 하', { w: 1200, size: 46 });
-    else h += quoteBig16(t, T0 + 0.1, 640, 260, ['그렇게 단련해,', '전에 못 하던 일을 해내게 하려는 것이다.'], '『맹자』 고자 하', { w: 1100, size: 48 });
+    else h += quoteBig16(t, T0 + 0.1, 500, 220, ['그렇게 단련해,', '전에 못 하던 일을 해내게 하려는 것이다.'], '『맹자』 고자 하', { w: 900, size: 42 });
     return h;
   }
   h += `<ellipse cx="960" cy="600" rx="700" ry="480" fill="url(#warm)" opacity=".5"/>`;
@@ -406,6 +408,83 @@ thanksScene = function (t, lt) {
   h += pop(t, t - lt + 0.6, t + 99, 960, 420, label(0, 0, '상식실험실', { size: 40, bg: MINT }), {});
   return h;
 };
+
+// 37-39 Confucius → Zengzi: the great courage (ancient figures only)
+function scroll16(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s}) rotate(-20)"><rect x="-18" y="-60" width="36" height="120" rx="8" fill="#F1E3C0" stroke="${INK}" stroke-width="5"/><rect x="-26" y="-66" width="52" height="14" rx="6" fill="#8A5A34" stroke="${INK}" stroke-width="4"/><rect x="-26" y="52" width="52" height="14" rx="6" fill="#8A5A34" stroke="${INK}" stroke-width="4"/></g>`; }
+function hselfqScene(t, lt, a) {
+  const k = a.k || 0, D = D16(a), T0 = t - lt;
+  if (k === 0) {
+    let h = ancient16(t);
+    h += P14(1340, 880, 0.5, '#A89A80', { t, seed: 1730, pose: '서기', ex: exprAt([[0, '기본']], t), look: [-0.7, 0], patches: true });
+    h += scroll16(700 - 40, 880 - 150 * 0.5, 0.7) + JC({ t, seed: 1731, x: 700, y: 880, s: 0.5, pose: '움츠림', ex: exprAt([[0, '겁먹음']], t), look: [0.8, 0], shiver: true, sweat: true });
+    h += pop(t, T0 + 0.3, t + 99, 700, 420, label(0, 0, '들킬까 봐…', { size: 36, bg: '#fff' }), { rot: -3 }) + pop(t, T0 + 0.5, t + 99, 1340, 420, label(0, 0, '허름한 옷의 사람', { size: 34, bg: '#fff' }), { rot: 3 });
+    h += pop(t, T0 + 0.1, t + 99, 960, 220, label(0, 0, '곧지 못하면 → 허름한 사람 앞에서도 떤다', { size: 40, bg: '#FFB0A0' }), {});
+    return h;
+  }
+  if (k === 1) {
+    let h = ancient16(t, { dusk: true });
+    for (let i = 0; i < 22; i++) { const x = 1100 + (i % 11) * 80, y = 880 - Math.floor(i / 11) * 40; h += P14(x, y, 0.26, '#8A7A60', { t, seed: 1740 + i, pose: '서기', ex: exprAt([[0, '결심']], t), look: [-0.7, 0], still: true }); }
+    const x = lerp(300, 820, easeInOut(prog(lt, 0.2, D)));
+    h += shadow(x, 884, 70) + MZ({ t, seed: 1732, x, y: 880, s: 0.48, pose: walkPose(t * 6, 0.8), ex: exprAt([[0, '결심']], t), look: [0.8, 0] });
+    h += pop(t, T0 + 0.1, t + 99, 900, 220, label(0, 0, '곧다면 → 천만 명이 막아서도 간다', { size: 42, bg: YEL }), {});
+    return h;
+  }
+  let h = labBg(t);
+  h += doctor(520, 960, 0.6, { t, expr: '미소', talk: env(t), pose: 'point' });
+  h += ZC({ t, seed: 1733, x: 1420, y: 890, s: 0.46, pose: '서기', cape: 0, ex: exprAt([[0, '생각']], t), look: [-0.7, -0.2] });
+  h += pop(t, T0 + at16(t, a, '숨길 게', 0), t + 99, 980, 220, label(0, 0, '당당함 = 숨길 게 없음', { size: 48, bg: MINT }), {});
+  return h;
+}
+
+// Zero's room at night: a desk with legs and a laptop on it (screen: 'speech' | 'doctor' video call | closed by k)
+function laptop16(t, x, y, open, screen) {
+  const sh = 196 * open;
+  let h = `<path d="M${x - 180} ${y} L${x + 180} ${y} L${x + 200} ${y - 14} L${x - 200} ${y - 14} Z" fill="#9AA6B2" stroke="${INK}" stroke-width="6"/>`;
+  if (open <= 0.02) return h;
+  h += `<rect x="${x - 170}" y="${f1(y - 14 - sh)}" width="340" height="${f1(sh)}" rx="10" fill="#1F2D44" stroke="${INK}" stroke-width="6"/>`;
+  if (open > 0.6) {
+    h += `<rect x="${x - 154}" y="${f1(y - sh)}" width="308" height="${f1(sh - 30)}" rx="6" fill="${screen === 'doctor' ? '#0E1C30' : '#8FDBFF'}"/>`;
+    const inner = screen === 'doctor' ? doctor(x, y + 70, 0.3, { t, expr: '미소', talk: env(t) }) : P14(x, y - 30, 0.3, '#2F3540', { t, seed: 1770, pose: '주먹', ex: exprAt([[0, '결심']], t), still: true });
+    h += `<g clip-path="url(#lap16)"><defs><clipPath id="lap16"><rect x="${x - 154}" y="${f1(y - sh)}" width="308" height="${f1(sh - 30)}" rx="6"/></clipPath></defs>${inner}</g>`;
+  }
+  return h;
+}
+
+function room16(t) { return nightRoom12(t) + desk12(1300, 730, t, 0); }
+// 45-47 experiment 4: Thursday night, trying to be charismatic overnight
+function hrushScene(t, lt, a) {
+  const k = a.k || 0, D = D16(a), T0 = t - lt;
+  if (k === 0) return expCard16(t, lt, a, 4, sprout16(0, 80, 1.3, t, { grow: 0.7 }));
+  let h = room16(t) + laptop16(t, 1300, 730, 1, 'speech') + `<circle cx="1300" cy="620" r="280" fill="url(#screenGlow)" opacity=".45"/>`;
+  if (k === 1) {
+    h += ZC({ t, seed: 1771, x: 720, y: 900, s: 0.56, pose: '주먹', cape: 0.2 + 0.2 * Math.abs(Math.sin(t * 6)), ex: exprAt([[0, '결심']], t), look: [0.7, -0.2] });
+    h += pop(t, T0 + at16(t, a, '목소리를', 0), t + 99, 560, 300, label(0, 0, '(굵게) 에헴… 여러분!', { size: 40, bg: '#fff' }), { rot: -3 });
+    h += pop(t, T0 + 0.3, t + 99, 1300, 330, label(0, 0, '연설 영상 12개째', { size: 34, bg: YEL }), { rot: 3 });
+    return h;
+  }
+  h += ZC({ t, seed: 1772, x: 720, y: 900, s: 0.6, pose: '만세', cape: 0.5 + 0.3 * Math.sin(t * 9), ex: exprAt([[0, '신남']], t), look: [0.3, -0.4] });
+  h += pop(t, T0 + 0.2, t + 99, 480, 250, label(0, 0, '하루 만에!', { size: 50, bg: YEL }), { rot: -5, wobble: 2 });
+  return h;
+}
+
+// Friday's meeting room: two executives seated behind the table, Zero presenting on the right (facing them)
+function agendaSlide16(x, y, s) {
+  let h = `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-380" y="-205" width="760" height="410" rx="8" fill="#F6F8FB"/>` + T8(-350, -150, '프로젝트 분석 요약', { anchor: 'start', size: 40, fill: NAVY });
+  h += `<circle cx="-200" cy="40" r="110" fill="#7FA8D6" stroke="${INK}" stroke-width="5"/><path d="M-200 40 L-200 -70 A110 110 0 0 1 -95 70 Z" fill="#FFB547" stroke="${INK}" stroke-width="5"/>`;
+  for (let i = 0; i < 4; i++) h += `<rect x="0" y="${-60 + i * 50}" width="${300 - (i % 2) * 80}" height="18" rx="9" fill="#C9D6E2"/><circle cx="-20" cy="${-51 + i * 50}" r="8" fill="${RED16}"/>`;
+  return h + '</g>';
+}
+
+function friday16(t, o = {}) {
+  let h = meeting16(t);
+  const sw = o.swap == null ? 0 : o.swap;
+  h += sw < 1 ? `<g opacity="${f1((1 - sw) * 100) / 100}">${agendaSlide16(960, 315, 1)}</g>` : '';
+  if (sw > 0) h += `<g opacity="${f1(sw * 100) / 100}">${slide16(960, 315, 1, t, { fixed: true })}</g>`;
+  h += EX1({ t, seed: 1811, x: 470, y: 755, s: 0.5, pose: '앉기', ex: exprAt([[0, o.e1 || '미소']], t), look: [0.8, -0.2], tilt: o.nod ? Math.sin(t * 5) * 5 : 0 });
+  h += EX2({ t, seed: 1812, x: 850, y: 755, s: 0.5, pose: o.e2pose || '앉기', ex: exprAt([[0, o.e2 || '기본']], t), look: [0.8, -0.2] });
+  h += `<rect x="250" y="690" width="840" height="32" rx="10" fill="#6A5240" stroke="${INK}" stroke-width="7"/><rect x="270" y="722" width="800" height="120" fill="#584332" stroke="${INK}" stroke-width="6"/><rect x="290" y="842" width="26" height="40" fill="#4A3828"/><rect x="1024" y="842" width="26" height="40" fill="#4A3828"/>`;
+  return h;
+}
 
 /* ---------- HUD: which day / experiment (outside the camera) ---------- */
 const EXP16 = i => (i >= 13 && i <= 21) ? 1 : (i >= 22 && i <= 31) ? 2 : (i >= 32 && i <= 44) ? 3 : (i >= 45 && i <= 56) ? 4 : (i >= 57 && i <= 65) ? 5 : 0;
