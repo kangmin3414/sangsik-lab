@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:05.27,Cap,,0,0,0,,{\c&HFFFFFF&}장자는 웃으며 다른 나무 이야기를 들려줍니다. 목수 석이,
+Dialogue: 0,0:00:05.29,0:00:09.81,Cap,,0,0,0,,{\c&HFFFFFF&}사당 옆 거대한 상수리나무를 지나치며 한 말.
+Dialogue: 0,0:00:09.83,0:00:15.21,Cap,,0,0,0,,{\c&H7AE2FF&}배를 만들면 가라앉고, 그릇을 만들면 금방 깨지고,
+Dialogue: 0,0:00:15.23,0:00:20.54,Cap,,0,0,0,,{\c&H7AE2FF&}기둥을 세우면 벌레가 먹는, 쓸모없는 나무야.
+Dialogue: 0,0:00:20.56,0:00:24.79,Cap,,0,0,0,,{\c&HFFFFFF&}그날 밤, 목수의 꿈에 그 나무가 나타납니다.
+Dialogue: 0,0:00:24.81,0:00:31.79,Cap,,0,0,0,,{\c&H7AE2FF&}너는 나를 무엇에 견주느냐? 좋은 목재에 견주느냐?
+Dialogue: 0,0:00:31.81,0:00:37.58,Cap,,0,0,0,,{\c&H7AE2FF&}배나무, 귤나무를 봐라. 열매가 익으면 따이고,
+Dialogue: 0,0:00:37.60,0:00:42.47,Cap,,0,0,0,,{\c&H7AE2FF&}큰 가지는 꺾이고, 작은 가지는 찢긴다.
+Dialogue: 0,0:00:42.49,0:00:47.42,Cap,,0,0,0,,{\c&H7AE2FF&}쓸모 때문에 제 삶을 괴롭히는 거지.
+Dialogue: 0,0:00:47.44,0:00:54.08,Cap,,0,0,0,,{\c&H7AE2FF&}내가 쓸모 있었다면, 이렇게 크게 자랄 수 있었겠느냐?

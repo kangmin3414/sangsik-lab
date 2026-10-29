@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.30,0:00:02.14,Cap,,0,0,0,,설탕을 빼고, 딱 {\c&H33E7F7&}9일{\c&HFFFFFF&}.
+Dialogue: 0,0:00:02.16,0:00:04.02,Cap,,0,0,0,,간에서는 무슨 일이 생길까?
+Dialogue: 0,0:00:04.04,0:00:06.96,Cap,,0,0,0,,단 음료 속 과당은 주로 간에서 처리됩니다.
+Dialogue: 0,0:00:06.98,0:00:10.22,Cap,,0,0,0,,넘치는 만큼은 지방이 되어, 간에 쌓이죠.
+Dialogue: 0,0:00:10.24,0:00:16.10,Cap,,0,0,0,,미국 UCSF 연구팀은 비만인 아이들의 식단에서 설탕을 덜어 냈습니다.
+Dialogue: 0,0:00:16.12,0:00:19.74,Cap,,0,0,0,,빠진 칼로리는 녹말 음식으로, 그대로 채운 채.
+Dialogue: 0,0:00:19.76,0:00:20.60,Cap,,0,0,0,,{\c&H33E7F7&}9일{\c&HFFFFFF&} 뒤,
+Dialogue: 0,0:00:20.62,0:00:24.69,Cap,,0,0,0,,간 지방 비율은 {\c&H33E7F7&}7.1%{\c&HFFFFFF&}에서 {\c&H33E7F7&}3.8%{\c&HFFFFFF&}로.
+Dialogue: 0,0:00:24.71,0:00:26.64,Cap,,0,0,0,,절반 가까이 줄었습니다.
+Dialogue: 0,0:00:26.66,0:00:29.76,Cap,,0,0,0,,살이 빠지지 않은 아이들의 간도 가벼워졌습니다.
+Dialogue: 0,0:00:29.78,0:00:32.14,Cap,,0,0,0,,비교 그룹 없는 작은 연구지만,
+Dialogue: 0,0:00:32.16,0:00:36.33,Cap,,0,0,0,,설탕을 덜어 낸 것만으로 간이 숨을 돌린 셈이죠.

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}svg{display:block}</style>
+<script src="../shorts/engine.js"></script>
+</head>
+<body>
+<svg id="v" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const W = 1920, H = 1080, GROUND = 880;
+window.TL = window.TL || { duration: 10, lines: [] };
+
+function defs(t) {
+  const seed = Math.floor(t * 12) % 60;
+  return `<defs>
+<clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath>
+<clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+<filter id="boil" x="0" y="0" width="${W}" height="${H}" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
+<radialGradient id="vig" cx=".5" cy=".5" r=".72"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></radialGradient>
+<linearGradient id="labG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626"/><stop offset="1" stop-color="#16294A"/></linearGradient>
+<linearGradient id="morning" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD0FF"/><stop offset="1" stop-color="#FFF1D6"/></linearGradient>
+<linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B6FB8"/><stop offset=".55" stop-color="#F59A6A"/><stop offset="1" stop-color="#FFD9A0"/></linearGradient>
+<linearGradient id="river" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7DB7E0"/><stop offset="1" stop-color="#4E86B8"/></linearGradient>
+<linearGradient id="office" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DCE3EA"/><stop offset="1" stop-color="#C3CDD8"/></linearGradient>
+<linearGradient id="cream" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EFE4"/><stop offset="1" stop-color="#E9E1D0"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".6"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="warm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient>
+<radialGradient id="redglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${RED}" stop-opacity=".5"/><stop offset="1" stop-color="${RED}" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0 L0 0 0 60" fill="none" stroke="${MINT}" stroke-opacity=".08" stroke-width="2"/></pattern>
+<pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="14" stroke="${INK}" stroke-width="2.4" opacity=".16"/></pattern>
+<pattern id="win" width="90" height="110" patternUnits="userSpaceOnUse"><rect width="90" height="110" fill="#F4F1EA"/><rect x="18" y="22" width="54" height="62" rx="4" fill="#9CC9EA" stroke="#5C7A93" stroke-width="4"/></pattern>
+<pattern id="paper" width="200" height="200" patternUnits="userSpaceOnUse"><rect width="200" height="200" fill="none"/><circle cx="30" cy="40" r="1.6" fill="${INK}" opacity=".07"/><circle cx="140" cy="90" r="1.3" fill="${INK}" opacity=".06"/><circle cx="90" cy="160" r="1.8" fill="${INK}" opacity=".05"/></pattern>
+</defs>`;
+}
+const camT = (cx, cy, z) => `translate(${W / 2} ${H / 2}) scale(${f1(z * 1000) / 1000}) translate(${f1(-cx)} ${f1(-cy)})`;
+const flip = (x, inner) => `<g transform="translate(${f1(2 * x)} 0) scale(-1 1)">${inner}</g>`;
+const camLerp = (k, A, B) => { k = easeInOut(clamp(k, 0, 1)); return [lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k)]; };
+
+/* ---------- shared pieces ---------- */
+function label(x, y, text, o = {}) {
+  const fs = o.size || 34, w = text.length * fs * 0.92 + 48, h = fs + 28;
+  return `<g transform="translate(${x} ${y})"><rect x="${-w / 2 + 5}" y="${-h / 2 + 7}" width="${w}" height="${h}" rx="${h / 2}" fill="${INK}" opacity=".3"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${o.bg || MINT}" stroke="${INK}" stroke-width="5"/><text x="0" y="${fs * 0.36}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="${fs}" fill="${o.color || NAVY}">${esc(text)}</text></g>`;
+}
+function studyTag(t, lt, text) { return pop(t, t - lt + 0.2, t + 999, 240, 150, label(0, 0, text, { size: 34, bg: YEL }), { rot: -3, bob: 3 }); }
+function sky(kind) { return `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#${kind})"/>`; }
+
+function park(t, lt, a, run) {
+  const sunset = !!a.sunset;
+  const off = run * 120;
+  let h = sky(sunset ? 'sunset' : 'morning');
+  h += sunset ? `<circle cx="1450" cy="430" r="90" fill="#FFD27A" opacity=".95"/><circle cx="1450" cy="430" r="220" fill="url(#warm)"/>` : `<circle cx="1550" cy="190" r="70" fill="#FFF3B0"/><circle cx="1550" cy="190" r="200" fill="url(#warm)" opacity=".6"/>`;
+  h += clouds(t, 80, 18, 4, 3);
+  // far city + bridge (parallax 0.15)
+  const fo = -(off * 0.15) % 600;
+  h += `<g transform="translate(${f1(fo)} 0)">`;
+  for (let i = -1; i < 7; i++) { const x = i * 600; h += `<path d="M${x} 560 L${x} 470 L${x + 60} 470 L${x + 60} 430 L${x + 130} 430 L${x + 130} 500 L${x + 200} 500 L${x + 200} 440 L${x + 260} 440 L${x + 260} 520 L${x + 340} 520 L${x + 340} 450 L${x + 420} 450 L${x + 420} 490 L${x + 520} 490 L${x + 520} 470 L${x + 600} 470 L${x + 600} 560 Z" fill="${sunset ? '#8E7BA8' : '#A9C3DA'}" stroke="${INK}" stroke-width="4"/>`; }
+  h += `</g>`;
+  const bo = -(off * 0.3) % 1600;
+  h += `<g transform="translate(${f1(bo)} 0)">`;
+  for (let i = -1; i < 3; i++) { const x = i * 1600; h += `<rect x="${x}" y="540" width="1600" height="22" fill="${sunset ? '#6E5A80' : '#7E93A8'}" stroke="${INK}" stroke-width="4"/>`; for (let k = 0; k < 8; k++) h += `<path d="M${x + k * 200 + 20} 562 Q${x + k * 200 + 100} 610 ${x + k * 200 + 180} 562" fill="none" stroke="${INK}" stroke-width="5"/><rect x="${x + k * 200 + 92}" y="562" width="16" height="60" fill="${sunset ? '#6E5A80' : '#7E93A8'}" stroke="${INK}" stroke-width="3"/>`; }
+  h += `</g>`;
+  h += `<rect x="-600" y="600" width="3120" height="130" fill="url(#river)"/>`;
+  for (let i = 0; i < 14; i++) { const x = ((i * 170 - off * 0.45) % 2400 + 2400) % 2400 - 200; h += `<line x1="${f1(x)}" y1="${630 + (i % 4) * 22}" x2="${f1(x + 60)}" y2="${630 + (i % 4) * 22}" stroke="#fff" stroke-width="4" opacity=".55"/>`; }
+  h += `<rect x="-600" y="730" width="3120" height="40" fill="#8CCB7A" stroke="${INK}" stroke-width="5"/>`;
+  h += trees2(off * 0.8, 790, t, sunset);
+  h += `<rect x="-600" y="800" width="3120" height="160" fill="#D9C7B0" stroke="${INK}" stroke-width="6"/>`;
+  for (let i = 0; i < 16; i++) { const x = ((i * 160 - off) % 2560 + 2560) % 2560 - 300; h += `<rect x="${f1(x)}" y="874" width="80" height="8" rx="4" fill="#fff" opacity=".8"/>`; }
+  h += `<rect x="-600" y="960" width="3120" height="400" fill="#9BCF84"/><rect x="-600" y="960" width="3120" height="400" fill="url(#hatch)"/>`;
+  // a passer-by jogging the other way sometimes
+  const px = 2300 - ((run * 260) % 3200);
+  h += flip(px, char({ t, seed: 31, x: px, y: 880, s: 0.42, pose: walkPose(t * 11, 1.1), goggles: 'none', vest: '#E8A0A0', patch: false, hair: '#2A2A2A' }));
+  const ex = a.calm ? '신남' : (a.zoom ? '뿌듯' : '기본');
+  h += shadow(900, 888, 84);
+  h += char({ t, seed: 2, x: 900, y: 884, s: 0.8, pose: walkPose(t * 7.5, 0.85), ex: { expr: ex, prev: ex, k: 1, blink: 0 }, look: [0.3, -0.1], light: sunset ? -1 : 1, shade: sunset ? '#F3C9A8' : '#D5E2EE' });
+  if (sunset) h += `<rect x="-600" y="-600" width="3120" height="2280" fill="#FF9A5A" opacity=".12"/>`;
+  return h;
+}
+function trees2(off, ground, t, sunset) {
+  let h = '';
+  for (let i = 0; i < 10; i++) {
+    const x = ((i * 260 - off) % 2600 + 2600) % 2600 - 300, sw = Math.sin(t * 1.5 + i) * 3, c = sunset ? '#5E9A5A' : '#58B868';
+    h += `<rect x="${f1(x - 10)}" y="${ground - 110}" width="20" height="110" fill="#7A5235" stroke="${INK}" stroke-width="5"/>`;
+    h += `<g transform="rotate(${f1(sw)} ${f1(x)} ${ground - 90})"><circle cx="${f1(x)}" cy="${ground - 150}" r="72" fill="${c}" stroke="${INK}" stroke-width="7"/><path d="M${f1(x + 10)} ${ground - 214} A72 72 0 0 1 ${f1(x + 70)} ${ground - 140} L${f1(x + 36)} ${ground - 140} Z" fill="#3F9A50" opacity=".55"/><circle cx="${f1(x - 26)}" cy="${ground - 172}" r="20" fill="#7BD58A"/></g>`;
+  }
+  return h;
+}
+function office(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#office)"/>`;
+  h += `<rect x="1180" y="160" width="560" height="420" rx="10" fill="#A9D3F0" stroke="${INK}" stroke-width="10"/><g opacity=".9">${[0, 1, 2, 3, 4].map(i => `<rect x="${1210 + i * 105}" y="${300 - (i % 3) * 50}" width="80" height="${280 + (i % 3) * 50}" fill="#C9D3DE" stroke="#5C7A93" stroke-width="4"/>`).join('')}</g><line x1="1460" y1="160" x2="1460" y2="580" stroke="${INK}" stroke-width="8"/>`;
+  h += `<rect x="-600" y="-600" width="380" height="2280" fill="url(#hatch)"/>`;
+  h += `<rect x="200" y="240" width="300" height="200" rx="8" fill="#fff" stroke="${INK}" stroke-width="6"/>${[0, 1, 2, 3].map(i => `<rect x="230" y="${275 + i * 38}" width="${180 + (i % 2) * 50}" height="14" rx="7" fill="#C3CDD8"/>`).join('')}`;
+  h += `<rect x="-600" y="780" width="3120" height="600" fill="#B79A7A"/><line x1="-600" y1="780" x2="2520" y2="780" stroke="${INK}" stroke-width="7"/>`;
+  const stuck = !!a.stuck;
+  const ex = stuck ? exprAt([[0, '걱정'], [lt > 1.6 ? 0 : 99, '걱정']], t) : exprAt([[0, '지침']], t);
+  h += char({ t, seed: 5, x: 860, y: 960, s: 0.78, pose: stuck ? '턱괴기' : '서기', ex, look: [0.6, 0.3], tilt: stuck ? 0 : -8 + Math.sin(t * 0.7) * 3, light: -1 });
+  h += `<rect x="520" y="760" width="900" height="44" rx="10" fill="#8C6638" stroke="${INK}" stroke-width="8"/><rect x="560" y="804" width="820" height="300" fill="#7A5A32" stroke="${INK}" stroke-width="8"/>`;
+  h += `<rect x="1060" y="520" width="300" height="200" rx="12" fill="#1F2D44" stroke="${INK}" stroke-width="8"/><rect x="1078" y="538" width="264" height="164" rx="6" fill="#DFF3FF"/>${[0, 1, 2, 3, 4].map(i => `<rect x="1096" y="${556 + i * 28}" width="${200 - (i % 3) * 40}" height="12" rx="6" fill="#9CB3C8"/>`).join('')}<rect x="1190" y="720" width="40" height="40" fill="#1F2D44" stroke="${INK}" stroke-width="6"/>`;
+  h += `<ellipse cx="1210" cy="620" rx="240" ry="160" fill="#DFF3FF" opacity=".18"/>`;
+  if (a.coffee) { const st = (t * 40) % 60; h += `<rect x="640" y="700" width="70" height="80" rx="10" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M710 718 Q740 730 710 760" fill="none" stroke="${INK}" stroke-width="6"/>${[0, 1, 2].map(i => `<path d="M${655 + i * 20} ${690 - st * 0.3} q-10 -20 0 -40 q10 -20 0 -40" fill="none" stroke="#fff" stroke-width="5" opacity="${f1((1 - st / 60) * 100) / 100}"/>`).join('')}`; }
+  if (stuck) { [[640, 750], [700, 762], [1400, 758]].forEach(([x, y], i) => h += `<circle cx="${x}" cy="${y}" r="22" fill="#fff" stroke="${INK}" stroke-width="5"/><path d="M${x - 12} ${y - 6} L${x + 8} ${y + 4} M${x - 6} ${y + 10} L${x + 12} ${y - 10}" stroke="${INK}" stroke-width="3"/>`); }
+  // fog of a blank mind
+  for (let i = 0; i < 4; i++) { const a2 = t * 1.5 + i * 1.57; h += `<circle cx="${f1(860 + Math.cos(a2) * 170)}" cy="${f1(560 + Math.sin(a2) * 40)}" r="${f1(26 + 8 * Math.sin(t * 2 + i))}" fill="#fff" opacity=".55" stroke="${INK}" stroke-width="3"/>`; }
+  h += pop(t, t - lt + 0.4, t + 99, 1060, 420, outlined(0, 0, ['?'], { size: 90, fill: '#fff', sw: 16 }), { rot: 10, bob: 6 });
+  return h;
+}
+function brain(cx, cy, s, region, t, labelText) {
+  const pulse = (Math.sin(t * 4) + 1) / 2;
+  let h = `<g transform="translate(${cx} ${cy}) scale(${s})">`;
+  h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD6DC" stroke="${INK}" stroke-width="9"/>`;
+  [[-200, -80, -120, -150, -20, -120], [-60, -40, 40, -120, 140, -70], [-220, 40, -110, -10, 0, 60], [40, 20, 140, -20, 230, 40], [-120, 120, 0, 90, 90, 130]].forEach(c => h += `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E58F9D" stroke-width="8" stroke-linecap="round"/>`);
+  if (region === 'amygdala') h += `<ellipse cx="20" cy="70" rx="${34 + pulse * 6}" ry="${24 + pulse * 4}" fill="${RED}" stroke="${INK}" stroke-width="6"/><circle cx="20" cy="70" r="${80 + pulse * 30}" fill="url(#redglow)"/>`;
+  if (region === 'hippocampus') h += `<path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${MINT}" stroke-width="${22 + pulse * 6}" stroke-linecap="round"/><path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" opacity=".6"/><circle cx="20" cy="80" r="${120 + pulse * 30}" fill="url(#glow)"/>`;
+  if (region === 'whole') h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="${MINT}" opacity="${f1((0.15 + pulse * 0.2) * 100) / 100}"/>`;
+  if (region === 'neurons') {
+    const g = clamp(t % 4 / 3, 0, 1);
+    const nodes = [[-180, -60], [-60, -140], [80, -120], [200, -30], [-120, 60], [40, 20], [160, 100], [-40, 120]];
+    nodes.forEach(([x, y], i) => nodes.forEach(([x2, y2], j) => { if (j > i && Math.hypot(x - x2, y - y2) < 200) { const k = clamp(g * 2 - (i + j) / 14, 0, 1); h += `<line x1="${x}" y1="${y}" x2="${f1(lerp(x, x2, k))}" y2="${f1(lerp(y, y2, k))}" stroke="${MINT}" stroke-width="6" stroke-linecap="round"/>`; } }));
+    nodes.forEach(([x, y], i) => h += `<circle cx="${x}" cy="${y}" r="${f1(14 + 4 * Math.sin(t * 5 + i))}" fill="${YEL}" stroke="${INK}" stroke-width="5"/>`);
+  }
+  h += `</g>`;
+  if (labelText) h += label(cx + 230 * s, cy - 270 * s, labelText, { size: 36 });
+  return h;
+}
+function labScene(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#labG)"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#grid)"/>`;
+  h += `<rect x="-600" y="840" width="3120" height="600" fill="#0E1C30"/>`;
+  h += `<ellipse cx="960" cy="440" rx="620" ry="380" fill="url(#glow)" opacity=".35"/>`;
+  h += `<rect x="520" y="110" width="880" height="640" rx="28" fill="#06101C" stroke="${INK}" stroke-width="12"/><rect x="540" y="130" width="840" height="600" rx="18" fill="url(#grid)"/>`;
+  h += brain(960, 450, 0.95, a.region || 'whole', t, a.label);
+  h += `<rect x="540" y="${f1(130 + (t * 220) % 600)}" width="840" height="6" fill="${MINT}" opacity=".4"/>`;
+  h += doctor(300, 960, 0.6, { t, tilt: 4, pose: 'point', expr: (a.region === 'amygdala' || a.label === '관찰 연구') ? '진지' : (a.region === 'neurons' ? '미소' : '기본'), talk: (TL.env && TL.env[Math.floor(t * 24)]) || 0 });
+  h += char({ t, seed: 6, x: 1620, y: 960, s: 0.62, ex: exprAt([[0, '기본'], [0.0001, a.region === 'amygdala' ? '걱정' : '놀람']], lt), look: [-0.8, -0.5], light: -1, shade: '#B9D3E3', pose: a.region === 'whole' ? '턱괴기' : '서기' });
+  return h;
+}
+function titleScene(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#labG)"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#grid)"/>`;
+  h += particles(t, 5, 40, [0, 0, 1920, 1080], MINT, { speed: 40, r: 4, op: 0.6 });
+  h += `<ellipse cx="960" cy="900" rx="320" ry="70" fill="url(#glow)"/><ellipse cx="960" cy="900" rx="260" ry="54" fill="#2E4260" stroke="${INK}" stroke-width="8"/>`;
+  h += doctor(520, 960, 0.55, { t, expr: '미소', talk: (TL.env && TL.env[Math.floor(t * 24)]) || 0 });
+  h += char({ t, seed: 7, x: 960, y: 890, s: 0.6, pose: walkPose(t * 7, 0.6), ex: exprAt([[0, '결심']], t), goggles: 'down' });
+  if (a.list) {
+    const items = ['20분', '30분', '걷는 동안', '1년', '평생'];
+    items.forEach((it, i) => { h += pop(t, t - lt + 0.2 + i * 0.25, t + 99, 330 + i * 315, 560, label(0, 0, it, { size: 40, bg: i === 4 ? YEL : MINT }) + (i < 4 ? `<path d="M${90} 0 L${150} 0 M${132} -14 L${150} 0 L${132} 14" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/>` : ''), { rot: 0 }); });
+  }
+  return h;
+}
+function cityScene(t, lt) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="#9FB3C8"/>`;
+  for (let i = -1; i < 8; i++) h += `<rect x="${i * 300}" y="${120 + (i % 3) * 60}" width="260" height="${760 - (i % 3) * 60}" fill="url(#win)" stroke="${INK}" stroke-width="7"/>`;
+  h += `<rect x="-600" y="780" width="3120" height="600" fill="#5E6670"/><line x1="-600" y1="780" x2="2520" y2="780" stroke="${INK}" stroke-width="7"/>`;
+  for (let i = 0; i < 4; i++) { const x = ((t * 420 + i * 700) % 2800) - 500; h += car(x, 860, ['#FF6B6B', '#4FA3E0', '#FFD25A', '#9BE29B'][i]); }
+  h += char({ t, seed: 8, x: 960, y: 1000, s: 0.7, ex: exprAt([[0, '걱정']], t), shiver: true, light: -1, pose: '턱괴기' });
+  const icons = ['빵!', '메시지 99+', '마감 D-1', '빵빵!'];
+  icons.forEach((txt, i) => { const tt = t - lt + 0.3 + i * 0.55; h += pop(t, tt, t + 99, [420, 1500, 1460, 380][i], [340, 300, 600, 640][i], label(0, 0, txt, { size: 40, bg: i % 3 === 0 ? YEL : PINK }), { rot: [-8, 6, -4, 8][i], bob: 5 }); });
+  h += `<rect x="-600" y="-600" width="3120" height="2280" fill="${RED}" opacity="${f1((0.06 + 0.04 * Math.sin(t * 6)) * 100) / 100}"/>`;
+  return h;
+}
+function car(x, y, c) {
+  return `<g transform="translate(${f1(x)} ${y})"><rect x="0" y="-70" width="300" height="90" rx="26" fill="${c}" stroke="${INK}" stroke-width="7"/><path d="M50 -70 L90 -130 L220 -130 L260 -70 Z" fill="${c}" stroke="${INK}" stroke-width="7"/><rect x="100" y="-120" width="50" height="44" fill="#BFE6FF" stroke="${INK}" stroke-width="5"/><rect x="160" y="-120" width="50" height="44" fill="#BFE6FF" stroke="${INK}" stroke-width="5"/><circle cx="70" cy="22" r="30" fill="#333" stroke="${INK}" stroke-width="6"/><circle cx="230" cy="22" r="30" fill="#333" stroke="${INK}" stroke-width="6"/></g>`;
+}
+function chapterScene(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="${NAVY}"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#grid)"/>`;
+  h += particles(t, 9, 30, [0, 0, 1920, 1080], MINT, { speed: 30, r: 4, op: 0.5 });
+  const k = easeOut(prog(lt, 0, 0.6));
+  h += `<g opacity="${f1(k * 100) / 100}" transform="translate(${f1((1 - k) * -60)} 0)">`;
+  h += outlined(960, 330, [[['변화 ', MINT], [String(a.n), YEL], [' / 5', MINT]]], { size: 64, sw: 12 });
+  h += label(960, 450, a.when, { size: 48, bg: YEL });
+  h += outlined(960, 640, [a.name], { size: 120, sw: 22 });
+  h += `</g>`;
+  // progress dots
+  for (let i = 1; i <= 5; i++) h += `<circle cx="${780 + i * 60}" cy="760" r="${i === a.n ? 16 : 11}" fill="${i <= a.n ? MINT : '#33465F'}" stroke="${INK}" stroke-width="4"/>`;
+  const zx = lerp(-200, 2100, prog(lt, 0, 6));
+  h += char({ t, seed: 9, x: zx, y: 1000, s: 0.32, pose: walkPose(t * 9, 0.9), ex: exprAt([[0, '기본']], t) });
+  return h;
+}
+function countUp(text, k) {
+  return text.replace(/\d[\d,\.]*/, m => {
+    const num = parseFloat(m.replace(/,/g, '')); if (isNaN(num)) return m;
+    const dec = (m.split('.')[1] || '').length, v = num * k;
+    let s = v.toFixed(dec); if (m.includes(',')) s = Math.round(v).toLocaleString('en-US');
+    return s;
+  });
+}
+function statScene(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#cream)"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#paper)"/>`;
+  const k = easeOut(prog(lt, 0.1, 1.2));
+  h += `<g transform="translate(960 430) scale(${f1(lerp(0.85, 1, easeOutBack(prog(lt, 0, 0.5))) * 1000) / 1000})">`;
+  h += `<text x="0" y="40" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="210" fill="${NAVY}" stroke="${INK}" stroke-width="2">${esc(countUp(a.big, k))}</text></g>`;
+  h += `<rect x="${960 - 360}" y="560" width="720" height="10" rx="5" fill="${PINK}" transform="scale(${f1(k * 1000) / 1000} 1)" transform-origin="960 565"/>`;
+  h += `<text x="960" y="660" text-anchor="middle" font-family="${FONT}" font-weight="700" font-size="52" fill="${NAVY}">${esc(a.sub)}</text>`;
+  h += `<text x="960" y="740" text-anchor="middle" font-family="${FONT}" font-weight="500" font-size="30" fill="#6B6255">${esc(a.src)}</text>`;
+  h += char({ t, seed: 10, x: 1640, y: 1020, s: 0.5, ex: exprAt([[0, '놀람'], [1.4, '뿌듯']], lt), pose: lt > 1.4 ? '손인사' : '서기', light: 1 });
+  return h;
+}
+function stat2Scene(t, lt, a) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#cream)"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#paper)"/>`;
+  const k = easeOut(prog(lt, 0.2, 1.6));
+  h += `<line x1="460" y1="600" x2="1460" y2="600" stroke="${INK}" stroke-width="6"/>`;
+  const up = 250 * k, dn = 170 * k;
+  h += `<rect x="620" y="${f1(600 - up)}" width="240" height="${f1(up)}" rx="10" fill="#48C88A" stroke="${INK}" stroke-width="7"/>`;
+  h += `<rect x="1060" y="600" width="240" height="${f1(dn)}" rx="10" fill="#FF7A7A" stroke="${INK}" stroke-width="7"/>`;
+  h += `<text x="740" y="${f1(580 - up)}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="90" fill="#1F8A57">${esc(countUp(a.a, k))}</text>`;
+  h += `<text x="1180" y="${f1(680 + dn)}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="90" fill="#D14545">${esc(countUp(a.b, k))}</text>`;
+  h += `<text x="740" y="660" text-anchor="middle" font-family="${FONT}" font-weight="700" font-size="40" fill="${NAVY}">${esc(a.al)}</text>`;
+  h += `<text x="1180" y="570" text-anchor="middle" font-family="${FONT}" font-weight="700" font-size="40" fill="${NAVY}">${esc(a.bl)}</text>`;
+  h += `<text x="960" y="140" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="58" fill="${NAVY}">${esc(a.sub)}</text>`;
+  h += `<text x="960" y="200" text-anchor="middle" font-family="${FONT}" font-weight="500" font-size="30" fill="#6B6255">${esc(a.src)}</text>`;
+  h += char({ t, seed: 11, x: 1680, y: 1020, s: 0.48, ex: exprAt([[0, '놀람'], [1.8, '신남']], lt), pose: lt > 1.8 ? '만세' : '서기' });
+  return h;
+}
+function ideaScene(t, lt, a) {
+  let h = '';
+  if (a.treadmill) {
+    h += `<rect x="-600" y="-600" width="3120" height="2280" fill="#EDE6DA"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#hatch)" opacity=".5"/>`;
+    h += `<rect x="-600" y="860" width="3120" height="500" fill="#C9BBA6"/>`;
+    h += `<rect x="640" y="820" width="640" height="70" rx="20" fill="#3C4450" stroke="${INK}" stroke-width="8"/>${[0, 1, 2, 3, 4, 5].map(i => `<line x1="${f1(660 + ((i * 110 - t * 300) % 600 + 600) % 600)}" y1="830" x2="${f1(660 + ((i * 110 - t * 300) % 600 + 600) % 600)}" y2="880" stroke="#5E6670" stroke-width="6"/>`).join('')}<line x1="1240" y1="820" x2="1300" y2="560" stroke="${INK}" stroke-width="14"/><rect x="1230" y="530" width="140" height="50" rx="10" fill="#3C4450" stroke="${INK}" stroke-width="6"/>`;
+    h += char({ t, seed: 12, x: 900, y: 826, s: 0.62, pose: walkPose(t * 7.5, 0.8), ex: exprAt([[0, '기본'], [0.8, '신남']], lt), look: [1, 0] });
+  } else h += park(t, lt, {}, t);
+  const n = Math.floor(clamp(lt * 1.6, 0, 6));
+  for (let i = 0; i < n; i++) {
+    const x = 760 + (i % 3) * 140 + (i > 2 ? 70 : 0), y = 300 - (i > 2 ? 110 : 0) + Math.sin(t * 2 + i) * 10;
+    h += `<g transform="translate(${x} ${f1(y)}) rotate(${f1(Math.sin(t * 3 + i) * 8)})"><circle cx="0" cy="0" r="${f1(46 * easeOutBack(clamp((lt * 1.6 - i), 0, 1)))}" fill="${YEL}" stroke="${INK}" stroke-width="6"/><rect x="-18" y="40" width="36" height="26" rx="5" fill="#C9C2B4" stroke="${INK}" stroke-width="5"/><path d="M-12 8 Q0 -16 12 8" fill="none" stroke="${INK}" stroke-width="5"/></g>`;
+  }
+  return h;
+}
+const SEASONS = [['봄', '#FFC1D6', '#F8E7EE'], ['여름', '#4FB860', '#D9F5D0'], ['가을', '#F2994A', '#FBE3C8'], ['겨울', '#FFFFFF', '#E3EEF7']];
+function seasonsScene(t, lt) {
+  const si = Math.min(3, Math.floor(lt / 2.2)), s = SEASONS[si];
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="${s[2]}"/>`;
+  h += `<rect x="-600" y="800" width="3120" height="600" fill="${si === 3 ? '#F4F8FB' : '#D9C7B0'}" stroke="${INK}" stroke-width="6"/>`;
+  for (let i = 0; i < 8; i++) { const x = ((i * 280 - t * 90) % 2240 + 2240) % 2240 - 200; h += `<rect x="${f1(x - 10)}" y="680" width="20" height="120" fill="#7A5235" stroke="${INK}" stroke-width="5"/><circle cx="${f1(x)}" cy="640" r="80" fill="${s[1]}" stroke="${INK}" stroke-width="7"/>`; }
+  if (si === 0) h += particles(t, 3, 30, [0, 0, 1920, 900], '#FF9BB8', { petal: true, down: true, speed: 120, r: 8, op: 1 });
+  if (si === 2) h += particles(t, 4, 26, [0, 0, 1920, 900], '#E07A2E', { petal: true, down: true, speed: 140, r: 10, op: 1 });
+  if (si === 3) h += particles(t, 5, 60, [0, 0, 1920, 1000], '#fff', { down: true, speed: 90, r: 6, op: 1 });
+  h += char({ t, seed: 13, x: 900, y: 880, s: 0.6, pose: walkPose(t * 7.5, 0.8), ex: exprAt([[0, '결심']], t) });
+  const month = Math.min(12, 1 + Math.floor(lt / 8.8 * 12));
+  h += `<g transform="translate(1600 220)"><rect x="-130" y="-110" width="260" height="230" rx="16" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-130" y="-110" width="260" height="66" rx="16" fill="${RED}" stroke="${INK}" stroke-width="7"/><text x="0" y="-62" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="38" fill="#fff">${s[0]}</text><text x="0" y="70" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="96" fill="${NAVY}">${month}월</text></g>`;
+  return h;
+}
+function growScene(t, lt) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#labG)"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#grid)"/>`;
+  const g = 1 + 0.18 * easeInOut(prog(lt, 0.3, 2.5));
+  h += `<g transform="translate(860 520) scale(${f1(g * 1000) / 1000})"><circle cx="0" cy="0" r="300" fill="url(#glow)"/><path d="M-180 -40 C-100 -160 120 -150 180 -20 C220 70 140 160 60 120 C10 95 30 40 80 55" fill="none" stroke="${MINT}" stroke-width="64" stroke-linecap="round"/><path d="M-180 -40 C-100 -160 120 -150 180 -20 C220 70 140 160 60 120 C10 95 30 40 80 55" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round" opacity=".7"/></g>`;
+  h += particles(t, 21, 24, [520, 200, 700, 600], YEL, { speed: 70, r: 6, op: 0.9 });
+  h += pop(t, t - lt + 0.8, t + 99, 860, 150, label(0, 0, '해마 +2%', { size: 54, bg: YEL }), { rot: -3, bob: 4 });
+  h += char({ t, seed: 14, x: 1520, y: 980, s: 0.6, ex: exprAt([[0, '놀람'], [1.2, '신남']], lt), pose: lt > 1.2 ? '만세' : '서기' });
+  return h;
+}
+function recapScene(t, lt, a, runLt) {
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="${NAVY}"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#grid)"/>`;
+  const items = [['20분', '스트레스 대청소'], ['30분', '뇌에 비료'], ['걷는 동안', '아이디어 +60%'], ['1년', '해마 +2%'], ['평생', '치매 위험 ↓']];
+  h += outlined(960, 150, ['만약에, 매일 30분 걷는다면?'], { size: 64, sw: 12, fill: YEL });
+  const shown = a.k;
+  items.forEach((it, i) => {
+    if (i >= shown) return;
+    const appear = a.k === 2 ? i * 1.6 : (a.k === 5 && i >= 2 ? (i - 2) * 1.7 : -1);
+    const k = a.k === 5 && i < 2 ? 1 : easeOutBack(clamp((lt - appear) / 0.4, 0, 1));
+    const y = 270 + i * 130;
+    h += `<g transform="translate(${f1(lerp(-300, 0, clamp(k, 0, 1.2)))} 0)" opacity="${f1(clamp(k, 0, 1) * 100) / 100}">${label(560, y, it[0], { size: 44, bg: MINT })}<text x="720" y="${y + 16}" font-family="${FONT}" font-weight="900" font-size="56" fill="#fff">${esc(it[1])}</text></g>`;
+  });
+  h += char({ t, seed: 15, x: 1600, y: 980, s: 0.55, pose: walkPose(t * 7, 0.6), ex: exprAt([[0, '신남']], t) });
+  return h;
+}
+function outroScene(t, lt, a) {
+  let h = park(t, lt, { sunset: 1 }, t);
+  if (!a.next) {
+    h += pop(t, t - lt + 0.3, t + 99, 1380, 360, `<path d="M-230 -90 L230 -90 Q260 -90 260 -60 L260 50 Q260 80 230 80 L-60 80 L-110 140 L-100 80 L-230 80 Q-260 80 -260 50 L-260 -60 Q-260 -90 -230 -90 Z" fill="#fff" stroke="${INK}" stroke-width="7"/><text x="0" y="10" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="46" fill="${NAVY}">댓글로 들려주세요</text>`, { rot: 3, bob: 5 });
+  } else {
+    h += `<rect x="-600" y="-600" width="3120" height="2280" fill="${NAVY}" opacity="${f1(easeOut(prog(lt, 0, 0.6)) * 0.82 * 100) / 100}"/>`;
+    h += pop(t, t - lt + 0.3, t + 99, 960, 300, outlined(0, 0, [[['다음 실험 · ', MINT], ['만약에연구소', YEL]]], { size: 56, sw: 12 }), {});
+    h += pop(t, t - lt + 0.7, t + 99, 960, 520, outlined(0, 0, ['만약에, 일주일 동안', '스마트폰을 끊는다면?'], { size: 96, sw: 18 }), {});
+  }
+  return h;
+}
+
+/* ---------- subtitles ---------- */
+function chunksOf(s) {
+  const parts = s.split(/(?<=[,.?!])\s+/);
+  const out = []; let cur = '';
+  parts.forEach(p => { if ((cur + ' ' + p).trim().length <= 34) cur = (cur + ' ' + p).trim(); else { if (cur) out.push(cur); cur = p; } });
+  if (cur) out.push(cur);
+  return out;
+}
+function subtitle(t) {
+  const L = TL.lines; let cur = null;
+  for (const l of L) if (t >= l.t0 - 0.05 && t <= l.t1 + 0.25) cur = l;
+  if (!cur) return '';
+  const ch = chunksOf(cur.sub), tot = ch.reduce((a, c) => a + c.length, 0);
+  let acc = cur.t0, idx = 0;
+  for (let i = 0; i < ch.length; i++) { const d = (cur.t1 - cur.t0) * ch[i].length / tot; if (t >= acc) idx = i; acc += d; }
+  const text = ch[idx];
+  const lines = text.length > 22 ? (() => { const m = Math.floor(text.length / 2); let sp = text.indexOf(' ', m); if (sp < 0 || sp - m > 8) sp = text.lastIndexOf(' ', m); return sp > 0 ? [text.slice(0, sp), text.slice(sp + 1)] : [text]; })() : [text];
+  const y0 = lines.length === 2 ? 948 : 1000;
+  return outlined(960, y0, lines, { size: 50, sw: 11, lh: 62, shadow: false });
+}
+
+/* ---------- main ---------- */
+function render(t) {
+  const L = TL.lines;
+  let i = 0; while (i + 1 < L.length && t >= L[i + 1].t0 - 0.15) i++;
+  const line = L[i] || { scene: 'title', args: {}, t0: 0 };
+  let rs = i; while (rs > 0 && L[rs - 1].scene === line.scene && L[rs - 1].scene !== 'chapter' && line.scene !== 'stat') rs--;
+  const runT0 = (L[rs] || line).t0, lt = t - (line.t0 - 0.15), runLt = t - (runT0 - 0.15);
+  const a = line.args || {};
+  let scene = '', cam = [960, 540, 1];
+  const push = (z0, z1, cx = 960, cy = 540, cx1 = cx, cy1 = cy) => camLerp(runLt / 8, [cx, cy, z0], [cx1, cy1, z1]);
+  switch (line.scene) {
+    case 'office': scene = office(t, lt, a); cam = a.stuck ? push(1.05, 1.18, 900, 560) : push(1.0, 1.12, 900, 520, 880, 500); break;
+    case 'park': scene = park(t, lt, a, runLt); cam = a.zoom ? camLerp(lt / 3, [920, 560, 1.0], [900, 640, 1.55]) : push(1.0, 1.08, 960, 540); if (a.study) scene += ''; break;
+    case 'lab': scene = labScene(t, lt, a); cam = push(1.0, 1.1, 960, 470); break;
+    case 'title': scene = titleScene(t, lt, a); cam = push(1.0, 1.06); break;
+    case 'city': scene = cityScene(t, lt); cam = push(1.02, 1.14, 960, 560); break;
+    case 'chapter': scene = chapterScene(t, lt, a); cam = push(1.0, 1.04); break;
+    case 'stat': scene = statScene(t, lt, a); cam = camLerp(lt / 5, [960, 540, 1.0], [960, 520, 1.05]); break;
+    case 'stat2': scene = stat2Scene(t, lt, a); cam = camLerp(lt / 7, [960, 540, 1.0], [960, 520, 1.05]); break;
+    case 'idea': scene = ideaScene(t, lt, a); cam = push(1.0, 1.1, 960, 520); break;
+    case 'seasons': scene = seasonsScene(t, lt); cam = push(1.0, 1.06); break;
+    case 'grow': scene = growScene(t, lt); cam = push(1.0, 1.1, 960, 540); break;
+    case 'recap': scene = recapScene(t, lt, a, runLt); cam = push(1.0, 1.04); break;
+    case 'outro': scene = outroScene(t, lt, a); cam = push(1.0, 1.06); break;
+  }
+  let over = '';
+  if (a.study) over += pop(t, line.t0, line.t1 + 0.3, 250, 120, label(0, 0, a.study, { size: 36, bg: YEL }), { rot: -3, bob: 3 });
+  // channel badge + chapter progress
+  over += `<g opacity=".92"><rect x="40" y="${a.study ? 980 : 34}" width="0" height="0"/></g>`;
+  const ch = (() => { let n = 0; for (let k = 0; k <= i; k++) if (L[k].scene === 'chapter') n = L[k].args.n; if (i >= L.findIndex(l => l.scene === 'recap') && L.findIndex(l => l.scene === 'recap') >= 0) n = 0; return n; })();
+  if (ch && line.scene !== 'chapter') over += `<g transform="translate(1880 60)"><rect x="-250" y="-30" width="250" height="60" rx="30" fill="${NAVY}" opacity=".85" stroke="${MINT}" stroke-width="3"/><text x="-125" y="11" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="30" fill="${MINT}">변화 ${ch} / 5</text></g>`;
+  const fade = Math.max(1 - prog(t, 0, 0.5), prog(t, TL.duration - 1.0, TL.duration));
+  const cut = prog(t, line.t0 - 0.15, line.t0 + 0.05);
+  const flash = i > 0 && L[i - 1].scene !== line.scene && cut < 1 ? (1 - cut) * 0.35 : 0;
+  document.getElementById('v').innerHTML = defs(t) +
+    `<g filter="url(#boil)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g>` +
+    `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
+    `<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +
+    over + subtitle(t) +
+    `<text x="1890" y="1062" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="22" fill="#fff" opacity=".5">만약에연구소</text>` +
+    (flash ? `<rect width="${W}" height="${H}" fill="#fff" opacity="${f1(flash * 100) / 100}"/>` : '') +
+    `<rect width="${W}" height="${H}" fill="#000" opacity="${f1(fade * 100) / 100}"/>`;
+}
+window.render = render;
+</script>
+</body>
+</html>

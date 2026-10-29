@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0}</style><script src="engine.js"></script></head><body>
+<svg id="v" width="2400" height="1500" viewBox="0 0 2400 1500" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+let h=`<defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath><clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath></defs><rect width="2400" height="1500" fill="#F2F0EA"/>`;
+h+=`<text x="80" y="110" font-family="${FONT}" font-weight="700" font-size="30" fill="#1A7F61" letter-spacing="3">만약에연구소 · CHARACTER SHEET v1</text>`;
+h+=`<text x="80" y="210" font-family="${FONT}" font-weight="900" font-size="96" fill="${NAVY}">박사</text>`;
+h+=`<text x="2320" y="160" text-anchor="end" font-family="${FONT}" font-weight="500" font-size="32" fill="#3B4A5E">실험을 설계하고 과학을 설명하는 연구소장. 다정하지만 숫자 앞에선 진지하다.</text>`;
+h+=`<text x="2320" y="210" text-anchor="end" font-family="${FONT}" font-weight="500" font-size="32" fill="#3B4A5E">특징: 흰 동그란 머리 · 양옆의 흰 곱슬머리 · 큰 동그란 안경 · 회색 콧수염 · 흰 가운과 클립보드</text>`;
+const ex=['기본','미소','진지','놀람','당황'];
+ex.forEach((e,i)=>{ const x=220+i*360; h+=doctor(x, 1250, 0.95, {t:2.0, expr:e, glass: e==='당황'?RED:MINT, talk: e==='진지'?0.8:0}); h+=`<text x="${x}" y="1400" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="44" fill="${NAVY}">${e}${e==='진지'?' · 말하는 중':''}</text>`;});
+h+=doctor(2020, 1250, 0.95, {t:2.0, expr:'미소', pose:'point'}); h+=`<text x="2020" y="1400" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="44" fill="${NAVY}">가리키기</text>`;
+
+document.getElementById('v').innerHTML=h;
+</script></body></html>

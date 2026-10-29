@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:02.50,Cap,,0,0,0,,{\c&HFFFFFF&}한번은 초나라 왕이 사신을 보내,
+Dialogue: 0,0:00:02.52,0:00:06.62,Cap,,0,0,0,,{\c&HFFFFFF&}나라를 맡아 달라고 청합니다. 마침 낚시를 하던 장자는,
+Dialogue: 0,0:00:06.64,0:00:08.31,Cap,,0,0,0,,{\c&HFFFFFF&}이렇게 묻습니다.
+Dialogue: 0,0:00:08.33,0:00:14.52,Cap,,0,0,0,,{\c&H7AE2FF&}초나라에는 죽은 지 {\c&H33E7F7&}3{\c&H7AE2FF&}천 년 된 거북을 귀하게 모셔 둔다지요.
+Dialogue: 0,0:00:14.54,0:00:18.35,Cap,,0,0,0,,{\c&H7AE2FF&}그 거북은 죽어서 모셔지길 바랐을까요,
+Dialogue: 0,0:00:18.37,0:00:23.05,Cap,,0,0,0,,{\c&H7AE2FF&}살아서 진흙 속에 꼬리를 끌길 바랐을까요?
+Dialogue: 0,0:00:23.07,0:00:26.17,Cap,,0,0,0,,{\c&H7AE2FF&}살아서 꼬리를 끌길 바랐겠지요.
+Dialogue: 0,0:00:26.19,0:00:29.49,Cap,,0,0,0,,{\c&HFFFFFF&}사신들의 대답에, 장자가 말합니다.
+Dialogue: 0,0:00:29.51,0:00:34.47,Cap,,0,0,0,,{\c&H7AE2FF&}그럼 돌아가시오. 나도 진흙 속에서 꼬리를 끌겠소.

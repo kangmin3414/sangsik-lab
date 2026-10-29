@@ -1,0 +1,212 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;background:#000}
+#wrap{position:relative;width:1280px;height:720px;overflow:hidden}
+svg{display:block}
+#t{position:absolute;left:0;right:0;top:14px;text-align:center;font-family:'Jua',sans-serif;font-size:176px;line-height:1.05;color:#fff;
+  -webkit-text-stroke:22px #0E0E10;paint-order:stroke fill;letter-spacing:-1px;
+  text-shadow:0 9px 0 rgba(0,0,0,.6),0 0 46px rgba(0,0,0,.7);transform:rotate(-1.2deg)}
+</style></head>
+<body><div id="wrap"><svg id="s" width="1280" height="720" viewBox="0 0 1280 720"></svg><div id="t"></div></div>
+<script>
+const P = new URLSearchParams(location.hash.slice(1));
+const TEXT = P.get('text');
+if (TEXT) document.getElementById('t').textContent = TEXT;
+let seed = 7;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114';
+let d = `<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="720" gradientUnits="userSpaceOnUse">
+ <stop offset="0" stop-color="#010309"/><stop offset=".22" stop-color="#050E22"/><stop offset=".40" stop-color="#112145"/>
+ <stop offset=".50" stop-color="#36365F"/><stop offset=".555" stop-color="#8A5266"/><stop offset=".60" stop-color="#D9744E"/><stop offset=".66" stop-color="#F4A45C"/><stop offset="1" stop-color="#F4A45C"/></linearGradient>
+<linearGradient id="bld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121B33"/><stop offset="1" stop-color="#080D1A"/></linearGradient>
+<linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2A4A"/><stop offset="1" stop-color="#151A33"/></linearGradient>
+<linearGradient id="path" x1="0" y1="560" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4A4558"/><stop offset=".35" stop-color="#262C3E"/><stop offset="1" stop-color="#141925"/></linearGradient>
+<radialGradient id="lampGlow"><stop offset="0" stop-color="#FFF3D0" stop-opacity="1"/><stop offset=".18" stop-color="#FFC56E" stop-opacity=".85"/><stop offset=".5" stop-color="#FF9A3C" stop-opacity=".25"/><stop offset="1" stop-color="#FF8A30" stop-opacity="0"/></radialGradient>
+<linearGradient id="cone" x1="0" y1="250" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFC266" stop-opacity=".42"/><stop offset="1" stop-color="#FFB050" stop-opacity="0"/></linearGradient>
+<radialGradient id="halo"><stop offset="0" stop-color="#FFB872" stop-opacity=".34"/><stop offset=".6" stop-color="#FF9A5A" stop-opacity=".10"/><stop offset="1" stop-color="#FF9A5A" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".6" cy=".3" r=".85"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".45" stop-color="#FBF5EC"/><stop offset=".74" stop-color="#E6DFD8"/><stop offset="1" stop-color="#A9A9BC"/></radialGradient>
+<radialGradient id="fistG" cx=".62" cy=".28" r=".95"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".5" stop-color="#F6F0E7"/><stop offset="1" stop-color="#B4B2C2"/></radialGradient>
+<linearGradient id="vestG" x1="455" y1="0" x2="825" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#B98300"/><stop offset=".32" stop-color="#EBB80E"/><stop offset=".72" stop-color="#FFDF4A"/><stop offset="1" stop-color="#FFF0A0"/></linearGradient>
+<radialGradient id="lens" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#D2FFF0"/><stop offset=".4" stop-color="#5AF5C0"/><stop offset="1" stop-color="#0F9A6E"/></radialGradient>
+<linearGradient id="eyeW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9BECB"/><stop offset=".38" stop-color="#FAFAF7"/><stop offset="1" stop-color="#ECECEA"/></linearGradient>
+<linearGradient id="teeth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9CED8"/></linearGradient>
+<radialGradient id="drop" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#BFE6FF"/><stop offset="1" stop-color="#6FB6E8"/></radialGradient>
+<radialGradient id="vig" cx="640" cy="420" r="820" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".78"/></radialGradient>
+<linearGradient id="topDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<filter id="b1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1"/></filter>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b24" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse cx="0" cy="0" rx="200" ry="188"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="200" ry="188" fill="#fff"/><ellipse cx="-20" cy="12" rx="200" ry="188" fill="#000" filter="url(#b4)"/></mask>
+<mask id="rimL" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="200" ry="188" fill="#fff"/><ellipse cx="16" cy="8" rx="200" ry="188" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="lidL"><polygon points="-120,-6 -12,26 -12,96 -120,96"/></clipPath>
+<clipPath id="lidR"><polygon points="12,26 120,-6 120,96 12,96"/></clipPath>
+<clipPath id="vestC"><path d="M455 760 L470 668 Q480 630 540 612 Q640 596 740 612 Q800 630 810 668 L825 760 Z"/></clipPath>
+<clipPath id="fistC"><path d="M-58 24 L-58 -36 Q-58 -58 -43 -58 Q-29 -58 -28 -46 Q-27 -66 -13 -66 Q1 -66 1 -50 Q2 -68 16 -68 Q30 -68 30 -50 Q31 -62 45 -60 Q60 -57 60 -34 L60 22 Q54 62 6 64 Q-50 66 -58 24 Z"/></clipPath>
+</defs>`;
+
+let g = '';
+// ---------- sky ----------
+g += `<rect width="1280" height="720" fill="url(#sky)"/>`;
+// faint stars
+for (let i = 0; i < 70; i++) { const x = rnd() * 1280, y = rnd() * 260, r = rnd() * 1.3 + .3; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#DCE6FF" opacity="${(.15 + rnd() * .45).toFixed(2)}"/>`; }
+// dawn glow band
+g += `<ellipse cx="640" cy="430" rx="760" ry="70" fill="#FFB070" opacity=".35" filter="url(#b24)"/>`;
+// mountains (Korean city ridge)
+let m = 'M0 720 L0 418';
+for (let x = 0; x <= 1300; x += 40) { const y = 412 + Math.sin(x / 150) * 18 + Math.sin(x / 57 + 1) * 9 + (x > 860 && x < 1120 ? -28 * Math.sin((x - 860) / 260 * Math.PI) : 0) + (x > 120 && x < 420 ? -22 * Math.sin((x - 120) / 300 * Math.PI) : 0); m += ` L${x} ${y.toFixed(1)}`; }
+m += ' L1300 720 Z';
+g += `<path d="${m}" fill="url(#mtn)" opacity=".95"/>`;
+// apartment blocks
+let b = '';
+const blds = [];
+for (let x = -30; x < 1300;) { const w = 64 + rnd() * 70, top = 318 + rnd() * 112; blds.push([x, w, top]); x += w + 10 + rnd() * 38; }
+blds.forEach(([x, w, top], i) => {
+  b += `<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${(565 - top).toFixed(1)}" fill="url(#bld)"/>`;
+  b += `<rect x="${(x + w * .3).toFixed(1)}" y="${(top - 12).toFixed(1)}" width="${(w * .4).toFixed(1)}" height="12" fill="#0D1529"/>`;
+  b += `<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="2.5" fill="#F2A15E" opacity=".35"/>`;
+  for (let yy = top + 14; yy < 552; yy += 15) for (let xx = x + 7; xx < x + w - 8; xx += 13) {
+    const r = rnd(); if (r < .085) b += `<rect x="${xx.toFixed(1)}" y="${yy.toFixed(1)}" width="7" height="5" fill="${r < .06 ? '#FFD27A' : '#A8DDFF'}" opacity="${(.55 + rnd() * .4).toFixed(2)}"/>`;
+  }
+  if (i === 2 || i === 11) b += `<text x="${(x + w / 2).toFixed(1)}" y="${(top + 40).toFixed(1)}" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="24" fill="#2A3656">${i === 2 ? '103' : '105'}</text>`;
+});
+g += `<g filter="url(#b1)">${b}</g>`;
+// bokeh near horizon
+for (let i = 0; i < 26; i++) { const x = rnd() * 1280, y = 470 + rnd() * 90, r = 4 + rnd() * 11; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${rnd() < .7 ? '#FFC77A' : '#9FE8FF'}" opacity="${(.25 + rnd() * .35).toFixed(2)}" filter="url(#b2)"/>`; }
+// fog over horizon
+g += `<ellipse cx="640" cy="560" rx="760" ry="34" fill="#B9C7E6" opacity=".16" filter="url(#b14)"/>`;
+// ground + path
+g += `<rect x="0" y="560" width="1280" height="160" fill="#070D12"/>`;
+g += `<polygon points="90,720 590,562 690,562 1190,720" fill="url(#path)"/>`;
+g += `<path d="M90 720 L590 562 M1190 720 L690 562" stroke="#8C8FA6" stroke-width="3" opacity=".35"/>`;
+// trees
+const tree = (cx, cy, s, lit) => {
+  let t = `<rect x="${cx - 7 * s}" y="${cy}" width="${14 * s}" height="${150 * s}" fill="#05090C"/>`;
+  for (let i = 0; i < 16; i++) { const a = rnd() * Math.PI * 2, rr = rnd() * 70 * s, r = (34 + rnd() * 40) * s; t += `<circle cx="${(cx + Math.cos(a) * rr * 1.2).toFixed(1)}" cy="${(cy - 40 * s + Math.sin(a) * rr * .8).toFixed(1)}" r="${r.toFixed(1)}" fill="${lit ? (rnd() < .5 ? '#2A1209' : '#1C0D08') : '#07120F'}"/>`; }
+  if (lit) for (let i = 0; i < 22; i++) { const x = cx + (rnd() * 1.6 - .4) * 80 * s, y = cy - 100 * s + rnd() * 120 * s; t += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${((6 + rnd() * 12) * s).toFixed(1)}" fill="${rnd() < .5 ? '#D2661F' : '#F09A3A'}" opacity="${(.35 + rnd() * .45).toFixed(2)}"/>`; }
+  return t;
+};
+g += tree(70, 470, 1.25, false) + tree(230, 520, .8, false);
+g += `<g filter="url(#b1)">${tree(1010, 480, 1.05, true)}</g>`;
+// distant left streetlight
+g += `<rect x="186" y="380" width="5" height="190" fill="#0A0F18"/><circle cx="188" cy="380" r="70" fill="url(#lampGlow)"/>`;
+// big right streetlight
+g += `<polygon points="1060,252 1112,252 1250,720 920,720" fill="url(#cone)"/>`;
+g += `<ellipse cx="1060" cy="690" rx="230" ry="36" fill="#FFB25A" opacity=".22" filter="url(#b8)"/>`;
+g += `<path d="M1162 720 L1162 250 Q1162 222 1134 222 L1098 222" fill="none" stroke="#0A0E16" stroke-width="13" stroke-linecap="round"/>`;
+g += `<path d="M1066 222 L1122 222 L1114 244 L1074 244 Z" fill="#0A0E16"/>`;
+g += `<circle cx="1094" cy="250" r="190" fill="url(#lampGlow)"/>`;
+g += `<rect x="1076" y="243" width="36" height="7" rx="3" fill="#FFF6DC"/>`;
+// dust in lamp light
+for (let i = 0; i < 40; i++) { const y = 260 + rnd() * 440, k = (y - 250) / 470, x = 1086 + (rnd() - .5) * (52 + 330 * k); g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(.8 + rnd() * 1.8).toFixed(1)}" fill="#FFE2A8" opacity="${(.3 + rnd() * .5).toFixed(2)}"/>`; }
+
+// ---------- character backlight ----------
+g += `<circle cx="640" cy="440" r="380" fill="url(#halo)"/>`;
+
+// ---------- body ----------
+// back arm (viewer's right) swinging back
+g += `<path d="M806 668 Q862 690 912 742" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+// vest
+const vestD = 'M455 760 L470 668 Q480 630 540 612 Q640 596 740 612 Q800 630 810 668 L825 760 Z';
+g += `<path d="${vestD}" fill="url(#vestG)"/>`;
+g += `<g clip-path="url(#vestC)"><ellipse cx="640" cy="612" rx="170" ry="34" fill="#5A3A00" opacity=".55" filter="url(#b8)"/>
+  <path d="M812 640 L828 760" stroke="#FFF2B8" stroke-width="14" opacity=".75" filter="url(#b4)"/>
+  <path d="M452 640 L462 760" stroke="#6B4A00" stroke-width="30" opacity=".45" filter="url(#b8)"/></g>`;
+g += `<path d="${vestD}" fill="none" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+g += `<line x1="640" y1="602" x2="640" y2="760" stroke="${INK}" stroke-width="5"/>`;
+g += `<rect x="522" y="652" width="66" height="42" rx="8" fill="#1F2D44" stroke="${INK}" stroke-width="3"/><text x="555" y="684" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="30" fill="#3DF2B0">00</text>`;
+
+// ---------- head ----------
+let h = '';
+// steam from temples
+const steam = (x, y, dir) => `<path d="M${x} ${y} q${-12 * dir} -18 0 -36 q${12 * dir} -18 0 -36 q${-10 * dir} -16 0 -30" fill="none" stroke="#F4F7FF" stroke-width="7" stroke-linecap="round" opacity=".38" filter="url(#b2)"/>`;
+h += steam(-200, -64, 1) + steam(202, -60, -1);
+h += `<ellipse rx="200" ry="188" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)">
+  <ellipse cx="0" cy="-76" rx="190" ry="40" fill="#6A6478" opacity=".28" filter="url(#b8)"/>
+  <ellipse cx="0" cy="214" rx="230" ry="80" fill="#5E5A74" opacity=".45" filter="url(#b14)"/>
+  <ellipse cx="-128" cy="80" rx="40" ry="22" fill="#FF6464" opacity=".32" filter="url(#b8)"/>
+  <ellipse cx="128" cy="80" rx="40" ry="22" fill="#FF6464" opacity=".36" filter="url(#b8)"/>
+  <ellipse cx="96" cy="-118" rx="56" ry="26" transform="rotate(28 96 -118)" fill="#fff" opacity=".75" filter="url(#b8)"/>
+</g>`;
+h += `<ellipse rx="200" ry="188" fill="#FFB050" mask="url(#rimR)" opacity=".95"/>`;
+h += `<ellipse rx="200" ry="188" fill="#7FA8FF" mask="url(#rimL)" opacity=".42"/>`;
+h += `<path d="M128 -150 Q156 -120 166 -80" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>`;
+h += `<ellipse rx="200" ry="188" fill="none" stroke="${INK}" stroke-width="10"/>`;
+// sweat beads on skin
+[[-112, -52, 5], [-84, -34, 3.5], [108, -40, 5.5], [140, -14, 4], [-150, 2, 4], [30, -60, 3.5], [-30, -58, 3], [160, 30, 3.5], [-138, 120, 3]].forEach(([x, y, r]) => {
+  h += `<circle cx="${x}" cy="${y}" r="${r}" fill="#CFEAFF" stroke="#6E8FB0" stroke-width="1.2"/><circle cx="${x - r * .3}" cy="${y - r * .35}" r="${r * .35}" fill="#fff"/>`;
+});
+// furrow
+h += `<path d="M-12 -34 Q-8 -22 -6 -10 M12 -34 Q8 -22 6 -10" stroke="${INK}" stroke-width="4" stroke-linecap="round" opacity=".55" fill="none"/>`;
+// eyes
+const eye = (sx) => {
+  const cx = 64 * sx, clip = sx < 0 ? 'lidL' : 'lidR';
+  let e = `<path d="M${-100 * sx} 74 Q${-64 * sx} 90 ${-28 * sx} 72" fill="none" stroke="#8C74A8" stroke-width="5" stroke-linecap="round" opacity=".5"/>`;
+  e += `<g clip-path="url(#${clip})"><ellipse cx="${cx}" cy="30" rx="40" ry="44" fill="url(#eyeW)"/>
+    <circle cx="${cx - 6 * sx}" cy="40" r="21" fill="#3A2820"/><circle cx="${cx - 6 * sx}" cy="40" r="12" fill="#09090B"/>
+    <circle cx="${cx - 6 * sx + 7}" cy="32" r="6.5" fill="#fff"/><circle cx="${cx - 6 * sx - 6}" cy="50" r="3" fill="#fff" opacity=".85"/>
+    <ellipse cx="${cx}" cy="30" rx="40" ry="44" fill="none" stroke="${INK}" stroke-width="6"/></g>`;
+  e += `<path d="M${-122 * sx} -6 Q${-70 * sx} 4 ${-10 * sx} 27" fill="none" stroke="${INK}" stroke-width="11" stroke-linecap="round"/>`;
+  e += `<path d="M${-138 * sx} -34 Q${-88 * sx} -46 ${-22 * sx} -8" fill="none" stroke="${INK}" stroke-width="24" stroke-linecap="round"/>`;
+  return e;
+};
+h += eye(-1) + eye(1);
+// gritted teeth
+h += `<path d="M-48 108 Q0 94 48 108 Q54 132 42 142 Q0 152 -42 142 Q-54 132 -48 108 Z" fill="url(#teeth)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+h += `<path d="M-48 124 Q0 116 49 124" fill="none" stroke="${INK}" stroke-width="4"/>`;
+h += `<path d="M-26 101 L-27 145 M-9 98 L-9 148 M9 98 L9 148 M26 101 L27 145" stroke="${INK}" stroke-width="3.2" opacity=".85"/>`;
+// goggles
+h += `<path d="M-196 -46 Q0 -216 196 -46" fill="none" stroke="#1A263A" stroke-width="28" stroke-linecap="round"/>`;
+h += `<path d="M-192 -58 Q0 -228 192 -58" fill="none" stroke="#33466A" stroke-width="5" stroke-linecap="round" opacity=".8"/>`;
+[-64, 64].forEach(x => {
+  h += `<circle cx="${x}" cy="-134" r="53" fill="url(#lens)" stroke="#1A263A" stroke-width="15"/>`;
+  h += `<path d="M${x - 30} -144 Q${x - 26} -166 ${x - 6} -170" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".9"/>`;
+  h += `<circle cx="${x + 26}" cy="-116" r="7" fill="#FFE0A6" opacity=".95"/><circle cx="${x + 26}" cy="-116" r="14" fill="#FFC46E" opacity=".35" filter="url(#b2)"/>`;
+});
+h += `<rect x="-14" y="-142" width="28" height="16" rx="6" fill="#1A263A"/>`;
+// big sweat drops
+const drop = (x, y, s, rot) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -26 Q16 0 13 12 Q9 26 0 26 Q-9 26 -13 12 Q-16 0 0 -26 Z" fill="url(#drop)" stroke="${INK}" stroke-width="3.5"/><ellipse cx="-4" cy="8" rx="3.5" ry="7" fill="#fff"/></g>`;
+h += drop(188, 8, 1.25, -8) + drop(-190, 30, 1.0, 10) + drop(232, -62, .75, 30) + drop(-228, -40, .7, -30) + drop(170, 120, .8, -14);
+g += `<g transform="translate(640 420) rotate(-3)">${h}</g>`;
+
+// breath vapor
+[[778, 560, 24, .42], [826, 548, 32, .3], [884, 530, 42, .2], [948, 512, 50, .12]].forEach(([x, y, r, o]) => { g += `<circle cx="${x}" cy="${y}" r="${r}" fill="#EEF4FF" opacity="${o}" filter="url(#b8)"/>`; });
+
+// ---------- front arm + fist + watch ----------
+g += `<path d="M476 668 Q420 690 372 706" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+g += `<path d="M372 706 Q382 660 402 616" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+g += `<g transform="translate(386 664) rotate(22)"><rect x="-30" y="-24" width="60" height="48" rx="12" fill="#1A263A" stroke="${INK}" stroke-width="4"/>
+  <rect x="-24" y="-18" width="48" height="36" rx="7" fill="#06160F"/>
+  <text x="0" y="8" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="19" fill="#3DF2B0">30:00</text>
+  <rect x="-24" y="-18" width="48" height="36" rx="7" fill="#3DF2B0" opacity=".12"/></g>`;
+let f = `<path d="M-58 24 L-58 -36 Q-58 -58 -43 -58 Q-29 -58 -28 -46 Q-27 -66 -13 -66 Q1 -66 1 -50 Q2 -68 16 -68 Q30 -68 30 -50 Q31 -62 45 -60 Q60 -57 60 -34 L60 22 Q54 62 6 64 Q-50 66 -58 24 Z" fill="url(#fistG)"/>`;
+f += `<g clip-path="url(#fistC)"><ellipse cx="-50" cy="40" rx="40" ry="50" fill="#5E6A86" opacity=".45" filter="url(#b8)"/><path d="M50 -50 Q70 -10 58 30" stroke="#FFB050" stroke-width="12" fill="none" opacity=".8" filter="url(#b2)"/></g>`;
+f += `<path d="M-58 24 L-58 -36 Q-58 -58 -43 -58 Q-29 -58 -28 -46 Q-27 -66 -13 -66 Q1 -66 1 -50 Q2 -68 16 -68 Q30 -68 30 -50 Q31 -62 45 -60 Q60 -57 60 -34 L60 22 Q54 62 6 64 Q-50 66 -58 24 Z" fill="none" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+f += `<path d="M-28 -46 Q-30 -26 -27 -6 M1 -50 Q-1 -28 1 -8 M30 -50 Q29 -28 30 -8" fill="none" stroke="${INK}" stroke-width="5.5" stroke-linecap="round"/>`;
+f += `<path d="M-56 -4 Q0 8 60 -6" fill="none" stroke="${INK}" stroke-width="5.5" stroke-linecap="round"/>`;
+f += `<path d="M-58 20 Q-14 6 34 18 Q48 24 40 36 Q0 42 -46 48" fill="none" stroke="${INK}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+f += `<path d="M36 -56 Q50 -54 54 -40" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>`;
+f += drop(64, -40, .55, 20);
+g += `<g transform="translate(410 566) rotate(-8)">${f}</g>`;
+g += `<g fill="none" stroke="#fff" stroke-linecap="round" opacity=".8"><path d="M318 520 Q300 560 314 604" stroke-width="7"/><path d="M296 548 Q288 574 296 600" stroke-width="5"/><path d="M338 488 Q328 500 326 514" stroke-width="5"/></g>`;
+
+// ---------- leaves ----------
+const leaf = (x, y, s, rot, c, blur) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})" ${blur ? `filter="url(#${blur})"` : ''}><path d="M0 -13 Q10 -3 0 13 Q-10 -3 0 -13 Z" fill="${c}"/><path d="M0 -11 L0 12" stroke="#7A2E0A" stroke-width="1.2"/></g>`;
+g += leaf(300, 330, 1.3, 30, '#E07A2A') + leaf(960, 330, 1.1, -24, '#F2A13A') + leaf(240, 470, 1.2, 70, '#C9501E') + leaf(1010, 600, 1.4, 120, '#E8862E') + leaf(880, 660, 1.0, -60, '#F0A040');
+g += leaf(1228, 676, 3.6, 40, '#D9662A', 'b4') + leaf(54, 310, 2.6, -30, '#E58A34', 'b2');
+
+// ---------- grade ----------
+g += `<rect width="1280" height="240" fill="url(#topDark)"/>`;
+g += `<rect width="1280" height="720" fill="url(#vig)"/>`;
+g += `<rect width="1280" height="720" filter="url(#grain)" opacity=".16" style="mix-blend-mode:overlay"/>`;
+document.getElementById('s').innerHTML = d + g;
+</script>
+</body></html>

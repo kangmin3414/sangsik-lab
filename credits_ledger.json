@@ -1,0 +1,182 @@
+{
+ "fx_jpy_per_usd_assumed": 150,
+ "console_checks": [
+  {
+   "at": "2026-10-23 (earlier)",
+   "remaining_jpy": 46549.77,
+   "total_jpy": 47813,
+   "note": "Free Trial credit, valid until 2026-12-21"
+  },
+  {
+   "at": "2026-10-24 10:15 JST",
+   "remaining_jpy": 46547.64,
+   "total_jpy": 47813,
+   "note": "console lags ~1 day"
+  },
+  {
+   "at": "2026-10-24 (after 005-6 upload)",
+   "remaining_jpy": 45695.65,
+   "original_jpy": 47813,
+   "pct_left": 96,
+   "note": "console lags ~1 day; drop of ~852 since previous check"
+  }
+ ],
+ "estimates": [
+  {
+   "at": "2026-10-24",
+   "item": "Lyria 2 test clip",
+   "count": 1,
+   "unit_usd": 0.06
+  },
+  {
+   "at": "2026-10-24",
+   "item": "Lyria 3 Pro BGM songs (samples)",
+   "count": 11,
+   "unit_usd": 0.08
+  },
+  {
+   "at": "2026-10-24",
+   "item": "Gemini 3.8 Flash TTS: ep.011 narration (59 segments + retakes) + 5 grandpa voice samples",
+   "count": 1,
+   "unit_usd": 0.2
+  },
+  {
+   "at": "2026-10-24",
+   "item": "Nano Banana 2.1 2K story pictures for ep.011",
+   "count": 7,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-24",
+   "item": "Gemini TTS outro line for Nietzsche Shorts v2",
+   "count": 1,
+   "unit_usd": 0.01
+  },
+  {
+   "at": "2026-10-24",
+   "item": "Gemini TTS: channel trailer v2 narration (10 lines + 7 retakes)",
+   "count": 1,
+   "unit_usd": 0.05
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini 3.8 Flash TTS: ep.012 narration (74 segments + retakes)",
+   "count": 1,
+   "unit_usd": 0.2
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Nano Banana 2.1 2K story pictures for ep.012",
+   "count": 4,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini TTS outro lines for 20 new Shorts (009-012)",
+   "count": 1,
+   "unit_usd": 0.015
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini TTS: mom/dad voice candidates for ep.013 (6 samples)",
+   "count": 1,
+   "unit_usd": 0.02
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini 3.8 Flash TTS: ep.013 narration (79 segments, mom/dad re-voiced, retakes)",
+   "count": 1,
+   "unit_usd": 0.22
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Nano Banana 2.1 2K story pictures for ep.013 (5 + 1 redo)",
+   "count": 6,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini TTS outro line for ep.013 Shorts",
+   "count": 1,
+   "unit_usd": 0.01
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini TTS: ep.013 grandpa-doctor voice samples",
+   "count": 1,
+   "unit_usd": 0.01
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Gemini TTS: ep.013 doctor re-voice (Sadaltager, 5 segments + retakes)",
+   "count": 1,
+   "unit_usd": 0.02
+  },
+  {
+   "at": "2026-10-25",
+   "item": "Nano Banana 2.1 2K story pictures for ep.013 fixes (02 redo, 06 new)",
+   "count": 2,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K thumbnail scenes (D안 시안, 스토아 2장)",
+   "count": 2,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K thumbnail scenes (D안, 7편 x 2장)",
+   "count": 14,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 edits: 8 head whitening + compilation scene",
+   "count": 9,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K thumbnail scenes (D안 니체 2장)",
+   "count": 2,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K channel banner scenes (4 scenes + 2 zoom-out edits)",
+   "count": 6,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K story pictures for ep.014 (5)",
+   "count": 5,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Gemini 3.8 Flash TTS: ep.014 narration (78 segments + 2 retake rounds)",
+   "count": 1,
+   "unit_usd": 0.21
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K thumbnail scenes for ep.014 (D1 bench, D2 hedgehogs)",
+   "count": 2,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Nano Banana 2.1 2K ep.014 D2 thumbnail redo (hedgehogs higher)",
+   "count": 1,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-10-26",
+   "item": "Gemini TTS outro line for ep.014 Shorts",
+   "count": 1,
+   "unit_usd": 0.01
+  }
+ ]
+}

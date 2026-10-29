@@ -1,0 +1,360 @@
+{
+ "003-3": {
+  "old": "PjC2YUDHEcE",
+  "new": "q3-cKz_Sj_g",
+  "when": "2026-10-23 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-3_유령진동.png",
+  "related": "TYD8h7aeI2A",
+  "old_private": true
+ },
+ "005-2": {
+  "old": "1YVkMKxtUcc",
+  "new": "WIptlLmK42I",
+  "when": "2026-10-24 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_005-2_걷기_v3.png",
+  "old_private": true,
+  "v2": {
+   "id": "3Tsxrxtq9_s",
+   "when": "10/24 18:15",
+   "note": "rebuilt from LF v4; went public 10/24 18:15. Old WIptlLmK42I private (already set before 18:19) + added to 삭제 예정 playlist"
+  }
+ },
+ "005-3": {
+  "old": "m95aPCcl0XE",
+  "new": "8roFxRo0EQk",
+  "when": "2026-10-24 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_005-3_동조.png",
+  "old_private": true,
+  "v2": {
+   "id": "CzTfFjJHd7c",
+   "when": "10/24 19:00",
+   "note": "rebuilt from LF v4 (new narration, AI scenes, BGM #2); old 8roFxRo0EQk private"
+  }
+ },
+ "005-5": {
+  "old": "DKeKMuwlHb0",
+  "new": "Nph-zZdAelI",
+  "when": "2026-10-25 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_005-5_영원회귀_v3.png",
+  "old_private": true,
+  "v2": {
+   "id": "5OhvfJB55ic",
+   "when": "10/25 12:00",
+   "note": "rebuilt from LF v4; old Nph-zZdAelI private"
+  }
+ },
+ "005-4": {
+  "old": "8HgKNxXunFc",
+  "new": "7E3-b_S-Kt4",
+  "when": "2026-10-25 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_005-4_시련.png",
+  "old_private": true,
+  "v2": {
+   "id": "D7fo2S1l2f4",
+   "when": "10/25 19:00",
+   "note": "rebuilt from LF v4; old 7E3-b_S-Kt4 private"
+  }
+ },
+ "004-3": {
+  "old": "YV5hteXHCFI",
+  "new": "WEcjkfxkE00",
+  "when": "2026-10-26 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_004-3_당충전.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU"
+ },
+ "003-1": {
+  "old": "0vMNm7KJvak",
+  "new": "C-C9ToIPaZ8",
+  "when": "2026-10-27 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-1_과의존.png",
+  "old_private": true,
+  "related": "TYD8h7aeI2A"
+ },
+ "004-1": {
+  "old": "3qLJSwmsCCY",
+  "new": "6Y5vhuxoA4g",
+  "when": "2026-10-28 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_004-1_탄산.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU"
+ },
+ "003-5": {
+  "old": "bTZ2pFKttIA",
+  "new": "aP0Hm7MvrY4",
+  "when": "2026-10-29 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-5_수면.png",
+  "old_private": true,
+  "related": "TYD8h7aeI2A"
+ },
+ "004-5": {
+  "old": "elB4nu7yNtU",
+  "new": "tdV6r4Rw3z4",
+  "when": "2026-10-30 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_004-5_간.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU"
+ },
+ "003-6": {
+  "old": "gd_Zpn_swxY",
+  "new": "EzQuOSehm7Y",
+  "when": "2026-11-02 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-6_SNS.png",
+  "old_private": true,
+  "related": "TYD8h7aeI2A"
+ },
+ "003-7": {
+  "old": "bDEAIhlbDDk",
+  "new": "HHhwxFma32k",
+  "when": "2026-11-04 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-7_인터넷차단.png",
+  "old_private": true,
+  "related": "TYD8h7aeI2A"
+ },
+ "003-2": {
+  "old": "ni_ukEQ4ApU",
+  "new": "lA0tc8AqNmU",
+  "when": "2026-11-06 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_003-2_불안.png",
+  "old_private": true,
+  "related": "TYD8h7aeI2A"
+ },
+ "LF-004": {
+  "old": "iPsQfyfR8zk",
+  "new": "teUl6T-fHmU",
+  "when": "published 10/23 19:3x (moved up from 10/25 08:30 at user request)",
+  "thumb": "applied 10/23: sugar/thumb_004_sugar_A.png",
+  "subs": "ko srt v4",
+  "endscreen": "video(best for viewer)+subscribe",
+  "playlist": "🫀 인체, 만약에",
+  "tags": "11 (만약에연구소→상식실험실)",
+  "old_private": true
+ },
+ "005-1": {
+  "old": "m-ZW9fYn_e0",
+  "new": "xK3Rxds8XUc",
+  "when": "10/31 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_005-1_신은죽었다_v3.png",
+  "old_private": true,
+  "v2": {
+   "id": "wc_xDil4BMI",
+   "when": "10/31 12:00",
+   "note": "rebuilt from LF v4; old xK3Rxds8XUc private"
+  }
+ },
+ "007v4-2": {
+  "old": "379pg7gdm7A",
+  "new": "RI6Bd9yPvBk",
+  "when": "11/3 19:00 (moved 10/24: shorts after their long-form)",
+  "thumb": "applied 10/23: replace/out/썸네일_007v4-2_지퍼.png",
+  "old_private": true,
+  "when_prev": "10/31 19:00"
+ },
+ "005-6": {
+  "old": "6nv-cYOnTlQ",
+  "new": "9o0C8hb6HIw",
+  "when": "11/1 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_005-6_아모르파티_v3.png",
+  "old_private": true,
+  "v2": {
+   "id": "QFToWZ7z-hU",
+   "when": "11/1 12:00",
+   "note": "rebuilt from LF v4; old 9o0C8hb6HIw private"
+  }
+ },
+ "007v4-3": {
+  "old": "QRjsv2mSpZo",
+  "new": "rtffMcjadWg",
+  "when": "11/5 19:00 (moved 10/24: shorts after their long-form)",
+  "thumb": "applied 10/23: replace/out/썸네일_007v4-3_방망이.png",
+  "old_private": true,
+  "when_prev": "11/1 19:00"
+ },
+ "004-2": {
+  "old": "z3fTRAAEJGY",
+  "new": "53BldIEBTC0",
+  "when": "10/31 19:00 (moved 10/24: shorts after their long-form)",
+  "thumb": "applied 10/23: replace/out/썸네일_004-2_금단.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU",
+  "when_prev": "11/3 19:00"
+ },
+ "004-4": {
+  "old": "BSuDKZM6GD0",
+  "new": "w2rE4DEQWkU",
+  "when": "11/1 19:00 (moved 10/24: shorts after their long-form)",
+  "thumb": "applied 10/23: replace/out/썸네일_004-4_9일.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU",
+  "when_prev": "11/5 19:00"
+ },
+ "007v4-8": {
+  "old": "o5Qlx33MiNU",
+  "new": "iouxIIjseyg",
+  "when": "11/7 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_007v4-8_최선_v3.png",
+  "old_private": true
+ },
+ "007v4-6": {
+  "old": "0wEKhNOaqZo",
+  "new": "NonsONMDQck",
+  "when": "11/7 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_007v4-6_AI얼굴.png",
+  "old_private": true
+ },
+ "007v4-4": {
+  "old": "B_-reMXdP88",
+  "new": "Irsi1U-iNDc",
+  "when": "11/8 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_007v4-4_10초_v3.png",
+  "old_private": true
+ },
+ "008v4-7": {
+  "old": "_-CYOhVfanw",
+  "new": "7Cf5FK0O0gs",
+  "when": "11/10 19:00 (moved 10/24: shorts after their long-form)",
+  "thumb": "applied 10/23: replace/out/썸네일_008v4-7_쉼.png",
+  "old_private": true,
+  "when_prev": "11/8 19:00"
+ },
+ "004-6": {
+  "old": "5S-JwIWy2wg",
+  "new": "TbYrRBaFimk",
+  "when": "11/9 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_004-6_입맛.png",
+  "old_private": true,
+  "related": "teUl6T-fHmU"
+ },
+ "008v4-1": {
+  "old": "8SDyjPHa4K4",
+  "new": "gzwThsun2FA",
+  "when": "11/14 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_008v4-1_쓸모_v3.png",
+  "old_private": true
+ },
+ "LF-005": {
+  "old": "QBEQAJNuqTM",
+  "new": "hQU5y76kbSA",
+  "when": "10/24 18:00 (moved up from 10/27 10:00 on 10/24 at user request: shorts after long-form)",
+  "thumb": "10/24 20:0x: nthumb/니체_썸네일_B.jpg (걱정 많던 내가 / 니체가 됐다; pills 평소의 나 -> 니체가 된 나). prev: 명화AI",
+  "old_private": true,
+  "note": "10/24: re-uploaded with BGM #2 (v4). fl2eUhQ2eiw set private. Link Nietzsche shorts to hQU5y76kbSA on 10/27. | 10/24: LF moved to 10/24 18:00; link Nietzsche shorts right after it goes public. | 10/24 18:19: LF public. Related-video linking FAILED: Studio picker returned no videos at all (even old public LFs); retry on 10/27 task. | 10/24 20:2x: related-video retry: picker API list_creator_videos returns videos=[] (no eligible videos) -> not linkable from desktop Studio now.",
+  "new_prev": "fl2eUhQ2eiw",
+  "title": "니체처럼 살아 봤더니 생긴 5가지 변화 | '나를 죽이지 못하는 것은 나를 강하게 한다' 진짜일까? (10/24 20:1x)"
+ },
+ "008v4-5": {
+  "old": "E4IbdPiAPHc",
+  "new": "_MvXLgUcLl4",
+  "when": "11/14 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_008v4-5_상자.png",
+  "old_private": true
+ },
+ "008v4-6": {
+  "old": "-Q9rY0N171M",
+  "new": "L-zU4t8H3hk",
+  "when": "11/15 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_008v4-6_나무_v3.png",
+  "old_private": true
+ },
+ "008v4-8": {
+  "old": "AhKo4EXEjWU",
+  "new": "7oBmFFDAQds",
+  "when": "11/15 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_008v4-8_오리.png",
+  "old_private": true
+ },
+ "006v3-7": {
+  "old": "_VOquSp7j60",
+  "new": "khhgfh63nm0",
+  "when": "11/21 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-7_메멘토모리_v3.png",
+  "old_private": true
+ },
+ "006v3-2": {
+  "old": "kDF2h_4Ub80",
+  "new": "ZOeWO3-2CNg",
+  "when": "11/21 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_006v3-2_걱정.png",
+  "old_private": true
+ },
+ "006v3-5": {
+  "old": "vzJm82Skgdc",
+  "new": "KVqdV401_Ak",
+  "when": "11/22 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-5_거리두기_v3.png",
+  "old_private": true
+ },
+ "006v3-4": {
+  "old": "zxsF1Jv_hnM",
+  "new": "zrpMlu_Vr44",
+  "when": "11/22 19:00",
+  "thumb": "applied 10/23: replace/out/썸네일_006v3-4_초콜릿.png",
+  "old_private": true
+ },
+ "006v3-8": {
+  "old": "9sE90K89xXE",
+  "new": "YurST74EIn8",
+  "when": "11/28 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-8_저녁성찰_v3.png",
+  "old_private": true
+ },
+ "006v3-6": {
+  "old": "cRTZH7z_QJk",
+  "new": "vVeCbEDXi-w",
+  "when": "11/28 19:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-6_연인_v3.png",
+  "old_private": true
+ },
+ "006v3-3": {
+  "old": "e0CvP-scpbg",
+  "new": "UjQ_Y09uqrg",
+  "when": "11/29 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-3_아침_v3.png",
+  "old_private": true
+ },
+ "006v3-1": {
+  "old": "0ogfbJa4C5g",
+  "new": "O5wyWvZD_oY",
+  "when": "11/29 19:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_006v3-1_스토아_v3.png",
+  "old_private": true
+ },
+ "007v4-5": {
+  "old": "xTpXlyFSoDI",
+  "new": "PJpiHi4Cpgs",
+  "when": "12/5 12:00",
+  "thumb": "applied 10/23: thumbs22/out/썸네일_007v4-5_조각_v3.png",
+  "old_private": true
+ },
+ "LF-006": {
+  "old": "zWgsWBp3f6s",
+  "new": "y8A1cGWRh2k",
+  "when": "11/17 10:00",
+  "thumb": "applied 10/23: stoic3/상식실험실_실험006_썸네일_명화AI.jpg",
+  "old_private": true,
+  "note": "10/24: BGM-2 copy tc4S3SPF94c uploaded by mistake then set private; original y8A1cGWRh2k restored to 11/17 10:00 (user: only Nietzsche gets BGM #2)."
+ },
+ "LF-007-draft": {
+  "id": "B1eq7H1s-9E",
+  "state": "private draft (upload dialog closed, not scheduled)",
+  "note": "10/24 accidental start; user to delete or reuse"
+ },
+ "_delete_playlist": {
+  "title": "삭제 예정 (예전 버전)",
+  "visibility": "private",
+  "count": 45,
+  "created": "2026-10-24",
+  "excluded": [
+   "tc4S3SPF94c (Stoic BGM#2 LF, kept for possible later use)",
+   "B1eq7H1s-9E (draft, not addable)"
+  ],
+  "note": "user deletes these themselves"
+ },
+ "TRAILER": {
+  "id": "hnj5i4-iQZg",
+  "visibility": "unlisted",
+  "set_as_channel_trailer": "2026-10-24 16:3x (non-subscribers)",
+  "file": "trailer2/상식실험실_채널트레일러_v2.mp4",
+  "replaced": "old trailer \"상식실험실 | 알던 상식, 직접 실험합니다 (채널 소개)\" (video kept, not changed)"
+ }
+}

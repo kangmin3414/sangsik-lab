@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:02.41,Cap,,0,0,0,,{\c&HFFFFFF&}제로는 자신만만합니다.
+Dialogue: 0,0:00:02.43,0:00:06.33,Cap,,0,0,0,,{\c&H7AE2FF&}지퍼쯤이야. 매일 쓰는데, 당연히 알지.
+Dialogue: 0,0:00:06.35,0:00:08.96,Cap,,0,0,0,,{\c&HFFFFFF&}그런데 막상 설명해 보려니…
+Dialogue: 0,0:00:08.98,0:00:13.62,Cap,,0,0,0,,{\c&H7AE2FF&}이빨들이 맞물려서… 그다음이, 뭐더라?
+Dialogue: 0,0:00:13.64,0:00:16.04,Cap,,0,0,0,,{\c&HFFFFFF&}미국 예일대 연구에서도 마찬가지.
+Dialogue: 0,0:00:16.06,0:00:19.53,Cap,,0,0,0,,{\c&HFFFFFF&}사람들은 지퍼나 변기를 꽤 잘 안다고 답했지만,
+Dialogue: 0,0:00:19.55,0:00:24.06,Cap,,0,0,0,,{\c&HFFFFFF&}원리를 단계별로 설명해 보라고 하자 대부분 막혔습니다.
+Dialogue: 0,0:00:24.08,0:00:29.33,Cap,,0,0,0,,{\c&HFFFFFF&}안다는 느낌과 진짜 아는 건 달랐던 거죠. 데카르트의 의심은,
+Dialogue: 0,0:00:29.35,0:00:31.77,Cap,,0,0,0,,{\c&HFFFFFF&}먼저 나 자신을 향합니다.

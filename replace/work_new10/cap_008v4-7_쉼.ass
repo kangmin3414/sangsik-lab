@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.44,Cap,,0,0,0,,{\c&HFFFFFF&}제로도 점수를 매기지 않고 쉬는 날을 보내 봅니다.
+Dialogue: 0,0:00:04.46,0:00:06.90,Cap,,0,0,0,,{\c&HFFFFFF&}그런데 자꾸 드는 생각.
+Dialogue: 0,0:00:06.92,0:00:09.36,Cap,,0,0,0,,{\c&H7AE2FF&}이건, 시간 낭비야.
+Dialogue: 0,0:00:09.38,0:00:12.39,Cap,,0,0,0,,{\c&HFFFFFF&}그때마다 스스로에게 묻습니다.
+Dialogue: 0,0:00:12.41,0:00:15.41,Cap,,0,0,0,,{\c&H7AE2FF&}이건, 누구의 잣대지?
+Dialogue: 0,0:00:15.43,0:00:19.92,Cap,,0,0,0,,{\c&HFFFFFF&}팀장님의 목소리, 엄마의 목소리, 그리고 SNS.
+Dialogue: 0,0:00:19.94,0:00:23.12,Cap,,0,0,0,,{\c&HFFFFFF&}제로의 잣대가 아니었습니다.
+Dialogue: 0,0:00:23.14,0:00:24.02,Cap,,0,0,0,,{\c&HFFFFFF&}연구에서도,
+Dialogue: 0,0:00:24.04,0:00:28.84,Cap,,0,0,0,,{\c&HFFFFFF&}쉬는 걸 시간 낭비라고 믿는 사람일수록 쉬어도 덜 즐겁고,
+Dialogue: 0,0:00:28.86,0:00:33.41,Cap,,0,0,0,,{\c&HFFFFFF&}우울과 불안, 스트레스가 높은 경향이 있었습니다.
+Dialogue: 0,0:00:33.43,0:00:37.02,Cap,,0,0,0,,{\c&HFFFFFF&}특히 그 자체로 즐기는 놀이에서 손해가 컸죠.
+Dialogue: 0,0:00:37.04,0:00:41.62,Cap,,0,0,0,,{\c&HFFFFFF&}웃긴 고양이 영상조차, 덜 재밌게 봤다고 합니다.
+Dialogue: 0,0:00:41.64,0:00:44.75,Cap,,0,0,0,,{\c&HFFFFFF&}남의 쓸모에 딱 맞추려 하면,
+Dialogue: 0,0:00:44.77,0:00:48.73,Cap,,0,0,0,,{\c&HFFFFFF&}열매처럼 따이고 가지처럼 꺾입니다.

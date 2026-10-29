@@ -1,0 +1,40 @@
+# ---- section-aware score: every part of the story gets its own music (ep.006 palette: ancient harp / lyre) ----
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "shorts"))
+import music as M
+Dn = 146.83  # D3
+MOODS = {
+ 'tense':   dict(root=110.0, mode='aeolian', bpm=104, prog=[0, 5, 3, 4], lead='pizz', pattern='pulse', oct=0, leadGain=.45, drone=.18, perc='tick'),
+ 'epic':    dict(root=Dn, mode='dorian', bpm=72, prog=[0, 6, 3, 0], lead='harp', pattern='arp', oct=1, leadGain=.5, pad=.22, drone=.15, perc='drum', gliss=.25),
+ 'playful': dict(root=196.0, mode='ionian', bpm=112, prog=[0, 4, 5, 3], lead='pizz', pattern='melody', oct=1, leadGain=.45, perc='shaker', density=.7),
+ 'mon':     dict(root=Dn, mode='dorian', bpm=96, prog=[0, 3, 6, 4], lead='marimba', pattern='arp', oct=1, leadGain=.42, pad=.12, perc='shaker'),
+ 'tue':     dict(root=196.0, mode='ionian', bpm=88, prog=[0, 3, 4, 0], lead='bell', pattern='melody', oct=1, leadGain=.36, pad=.16, density=.5),
+ 'wed':     dict(root=110.0, mode='aeolian', bpm=70, prog=[0, 5, 6, 4], lead='lyre', pattern='sparse', oct=1, leadGain=.5, drone=.2),
+ 'thu':     dict(root=174.61, mode='lydian', bpm=60, prog=[0, 1, 0, 4], lead='bell', pattern='swell', oct=1, leadGain=.3, pad=.3, warm=.6),
+ 'fri':     dict(root=261.63, mode='ionian', bpm=84, prog=[0, 5, 3, 4], lead='musicbox', pattern='melody', oct=1, leadGain=.36, pad=.1, density=.55),
+ 'sat':     dict(root=Dn, mode='aeolian', bpm=56, prog=[0, 5, 3, 4], lead='harp', pattern='sparse', oct=0, leadGain=.45, pad=.28, drone=.22, warm=.5),
+ 'sun':     dict(root=174.61, mode='ionian', bpm=66, prog=[0, 3, 4, 0], lead='piano', pattern='waltz', meter=3, oct=1, leadGain=.42, lead2='musicbox', pad=.1),
+ 'result':  dict(root=Dn, mode='ionian', bpm=108, prog=[0, 4, 5, 3], lead='marimba', pattern='arp', oct=1, leadGain=.42, perc='drumshaker'),
+ 'ending':  dict(root=Dn, mode='ionian', bpm=76, prog=[0, 5, 3, 4], lead='harp', pattern='arp', oct=1, leadGain=.45, pad=.24, gliss=.2),
+ 'thanks':  dict(root=Dn, mode='ionian', bpm=76, prog=[3, 4, 0, 0], lead='kalimba', pattern='melody', oct=1, leadGain=.4, pad=.26, density=.6),
+}
+DAYM = {1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'sat', 7: 'sun'}
+cur_day = {}; dd = 1
+for l in L:
+    if l["scene"] == "chapter": dd = l["args"]["n"]
+    cur_day[l["i"]] = dd
+def mood_of(l):
+    sc = l["scene"]
+    if sc == "hook": return "tense"
+    if sc in ("trio", "title"): return "epic"
+    if sc == "myth": return "playful"
+    if sc in ("stoicweek", "recap"): return "result"
+    if sc in ("bridge", "surf", "calmroad"): return "ending"
+    if sc == "thanks": return "thanks"
+    return DAYM[cur_day[l["i"]]]
+secs = M.sections_from(L, mood_of, DUR)
+for s0 in secs: print("  music %6.1f-%6.1f %s" % s0)
+music = M.score(secs, DUR, MOODS)
+# loudness: the score sits ~13 dB under the narration before ducking
+vr = np.sqrt(np.mean(voice[np.abs(voice) > 0.02] ** 2)); mr = np.sqrt(np.mean(music ** 2))
+music *= vr * 10 ** (-13 / 20) / (mr + 1e-9)

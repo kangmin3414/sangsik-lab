@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;background:#000}
+#wrap{position:relative;width:1280px;height:720px;overflow:hidden}
+svg{display:block}
+#t{position:absolute;left:0;right:0;top:14px;text-align:center;font-family:'Jua',sans-serif;font-size:172px;line-height:1.05;color:#fff;
+  -webkit-text-stroke:22px #0E0E10;paint-order:stroke fill;letter-spacing:-1px;
+  text-shadow:0 9px 0 rgba(0,0,0,.6),0 0 46px rgba(0,0,0,.7);transform:rotate(-1.2deg)}
+#t b{color:#FFC94A;font-weight:normal}
+</style></head>
+<body><div id="wrap"><svg id="s" width="1280" height="720" viewBox="0 0 1280 720"></svg><div id="t"></div></div>
+<script>
+const P = new URLSearchParams(location.hash.slice(1));
+const TEXT = P.get('text');
+if (TEXT) document.getElementById('t').innerHTML = TEXT.replace(/\[(.+?)\]/g, '<b>$1</b>');
+let seed = 33;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114';
+const d = `<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3A4A78"/><stop offset=".35" stop-color="#9A8AA8"/><stop offset=".62" stop-color="#F2B38A"/><stop offset="1" stop-color="#FFE0A8"/></linearGradient>
+<radialGradient id="sun" cx="1040" cy="300" r="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".95"/><stop offset=".18" stop-color="#FFB547" stop-opacity=".6"/><stop offset=".5" stop-color="#E0642E" stop-opacity=".22"/><stop offset="1" stop-color="#E0642E" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".82" cy=".38" r=".98"><stop offset="0" stop-color="#FFF6E6"/><stop offset=".34" stop-color="#F2E2CC"/><stop offset=".7" stop-color="#9C8C9C"/><stop offset="1" stop-color="#3A3550"/></radialGradient>
+<radialGradient id="handG" cx=".8" cy=".35" r=".9"><stop offset="0" stop-color="#FFF6E6"/><stop offset=".55" stop-color="#E6CFB8"/><stop offset="1" stop-color="#6A5A70"/></radialGradient>
+<linearGradient id="teeG" x1="150" y1="0" x2="640" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4A200E"/><stop offset=".55" stop-color="#B05A28"/><stop offset="1" stop-color="#FF9A55"/></linearGradient>
+<linearGradient id="stacheG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2A1A12"/><stop offset=".6" stop-color="#4A3020"/><stop offset="1" stop-color="#7A5236"/></linearGradient>
+<linearGradient id="mtnA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A3550"/><stop offset="1" stop-color="#1A1830"/></linearGradient>
+<linearGradient id="mtnB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E1A2E"/><stop offset="1" stop-color="#0A0912"/></linearGradient>
+<radialGradient id="vig" cx="640" cy="430" r="820" gradientUnits="userSpaceOnUse"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".78"/></radialGradient>
+<linearGradient id="topDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".65"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<filter id="b1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.2"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b24" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse rx="192" ry="180"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="-24" cy="8" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="teeC"><path id="teeP" d="M150 760 L172 670 Q192 614 272 598 Q372 584 472 598 Q542 612 568 662 L604 760 Z"/></clipPath>
+</defs>`;
+let g = '';
+g += `<rect width="1280" height="720" fill="url(#sky)"/>`;
+g += `<rect width="1280" height="720" fill="url(#sun)"/>`;
+g += `<circle cx="1040" cy="300" r="74" fill="#FFE9B0" opacity=".95"/>`;
+// misty ink mountains
+const ridge = (y, amp, c, op, ph) => { let p = `M0 720 L0 ${y}`; for (let x = 0; x <= 1280; x += 40) p += ` L${x} ${(y - Math.abs(Math.sin(x / 170 + ph)) * amp - Math.sin(x / 61 + ph * 3) * amp * .15).toFixed(1)}`; return `<path d="${p} L1280 720 Z" fill="${c}" opacity="${op}"/>`; };
+g += ridge(420, 170, '#7E7FA0', .55, 1) + `<rect x="0" y="380" width="1280" height="60" fill="#FFE8C8" opacity=".25" filter="url(#b14)"/>`;
+g += ridge(520, 130, '#5E6A80', .7, 2.3) + `<rect x="0" y="480" width="1280" height="50" fill="#FFE8C8" opacity=".2" filter="url(#b14)"/>`;
+// gnarled tree on the right with a big canopy
+g += `<path d="M960 720 Q1000 600 950 520 Q900 440 990 380 Q1060 330 1030 250 L1080 250 Q1110 340 1040 400 Q980 460 1030 540 Q1070 620 1050 720 Z" fill="#6A4529" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+g += `<path d="M990 400 Q900 380 860 300 M1050 300 Q1150 280 1190 200" fill="none" stroke="#6A4529" stroke-width="22" stroke-linecap="round"/>`;
+for (const [cx, cy, r] of [[840, 250, 110], [960, 170, 140], [1110, 150, 130], [1230, 230, 110], [1030, 260, 120]]) g += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#4E7A45" stroke="${INK}" stroke-width="8"/><circle cx="${cx + 20}" cy="${cy - 26}" r="${r * .55}" fill="#6E9E58"/>`;
+// grass bank
+g += `<path d="M0 600 Q400 560 760 600 Q1050 630 1280 590 L1280 720 L0 720 Z" fill="#7FA35A" stroke="${INK}" stroke-width="8"/>`;
+for (let i = 0; i < 40; i++) { const x = rnd() * 1280, y = 600 + rnd() * 120; g += `<path d="M${x.toFixed(1)} ${y.toFixed(1)} q4 -26 10 -40" fill="none" stroke="#5E8442" stroke-width="5" stroke-linecap="round"/>`; }
+
+// ---------- a giant yellow ruler: "쓸모", Zero measures only 20 cm ----------
+const RX = 700, RT = 250, RB = 700;
+g += `<g transform="rotate(-4 ${RX} ${RB})"><rect x="${RX - 52}" y="${RT}" width="104" height="${RB - RT}" rx="12" fill="#F2D27A" stroke="${INK}" stroke-width="9"/>`;
+for (let y = RB - 22, i = 1; y > RT + 10; y -= 22, i++) g += `<line x1="${RX - 52}" y1="${y}" x2="${RX - 52 + (i % 5 ? 22 : 44)}" y2="${y}" stroke="${INK}" stroke-width="4"/>`;
+g += `<text x="${RX + 14}" y="${(RT + RB) / 2 - 40}" transform="rotate(-90 ${RX + 14} ${(RT + RB) / 2 - 40})" text-anchor="middle" font-family="Jua" font-size="54" fill="#0B1626">쓸모</text>`;
+g += `<path d="M${RX + 60} 650 L${RX + 104} 628 L${RX + 104} 672 Z" fill="#FF4D4D" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><line x1="${RX - 52}" y1="650" x2="${RX + 64}" y2="650" stroke="#FF4D4D" stroke-width="8"/>`;
+g += `<g transform="translate(${RX + 190} 650) rotate(-6)"><rect x="-82" y="-36" width="164" height="72" rx="36" fill="#FF9A55" stroke="${INK}" stroke-width="7"/><text x="0" y="18" text-anchor="middle" font-family="Jua" font-size="50" fill="#fff" stroke="${INK}" stroke-width="2">20cm</text></g></g>`;
+// ---------- ZERO looking up at it, worried ----------
+let h = '';
+h += `<ellipse rx="192" ry="180" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)"><ellipse cx="-40" cy="200" rx="230" ry="80" fill="#1A1430" opacity=".35" filter="url(#b14)"/><ellipse cx="112" cy="-112" rx="62" ry="24" transform="rotate(28 112 -112)" fill="#fff" opacity=".75" filter="url(#b8)"/></g>`;
+h += `<ellipse rx="192" ry="180" fill="#FFC070" mask="url(#rimR)" opacity=".8"/>`;
+h += `<ellipse rx="192" ry="180" fill="none" stroke="${INK}" stroke-width="10"/>`;
+[-1, 1].forEach(sx => { const cx = 66 * sx + 18; h += `<ellipse cx="${cx}" cy="4" rx="17" ry="24" fill="${INK}"/><circle cx="${cx + 6}" cy="-6" r="6" fill="#fff"/>`; });
+h += `<path d="M-118 -46 Q-80 -70 -36 -78" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/><path d="M60 -80 Q104 -72 138 -50" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+h += `<path d="M-30 100 Q-10 86 10 100 Q30 114 50 100" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
+h += `<path d="M170 -70 Q150 -30 170 -10 Q190 -30 170 -70 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="5"/>`;
+g += `<path d="M90 740 Q120 640 250 618 L500 618 Q590 650 610 740 Z" fill="url(#teeG)" stroke="${INK}" stroke-width="9"/><path d="M290 622 Q380 664 470 622" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
+g += `<g transform="translate(360 440) rotate(6)">${h}</g>`;
+g += `<rect width="1280" height="240" fill="url(#topDark)" opacity=".7"/>`;
+g += `<rect width="1280" height="720" fill="url(#vig)" opacity=".7"/>`;
+g += `<rect width="1280" height="720" filter="url(#grain)" opacity=".12" style="mix-blend-mode:overlay"/>`;
+document.getElementById('s').innerHTML = d + g;
+</script>
+</body></html>

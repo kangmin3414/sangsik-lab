@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:01.54,Cap,,0,0,0,,{\c&HFFFFFF&}그날 밤 단톡방.
+Dialogue: 0,0:00:01.56,0:00:06.93,Cap,,0,0,0,,{\c&HFFFFFF&}AI가 {\c&H33E7F7&}5년{\c&HFFFFFF&} 안에 일자리 절반을 없앤다, 아니다.
+Dialogue: 0,0:00:06.95,0:00:11.51,Cap,,0,0,0,,{\c&HFFFFFF&}친구와 벌써 {\c&H33E7F7&}30분{\c&HFFFFFF&}째 말싸움입니다.
+Dialogue: 0,0:00:11.53,0:00:14.77,Cap,,0,0,0,,{\c&HFFFFFF&}제로가 보낸 건, 반박 대신 질문.
+Dialogue: 0,0:00:14.79,0:00:18.63,Cap,,0,0,0,,{\c&H7AE2FF&}어떤 일자리가, 정확히 어떻게 없어진다는 거야?
+Dialogue: 0,0:00:18.65,0:00:24.13,Cap,,0,0,0,,{\c&HFFFFFF&}친구의 답장이 멈춥니다. 이번엔 같은 질문을, 제로 자신에게.
+Dialogue: 0,0:00:24.15,0:00:28.82,Cap,,0,0,0,,{\c&H7AE2FF&}그럼 나는… 정확히 왜 아니라고 했지?
+Dialogue: 0,0:00:28.84,0:00:31.05,Cap,,0,0,0,,{\c&HFFFFFF&}말문이 막힌 건 둘 다.
+Dialogue: 0,0:00:31.07,0:00:36.31,Cap,,0,0,0,,{\c&HFFFFFF&}그날 두 사람은 싸움 대신, 같은 기사를 찾아 읽습니다.
+Dialogue: 0,0:00:36.33,0:00:38.56,Cap,,0,0,0,,{\c&HFFFFFF&}연구로 확인된 일이기도 하죠.
+Dialogue: 0,0:00:38.58,0:00:43.50,Cap,,0,0,0,,{\c&HFFFFFF&}어떤 정책이 어떻게 작동하는지, 단계별로 설명해 보게 했더니.
+Dialogue: 0,0:00:43.52,0:00:48.02,Cap,,0,0,0,,{\c&HFFFFFF&}생각보다 모른다는 걸 깨닫고, 입장이 한결 누그러졌습니다.
+Dialogue: 0,0:00:48.04,0:00:52.21,Cap,,0,0,0,,{\c&HFFFFFF&}찬성하는 이유만 늘어놓게 했을 때는, 그대로였죠.
+Dialogue: 0,0:00:52.23,0:00:56.14,Cap,,0,0,0,,{\c&HFFFFFF&}왜 내가 맞는지 대신, 정확히 어떻게?
+Dialogue: 0,0:00:56.16,0:00:59.91,Cap,,0,0,0,,{\c&HFFFFFF&}그 질문 하나가, 싸움을 대화로 바꿉니다.

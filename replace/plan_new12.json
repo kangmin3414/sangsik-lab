@@ -1,0 +1,139 @@
+{
+ "eps": {
+  "007v4": {
+   "dir": "descartes4",
+   "video": "상식실험실_실험007_데카르트처럼모든걸의심하기_v8.mp4",
+   "outro_line": 53,
+   "theme": [
+    "#0A0614",
+    "#2A1B40",
+    "#0E0818"
+   ],
+   "accent": "#C9B6FF",
+   "cta": [
+    "데카르트처럼 의심하기",
+    "전체 실험 보기"
+   ],
+   "outro_say": "데카르트처럼 의심하기. 전체 실험은 채널에서.",
+   "num": "007",
+   "timeline": "descartes4/timeline.json",
+   "mix": "descartes4/mix_bgm2.wav",
+   "bed_file": "bgm/cand_2_strings_b.mp3",
+   "bed_offset": 60
+  },
+  "008v4": {
+   "dir": "zhuangzi5",
+   "video": "상식실험실_실험008_장자처럼남의잣대내려놓기_v8.mp4",
+   "outro_line": 66,
+   "theme": [
+    "#08140E",
+    "#25432F",
+    "#0A140E"
+   ],
+   "accent": "#A8E6B0",
+   "cta": [
+    "장자처럼 남의 잣대 내려놓기",
+    "전체 실험 보기"
+   ],
+   "outro_say": "장자처럼 남의 잣대 내려놓기. 전체 실험은 채널에서.",
+   "num": "008",
+   "timeline": "zhuangzi5/timeline.json",
+   "mix": "zhuangzi5/mix_bgm2.wav",
+   "bed_file": "bgm/cand_2_strings_b.mp3",
+   "bed_offset": 60
+  }
+ },
+ "shorts": [
+  {
+   "ep": "007v4",
+   "name": "007v4-1_청년",
+   "lines": [
+    1,
+    6
+   ],
+   "title": [
+    "400년 전, 길을 잃은",
+    "스물세 살 청년"
+   ],
+   "thumb": 6
+  },
+  {
+   "ep": "007v4",
+   "name": "007v4-7_코기토",
+   "lines": [
+    32,
+    36
+   ],
+   "title": [
+    "나는 생각한다,",
+    "그러므로 존재한다"
+   ],
+   "thumb": 36
+  },
+  {
+   "ep": "007v4",
+   "name": "007v4-9_프랑신",
+   "lines": [
+    45,
+    49
+   ],
+   "title": [
+    "모든 걸 의심한",
+    "철학자의 눈물"
+   ],
+   "thumb": 47
+  },
+  {
+   "ep": "008v4",
+   "name": "008v4-2_가난",
+   "lines": [
+    5,
+    7
+   ],
+   "title": [
+    "가난할 뿐,",
+    "고달픈 건 아니다"
+   ],
+   "thumb": 7
+  },
+  {
+   "ep": "008v4",
+   "name": "008v4-3_거북",
+   "lines": [
+    8,
+    10
+   ],
+   "title": [
+    "왕의 제안을",
+    "거절한 철학자"
+   ],
+   "thumb": 9
+  },
+  {
+   "ep": "008v4",
+   "name": "008v4-4_박",
+   "lines": [
+    17,
+    23
+   ],
+   "title": [
+    "쓸모없다고",
+    "깨 버린 박"
+   ],
+   "thumb": 23
+  },
+  {
+   "ep": "008v4",
+   "name": "008v4-9_혜자",
+   "lines": [
+    56,
+    60
+   ],
+   "title": [
+    "평생 말다툼한 친구가",
+    "떠난 뒤"
+   ],
+   "thumb": 60
+  }
+ ]
+}

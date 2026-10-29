@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:02.45,Cap,,0,0,0,,{\c&HFFFFFF&}혜자가 또 핀잔을 줍니다.
+Dialogue: 0,0:00:02.47,0:00:06.31,Cap,,0,0,0,,{\c&H7AE2FF&}사람은 남들만큼은 해야지.
+Dialogue: 0,0:00:06.33,0:00:07.97,Cap,,0,0,0,,{\c&HFFFFFF&}장자의 대답.
+Dialogue: 0,0:00:07.99,0:00:12.83,Cap,,0,0,0,,{\c&H7AE2FF&}오리 다리가 짧다고 늘여 주면 오리는 근심하고,
+Dialogue: 0,0:00:12.85,0:00:18.00,Cap,,0,0,0,,{\c&H7AE2FF&}학 다리가 길다고 잘라 주면 학은 슬퍼한다네.
+Dialogue: 0,0:00:18.02,0:00:23.89,Cap,,0,0,0,,{\c&H7AE2FF&}긴 것은 남는 게 아니고, 짧은 것은 모자란 게 아니라네.
+Dialogue: 0,0:00:23.91,0:00:29.24,Cap,,0,0,0,,{\c&HFFFFFF&}두 사람은 오늘도 티격태격. 그런데 표정은, 즐거웠습니다.
+Dialogue: 0,0:00:29.26,0:00:33.20,Cap,,0,0,0,,{\c&HFFFFFF&}제로는 친구의 새벽 {\c&H33E7F7&}5{\c&HFFFFFF&}시 루틴을 따라 해 봅니다.
+Dialogue: 0,0:00:33.22,0:00:36.78,Cap,,0,0,0,,{\c&HFFFFFF&}찬물 샤워에, {\c&H33E7F7&}10{\c&HFFFFFF&}킬로미터 달리기까지.
+Dialogue: 0,0:00:36.80,0:00:39.38,Cap,,0,0,0,,{\c&HFFFFFF&}이틀 만에 녹초. 그런데 친구는,
+Dialogue: 0,0:00:39.40,0:00:42.47,Cap,,0,0,0,,{\c&HFFFFFF&}그 루틴이 진짜 즐겁다고 합니다.
+Dialogue: 0,0:00:42.49,0:00:46.98,Cap,,0,0,0,,{\c&HFFFFFF&}친구는 학, 제로는 오리. 다리 길이가 다를 뿐이었죠.
+Dialogue: 0,0:00:47.00,0:00:51.60,Cap,,0,0,0,,{\c&HFFFFFF&}제로는 SNS를 줄이고, 자기 속도로 걷기로 합니다.

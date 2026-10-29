@@ -1,0 +1,288 @@
+1.
+2.
+3.
+4.
+5.
+*
+
+## Objectives:
+Daytime napping has been associated with cognitive function and brain health in observational studies. However, it remains elusive whether these associations are causal. Using Mendelian randomisation (MR), we studied the relationship between habitual daytime napping and cognitive/structural brain outcomes.
+
+## Methods:
+Data were from UK Biobank (maximum n=378,932; mean age=57 years). Our exposure (daytime napping) was instrumented using 92 previously identified genome-wide, independent genetic variants (SNPs). Our outcomes were total brain volume, hippocampal volume, reaction time and visual memory. Inverse-variance weighted was implemented, with sensitivity analyses (MR-Egger and Weighted Median Estimator) for horizontal pleiotropy. We tested different daytime napping instruments to ensure the robustness of our results.
+
+## Results:
+We found an association between habitual daytime napping and larger total brain volume (unstandardised ß=15.80 cm3, 95%CI=0.25;31.34), but not hippocampal volume (ß=−0.03 cm3, 95%CI=−0.13;0.06), reaction time (expß=1.01, 95%CI=1.00;1.03) or visual memory (expß=0.99, 95%CI=0.94;1.05). Additional analyses with 47 SNPs (adjusted for excessive daytime sleepiness), 86 SNPs (excluding sleep apnoea), and 17 SNPs (no sample overlap with UKB) were largely consistent with our main findings. No evidence of horizontal pleiotropy was found.
+
+## Conclusions:
+Our findings suggest a modest causal association between habitual daytime napping and larger total brain volume. Future studies could focus on the associations between napping and other cognitive/brain outcomes and replication of these findings using other datasets and methods.
+
+## Introduction
+Daytime napping, defined as brief daytime bouts of sleep1, is a universal2 and prevalent behaviour3. Most children under 3-year-olds nap (80% of 1–2-year-olds, 65% of 3-year-olds) but napping is less common during school age (12.7% of 6–13-year-olds) and adulthood (13.7% of 26-64-year-olds). Napping rises again in older adults (27% of >65-year-olds) and the impact of this behaviour on brain health is of special interest4. Napping seems beneficial to performance on certain cognitive tasks2,5. These benefits arise immediately following a brief nap (e.g. five to 15 minutes) and can last between one to three hours. After a long nap (>30 min), a temporary deterioration of performance emerges, followed by improvements that can last up to a day5. Some authors argue that individuals who frequently have a nap and those who never nap may differ in the benefits derived from napping, with the latter experiencing no benefits from it2. However, a recent meta-analysis did not find this effect but stated that in previous studies this difference was clear for memory tasks, but the effects of napping on other cognitive domains were mixed6.
+While recently more attention has been paid to napping, it remains elusive whether habitual daytime napping could be beneficial or detrimental for cognition7. Given that the most pronounced decline during ageing occurs in reaction time and memory8, and the high prevalence of cognitive impairment in the ageing population9, the identification of modifiable risk factors, such as sleep habits, is essential. In addition, the association between napping and brain volume is not well characterised, even though almost a third of older adults nap and reductions in brain volume are more common in older adults. Moreover, hippocampal and total brain volumes are strong candidates in accounting for variations in memory performance and overall cognition10,11. As most studies on the relationship between napping and cognitive/brain health have been observational, there is uncertainty about whether this is causal in nature.
+To overcome this limitation, Mendelian randomisation (MR) can be used, which is based on the analysis of genetic markers, found in published genome-wide association studies (GWAS), to examine the possible causal associations between exposures and outcomes12. Previous MR studies investigated the causal relationship between sleep and cognitive and structural brain outcomes. These studies reported that both short and long sleep duration are associated with poorer cognitive outcomes13, long sleep duration is associated with increased cortical thickness14, and different sleep traits are associated with a greater risk of neurodegenerative diseases15–17. Regarding napping, Anderson et al. (2021)18 found suggestive evidence that self-reported habitual daytime napping is associated with lower Alzheimer’s disease (AD) risk. However, no previous MR studies have investigated the association between daytime napping, cognitive outcomes, and brain volumes. Thus, the present study aimed to use MR to examine whether the relationship between genetic liability to daytime napping and cognitive function and brain volumes might be causal.
+
+## Participants and Methods
+
+## Sample
+The UK Biobank (UKB) cohort has been described in detail elsewhere19. Briefly, UKB recruited 500,000 males and females from the general United Kingdom population, aged 40-69 years at baseline (2006-2010). Although UKB recruited participants of distinct ancestries, those included in this study were of white European ancestry and retained if they had relevant (quality-controlled) genotype and phenotype data (n=378,932) (see Table 1 for sample characteristics).
+
+## Study design
+Our exposure (SNPsx) sample overlapped with our cognitive function outcome sample (SNPsy) by 77%, but this was <10% for the neuroimaging outcomes. This is because the discovery genome-wide association study (GWAS) for the exposure under study was performed in UKB participants, which was also our analytical sample. However, below we detail in Sensitivity Analyses the strategy we undertook to mitigate this sample overlap.
+
+## Genotyping and quality control (QC) in UKB
+487,409 UKB participants were genotyped using one of two customised genome-wide arrays that were imputed to a combination of the UK10K, 1000 Genomes Phase three and the Haplotype Reference Consortium (HRC) reference panels, which resulted in 93,095,623 autosomal variants20. We then applied additional variant level QC and excluded genetic variants with: Fisher’s exact test <0.3, minor allele frequency (MAF) <1% and a missing call rate of ≥5%. Individual-level QC meant that we excluded participants with: excessive or minimal heterozygosity, more than 10 putative third-degree relatives as per the kinship matrix, no consent to extract DNA, sex mismatches between self-reported and genetic sex, missing QC information and non-European ancestry (based on how individuals had self-reported their ancestry and the similarity with their genetic ancestry, as per a principal component analysis of their genotype).
+
+## Outcomes
+
+## Cognitive function measures
+At baseline UKB administered a total of five cognitive assessments to all participants, via a computerised touch-screen interface, all of which are described in detail elsewhere21. For the purposes of this study and to maximise statistical power, we pragmatically chose visual memory and reaction time. For the visual memory task, respondents were asked to correctly identify matches from six pairs of cards after they had memorised their positions. The number of incorrect matches (number of attempts made to correctly identify the pairs) was then recorded, with a greater number reflecting poorer visual memory. Reaction time (in milliseconds) was recorded as the mean time taken by participants to correctly identify matches in a 12-round game of the card game ‘Snap’. A higher score on this test indicated a slower (poorer) reaction time. Both of these variables were positively skewed and therefore, reaction time scores were transformed using the natural logarithmic function [ln(x)], whilst visual memory was transformed using [ln(x+1)].
+
+## Neuroimaging parameters
+Structural brain magnetic resonance imaging (MRI) scans have been performed in a subsample of the UKB, using standard protocols22 (Supplementary Note 1). Here we had complete neuroimaging and genotype data for n=35,080 individuals. We analysed hippocampal volume (average of left + right hippocampal volume, cm3) and total brain volume (normalised for head size, cm3).
+
+## Selection of genetic instruments
+
+## Main daytime napping genetic instrument
+Daytime napping was instrumented using 123 genome-wide significant (P<5*10−8) genetic variants discovered in a recent genome-wide association study (GWAS)23. These variants were discovered in 452,633 UKB participants, based on the question ‘Do you have a nap during the day?’ administered at baseline, with possible responses Never/rarely, Sometimes and Usually (Prefer not to answer was coded as missing in the GWAS). The 123 variants explain 1% of the variance in daytime napping. However, here we selected 92 of the 123 daytime napping SNPs, as we used linkage disequilibrium (LD) clumping in PLINK with r2<0.01 within 250kb to exclude variants that were correlated (Supplementary Table 1). We then calculated the F-statistic which yielded F=41 (indicating a good average strength of our main instrument) using the Cragg-Donald formula24: F=(n−k−1k)(R21−R2)
+We harmonised the genetic variants between the exposure GWAS and our outcome sample by aligning effect alleles. We also excluded palindromic SNPs (those with the same alleles on the forward and reverse strands) because they can introduce ambiguity into the identification of the effect allele (Supplementary Table 2). Our instrument selection process is detailed in Supplementary Figure 1.
+
+## Additional daytime napping genetic instruments
+We additionally partitioned the daytime napping instrument into two further sub-instruments: i) an 86-SNP instrument which consists of those SNPs that remained genome-wide significant when in the published GWAS the authors excluded individuals who had sleep apnoea (n=5,553), ii) a 47-SNP instrument which comprised SNPs that remained genome-wide significant on adjustment for excessive daytime sleepiness (Supplementary Table 3). Using the formula F=(β2/SE2) to approximate average instrument strength for these additional instruments in sensitivity analyses, we calculated the F-statistic for each of these additional instruments, which yielded F=98.1 and F=47.0, respectively indicating good instrument strength.
+
+## Statistical analyses
+i.
+
+## Main analyses
+Using PLINK 2.0 we performed linear regressions between each of the daytime napping genetic variants and our outcomes, adjusting for 10 principal components to minimise issues of residual confounding by population stratification (i.e. confounding of genotype–disease associations by factors related to subpopulation group membership within the overall population). For our MR analyses, inverse-variance weighted (IVW) MR was implemented, with standard sensitivity analyses including MR-Egger and the Weighted Median Estimator (WME). The IVW, also known as ‘conventional MR’ estimates the effect of an exposure (e.g. daytime napping) on a given outcome (e.g. visual memory/reaction time) by taking an average of the genetic variants’ ratio of variant-outcome (SNP→Y) to variant-exposure (SNP→X) association, which is calculated using the principles of a fixed-effects meta-analysis25. MR-Egger regression (which yields an intercept term to denote the presence or absence of unbalanced horizontal pleiotropy)26 and the WME can give more robust estimates when up to 50% of the genetic variants are invalid and thus, do not meet all MR assumptions27. For the cognitive function outcomes results are expressed as expß-coefficients for log-transformed outcomes, which should be interpreted as % differences in the outcome for every 1-unit increase in daytime napping frequency. For the neuroimaging outcomes results are expressed as unstandardised beta coefficients to be interpreted as differences in the outcome (in cm3) for every 1-unit increase in daytime napping.
+ii.
+
+## Sensitivity analyses
+To ensure that our results were robust we performed all of our MR analyses additionally using a 47-SNP and 86-SNP daytime napping instrument, as described earlier. We confirmed a priori before implementing our analyses that these instruments were of adequate strength (via F-statistics).
+To mitigate potential issues with sample overlap between the discovery GWAS for daytime napping and our analytical dataset (both used UKB) we additionally performed our MR analyses using a reduced 17-SNP daytime napping instrument (Supplementary Table 3). This instrument consisted of the SNPs that were replicated (at P<5*10−8)23 in an independent cohort (23andMe, n=541,333), as an a priori F-statistic confirmed that it was suitable for use in our MR analyses (F=67.1). We only performed these analyses for the cognitive function outcomes, as the overlap in samples between daytime napping and our neuroimaging analytical sample was <10% and it is possible that analyses with a 17-SNP instrument in our subsample of ~35,000 would result in imprecise MR estimates.
+iii.
+
+## Testing of MR assumptions
+Associations between genetic instrument and exposure instrumented (GWAS robust): this assumption was met, as the daytime napping variants we instrumented here have been robustly associated with this phenotype in a recent very large-scale GWAS.
+No evidence of horizontal pleiotropy (no association between genetic instruments and the outcome, other than via the exposure under study): we tested this assumption by implementing MR-Egger and WME sensitivity analyses, as detailed above.
+No associations between genetic variants and confounders of the relationships under study: to assess this assumption we regressed a number of common confounders on our main instrument (92 SNPs) and used a Bonferroni multiple testing correction of 0.05/92=0.0005. The list of confounders we selected was based on recent literature28 and included: years of full-time education, deprivation (Townsend deprivation quintiles), smoking (ever/never/ex-smoker), physical activity (days of moderate activity for more than 10 minutes), body mass index (BMI) (kg/m2), alcohol consumption (1-8 times per month/16 times per month-daily/rarely or never), prevalent type-2 diabetes (No/Yes), prevalent hypertension (No=not on antihypertensive medication, Yes=on antihypertensive medication), prevalent cardiovascular disease (CVD) (No/Yes).
+
+## Results
+
+## Sample characteristics
+Fifty-seven percent of our sample reported that they ‘never/rarely’ had a daytime nap, while 38% and 5% reported ‘sometimes’ and ‘usually’ having a daytime nap, respectively. Participants who reported ‘usually’ having a daytime nap were older, less likely to be female, more likely to be deprived, to be a current smoker, on antihypertensives, have a diagnosis of diabetes and have prevalent cardiovascular disease. This group also had slower reaction times and on average, a smaller total brain volume compared to those who ‘never/rarely’ or ‘sometimes’ took a daytime nap.
+
+## Main MR results
+
+## Associations between daytime napping and total brain, and hippocampal volumes using a 92-SNP genetic instrument
+As illustrated in Figure 1, IVW showed that genetic liability to daytime napping was associated with 15.80 cm3 larger total brain volume. Both MR-Egger and WME approaches indicated no unbalanced horizontal pleiotropy (MR-Egger intercept P-values>0.05). The MR-Egger slope was not directionally consistent with the IVW estimate. However, the WME estimate was consistent in terms of direction and size (13.28 cm3), but did not reach conventional levels of statistical significance. Figure 2 shows that using our main instrument we found no associations between daytime napping and hippocampal volume. We also found no evidence of horizontal pleiotropy using MR-Egger and WME approaches (MR-Egger intercept P-values>0.05). We present these associations in Supplementary Table 4.
+
+## Associations between daytime napping and cognitive function using a 92-SNP genetic instrument
+Figures 3 and 4 show that using our main instrument we found no associations between daytime napping and reaction time or visual memory. We also found no evidence of horizontal pleiotropy using MR-Egger and WME approaches (all MR-Egger intercept P-values>0.05). We present these associations in Supplementary Table 4.
+
+## Sensitivity analyses
+
+## Associations between daytime napping and total brain, and hippocampal volumes using a 47- and 86-SNP genetic instrument
+When we used a 47-SNP daytime napping instrument (adjusted for excessive daytime sleepiness) the associations with total brain volume were consistent in terms of size and direction with our main results (Figure 1). This was very similar for associations between the 86-SNP daytime napping and total brain volume (Figure 1). However, potentially due to lower total power (particularly in terms of the variance explained (R2) in daytime napping by these reduced instruments) these estimates had wider 95% CIs around them. In line with our main results above, we observed no association between a 47-SNP daytime napping instrument (excluding individuals with self-reported sleep apnoea) and hippocampal volume, or an 86-SNP instrument and hippocampal volume (Figure 2). MR-Egger detected the presence of unbalanced horizontal pleiotropy using the 47-SNP instrument. Therefore, we excluded the SNP that was most strongly associated with total brain volume (rs301817), re-ran our MR analyses and the MR-Egger intercept P-value was >0.05. The IVW and WME estimates, as well as the MR-Egger slope remained very similar (and all estimates still crossed the null) and we have not presented them here. There were no other issues with unbalanced horizontal pleiotropy, as per the MR-Egger and WME results. We present these associations in Supplementary Tables 5 and 6.
+
+## Associations between daytime napping and cognitive function using a 47- and 86-SNP genetic instrument
+As results presented in Figures 3 and 4 suggest, sensitivity analyses using the 47-SNP instrument also showed no associations with reaction time or visual memory. Similar results emerged for the 86-SNP instrument with no evidence of associations with either of the two cognitive function measures. For reaction time, the MR-Egger intercept P-value indicated the presence of unbalanced horizontal pleiotropy using both the 47- and 86-SNP instruments. Thus, we excluded one SNP that was the most strongly associated with reaction time (rs2099810), re-ran our MR analyses and the MR-Egger intercept had P>0.05. The MR-Egger slopes, as well as the IVW and WME results, remained unchanged and are therefore not presented. However, we did not detect any issues with horizontal pleiotropy for visual memory, with both MR-Egger intercept P-values>0.05. We present these associations in Supplementary Tables 5 and 6.
+
+## Association between daytime napping and cognitive function using a 17-SNP instrument with no sample overlap
+Using this restricted instrument to ensure no overlap between our exposure and outcome samples, across all three MR approaches we observed no associations with reaction time or visual memory. MR-Egger detected no issues with unbalanced horizontal pleiotropy (P>0.05). Results are presented in Figures 3 and 4.
+
+## Testing MR Assumption III
+
+## Associations between our main 92-SNP daytime napping genetic instrument and common confounders
+After a Bonferroni correction we observed that 12 variants were associated with education, two with deprivation, four with smoking, two with physical activity, 19 with BMI, one with alcohol consumption, three with diabetes, eight with hypertension and one with CVD. We present these associations in Supplementary Table 7.
+
+## Discussion
+Using a comprehensive Mendelian randomisation design, we found an association between genetic liability to self-reported habitual daytime napping and larger total brain volume but not hippocampal volume, reaction time, or visual memory in the UK Biobank. To our knowledge, no prior studies have used MR to try to disentangle the relationship between daytime napping and cognitive and structural brain outcomes.
+Measures of brain volume have been used as proxies of neurodegeneration29. Reductions in brain volume are expected throughout the lifespan, but this process is accelerated in people with cognitive decline and neurodegenerative diseases30. Crucially, it is proposed that sleep deficits could be related to these structural changes. For example, several neuroimaging studies have found lower brain volume in people with sleep problems, such as insomnia31,32 and poor sleep quality33. Moreover, it has been suggested that sleep disturbances may be risk factors for neurodegenerative disorders by promoting processes such as inflammation and synaptic damage34. Following this, recent MR studies found that daytime sleepiness was associated with higher Amyotrophic Lateral Sclerosis (ALS) risk16,17 and suggestive evidence that reduced daytime napping is associated with higher AD risk18. In line with these studies, we found an association between habitual daytime napping and larger total brain volume which could suggest that napping regularly provides some protection against neurodegeneration through compensating for poor sleep.
+As previously mentioned, declines in brain volume are expected with ageing. In this regard, a meta-analysis of 56 longitudinal MRI studies on healthy individuals found that after 35 years old, a steady decline in whole brain volume occurs (0.2% per year), which accelerates to 0.5% per year at the age of 60 and greater than 0.5% after the age of 6035. Assuming a linear decline between 0.2 - 0.5% per year, our finding of a larger total brain volume (i.e. 15.8 cm3 ≈ 1.3% difference) in those who habitually nap is approximately equivalent to 2.6 to 6.5 years of difference in ageing. In addition, this difference approximately equates to the difference in brain volume between people with normal cognitive function and mild cognitive impairment36,37. Understanding this difference has important clinical implications for preventing ageing-related cognitive impairments, especially if generalisable to the whole population.
+The finding of larger total brain volume in relation to habitual daytime napping was found only using the IVW estimate with our main genetic instrument (92 SNPs). However, we wish to emphasise that the IVW estimate in the adjusted (47 SNPs; 14.76cm3) and the restricted (86 SNPs; 15.66cm3) instruments were almost identical to the estimate using our main instrument (15.80cm3). These additional instruments were also consistent in terms of direction. We predict that more precise estimates, with narrower confidence intervals, may be observed if we were to replicate these analyses with the entire MRI sample when it becomes available (≈100,000). Moreover, we need to emphasise that even though we found that participants who ‘never/rarely’ had a daytime nap had a larger total brain volume this does not imply causation, thus our Mendelian randomisation helped elucidate whether this association is causal.
+We also expected to find that habitual daytime napping would be associated with hippocampal volume. Our hypothesis was based on the fact that the hippocampus, as a brain structure that plays a crucial role in memory38, could be a useful proxy of the variations in memory performance reported to be associated with daytime napping6. However, we did not find this association, nor an association between genetic liability to habitual daytime napping and visual memory performance. Previous studies have reported mixed findings for sleep phenotypes and hippocampal volume, with a number of studies revealing that people with sleep problems have reduced hippocampal volume39–42, while other studies report no associations43–45. However, in contrast to our study, most of these studies were conducted in people with sleep disorders such as insomnia, REM-sleep behaviour disorder or sleep-disordered breathing and in samples with less than one hundred participants. In line with our results, a recent cross-sectional analysis in the UKB revealed that napping was not related to hippocampal volume46.
+We were surprised by the lack of a causal link between daytime napping and our cognitive outcomes, especially visual memory, given the evidence of cross-sectional, observational associations between daytime napping and memory6, and the relationship between cognitive function and AD47. However, we found no evidence to support this hypothesis. More reliable cognitive measures may be required to identify these effects. In this regard, our results may be influenced by test characteristics (e.g., task sensitivity and difficulty, timing, or instructions)2. Furthermore, UKB cognitive assessments are not standardised and were designed specifically for this cohort. Nonetheless, it is worth mentioning that we examined the association between genetic liability to habitual daytime napping and cognitive function and not the effect of taking a nap before performing a cognitive test. In addition, it is important to establish that, despite these limitations, UKB cognitive data is a valuable resource for researchers seeking determinants of cognitive function21.
+Moreover, individual differences in the experiences with napping, for example, the presence of sleep apnoea48 and daytime sleepiness2, may affect the degree of the cognitive benefit generated by naps. In this regard, we partitioned the daytime napping instrument into two sub-instruments (one excluding individuals who had sleep apnoea and the other adjusting for excessive daytime sleepiness). Still, no evidence of associations between self-reported daytime napping and reaction time, or visual memory was found. However, other factors such as slow waves production, the quality of the prior sleep period or the presence of sleep inertia could also influence napping restoration2, which could lead to different effects on cognition. The association between napping and cognitive function may also be influenced by depression, as the frequency of napping has been associated with depressive symptoms49,50. Also, the relationship between depression and cognition is well established51.
+In addition, we only analysed the frequency of napping. However, observational studies have shown that the length and timing of naps could also affect cognitive function. Unfortunately, information on these dimensions is not available in UKB. Regarding length, previous studies reported that, unlike long naps, the beneficial effects of brief naps are evident almost immediately after waking but last for a shorter period of time5. Nap’s timing also determines its effect on cognition, with the post-lunch dip period being the most favourable time to take a nap to overcome the temporary drop in alertness and performance evidence during this period52.
+To validate our MR findings, it was checked that the three core assumptions that underlie MR were met. Assumption I was met as we instrumented the best available genetic variants as they have been robustly associated with daytime napping in a recent large-scale GWAS23. MR-Egger and WME sensitivity analyses were implemented to check assumption II. No evidence of horizontal pleiotropy was found, which corroborates that the association between our genetic variants (for the exposure) and outcomes were only via the exposure under study. Finally, assumption III was tested by performing regressions between our genetic instruments and unobserved confounders, and we found that some of the variants were associated with common confounders. These associations should be further investigated, as they may constitute vertical, rather than horizontal pleiotropy.
+
+## Limitations
+Limitations of the study should be noted. First, our exposure and cognitive outcome samples overlapped by 77%. However, sensitivity analyses using a reduced 17-SNP daytime napping instrument, replicated by the GWAS authors23 in an independent cohort (23andMe), confirmed that it was suitable for use in our MR analyses. Using this reduced instrument, we observed no associations with reaction time or visual memory. Second, participants were only white European; future work should examine if these findings are replicated in other ancestries. Third, future instruments for the length and timing of daytime napping are necessary. Fourth, another limitation of our study was the self-report nature of the exposure under study, but napping is notoriously difficult to measure using objective methods. However, in UKB there was consistency between self-reported sleep measures and accelerometer-derived daytime inactivity duration, which increases confidence in the SNPs for daytime napping. Finally, volunteers from UKB were 40-69 years at baseline; when large cohorts such as UKB provide data spanning different generations, it is of interest for future studies to investigate whether the present results are replicated in other age groups.
+
+## Conclusions
+In summary, our Mendelian randomisation study of daytime napping and cognitive/structural brain outcomes suggests an association between genetically-instrumented daytime napping and larger total brain volume, but not hippocampal volume, reaction time, or visual memory. This study improves our knowledge of the impact of habitual daytime napping on brain health which is essential to understanding cognitive impairment in the ageing population. The lack of evidence for an association between napping and hippocampal volume and cognitive outcomes in the present study may indicate that other brain areas and cognitive outcomes (e.g. alertness) may be affected by habitual daytime napping and should be studied in the future. These findings further our understanding of the relationship between daytime napping frequency and cognitive function and structural brain outcomes and elucidate the importance of using different measures to better understand how sleep relates to brain health. Future studies, such as Randomised Controlled Trials, should further explore these relationships.
+
+## Supplementary Material
+Supplementary Note
+Supplementary Note 1. Details of the UK Biobank neuroimaging protocol.Briefly, participants were scanned across four centres in Central, North, South-East and South-West England. A centralised team trained and monitored quality assurance across all four centres, with staff members having undergone extensive training with an MR physicist. Harmonisation of data across centres was assured by employing the same scanner models, software, adjustment and tuning techniques, coil types and protocols. A standardised training programme is provided for radiographers in each centre and standard operating procedures, alongside phantom measurements, servicing and performance checks that are conducted by a UKB physicist. Qualitative and quantitative comparisons are performed by external imaging experts to confirm that images are of high quality and suitable for research.
+Supplementary Tables
+Supplementary Figure
+Supplementary Figure 1. SNPs selection process.
+
+## Acknowledgements
+This work was conducted under the approved UK Biobank project number 71702. We thank all UKB researchers and volunteers.
+
+## Funding
+This work was supported by Programa de Desarrollo de las Ciencias Básicas (PEDECIBA, MEC-UdelaR, Uruguay) to [VP]; Agencia Nacional de Investigación e Innovación (ANII, Uruguay) [grant number MOV_CA_2020_1_163153 to VP]; Comisión Sectorial de Investigación Científica (CSIC, UdelaR, Uruguay) to [VP]; Comisión Académica de Posgrados (CAP, UdelaR, Uruguay) to [VP]; National Heart, Lung, and Blood Institute (NHLBI) [grant number K99HL153795 to HSD] and; Diabetes UK [grant number 15/0005250 - VG], British Heart Foundation [grant number SP/16/6/32726 - VG] and, Professor David Matthews Non-Clinical Fellowship from the Diabetes Research and Wellness Foundation [grant number SCA/01/NCF/22 to VG]. The funding sources had no role in the design of the study, analysis, and interpretation of data, or in the preparation of the manuscript.
+Conflict of Interest
+The authors declare that they have no conflict of interest.
+Ethics approval
+Ethics approval is not needed as this work was conducted under the approved UK Biobank project number 71702.
+
+## Data Availability
+The UK Biobank data are publicly available to all bona fide researchers at https://www.ukbiobank.ac.uk.
+
+## References
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+Figure 1.
+Associations between daytime napping and total brain volume in UKB including sensitivity analyses. Note. n=35 080, instrument details: Main=92-SNP main daytime napping instrument from Dashti et al, 2021, Adjusted= 47-SNP instrument adjusted for excessive daytime sleepiness, Restricted= 86-SNP instrument excluding individuals with self-reported sleep apnoea, 23&Me= 17-SNP instrument used as it has no sample overlap with UKB. IVW=inverse-variance weighted, WME=weighted median estimator, 95%CI=95% confidence interval.
+Figure 2.
+Associations between daytime napping and hippocampal volume in UKB including sensitivity analyses. Note. n=35 080, instrument details: Main=92-SNP main daytime napping instrument from Dashti et al, 2021, Adjusted= 47-SNP instrument adjusted for excessive daytime sleepiness, Restricted= 86-SNP instrument excluding individuals with self-reported sleep apnoea, 23&Me= 17-SNP instrument used as it has no sample overlap with UKB. IVW=inverse-variance weighted, WME=weighted median estimator, 95%CI=95% confidence interval.
+Figure 3.
+Associations between daytime napping and reaction time in UKB including sensitivity analyses. Note. n=378 932, instrument details: Main=92-SNP main daytime napping instrument from Dashti et al, 2021, Adjusted= 47-SNP instrument adjusted for excessive daytime sleepiness, Restricted= 86-SNP instrument excluding individuals with self-reported sleep apnoea, 23&Me= 17-SNP instrument used as it has no sample overlap with UKB. IVW=inverse-variance weighted, WME=weighted median estimator, 95%CI=95% confidence interval. Exp(beta): exponentiated beta (e.g. an exponentiated beta of 1.01 in reaction time represents an estimated 1% increased/slower reaction time for every 1-unit increase in daytime napping frequency).
+Figure 4.
+Associations between daytime napping and visual memory in UKB including sensitivity analyses. Note. n=378 932, instrument details: Main=92-SNP main daytime napping instrument from Dashti et al, 2021, Adjusted= 47-SNP instrument adjusted for excessive daytime sleepiness, Restricted= 86-SNP instrument excluding individuals with self-reported sleep apnoea, 23&Me= 17-SNP instrument used as it has no sample overlap with UKB. IVW=inverse-variance weighted, WME=weighted median estimator, 95%CI=95% confidence interval. Exp(beta): exponentiated beta.
+Table 1.
+Sample characteristics by daytime napping groups in UK Biobank
+Never/rarely (n=215,991)
+Sometimes (n=143,995)
+Usually (n=18,946)
+|
+Covariates
+|
+|
+Age (mean/SD)
+55.4 (8.1)
+57.6 (7.9)
+59.4 (7.5)
+|
+Sex (%female)
+59%
+50%
+33%
+|
+Education years (mean/SD)
+15.4 (4.9)
+14.8 (5.1)
+14.3 (5.3)
+|
+Townsend – most deprived quintile (%)
+17%
+20%
+24%
+|
+Body Mass Index – kg/m2 (mean/SD)
+26.8 (4.5)
+27.9 (4.9)
+28.5 (5.2)
+|
+Alcohol consumption – times per month-daily (%)
+46%
+42%
+44%
+|
+Moderate physical activity – days (mean/SD)
+3.6 (2.3)
+3.6 (2.3)
+3.7 (2.3)
+|
+Ever smoking – Current (%)
+9%
+11%
+14%
+|
+Type-2 diabetes (%)
+3%
+6%
+10%
+|
+Antihypertensives (%)
+16%
+24%
+32%
+|
+Cardiovascular disease (%)
+5%
+8%
+14%
+|
+Outcome variables
+|
+Reaction time – milliseconds (mean/SD)
+548.8 (108.8)
+564.1 (116.4)
+579.1 (128.5)
+|
+Visual memory – number of errors (mean/SD)
+4.0 (3.2)
+4.4 (3.6)
+4.0 (4.6)
+|
+Hippocampal volume – cm3 (mean/SD)
+3.8 (0.4)
+3.8 (0.5)
+3.8 (0.4)
+|
+Total brain volume – cm3 (mean/SD)
+1498.7 (72.8)
+1488.5 (72.7)
+1477.0 (73.5)
+|
+sd
+Standard desviation.
+Key Messages
+Daytime napping has been linked with cognitive function and brain health in observational studies, but whether these links are causal remains elusive.
+Using Mendelian randomisation, we investigated the potential causal role of habitual daytime napping on cognitive and neuroimaging outcomes.
+We observed evidence of a modest causal association between genetic liability to habitual daytime napping and larger total brain volume, but not enough evidence to support associations with hippocampal volume, reaction time or visual memory.

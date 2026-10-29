@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0}</style><script src="engine.js"></script></head><body>
+<svg id="v" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+let h=`<defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath><clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath></defs><rect width="1920" height="1080" fill="#F2F0EA"/>`;
+const ex=['기본','미소','진지','놀람','당황'];
+ex.forEach((e,i)=>{ h+=doctor(220+i*330, 900, 0.95, {t:2.0, expr:e, glass: e==='당황'?RED:MINT, pose: e==='미소'?'point':'idle', talk: e==='진지'?0.8:0}); h+=`<text x="${220+i*330}" y="1040" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="40">${e}${e==='진지'?' (말하는 중)':''}</text>`;});
+h+=char({t:2, seed:1, x:1820, y:900, s:0.62, expr:'신남'});
+document.getElementById('v').innerHTML=h;
+</script></body></html>

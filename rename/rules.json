@@ -1,0 +1,28 @@
+{
+ "rules": [
+  [
+   "https://www.youtube.com/@만약에연구소Whatif?sub_confirmation=1",
+   "https://www.youtube.com/channel/UCSNT-TsvhptVyD63_3yn2yg?sub_confirmation=1"
+  ],
+  [
+   "#만약에연구소",
+   "#상식실험실"
+  ],
+  [
+   "#만약에",
+   "#상식실험실"
+  ],
+  [
+   "만약에연구소",
+   "상식실험실"
+  ]
+ ],
+ "tags_remove": [
+  "만약에",
+  "만약에연구소"
+ ],
+ "tags_add": [
+  "상식실험실",
+  "상식"
+ ]
+}

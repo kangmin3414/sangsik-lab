@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../thumb3/node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;padding:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+#bg{position:absolute;inset:0}
+#glow{position:absolute;left:-200px;top:520px;width:1480px;height:1000px;border-radius:50%;filter:blur(60px);opacity:.55}
+#title{position:absolute;top:150px;left:0;right:0;text-align:center;font-family:'Jua',sans-serif;line-height:1.06;-webkit-text-stroke:24px #0E0E10;paint-order:stroke fill;text-shadow:0 12px 0 rgba(0,0,0,.6),0 0 50px rgba(0,0,0,.7)}
+#title .l1{font-size:128px;color:#fff;display:inline-block}
+#title .l2{font-size:168px;color:#F7E733;transform:rotate(-2.5deg);display:inline-block}
+#card{position:absolute;left:30px;top:600px;width:1020px;border-radius:26px;overflow:hidden;border:10px solid #111114;box-shadow:0 30px 60px rgba(0,0,0,.6);transform:rotate(-2deg)}
+#card img{display:block;width:100%}
+#ring{position:absolute;left:22px;top:752px;width:1036px;border-radius:32px;transform:rotate(-2deg)}
+#tag{position:absolute;top:1400px;left:0;right:0;text-align:center}
+#tag span{display:inline-block;padding:10px 36px 14px;border-radius:999px;border:6px solid #111114;font:900 42px 'Noto Sans CJK KR','Noto Sans KR',sans-serif;color:#0B1626;box-shadow:0 8px 0 rgba(0,0,0,.35)}
+</style></head>
+<body><div id="stage"><div id="bg"></div><div id="glow"></div><div id="title"><div class="l1" id="l1"></div><br><div class="l2" id="l2"></div></div>
+<div id="card"><img id="img"></div><div id="tag"><span id="tagt"></span></div></div>
+<script>
+function setup(o) {
+  document.getElementById('bg').style.background = `linear-gradient(180deg, ${o.theme[0]} 0%, ${o.theme[1]} 55%, ${o.theme[2]} 100%)`;
+  document.getElementById('glow').style.background = o.accent;
+  document.getElementById('card').style.outline = `8px solid ${o.accent}`;
+  document.getElementById('tagt').textContent = o.tag; document.getElementById('tagt').style.background = o.accent;
+  const l1 = document.getElementById('l1'), l2 = document.getElementById('l2');
+  l1.textContent = o.title[0]; l2.textContent = o.title[1];
+  const fit = (el, max) => { let fs = max; el.style.fontSize = fs + 'px'; while (el.getBoundingClientRect().width > 1030 && fs > 50) { fs -= 4; el.style.fontSize = fs + 'px'; } };
+  fit(l1, 128); fit(l2, 168);
+  return new Promise(r => { const im = document.getElementById('img'); im.onload = r; im.src = o.img; });
+}
+window.setup = setup;
+</script></body></html>

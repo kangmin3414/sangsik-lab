@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.75,Cap,,0,0,0,,{\c&HFFFFFF&}수요일 아침. {\c&H33E7F7&}2년{\c&HFFFFFF&} 동안 매일 지나친 경비실 앞에서,
+Dialogue: 0,0:00:04.77,0:00:09.26,Cap,,0,0,0,,{\c&HFFFFFF&}제로가 처음으로 인사 말고 한마디를 건넵니다.
+Dialogue: 0,0:00:09.28,0:00:12.47,Cap,,0,0,0,,{\c&H7AE2FF&}오늘 많이 춥죠? 따뜻한 거 드세요.
+Dialogue: 0,0:00:12.49,0:00:16.28,Cap,,0,0,0,,{\c&HFFFFFF&}아저씨가 환하게 웃으며, 귤 하나를 쥐여 줍니다.
+Dialogue: 0,0:00:16.30,0:00:20.92,Cap,,0,0,0,,{\c&HFFFFFF&}매일 지나치면서도, 한 번도 못 본 웃음이었습니다.
+Dialogue: 0,0:00:20.94,0:00:25.07,Cap,,0,0,0,,{\c&HFFFFFF&}미국 시카고의 출근 기차에서 이런 실험이 있었습니다.
+Dialogue: 0,0:00:25.09,0:00:27.92,Cap,,0,0,0,,{\c&HFFFFFF&}옆자리 낯선 사람과 이야기하며 가기,
+Dialogue: 0,0:00:27.94,0:00:30.43,Cap,,0,0,0,,{\c&HFFFFFF&}그리고 혼자 조용히 가기.
+Dialogue: 0,0:00:30.44,0:00:35.02,Cap,,0,0,0,,{\c&HFFFFFF&}사람들은 혼자 가는 쪽이 더 편할 거라고 예상했죠.
+Dialogue: 0,0:00:35.04,0:00:36.99,Cap,,0,0,0,,{\c&HFFFFFF&}결과는 정반대였습니다.
+Dialogue: 0,0:00:37.01,0:00:41.27,Cap,,0,0,0,,{\c&HFFFFFF&}이야기한 사람들의 출근길이 더 즐거웠어요.
+Dialogue: 0,0:00:41.29,0:00:43.25,Cap,,0,0,0,,{\c&HFFFFFF&}그리고 말을 건 사람 중에,
+Dialogue: 0,0:00:43.27,0:00:46.16,Cap,,0,0,0,,{\c&HFFFFFF&}거절당한 사람은 한 명도 없었습니다.

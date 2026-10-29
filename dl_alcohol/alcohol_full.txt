@@ -1,0 +1,1020 @@
+                ACU Research Bank
+      The effect of alcohol on subsequent sleep in healthy
+        adults : A systematic review and meta-analysis
+
+Item Type         Journal article
+
+Authors           Gardiner, Carissa;Weakley, Jonathon;Burke, Louise M.;Roach,
+                  Gregory D.;Sargent, Charli;Maniar, Nirav;Huynh, Minh;Miller,
+                  Dean J.;Townshend, Andrew;Halson, Shona L.
+
+DOI               10.1016/j.smrv.2024.102030
+
+Publisher         Elsevier Ltd
+
+Download date     2026-10-21 23:36:14
+
+Link to Item      https://hdl.handle.net/20.500.14802/29403
+                                                                     Sleep Medicine Reviews 80 (2025) 102030
+
+
+                                                                    Contents lists available at ScienceDirect
+
+
+                                                                   Sleep Medicine Reviews
+                                                            journal homepage: www.elsevier.com/locate/smrv
+
+
+Clinical Review
+
+The effect of alcohol on subsequent sleep in healthy adults: A systematic
+review and meta-analysis
+Carissa Gardiner a,b, Jonathon Weakley a,b,c,* , Louise M. Burke d, Gregory D. Roach e,
+Charli Sargent e , Nirav Maniar f,g, Minh Huynh h , Dean J. Miller e, Andrew Townshend a,b,
+Shona L. Halson a,b
+a
+  School of Behavioural and Health Sciences, Australian Catholic University, Brisbane, Australia
+b
+  Sports Performance, Recovery, Injury and New Technologies (SPRINT) Research Centre, Australian Catholic University, Brisbane, Australia
+c
+  Carnegie Applied Rugby Research (CARR) Centre, Institute of Sport, Physical Activity and Leisure, Leeds Beckett University, Leeds, UK
+d
+  Exercise and Nutrition Research Program, Mary MacKillop Institute for Health Research, Australian Catholic University, Melbourne, Australia
+e
+  Appleton Institute for Behavioural Science, Central Queensland University, Wayville, Australia
+f
+  School of Behavioural and Health Sciences, Australian Catholic University, Melbourne, Australia
+g
+  Sports Performance, Recovery, Injury and New Technologies (SPRINT) Research Centre, Australian Catholic University, Melbourne, Australia
+h
+  Sport, Performance, and Nutrition Research Group, School of Allied Health, Human Services, and Sport, La Trobe University, Melbourne, Australia
+
+
+
+
+A R T I C L E I N F O                                      A B S T R A C T
+
+Handling editor: M Vitiello                                Alcohol is commonly consumed prior to bedtime with the belief that it facilitates sleep. This systematic review
+                                                           and meta-analysis investigated the impact of alcohol on the characteristics of night-time sleep, with the intent to
+Keywords:                                                  identify the influence of the dose and timing of alcohol intake. A systematic search of the literature identified 27
+Ethanol                                                    studies for inclusion in the analysis. Changes in sleep architecture were observed, including a delay in the onset
+Sedative
+                                                           of rapid eye movement (REM) sleep and a reduction in the duration of REM sleep. A dose-response relationship
+Hypnotic
+                                                           was identified such that disruptions to REM sleep occurred following consumption of a low dose of alcohol
+Sleepiness
+Sleep disruption                                           (≤0.50 g•kg− 1 or approximately two standard drinks) and progressively worsened with increasing doses of
+Sleep behaviours                                           alcohol. Reductions in sleep onset latency and latency to deep sleep (i.e., non-rapid eye movement stage three
+Sleep recommendations                                      (N3)) were only observed following the consumption of a high dose of alcohol (≥0.85•g kg− 1 or approximately
+                                                           five standard drinks). The effect of alcohol on the remaining characteristics of sleep could not be determined,
+                                                           with large uncertainty observed in the effect on total sleep time, sleep efficiency, and wake after sleep onset. The
+                                                           results of the present study suggest that a low dose of alcohol will negatively impact (i.e., reduce) REM sleep. It
+                                                           appears that high doses of alcohol may shorten sleep onset latency, however this likely exacerbates subsequent
+                                                           REM sleep disruption. Future work on personal and environmental factors that affect alcohol metabolism, and
+                                                           any differential effects of alcohol due to sex is encouraged.
+
+
+                                                                                                 sleep aids may be employed to enhance the transition to sleep [7].
+                                                                                                 Alcohol is one ‘over the counter’ sleep aid used by approximately 10–28
+1. Introduction                                                                                  % of the population given the common belief that consumption prior to
+                                                                                                 bedtime facilitates sleep initiation and maintenance [10–13].
+   It is estimated that 20–40 % of the global population fail to meet the                             Alcohol is a psychoactive substance that can be easily accessed given
+current recommendations of seven to 9 h of sleep per night [1–5]. Given                          it is engrained in many social and cultural contexts [14]. The ingestion
+the health and economic repercussions of insufficient sleep, a ‘sleep loss’                      of alcohol results in a biphasic response relative to changes in blood
+epidemic has been identified as an emerging public health concern [6].                           alcohol concentration over time [15]. With the initial intake of alcohol,
+The prevalence of sleep insufficiency may be attributed to the 24/7                              blood alcohol concentration begins to rise with associated feelings of
+ideology of modern society, where excessive work hours and regular                               euphoria and relaxation. However, as blood alcohol concentration ac­
+social interactions are often prioritised at the expense of sleep [7,8].                         cumulates, alcohol acts as a central nervous system depressant and
+With the demands of daily life restricting the ability to ‘switch off’ [9],
+
+
+    * Corresponding author. School of Behavioural and Health Sciences Australian Catholic University Brisbane, Australia.
+      E-mail address: Jonathon.Weakley@acu.edu.au (J. Weakley).
+
+https://doi.org/10.1016/j.smrv.2024.102030
+Received 10 April 2024; Received in revised form 16 October 2024; Accepted 13 November 2024
+Available online 19 November 2024
+1087-0792/© 2024 The Authors. Published by Elsevier Ltd. This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).
+C. Gardiner et al.                                                                                                                   Sleep Medicine Reviews 80 (2025) 102030
+
+
+                                                                                          Meta-Analysis (PRSIMA) 2020 guidelines. The protocol was registered
+   Abbreviations                                                                          with the Open Science Framework (OSF) registry (Registration DOI:
+                                                                                          10.17605/OSF.IO/EJX5Q).
+   ADH –         alcohol dehydrogenase
+   CI –          confidence interval
+   GABA –        gamma-aminobutyric acid                                                  2.1. Databases and search strategy
+   PI –          prediction interval
+   N1 –          non-rapid eye movement stage one                                            The search strategy was structured using the PICO framework
+   N2 –          non-rapid eye movement stage two                                         (Table 1). Search terms within each component were combined using
+   N3 –          non-rapid eye movement stage three                                       the Boolean operator “OR” with search terms across each component
+   N4 –          non-rapid eye movement stage four                                        combined using the Boolean operator “AND”. The search was executed
+   NREM –        non-rapid eye movement                                                   using the PubMed, Scopus, and Web of Science databases. The results
+   REM –         rapid eye movement                                                       were limited to peer-reviewed journal articles, published in the English
+                                                                                          language, investigating human populations only. The results of the
+                                                                                          search were uploaded to the Covidence systematic review software
+                                                                                          (Veritas Health Innovation, Melbourne, Australia).
+
+Table 1
+Search strategy.
+                 Population or Problem                                     Intervention      Comparison   Outcome
+
+  Keywords       “sleep” NOT “dependence” NOT “withdrawal” NOT             “alcohol” OR      N/A          “sleep quality” OR “quality of sleep” OR “sleep quantity” OR “sleep
+                 “syndrome” NOT “disorder” NOT “review” NOT “meta-         “ethanol”                      duration” OR “sleep time” OR “sleep duration” OR “time in bed” OR
+                 analysis” NOT “COVID-19″ NOT “depression” NOT “anxiety”                                  “sleep efficiency” OR “sleep latency” OR “sleep onset” OR “sleep
+                 NOT “adolescent” NOT “children” NOT “cross-sectional”                                    stage” OR “sleep architecture” OR “slow wave” OR “non rapid eye
+                 NOT “heart disease” NOT “heart failure” NOT “mice” NOT                                   movement” OR “NREM” OR “rapid eye movement” OR “REM” OR
+                 “rat” NOT “animal” NOT “stroke” NOT “mortality” NOT                                      “sleep-wake” OR “sleep maintenance” OR “sleep satisfaction” OR
+                 “illness"                                                                                “wake after sleep” OR “sleep arousal” OR “sleep disturbance” OR
+                                                                                                          “awakening from sleep” OR “EEG” OR “electroencephalogram"
+
+
+
+typically exerts a sedative effect [16]. By altering the activity of select               2.2. Study screening and selection
+neurochemicals, including gamma-aminobutyric acid (GABA), gluta­
+mate, and adenosine, alcohol promotes neural inhibition with re­                              Duplicate results were removed automatically by Covidence and two
+ductions in cerebral cortex activity [17]. The sedative properties of                     independent reviewers (CG and JW) screened the remaining articles.
+alcohol may increase the perception of sleepiness and can shorten the                     The title and abstract of each article was screened, and those articles
+time to sleep onset [18], leading to the belief that alcohol is an effective              outside the scope of the review were removed. For the remaining arti­
+sleep aid.                                                                                cles, full-text versions were located for screening. Studies were included
+    Despite the potential to reduce sleep onset latency, alcohol may                      if they: 1) employed a healthy adult population aged 18–70 years; 2)
+disrupt the maintenance of subsequent sleep [11,18]. In most experi­                      used a controlled experimental design; 3) administered a measured
+mental trials investigating the effect of alcohol on subsequent sleep, the                alcohol dose; and 4) implemented a protocol in which sleep was assessed
+dose of alcohol administered is between 0.16 and 1.20 g•kg− 1 within 3 h                  during a subsequent night-time sleep opportunity (i.e., sleep was initi­
+of the scheduled sleep opportunity [18]. Given this timeframe of                          ated in the evening and was terminated the following morning). Studies
+ingestion, peak blood alcohol concentration coincides with the onset of                   were excluded if: 1) the duration of the subsequent sleep opportunity
+sleep and the subsequent metabolism of alcohol occurs across the sleep                    was <90 min (defined as a napping protocol); 2) the alcohol dose was
+bout [19]. As blood alcohol concentration falls, the sedative effect of                   administered >18 h prior to the scheduled sleep opportunity; 3) the
+alcohol subsides as alcohol is eliminated from the body, with a tendency                  alcohol dose was administered after the onset of the scheduled sleep
+for greater sleep disruptions to occur in the second half of the sleep                    opportunity; or 4) measures of sleep were not reported.
+opportunity [20]. In addition, the scientific evidence indicates that
+larger doses of alcohol have a greater effect on sleep [18]. However, the                 2.3. Assessment of reporting quality
+magnitude of this effect remains unclear as the impact of dose and
+timing of alcohol ingestion has yet to be quantified using a systematic                       The Cochrane Risk of Bias Tool (RoB2) for crossover trials [22] was
+approach [21]. Therefore, the aims of this systematic review and                          employed to assess the methodological reporting quality of the studies
+meta-analysis are to: 1) establish the level of evidence for the effect of                included in the analysis. Two authors (CG and JW) independently
+alcohol intake on the characteristics of subsequent sleep (i.e., sleep onset              completed the tool with any discrepancies resolved through discussion.
+latency, total sleep time, rapid eye movement (REM) sleep onset latency,                  For each study, signalling questions were answered across six domains,
+latency to non-rapid eye movement (NREM) stage three (N3) sleep,                          including randomisation process (domain one), period and carryover
+wake after sleep onset, sleep efficiency, sleep architecture, and subjec­                 effects (domain S), deviations from the intended intervention (domain
+tive sleep quality; 2) quantify the effect of alcohol intake on the char­                 two), missing outcome data (domain three), measurement of the out­
+acteristics of subsequent sleep; 3) quantify the influence of the dose and                comes (domain four), and selection of the reported results (domain five).
+timing of alcohol intake on the characteristics of subsequent sleep; and                  Potential bias for each domain was assessed through a pre-defined al­
+4) quantify the influence of sex on the characteristics of subsequent                     gorithm with outcomes of “low risk”, “some concern”, or “high risk”.
+sleep.                                                                                    The overall risk of bias for a study was determined by the highest risk of
+                                                                                          bias recorded across each domain.
+2. Methods
+                                                                                          2.4. Data extraction and coding of outcomes
+   The systematic review and meta-analysis were conducted in accor­
+dance with the Preferred Reporting Items for Systematic Reviews and                          For studies that met the inclusion criteria, two researchers (CG and
+
+                                                                                     2
+C. Gardiner et al.                                                                                                             Sleep Medicine Reviews 80 (2025) 102030
+
+
+
+
+               Fig. 1. Preferred Reporting Items for Systematic Reviews and Meta Analyses flow diagram outlining the process for selection of studies.
+
+
+JW) independently coded the data into a pre-defined Microsoft Excel                   Wake after sleep onset was defined as the duration of time spent awake
+(V2201, Microsoft, Washington, USA) template for the following vari­                  after sleep onset and before final awakening. Outcome data reported as
+ables: authors, title, year of publication, sample size, sex, weight, height,         N3 and NREM stage four (N4) sleep [28–32], slow wave sleep [23,24,26,
+alcohol dose, proximity of consumption to sleep opportunity, objective                27,33–37], or deep sleep [38] were classified as N3 sleep in line with the
+sleep measurement tools, subjective sleep measurement tools, objective                current American Academy of Sleep Medicine guidelines [39], except
+sleep outcomes, and subjective sleep outcomes. Coding was cross-                      for three studies [40–42] where N3 and N4 sleep were reported
+checked between reviewers, with any discrepancies resolved by                         independently.
+mutual consensus.                                                                         Data were extracted as the mean and standard deviation for control
+    For the studies meeting the criteria for inclusion, each measured                 and alcohol conditions. For studies where mean data were reported with
+objective sleep outcomes using polysomnography and subjective sleep                   the standard error of the mean [26,36,38,42] or coefficient of variability
+outcomes using self-report diaries and questionnaires. In the present                 [32], calculations were performed to transform these measures into
+review, time in bed was defined as the period between lights off and                  standard deviations. If a measure of variance for total sleep time [43],
+lights on with total sleep time defined as the time spent asleep during               sleep onset latency [27], or latency to N3 sleep [27] was not reported,
+this period. Sleep efficiency was calculated as the percentage of time in             the data for these outcomes were excluded from the quantitative syn­
+bed spent asleep. Sleep onset latency was accepted as the time from                   thesis. Outcome data reported as a combination of distinctively different
+lights out to the first epoch of sleep, except where the author defined this          sleep stages, including light sleep [38] and stage 1-REM [43,44], were
+to occur with three consecutive epochs of NREM stage one (N1) sleep                   also excluded from the quantitative synthesis. In two studies [23,35],
+[23,24] or to the first epoch of NREM stage two (N2) sleep [25]. REM                  sleep outcomes from the same data set were reported – the study [23] in
+sleep onset latency was accepted as the time from sleep onset to the first            which the outcome data for alcohol dose were reported was included in
+occurrence of REM sleep, except in one study where it was defined as the              the quantitative synthesis. Sleep outcome data from one study [42] were
+first occurrence of REM sleep from the first occurrence of N2 sleep [26].             excluded due to unclear reporting of the outcome definitions, and the
+Latency to N3 sleep was accepted as the time from sleep onset to the first            sleep staging data from another study [38] were excluded due to the
+occurrence of N3 sleep, except in one study where it was defined as the               implausible measures of variance that were substantially smaller than
+first occurrence of N3 sleep from the first occurrence of N2 sleep [27].              expected in comparison to the included studies. Outcome data that were
+
+
+                                                                                  3
+C. Gardiner et al.                                                                                                                 Sleep Medicine Reviews 80 (2025) 102030
+
+
+Table 2
+Summary characteristics of the included studies.
+  Study              Sample (n)   Age (years)   Weight (kg)   Method of alcohol           Alcohol       Proximity to     Method of        Reported        Significant
+                                                              administration              dose          bedtime          sleep            sleep           findings
+                                                                                          (g⋅kg− 1)                      measurement      outcomes of     (compared to
+                                                                                                                                          interest        control for
+                                                                                                                                                          entire night)
+
+  Arnedt             34M; 59F     24.4 ± 2.7    Undisclosed   1.20 g⋅kg− 1for M &         M: 1.20       150 min with     PSG              TST, SE,        ↓ SOL, LN3,
+    et al.,                                                   1.10 g⋅kg− 1for F of        F: 1.10       90 min to        Questionnaire    SOL, ROL,       SE, REM
+    2011                                                      alcohol to achieve a                      consume                           LN3, WASO,      ↑ ROL,
+    [23]                                                      peak BrAC of 0.10 %                                                         sleep stages    WASO, N2,
+                                                                                                                                          Subjective      N3
+                                                                                                                                          TST, SOL,       ↓ Quality
+                                                                                                                                          WASO,
+                                                                                                                                          quality
+  Bazil et al.,      3M; 9F       30.8*         Undisclosed   4 ounces of 40 %            Undisclosed   60 min with 15   PSG              TST, SE,        No significant
+    2005                                                      alcohol (vodka) in                        min to consume                    sleep stages    change
+    [33]                                                      orange juice
+  Block &            13M; 4F      43.6 ± 14.7   78.6 ± 6.9    1.00 ml⋅lb− 1 of 100-       0.87^         ~90 min          PSG              TST, sleep      ↓ TST, REM
+    Hellard,                                                  proof scotch or vodka                                                       stages
+    1987
+    [40]
+  Block et al.,      18F          58.0*         62.60*        2.00 ml⋅kg− 1of 100-        0.79^         ~90 min          PSG              TST, sleep      ↓ TST, REM
+    1985                                                      proof vodka in orange                                                       stages
+    [41]                                                      juice
+  Feige et al.,      5M; 5F       29.7 ± 7.4    Undisclosed   Vodka and orange juice      0.35^         60 min           PSG              SE, SOL,        No significant
+    2006                                                      consumed to reach a         1.15^                          Questionnaire    ROL, sleep      change
+    [25]                                                      BAC of 0.03 % or 0.1 %                                                      stages          No significant
+                                                                                                                                          Subjective      change
+                                                                                                                                          quality
+  Finnigan           40M          25.6*         75.0*         37.5 % vodka mixed          0.59^         60 min           Sleep Diary      Subjective      ↓ SOL
+    et al.,                                                   with orange juice and                                                       SOL
+    1998                                                      water to achieve peak
+    [46]                                                      BAC of approximately
+                                                              100 mg/100 ml of body
+                                                              water
+  Kido et al.,       3M; 3F       28.8 ± 9.5    61.2 ± 8.2    40 g of alcohol as either   0.65^         120 min with     PSG              TST, SE,        ↓ ROL (shochu
+    2016                                                      beer, shochu, or sake                     30 min to                         SOL, ROL,       and sake)
+    [42]                                                                                                consume                           sleep stages
+  Knowles            1M           Undisclosed   Undisclosed   ~3.5 oz and ~6.0 oz of      Undisclosed   Within ~220      PSG              TST, sleep      No significant
+    et al.,                       (adult)                     alcohol to induce BAC                     min of bedtime                    stages          change
+    1968                                                      of ~0.06–0.08 % and
+    [43]                                                      ~0.10–0.15 %
+                                                              respectively
+  Kobayashi          10M          22.5 ± 0.6    Undisclosed   Each subject drank the      0.80          15 min           PSG              TST, SOL,       ↑ ROL
+    et al.,                                                   equivalent of 0.8                                                           ROL, sleep
+    2002                                                      g•kg− 1 of alcohol                                                          stages
+    [28]
+  Landolt            10M          61.6 ± 2.9    Undisclosed   Drinks contained 0.55       0.22          360 min with     PSG              TST, SE,        ↓ TST, SE, N1,
+    et al.,                                                   g•kg− 1 body weight                       15 min to        Questionnaire    SOL, ROL,       REM
+    1996                                                      vodka (40 % alcohol                       consume                           WASO, sleep     ↑ WASO, N2
+    [26]                                                      per volume unit) mixed                                                      stages          No significant
+                                                              with mineral water                                                          Subjective      change
+                                                                                                                                          SOL, WASO
+  MacLean &          10M          23.6*         Undisclosed   Beverage which              0.24          47 min           PSG              TST, SOL,       ↓ SOL
+   Cairns,                                                    consisted of either 0,      0.48                                            ROL, LN3,
+   1982                                                       0.25, 0.50, 0.75 or         0.71                                            sleep stages
+   [34]                                                       1.00 g•kg− 1 of 95 %        0.95
+                                                              alcohol and 3 ml of
+                                                              tincture of gentian with
+                                                              orange juice added for
+                                                              a total volume of 500
+                                                              ml
+  Miyata             13F          21.1 ± 0.7    Undisclosed   Participants ingested 0,    0.28          ~60 min with     PSG              TST, SE,        No significant
+    et al.,                                                   0.28, or 0.69 g•kg− 1 of    0.69          30 min to                         SOL, ROL,       change
+    2004                                                      alcohol                                   consume                           sleep stages
+    [29]
+  Pabon              11M; 11F     25.3 ± 6.1    78.9 ± 13.9   1.0 g⋅kg− 1for M and        M: 1.00       Half 180 min &   PSG              TST, SE,        ↓ TST, SE,
+    et al.,                                                   0.85 g•kg− 1 for F          F: 0.85       half 120 min                      SOL, sleep      REM
+    2022                                                      mixed in a 1:3 ratio of                   with 15 min to                    stages          ↑ N2
+    [51]                                                      95 % alcohol to desired                   consume
+                                                              volume using fruit juice
+  Payseur            17M          21.7 ± 2.1    78.8 ± 15.7   100-proof vodka mixed       0.79^         Between          Partial PSG      TST, SOL,       ↓ SOL
+    et al.,                                                   in a 1:4 ratio with tonic                 17:00–19:00                       sleep stages    ↑ TST, Light
+    2020                                                      water and normalized                      with 15 min to                                    Sleep, REM
+    [38]                                                      to 2 ml•kg− 1                             consumeb
+                                                                                                                                                 (continued on next page)
+
+
+
+
+                                                                                      4
+C. Gardiner et al.                                                                                                                    Sleep Medicine Reviews 80 (2025) 102030
+
+
+Table 2 (continued )
+  Study              Sample (n)    Age (years)   Weight (kg)   Method of alcohol             Alcohol     Proximity to       Method of        Reported        Significant
+                                                               administration                dose        bedtime            sleep            sleep           findings
+                                                                                             (g⋅kg− 1)                      measurement      outcomes of     (compared to
+                                                                                                                                             interest        control for
+                                                                                                                                                             entire night)
+
+  Prinz et al.       5M            21–25a        Undisclosed   0.80 g•kg− 1 alcohol in       0.80        Within 60 min      PSG              Sleep stages    No significant
+    (1980)                                                     a mixer                                                                                       change
+    [45]
+  Roehrs             6M; 3F        26.1 ± 3.7    Undisclosed   0.50 g•kg− 1 alcohol          0.50        60 min with 45     PSG              SE, SOL,        ↓ REM
+    et al.,                                                    (80-proof vodka)                          min to consume                      ROL, WASO,
+    1999                                                       mixed in a 1:4 ratio                                                          sleep stages
+    [30]                                                       with tonic water
+  Roehrs             5M            21–34a        Undisclosed   0.80 g•kg− 1 alcohol          0.80        60 min with 30     PSG              SE, SOL,        ↓ N1, REM
+    et al.,                                                    (80-proof vodka)                          min to consume                      ROL, WASO,      ↑ N2
+    1991                                                       mixed in a 1:4 ratio                                                          sleep stages
+    [31]                                                       with tonic water
+  Rohsenow           37M; 58F      24.5 ± 2.8    Undisclosed   Bourbon or vodka              M: 1.20     150 min with       PSG              TST, SE,        ↓ SE, REM
+    et al.,                                                    mixed with chilled            F: 1.10     90 min to          Questionnaire    SOL, WASO,      ↑ WASO, N3
+    2010                                                       caffeine-free cola to                     consume                             sleep stages    ↓ Quality
+    [35]                                                       reach a BrAC of 0.10 %                                                        Subjective
+                                                               (1.20 g•kg− 1 for M &                                                         quality
+                                                               1.10 g•kg− 1 for F)
+  Rohsenow           25M; 6F       21.8 ± 1.2    Undisclosed   Beer containing 5.9 %         M: 1.20     150 min with       Questionnaire    Subjective      ↓ SOL
+    et al.,          (Alcohol      21.8 ± 1.3                  alcohol sufficient to         F: 1.00     90 min to                           TST, SOL,       ↑ Quality
+    2006             group)                                    yield 0.10 % BrAC                         consume                             quality
+    [54]             25M; 5F                                   (1.20 g•kg− 1 for M &
+                     (Control                                  1.00 g kg− 1 for F)
+                     group)
+  Rundell            10M           21–30a        Undisclosed   0.90 g•kg− 1 of 95 %          0.86        ~90 min with       PSG              SOL, LN3,       ↓ SOL, LN3
+    et al.,          (Experiment                               alcohol mixed with                        60 min to                           sleep stages
+    1972             1)            21–27a                      750 ml ginger ale and                     consume
+    [27]             7M                                        divided into 3 drinks
+                     (Experiment
+                     2)
+  Sagawa             10M           21.6 ± 3.5    66.4 ± 8.5    Japanese sake was             0.50        100 min with       PSG              TST, SE,        ↓ REM
+    et al.,                                                    consumed so that              1.00        30 min to                           SOL, ROL.       ↑ N1, ROL
+    2011                                                       subjects received                         consume                             WASO, sleep     (1.00)
+    [36]                                                       alcohol dosages of 0,                                                         stages
+                                                               0.50 or 1.00 g•kg− 1
+  Scrima             4M; 2F        27 ± 2.9      67.3 ± 11.5   0.8 g•kg− 1 of alcohol        0.80        30 min with 30     PSG              TST, SE,        ↑ ROL
+    et al.,                                                    (80-proof vodka)                          min to consume                      SOL, ROL,
+    1982                                                       mixed with orange                                                             sleep stages
+    [55]                                                       juice
+  Smith &            2M; 13F       29–24a        Undisclosed   Given 3–4 oz. of vodka        0.70        Undisclosed        PSG              TST, SOL,       No significant
+    Smith,                                                     (alcohol dosage of 0.7                                                        WASO, sleep     change
+    2003                                                       g•kg− 1 body weight) in                                                       stages
+    [53]                                                       200 ml of orange juice
+                                                               per 1 oz. of drink
+  Stone, 1980        6M            20–31a        Undisclosed   A flavoured 18 %              0.16        30–60 min          PSG              TST, SE,        ↑ TST (0.16),
+    [32]                                                       solution of alcohol in        0.32                           VAS              SOL, ROL,       SE (0.16,
+                                                               doses of 0.16, 0.32 and       0.64                                            LN3, sleep      0.32)
+                                                               0.64 g•kg− 1                                                                  stages          ↓ SOL (0.32,
+                                                                                                                                             Subjective      0.64)
+                                                                                                                                             SOL, quality
+  Van Reen           7F            23.5 ± 1.0    Undisclosed   0.49 g•kg− 1 vodka            0.49        90 min with 30     PSG              TST, SE,        ↓ REM
+    et al.,                                                    mixed with tonic water                    min to consume                      SOL, ROL,
+    2006                                                       to achieve a BrAC of                                                          LN3, WASO,
+    [24]                                                       0.05 %                                                                        sleep stages
+  Williams           11F           19.50*        Undisclosed   Beverage which                0.48        ~90 min with       PSG              TST, SOL,       ↓ SOL
+    et al.,                                                    consisted of either 0,        0.71        30 min to                           ROL, LN3,       ↑ N1
+    1983                                                       0.50 or 0.75 of 95 %                      consume                             sleep stages
+    [37]                                                       g⋅kg− 1 of alcohol & 2
+                                                               drops of tincture of
+                                                               gentian with orange
+                                                               juice added for a total
+                                                               volume of 400 ml
+  Yules et al.,      3M            Undisclosed   Undisclosed   1.00 g•kg− 1 mixed into       1.00        Consumption        PSG              ROL, sleep      No significant
+    1966                           (adult)                     orange juice                              finished 15 min                     stages          change
+    [44]                                                                                                 prior to bedtime
+
+Abbreviations: BAC- blood alcohol concentration; BrAC: breath alcohol concentration; LN3: latency to non-rapid eye movement (NREM) stage 3 sleep; PSG-
+polysomnography; N1- NREM stage 1 sleep; N2- NREM stage 2 sleep; N3- NREM stage 3 sleep; N4- NREM stage 4 sleep; REM-rapid eye movement (REM) sleep;
+ROL- REM sleep onset latency; SE-sleep efficiency; SOL-sleep onset latency; TST-total sleep time; VAS- visual analogue scale; WASO- wake after sleep onset.
+ a
+   Mean not reported, *Standard deviation not reported, ^Alcohol dose calculated from data provided, ~Approximate timing reported.
+ b
+    Proximity to bedtime not reported.
+
+
+
+
+                                                                                         5
+C. Gardiner et al.                                                                                                     Sleep Medicine Reviews 80 (2025) 102030
+
+
+                      Table 3
+                      Results of the cochrane risk of bias (RoB2) Tool.
+
+
+
+
+not obtained from an entire sleep opportunity (i.e., first half of a sleep       2023). For each outcome variable and sample, we calculated the mean
+opportunity) [45] were excluded from the quantitative synthesis.                 difference effect size and sampling variance. Since none of the studies
+Finally, manual calculations were performed for six studies [25,38,              directly reported the correlation between the alcohol and control con­
+40–42,46] where the alcohol dose was not explicitly reported but could           ditions (which is required to account for the cross-over design employed
+be calculated from the data reported using the standard density of               by studies [50]), we relied on contact with authors to determine
+alcohol (0.79 g•mL− 1) [47]. Where necessary, corresponding authors              appropriate correlations, with chosen values typically sourced from
+were contacted for further information.                                          Pabon et al., 2022 [51] and Bazil et al., 2005 [33]. As correlation data
+                                                                                 were not obtained for all samples, we also conducted a sensitivity
+                                                                                 analysis to ensure our results were robust to uncertainty around the
+2.5. Meta-analysis and meta-regression
+                                                                                 chosen value. The sensitivity analysis showed conclusions to be robust
+                                                                                 when using a low (r = 0.1) and high (r = 0.9) correlation value for all
+   Meta-analysis was performed using the “metafor” [48] and “club­
+                                                                                 outcomes except latency to N3 sleep. Further details of handling of
+Sandwich” [49] packages in the R programming language (R Core Team,
+
+                                                                             6
+C. Gardiner et al.                                                                                                                 Sleep Medicine Reviews 80 (2025) 102030
+
+
+
+
+Fig. 2. Forest plot displays the duration (min) of total sleep time, non-rapid eye movement (NREM) stage one (N1) sleep, NREM stage two (N2) sleep, NREM stage
+three (N3) sleep, rapid eye movement (REM) sleep, and wake after sleep onset; the proportion (%) of sleep efficiency, N1 sleep, N2 sleep, N3 sleep, and REM sleep;
+and the latency (min) to sleep onset, REM sleep onset, and N3 sleep onset. The number of effect sizes (k) and participants (n) included in each meta-analytic model
+are reported and each circle represents the mean difference between the control and alcohol condition, with the size of the circle representing the statistical weight of
+the effect size. A negative effect size indicates a reduction in the outcome with the alcohol condition compared to the control condition. The solid black lines
+represent the 95 % confidence interval and the dotted grey lines represent the 95 % prediction interval.
+
+
+correlation data and the sensitivity analysis can be found in Supple­                   classified as a high dose (≥0.75 g•kg− 1) [18]. Based off an average adult
+mentary Fig. S1 and Supplementary Table S1.                                             mass of 62 kg [56] and one standard drink containing 10 g of alcohol
+    Effect sizes were pooled using a multi-level mixed-effects meta-                    [57], the dose classifications can be approximated as follows: a low dose
+analysis to account for the hierarchal structure of the data. Specif­                   of alcohol as less than or equal to three standard drinks, a moderate dose
+ically, dependency between effect sizes from the same sample was                        of alcohol between three and five standard drinks, and a high dose of
+accounted for by imputing block-diagonal covariance-matrices with an                    alcohol as greater than or equal to five standard drinks. The intervention
+assumed correlation of r = 0.50. Owing to uncertainty around this                       was administered as an acute daily dose on the day of the measured
+correlation value, we used robust inference methods with an adjustment                  sleep opportunity in all studies except for four where administration was
+for small samples, so that our interpretation of fixed effects were unbi­               sustained across two [30], three [25,27], or nine nights [45]. The key
+ased [52]. We reported the pooled mean difference and 95 % confidence                   characteristics of each study are presented in Table 2.
+interval (CI) for each outcome variable, including sleep onset latency,
+total sleep time, REM sleep onset latency, latency to N3 sleep, wake after
+                                                                                        3.2. Assessment of reporting quality
+sleep onset, sleep efficiency, and both absolute (i.e., min) and relative (i.
+e., expressed as a percentage of total sleep time) sleep architecture (N1,
+                                                                                            A summary of the risk of bias assessment is displayed in Table 3. In
+N2, N3 (and N4), and REM sleep). To support interpretation of these
+                                                                                        domain one, 11 studies [24,26–29,36,38,42–45] were deemed to be of
+data, we also report the number of effect sizes (k) and participants (n)
+                                                                                        “some concern” as participants were exposed to the intervention in the
+included in each meta-analytic model, and the 95 % prediction intervals
+                                                                                        same sequence rather than being randomised into a condition sequence.
+(PI) to support clinical interpretation of heterogeneity. Where additional
+                                                                                        In domain S, five studies [40,41,43,44,55] were deemed “high risk” due
+data related to the amount and timing of alcohol consumption were
+                                                                                        to the absence of an appropriate washout period, while one study [30]
+available, we performed moderator (meta-regression) analysis to assess
+                                                                                        was considered to be of “some concern” as the washout period was not
+the impact of these potential effect modifiers on sleep outcomes. Addi­
+                                                                                        clearly defined. There were no notable concerns in domain two or
+tionally, we assessed whether sex (represented as % of sample that was
+                                                                                        domain three. In domain four, three studies [42–44] was deemed “high
+female) moderated the effect size for each outcome variable. A full
+                                                                                        risk” due to an unclear protocol description and absence of sleep
+summary of all meta-analytical models is provided in Supplementary
+                                                                                        outcome definitions. Five studies were deemed to be “high risk” in
+Tables S2–S4.
+                                                                                        domain five, in four of these studies [32,34,37,45] sleep staging data
+                                                                                        was reported for the first portion of the sleep bout only, and in one study
+3. Results
+                                                                                        [38] implausibly small measures of variance were reported for the sleep
+                                                                                        staging data. Additionally, eight studies [27,28,35,43,44,46,53,55]
+3.1. Study selection and characteristics
+                                                                                        were deemed to be of “some concern” in domain five due to the lack of a
+                                                                                        clear statistical analysis protocol.
+   Following the screening process, 27 studies were identified for in­
+clusion in the review (Fig. 1). All included studies employed a controlled
+crossover design except for two [35,53] in which a controlled experi­                   3.3. Objective sleep outcomes
+mental design without a crossover was employed. Across the included
+studies, 37 alcohol conditions were administered with 12 [24–26,29,30,                  3.3.1. Sleep onset latency
+32,34,36,37,43] classified as a low dose (≤0.50 g•kg− 1), eight [29,                        Measures of objective sleep onset latency were reported in 19 studies
+32–34,37,42,46,53] classified as a moderate dose (>0.50 to <0.75                        [23–32,34–38,42,51,53,55]. Sleep onset latency was not different be­
+g•kg− 1), and 17 [23,25,27,28,31,34–36,38,40,41,43–45,51,54,55]                         tween the alcohol condition and the control condition (Fig. 2; mean
+                                                                                        difference = − 2.0 min, 95%CI = − 4.3 to 0.2 min, 95%PI = − 11.6 to 7.5
+
+                                                                                    7
+C. Gardiner et al.                                                                                                                 Sleep Medicine Reviews 80 (2025) 102030
+
+
+
+
+Fig. 3. Meta-analytic model accounting for the dose of alcohol (g•kg− 1) with standard drink equivalents (x-axis) based on the assumption of one standard drink
+containing 10 g of alcohol [57] and a standard body mass of 62 kg [56]. Each circle represents the mean difference (y-axis) between the control and alcohol
+condition, with the size of the circle proportional to the statistical weight of the effect size. The 95 % confidence interval (CI) is represented by the banded shading.
+For panel a, b, and d (negative slope), when looking at the zero reference line, any value below indicates the alcohol group exhibited a reduction in the sleep
+outcome, with a significant effect occurring when the upper 95 % CI crosses the zero reference line. For panel c (positive slope), any value above the zero reference
+line indicates the alcohol group exhibited an increase in the sleep outcome, with a significant effect occurring when the lower 95 % CI crosses the zero reference line.
+As such, the estimated dose cut-off occurs for a) absolute rapid eye movement (REM) sleep (min) at a dose of alcohol of 0.50 g•kg− 1 which equates to approximately
+three standard drinks; b) sleep onset latency (min) at a dose of alcohol of 0.85 g•kg− 1 which equates to approximately five standard drinks; c) REM sleep onset
+latency at a dose of alcohol 0.35 g•kg− 1 which equates to approximately two standard drinks; and d) latency to non-rapid eye movement stage three (N3) sleep at a
+dose of alcohol of 0.95 g•kg− 1 which equates to approximately six standard drinks.
+
+
+                                                                                        [23,24,26,28,29,32–38,40–42,51,53,55]. Total sleep time was not
+                                                                                        different between the alcohol condition and the control condition
+                                                                                        (Fig. 2; mean difference = − 10.1 min, 95%CI = − 24.6 to 4.4 min, 95%
+                                                                                        PI = − 71.5 to 51.3 min, k = 34, n = 284, p = 0.160). The effect of
+                                                                                        alcohol on total sleep time was not moderated by the dose of alcohol (k
+                                                                                        = 30, n = 235, p = 0.701) or the timing of intake (k = 30, n = 235, p =
+                                                                                        0.488).
+
+                                                                                        3.3.3. REM sleep onset latency
+                                                                                            Measures of objective REM sleep onset latency were reported in 14
+                                                                                        studies [23–26,28–32,34,36,37,42,55]. REM sleep onset latency was
+                                                                                        18.0 min longer in the alcohol condition compared to the control con­
+                                                                                        dition (Fig. 2; 95%CI = 8.8–27.1 min, 95%PI = − 18.8 to 54.8 min, k =
+                                                                                        29, n = 212, p = 0.001). For every 1 g•kg− 1 increase in alcohol dose,
+                                                                                        REM sleep onset latency in the alcohol condition was delayed by 30.1
+                                                                                        min (Fig. 3; 95%CI = 6.4–53.8 min, k = 28, n = 200, p = 0.024)
+                                                                                        compared to the control condition, with a significantly longer REM sleep
+                                                                                        onset latency identified with a low dose of alcohol (Fig. 3; ~0.35
+                                                                                        g•kg− 1). The effect of alcohol on REM sleep onset latency was not
+                                                                                        moderated by the timing of intake (k = 28, n = 200, p = 0.657).
+
+                                                                                        3.3.4. Latency to N3 sleep
+                                                                                            Measures of objective latency to N3 sleep were reported in six studies
+                                                                                        [23,24,27,32,34,37]. Latency to N3 sleep was 2.8 min shorter in the
+                                                                                        alcohol condition compared to the control condition (Fig. 2; 95%CI =
+                                                                                        − 5.4 to − 0.1 min, 95%PI = − 8.7 to 3.1 min, k = 12, n = 127, p = 0.044).
+                                                                                        For every 1 g•kg− 1 increase in alcohol dose, latency to N3 sleep in the
+                                                                                        alcohol condition was shortened by 6.4 min (Fig. 3; 95%CI = − 12.0 to
+Fig. 4. Summary of the meta-regression findings with the dose-thresholds for            − 0.8 min, k = 12, n = 127, p = 0.037) compared to the control condi­
+rapid eye movement (REM) sleep onset latency (min), REM sleep duration
+                                                                                        tion, with a significantly shorter latency to N3 sleep identified with a
+(min), sleep onset latency (min), and latency to non-rapid eye movement stage
+                                                                                        high dose of alcohol (Fig. 3; ~0.95 g•kg− 1). The effect of alcohol on
+three (N3) sleep modelled for a 62 kg individual.
+                                                                                        latency to N3 sleep was not moderated by the timing of intake (k = 12, n
+                                                                                        = 127, p = 0.400).
+min, k = 34, n = 271, p = 0.074). For every 1 g•kg− 1 increase in alcohol
+dose, sleep onset latency in the alcohol condition was shortened by 6.4
+                                                                                        3.3.5. Wake after sleep onset
+min (Fig. 3; 95%CI = − 9.3 to − 3.5 min, k = 30, n = 222, p = 0.004)
+                                                                                            Measures of objective wake after sleep onset were reported in eight
+compared to the control condition, with a significantly shorter sleep
+                                                                                        studies [23,24,26,30,31,35,36,53]. Wake after sleep onset was not
+onset latency identified with a high dose of alcohol (Fig. 3; ~0.85
+                                                                                        different between the alcohol condition and the control condition
+g•kg− 1). The effect of alcohol on sleep onset latency was not moderated
+                                                                                        (Fig. 2; mean difference = 4.0 min, 95%CI = − 2.3 to 10.3 min, 95%PI =
+by the timing of intake (k = 30, n = 222, p = 0.684).
+                                                                                        − 12.4 to 20.3 min, k = 12, n = 166, p = 0.187). The effect of alcohol on
+                                                                                        wake after sleep onset was not moderated by the dose of alcohol (k = 9,
+3.3.2. Total sleep time
+                                                                                        n = 134, p = 0.661) or the timing of intake (k = 9, n = 134, p = 0.058).
+   Measures of objective total sleep time were reported in 18 studies
+
+                                                                                    8
+C. Gardiner et al.                                                                                                       Sleep Medicine Reviews 80 (2025) 102030
+
+
+3.3.6. Sleep efficiency                                                          the alcohol and control condition. Measures of subjective sleep quality
+    Measures of objective sleep efficiency were reported in 14 studies           were reported in five studies, with a significant reduction in perceived
+[23–26,29–33,35,36,42,51,55]. Sleep efficiency was not different be­             sleep quality in the alcohol condition reported in two studies [23,35], a
+tween the alcohol condition and the control condition (Fig. 2; mean              significant increase in perceived sleep quality in the alcohol condition
+difference = − 0.7 %, 95%CI = − 1.8 to 0.3 %, 95%PI = − 4.5 to 3.0 %, k          reported in one study [54], and no significant difference between the
+24, n = 203, p = 0.147). The effect of alcohol on sleep efficiency was not       alcohol condition and control condition reported in two studies [25,32].
+moderated by the dose of alcohol (k = 23, n = 191, p = 0.815) or the
+timing of intake (k = 23, n = 191, p = 0.125).                                   3.3.10. Sex differences
+                                                                                     No moderating effect of sex was observed on objective sleep out­
+3.3.7. Absolute sleep architecture                                               comes (Supplementary Table 4; p > 0.050). Study cohorts were
+    Measures of absolute sleep architecture were reported in 10 studies          comprised of males only in 12 studies [26–28,31,32,34,36,38,43–46],
+[24,26,30,32,34,36–38,42,53]. Compared to the control condition,                 females only in four studies [24,29,37,41], and a mix of males and fe­
+alcohol consumption reduced the duration of REM sleep by 11.3 min                males (45.3 % males; 54.7 % females) in 11 studies [23,25,30,33,35,40,
+(Fig. 2; 95%CI = − 20.8 to − 1.8 min, 95%PI = − 37.2 to 14.6 min, k =            42,51,53–55]. Of the 11 studies with a mixed cohort, the effect of sex on
+13, n = 96, p = 0.026). For every 1 g•kg− 1 increase in alcohol dose, REM        sleep outcomes was investigated in one study [23], with a dose of 1.2
+sleep duration in the alcohol condition was reduced by 40.4 min (Fig. 3;         g•kg− 1 administered to males (n = 34) and 1.1 g•kg− 1 administered to
+95%CI = − 60.0 to − 20.8 min, k = 10, n = 64, p = 0.009) compared to             females (n = 59). Compared to the control condition, significant effects
+the control condition, with a significant reduction in REM sleep identi­         of alcohol were observed on objective outcomes in the female cohort
+fied with a low dose of alcohol (Fig. 3; ~0.50 g•kg− 1). For every addi­         with a reduction in total sleep time (− 18.8 min; p < 0.050), a reduction
+tional hour that alcohol was consumed prior to bedtime, REM sleep                in sleep efficiency (− 3.6 %; p < 0.010), an increase in wake after sleep
+duration in the alcohol condition was increased by 0.06 min (95%CI =             onset (+14.5 min; p < 0.010)., and a shortening in latency to N3 sleep
+− 0.1 to 0 min, k = 10, n = 64, p = 0.049) compared to the control               (− 2.3 min; p < 0.050). No significant effects of alcohol were observed
+condition.                                                                       on these sleep outcomes in the male cohort. Furthermore, no significant
+    Compared to the control condition, alcohol consumption had no ef­            effect by sex was observed for sleep onset latency, REM sleep onset la­
+fect on the duration of N1 sleep (Fig. 2; mean difference = 2.2 min, 95%         tency, or the proportion of N1, N2, N3, or REM sleep despite significant
+CI = − 1.0 to 5.5 min, 95%PI = − 1.0 to 5.5 min, k = 13, n = 96, p =             condition effects being observed.
+0.130), the duration of N2 sleep (Fig. 2; mean difference = 3.9 min, 95%
+CI = − 3.6 to 11.3 min, 95%PI = − 3.6 to 11.3 min, k = 13, n = 96, p =           4. Discussion
+0.241), or the duration of N3 and N4 sleep (Fig. 2; mean difference =
+− 5.7 min, 95%CI = − 13.8 to 2.5 min, 95%PI = − 13.8 to 2.5 min, k =                 In the present review, the impact of alcohol consumption on subse­
+13, n = 96, p = 0.135). The effects of alcohol consumption on the                quent sleep in healthy adults was quantified. The main findings are: 1)
+duration of NREM sleep were not moderated by the dose of alcohol or              low doses of alcohol delay the onset of REM sleep (0.35 g•kg-1) and
+the timing of intake (Supplementary Table 2; p > 0.050).                         reduce the duration of REM sleep (0.50 g•kg− 1) in a dose-dependent
+                                                                                 manner; 2) high doses of alcohol (0.85 g•kg− 1) shorten sleep onset la­
+3.3.8. Relative sleep architecture                                               tency and latency to N3 sleep (0.95 g•kg− 1) in a dose-dependent
+    Measures of relative sleep architecture were reported in 19 studies          manner; 3) alcohol consumption has no significant effect on total
+[23,25–29,31–35,37,40,41,43,45,51,53,55]. Compared to the control                sleep time, sleep efficiency, or wake after sleep onset, although it is
+condition, alcohol consumption reduced the proportion of REM sleep by            important to note that there is large uncertainty in these findings as
+2.8 % (Fig. 2; 95%CI = − 3.9 to − 1.7 %, 95%PI = − 6.1 to 0.5 %, k = 32,         evidenced by the wide 95 % prediction intervals. Furthermore, the
+n = 255, p < 0.001). The effect of alcohol on the proportion of REM sleep        ability to discern the impact of timing was limited given the adminis­
+was not moderated by the dose of alcohol (k = 29, n = 223, p = 0.424) or         tration of alcohol predominantly occurred within 3 h of the scheduled
+the timing of intake (k = 29, n = 223, p = 0.664).                               bedtime. The influence of sex could not be determined given the limited
+    Compared to the control condition, alcohol consumption had no ef­            number of studies providing sex-specific data. The findings demonstrate
+fect on the proportion of N1 sleep (Fig. 2; mean difference = 0.4 %, 95%         a shorter sleep onset latency with alcohol consumption but only when
+CI = 0.0–0.8 %, 95%PI = 0.0–0.8 %, k = 26, n = 225, p = 0.052),                  consumed at a high dose. Beyond the impact on sleep onset, the findings
+increased (+1.8 %) the proportion of N2 sleep (Fig. 2; 95%CI =                   highlight the disruption to subsequent sleep, with reductions in REM
+0.18–3.4 %, 95%PI = − 3.0 to 6.6 %, k = 24, n = 214, p = 0.032), and             sleep occurring at low doses and progressively worsening with con­
+had no effect on the proportion of N3 and N4 sleep (Fig. 2; mean dif­            sumption of higher doses.
+ference = 0.4 %, 95%CI = − 0.7 to 1.5 %, 95%PI = − 2.0 to 2.8 %, k = 30,
+n = 235, p = 0.450). The effects of alcohol consumption on the pro­              4.1. Objective sleep outcomes
+portion of NREM sleep were not moderated by the dose of alcohol or the
+timing of intake (Supplementary Table 2; p > 0.050).                             4.1.1. Sleep onset latency
+                                                                                     Alcohol significantly shortened sleep onset latency in five studies
+3.3.9. Subjective sleep outcomes                                                 [23,27,34,37,38], with three of these studies reporting a sleep onset
+    Measures of subjective sleep were reported in eight studies [23,25,          latency in the control condition above 20 min. This is an important
+26,32,33,35,46,54] using varying self-report tools detailed in Table 2.          consideration given 82 % of control latencies reported across studies
+Due to a lack of homogeneity in the outcomes measured, a meta-analysis           were within a normal range of less than 20 min [58], which may limit
+was not performed for subjective sleep. Measures of subjective total             the potential for a significant reduction with alcohol administration. For
+sleep time were reported in two studies [23,54], with no significant             example, when the control latency was short (6.9 ± 1.9 min), a dose of
+difference between the alcohol and control condition. Measures of                alcohol of 0.50 g•kg− 1 (3.8 ± 1.1 min) or 1.00 g•kg− 1 (2.2 ± 0.8 min)
+subjective sleep onset latency were reported in five studies, with a sig­        did not significantly reduce sleep onset latency. The findings suggest
+nificant reduction in the perceived time to fall asleep in the alcohol           alcohol may have a more pronounced effect on sleep onset latency in
+condition reported in three studies [32,46,54] and no significant dif­           individuals experiencing delays in sleep initiation. The dose-response
+ference between the alcohol condition and control condition reported in          relationship between alcohol consumption and sleep onset latency was
+two studies [23,26]. Measures of subjective wake after sleep onset were          investigated in six studies [25,29,32,34,36,37], with shorter latencies
+reported in two studies [23,26], with no significant difference between          (ranging from 1.6 to 8.7 min) when larger doses of alcohol were
+
+                                                                             9
+C. Gardiner et al.                                                                                                           Sleep Medicine Reviews 80 (2025) 102030
+
+
+consumed. As no study has investigated the effects of a fixed dose of                4.1.3. REM sleep onset latency
+alcohol administered at varying time points, there is no clear evidence to               REM sleep onset latency was significantly longer in four studies [23,
+determine the influence of timing of alcohol consumption on sleep onset              28,36,55] with the consumption of alcohol. The dose-response rela­
+latency.                                                                             tionship was investigated in six studies [25,29,32,34,36,37] with a
+    Based on the current analysis, the effect of alcohol on sleep onset              tendency for longer latencies (ranging from 2.6 to 85.8 min) when larger
+latency (− 2.0 min) was not significant. However, reductions in sleep                doses of alcohol were consumed. For example, in one study [36], a
+onset latency were dependent on the amount of alcohol consumed (i.e.,                non-significant effect on REM sleep onset latency was reported with a
+larger doses resulted in shorter latencies). Specifically, a significantly           dose of alcohol of 0.50 g•kg− 1 (86.8 ± 13.8 min) compared to the
+shorter sleep onset latency was identified with a dose of alcohol of                 control condition (88.3 ± 14.9 min). When the dose was increased to
+approximately 0.85 g•kg− 1, which equates to approximately five stan­                1.00 g•kg− 1 (173.8 ± 18.9 min), REM sleep onset latency was 86 min
+dard drinks [56]. It is proposed that alcohol may shorten sleep onset                longer. From the current evidence, it appears that larger doses of alcohol
+latency by altering the action of neurotransmitter systems to depress                are associated with longer REM sleep onset latencies. However, no data
+central nervous system function [17], with an increase in the action of              were available on the timing of alcohol intake and it is unclear whether
+GABA and a reduction in the action of glutamate to promote a state of                the effect of alcohol on REM sleep onset latency is influenced by the
+sedation [11]. Recently, it has been suggested that alcohol may also                 timing of consumption relative to bedtime.
+facilitate the action of adenosine, a neuromodulator suggested to                        REM sleep onset latency was 18 min longer following the con­
+heighten sleep pressure [59]. By facilitating the formation of adenosine             sumption of alcohol. The increase in REM sleep onset latency was
+and preventing the reuptake of adenosine into the cell, alcohol may                  dependent on the dose of alcohol consumed (i.e., larger doses resulted in
+increase the propensity for sleep with a subsequent shortening of sleep              longer latencies). Specifically, a significantly longer REM sleep onset
+onset latency [59]. However, the findings of the present review suggest              latency was identified with a dose of alcohol of approximately 0.35
+the consumption of high doses of alcohol are required to elicit a shorter            g•kg− 1, which equates to approximately two standard drinks [56]. The
+sleep onset latency. It remains unclear whether the shortening of sleep              consumption of alcohol may delay REM sleep onset latency by influ­
+onset latency is affected by the timing of alcohol consumption.                      encing REM-on and REM-off neural groups within the brainstem [17].
+                                                                                     Activity of the REM-off neural group is facilitated by GABAergic in­
+4.1.2. Total sleep time                                                              terneurons [64], and it is proposed that alcohol may facilitate activity of
+    Total sleep time was significantly reduced in five studies [23,26,40,            these neural groups to supress REM sleep during the initial sleep op­
+41,51] and significantly increased in two studies [32,38] with the con­              portunity [17]. Given NREM sleep typically precedes the onset of REM
+sumption of alcohol. Notably, a large proportion of studies did not                  sleep, REM sleep onset latency can be viewed as the length of the first
+control for time in bed between the control and alcohol conditions,                  NREM sleep cycle [65]. In line with the recently proposed theory that
+making it difficult to ascertain the true effect of alcohol on total sleep           alcohol may facilitate the action of adenosine [59], an increase in sleep
+time. The dose-response relationship between alcohol consumption and                 pressure is associated with greater N3 sleep in the first cycle of NREM
+total sleep time was investigated in five studies, with four [29,32,34,36]           sleep [66], which may occur at the expense of REM sleep. The findings of
+demonstrating greater reductions in total sleep time (ranging from 12.8              the present review indicate that a low dose of alcohol will delay REM
+to 27.7 min) with larger doses of alcohol. In one study [32], total sleep            sleep onset latency, with longer latencies occurring with larger doses.
+time significantly increased (+14.9 min) with the lowest dose of alcohol             However, it remains unclear if the effect of alcohol on REM sleep onset
+(0.16 g•kg− 1) compared to the control condition (431.1 ± 8.6 min),                  latency is influenced by the timing of consumption.
+suggesting that a low dose of alcohol may increase total sleep time.
+There were no data available regarding the effect of a fixed dose of                 4.1.4. Latency to N3 sleep
+alcohol on subsequent sleep when consumed at varying time points prior                   Alcohol significantly shortened latency to N3 sleep in two studies
+to the sleep opportunity. Therefore, it is difficult to draw conclusions on          [23,27]. No clear dose-dependent effect was observed across the three
+the relationship between the timing of alcohol consumption and the                   studies [32,34,37] that investigated more than one dose. For instance,
+subsequent effect on total sleep time.                                               there was no effect with a dose of alcohol of 0.48 g•kg− 1 (10.3 ± 3.0
+    The results of this analysis revealed a non-significant effect of alcohol        min) or 0.71 g•kg− 1 (9.2 ± 3.0 min) compared to the control (10.6 ±
+on total sleep time (− 10.1 min). The reduction in total sleep time was              2.4 min), [37]. Minimal change occurred with a 0.24 g•kg− 1 dose of
+not moderated by the amount of alcohol or the timing of alcohol intake.              alcohol (31.3 ± 17.5 min) compared to the control condition (32.5 ±
+Importantly, the findings in the present systematic review suggest that              23.5 min), with a non-significant trend for a shorter latency to N3 sleep
+low doses of alcohol may increase total sleep time, potentially leading to           when the dose was increased to 0.95 g•kg− 1 (22.8 ± 13.7 min) [34].
+a misrepresentation in the effect of alcohol on total sleep time when                From the current evidence, there appears to be no clear relationship
+results are pooled without consideration of the dose of alcohol admin­               between the dose of alcohol and the latency to N3 sleep. Additionally,
+istered. Alcohol is largely metabolised by the alcohol dehydrogenase                 there exists a lack of evidence investigating the timing relationship and
+(ADH) enzyme, which becomes saturated at low doses [60]. Therefore,                  further research is needed to clarify the influence of both the amount
+even with the consumption of larger doses, the rate of alcohol meta­                 and timing of alcohol consumption on the latency to N3 sleep.
+bolism remains constant and blood alcohol concentration rises [61].                      Latency to N3 sleep was shortened by 2.8 min with the consumption
+Given the cessation of alcohol upon sleep commencement, blood alcohol                of alcohol. The reduction in latency to N3 sleep was dependent on the
+concentration will fall across the sleep period as a function of meta­               dose of alcohol consumed (i.e., larger doses resulted in shorter la­
+bolism. With this, the sedative effect of alcohol will lessen and the                tencies). Specifically, a significantly shorter latency to N3 sleep was
+concentration of metabolites will increase. Such metabolites, including              identified with a dose of alcohol of approximately 0.95 g•kg− 1, which
+acetaldehyde and acetate, can increase physiological arousal and body                equates to approximately six standard drinks [56]. Within the studies
+temperature which may disrupt sleep [62,63]. However, the effect of                  included in the analysis of latency to N3 sleep, the bedtime was reported
+alcohol on total sleep time remains uncertain, as evidenced by the wide              to be consistent across the alcohol condition and control condition in
+95 % prediction interval ranging from substantial reductions (− 71.5                 two [23,27]. As the expression of N3 sleep is suggested to be under
+min) to substantial increases (+51.3 min) in duration. The influence of              homeostatic control, where pressure for N3 sleep builds with prior
+the amount and timing of alcohol intake on total sleep time could not be             wakefulness, a delay in bedtime in the alcohol condition may shorten
+determined.                                                                          the latency to N3 sleep [67]. Additionally, N3 sleep is characterised by
+                                                                                     high amplitude, low frequency delta waves that reflect the synchronous
+                                                                                     shift of membrane potentials between cortical neurons [68]. Alcohol is
+
+                                                                                10
+C. Gardiner et al.                                                                                                          Sleep Medicine Reviews 80 (2025) 102030
+
+
+suggested to enhance the function of GABAA receptors that facilitate the            bed is spent asleep [71]. Given the systematic review findings supported
+hyperpolarisation of cortical neurons [17]. Consequently, alcohol con­              an improvement in total sleep time at low doses, it is feasible to conclude
+sumption may increase the occurrence of delta activity, which is a key              that sleep efficiency may improve in a similar manner. Therefore, the
+characteristic of N3 sleep [17]. Furthermore, alcohol may facilitate the            pooled effect across varying doses may underestimate the impact of
+action of adenosine to promote the earlier occurrence of N3 sleep [11].             larger doses of alcohol on sleep efficiency. The uncertainty in the effect
+However, the observed reduction in latency to N3 sleep is modest and                of alcohol on sleep efficiency is underscored by the 95 % prediction
+the findings indicate that the consumption of a high dose of alcohol is             interval ranging from a potential reduction (− 4.5 %) to a potential in­
+required to shorten the latency to N3 sleep. It remains unclear how the             crease (+3.0 %) in efficiency. Further research is required to better
+effect of alcohol on latency to N3 sleep is influenced by the timing of             understand the influence of the amount and timing of alcohol con­
+consumption.                                                                        sumption on sleep efficiency.
+
+4.1.5. Wake after sleep onset                                                       4.1.7. Absolute sleep architecture
+    Alcohol significantly increased wake after sleep onset in three studies             Alcohol consumption did not significantly affect N3 sleep duration
+[23,26,35], with two of these studies stemming from the same data set               across the sleep period but N3 sleep duration was significantly increased
+and analysed by sex [23] or beverage type [35]. Interestingly, in the               in the two studies [34,37] that analysed the first 3 h of the sleep period.
+remaining study [26], a 28.2-min increase in wake after sleep onset was             This increase in N3 sleep occurred in a dose-dependent manner, with
+reported following the administration of a low dose (0.22 g•kg− 1) of               larger doses of alcohol resulting in greater increases (ranging from 6.4 to
+alcohol 6 h prior to bedtime, despite the presence of alcohol in the                9.6 min) [34,37]. However, within the second half of the sleep oppor­
+breath being undetectable immediately prior to bedtime [26]. A po­                  tunity, a dose-dependent reduction in N3 sleep was observed along with
+tential effect of alcohol metabolites, including acetaldehyde and acetate,          a concurrent reduction in REM sleep, with larger doses of alcohol
+could explain this finding and warrants further research [17]. Only one             resulting in greater reductions in N3 sleep (ranging from 5.2 to 6.4 min)
+study investigated the dose relationship between alcohol and wake after             and REM sleep (ranging from 11.0 to 17.4 min) [34,37]. Only one study
+sleep onset, with no significant effect of a dose of alcohol of 0.50 g•kg− 1        [36] investigated the dose-response relationship across the entire sleep
+(24.6 ± 40.2 min) or 1.00 g•kg− 1 (23.5 ± 19.0 min) compared to the                 opportunity, with a significant reduction in REM sleep duration occur­
+control condition (21.3 ± 18.3 min). Collectively, there is no clear evi­           ring in a dose-dependent manner. Further research is needed to inves­
+dence of a dose-response relationship between alcohol and wake after                tigate the influence of timing of consumption on absolute sleep
+sleep onset. Given the lack of available data, it is unclear whether the            architecture.
+timing of alcohol consumption has an impact on wake after sleep onset.                  No significant effect was observed on the duration of NREM sleep in
+    Based on the current analysis, the effect of alcohol on wake after              the current analysis. However, a significant reduction of 11.3 min was
+sleep onset was not significant (+4.0 min). The increase in wake after              observed in the duration of REM sleep. The reduction in REM sleep was
+sleep onset was not moderated by the amount of alcohol or the timing of             dependent on the dose consumed (i.e., larger doses resulted in less REM
+alcohol intake. It is proposed that alcohol may initially enhance sleep             sleep). Specifically, a significant reduction in the duration of REM sleep
+pressure by facilitating the action of adenosine, resulting in greater sleep        was identified at a dose of alcohol of approximately 0.50 g•kg− 1, which
+disruption across the night due to a subsequent reduction in sleep                  equates to approximately two standard drinks [56]. The largest
+pressure [59]. In addition, the consumption of alcohol can cause diuresis           disruption to sleep typically occurs in the second half of sleep when
+which may increase periods of wake throughout the night [69]. An                    alcohol has been metabolised and concentrations of acetaldehyde and
+important consideration is that time in bed was standardised in four of             acetate are increased [17]. Given this latter period of sleep is typically
+the studies [23,26,30,31] included in the analysis, reported as compa­              REM sleep dominant, the reduction in alcohol’s sedative effects and
+rable in two of the studies [24,36], and uncontrolled in one study [53].            accumulation of metabolites can increase arousal with a subsequent
+When uncontrolled, the differences in time in bed between the control               reduction in REM sleep [62,63]. Despite suggestions of a REM sleep
+and alcohol conditions could influence the observed effect on wake after            rebound, whereby the occurrence of REM sleep is increased to
+sleep onset. Overall, the wide 95 % prediction interval (− 12.4 to 20.3             compensate for the alcohol-induced suppression of REM sleep in the first
+min) observed in the present review highlights large uncertainty in the             half of the sleep opportunity [44], the current findings suggest the
+effect of alcohol on wake after sleep onset [70]. The influence of the              overall duration of REM sleep will be reduced following alcohol con­
+amount and timing of alcohol consumption on wake after sleep onset                  sumption. It’s important to note that among the studies analysed, time in
+remains unclear.                                                                    bed between the control condition and alcohol condition was stand­
+                                                                                    ardised in two studies [26,30], reported to be comparable in two studies
+4.1.6. Sleep efficiency                                                             [24,36], and uncontrolled in the remaining studies. Given REM sleep
+    Sleep efficiency was significantly reduced in four studies [23,26,35,           predominantly occurs in the second half of the sleep opportunity, a
+51] and increased in one study [32] with alcohol consumption. The                   shortened time in bed in the alcohol condition may reduce the duration
+dose-response relationship was investigated in four studies [25,29,32,              of REM sleep [72]. The findings of the present review suggest the
+36], with three [25,29,32] demonstrating a tendency for greater re­                 duration of REM sleep will be reduced with the consumption of a low
+ductions in sleep efficiency (ranging from 0.8 to 4 %) with larger doses            dose of alcohol, with greater reductions observed when larger doses of
+of alcohol. In one study [32], a significant increase in sleep efficiency of        alcohol are consumed. The influence of timing of alcohol intake on the
+2.0 % was reported in the two low dose conditions (0.16 and 0.32                    duration of REM sleep remains unclear.
+g•kg− 1) compared to the control condition, suggesting that low doses of
+alcohol may reduce sleep efficiency. However, this finding is not sup­              4.1.8. Relative sleep architecture
+ported across studies and further research is needed to determine the                   Alcohol consumption significantly increased the proportion of N3
+effect of alcohol on sleep efficiency. The available evidence does not              sleep in two studies [23,35] and reduced the proportion of REM sleep in
+allow clear conclusions to be drawn on whether sleep efficiency is                  seven studies [23,31,35,37,40,41,51]. The dose-response relationship
+influenced by the amount or timing of alcohol consumption relative to               was investigated in six studies [25,29,32,34,37,43] with four [32,34,37,
+bedtime.                                                                            43] demonstrating a tendency for greater reductions in REM sleep
+    No significant effect of alcohol was observed on sleep efficiency               (ranging 2.1 %–8.0 %) with larger doses of alcohol. Furthermore, one
+(− 0.7 %). This effect was not moderated by the amount of alcohol or the            study [25] investigated the effect of varying doses of alcohol on relative
+timing of alcohol intake. Sleep efficiency represents the time spent                sleep architecture in the first and second half of the sleep opportunity.
+asleep as a proportion of the time in bed, recognising that not all time in         With the high alcohol dose condition (blood alcohol concentration 1.0
+
+                                                                               11
+C. Gardiner et al.                                                                                                            Sleep Medicine Reviews 80 (2025) 102030
+
+
+
+
+   Practice Points
+    1. The impact of alcohol consumption on total sleep time, sleep efficiency, and wake after sleep onset remains unclear. Determining the effect of
+       alcohol on these sleep outcomes requires further investigation.
+    2. A low dose (≤0.50 g•kg− 1) of alcohol consumed prior to bedtime (within ~ 3 h) can delay the onset of REM sleep and reduce the duration of
+       REM sleep with greater disruptions at larger doses of alcohol. Individuals seeking to protect the quality of their REM sleep should be mindful
+       of alcohol intake, particularly with larger doses.
+    3. A high dose (≥0.85 g•kg− 1) of alcohol consumed prior to bedtime (within ~ 3 h) may reduce sleep onset latency and reduce the time to the
+       first occurrence of deep sleep (i.e., N3). However, the use of alcohol as an aid to promote sleep is not an appropriate strategy. While a high
+       dose may shorten the time to sleep initiation, larger doses of alcohol increase subsequent sleep disruption which outweighs any potential
+       benefit.
+
+
+
+%), there was a 7.9 % increase in the proportion of N3 sleep and a 2.0 %              alcohol compared to the control [32]. This was the only study to report
+reduction in the proportion of N1 sleep in the first half of the sleep                both objective and subjective measures of sleep onset latency. Interest­
+opportunity. Conversely, in the second half of the sleep opportunity,                 ingly, despite no significant change in the objective measurement, a
+there was a 3.0 % increase in the proportion of N1 sleep [25]. In                     reduction in the perceived time to fall asleep was observed, suggesting
+accordance with these findings, a dose of alcohol of 0.80 g•kg− 1                     the benefit of alcohol may be subjective in nature with minimal effect
+increased N3 sleep in the first half of the sleep opportunity [31,45] and             when evaluated objectively [32]. However, further research is needed to
+increased N1 sleep in the second half of the sleep opportunity [31]. The              support this notion. Across studies, there was no effect on perceived
+current evidence suggests that alcohol may initially promote sleep by                 sleep onset latency with a dose of alcohol of 0.22 g•kg− 1 [26] or 1.20
+increasing the occurrence of deep sleep (i.e., N3). However, this                     g•kg− 1 [23] indicating a lack of a clear dose-response relationship. Due
+improvement appears to be transient, with an increase in the occurrence               to the limited investigations into subjective outcomes, it is challenging
+of lighter sleep (i.e., N1) in the latter portion of the sleep opportunity. In        to draw firm conclusions on the effect of alcohol on subjective sleep
+addition to the alterations in the structure of NREM sleep, the con­                  outcomes.
+sumption of alcohol may reduce the overall proportion of REM sleep.
+These effects appear to be greater with larger doses of alcohol. With a               4.1.10. Sex differences
+lack of evidence investigating the timing relationship, it is not clear how               Of the studies included in this review, the influence of sex on the
+relative sleep architecture is influenced by the timing of alcohol                    effects of alcohol on subsequent sleep was investigated in one study
+consumption.                                                                          [23]. Given the unique physiological profiles of males and females,
+    An increase in the proportion of N2 sleep (+1.8 %) and reduction in               including potential differences in ADH activity and distribution of
+the proportion of REM sleep (− 2.8 %) occurred with the consumption of                alcohol within the body [73], there is a need to specifically investigate
+alcohol. The effects on relative sleep architecture were not moderated by             potential sex differences. Furthermore, in females, fluctuations in
+the amount of alcohol or the timing of alcohol intake. The findings                   estradiol and progesterone across the menstrual cycle may be of
+suggest alcohol may increase the occurrence of NREM sleep at the                      importance given these sex hormones hold potential to mediate the
+expense of REM sleep. However, given the sleep architecture of a                      acute effects of alcohol by interacting with neurotransmitters including
+healthy adult is comprised of approximately 21–30 % of REM sleep, the                 GABA and dopamine [74]. An adapted protocol in consideration of the
+observed changes may not elicit clinically meaningful change [58].                    menstrual cycle was reported in three studies, with sleep evaluation
+Further investigation is required to understand the influence of the                  undertaken during specific days of the menstrual cycle in two studies
+amount and timing of intake on relative sleep architecture.                           (days 25–32 [51] and days 4–21 [37]) and during the follicular phase in
+                                                                                      one study [29], although it was not outlined how this phase was
+4.1.9. Subjective sleep outcomes                                                      determined. Additionally, the absence of a protocol that accounted for
+    There was no clear effect of alcohol on perceived total sleep time,               the menstrual cycle phase in female participants was cited as a limitation
+sleep onset latency, wake after sleep onset, or sleep quality [23,25,26,              in three studies [24,37,51], with the authors of one study [51] empha­
+32,35,46,54]. The most common trend observed was a reduction in the                   sising the need for further research to address the known sex and
+perceived time to fall asleep [32,46,54], although this effect was not                hormone-related differences in response to alcohol [51]. Given the re­
+consistent across studies [23,26]. One study [32] investigated the                    ported physiological differences between females using hormonal
+dose-response relationship with a reduction in perceived sleep onset                  contraception and those who are naturally menstruating [75], research
+latency with 0.32 g•kg− 1 and 0.64 g•kg− 1 of alcohol compared to the                 which investigates both endogenous and exogenous hormonal concen­
+control condition. There was no significant effect observed for the low               trations is warranted. In addition, menopausal and postmenopausal
+dose (0.16 g•kg− 1) and no effect on sleep quality with any dose of                   women experience high rates of sleep disturbance attributed largely to
+
+
+
+
+   Research Agenda
+    1. Employ controlled experimental designs to investigate the effect of alcohol on the characteristics of subsequent sleep with consideration of
+       individual factors that may influence the effect of alcohol as well as the temporal influence of alcohol across the sleep opportunity.
+    2. Investigate the influence of the dose and the timing of alcohol intake to establish cut-off times for a range of standard alcoholic drinks aimed
+       at minimising the negative effect of alcohol on the characteristics of subsequent sleep.
+
+
+                                                                                 12
+C. Gardiner et al.                                                                                                                  Sleep Medicine Reviews 80 (2025) 102030
+
+
+vasomotor symptoms and mood disorders, meaning they may be sus­                      environmental and genetic factors that deserve consideration when
+ceptible to greater alcohol induced sleep disruptions [76]. Future                   evaluating the effect of alcohol on subsequent sleep [78]. A key factor to
+research should consider the potential influence of hormonal fluctua­                consider is the rate of gastric emptying, with the ingestion of alcohol in a
+tions that occur across the female lifespan to allow practical recom­                fed state attenuating the rise in blood alcohol concentration [79].
+mendations that account for the potential influence of sex.                          Alternative factors that may influence the rate of metabolism include the
+                                                                                     rate of alcohol consumption, beverage ingredients (e.g., glucose), and
+4.1.11. Practical significance                                                       co-ingestion with smoking or other drugs [78]. Additionally, functional
+    The present review could not determine the influence of alcohol on               genetic polymorphisms in genes encoding the ADH enzyme may result in
+total sleep time, sleep efficiency, or wake after sleep onset. The large             individual variation in the pharmacokinetics of alcohol [80]. Further­
+uncertainty in the influence of alcohol was underpinned by the wide 95               more, the review could not discriminate between males and females,
+% prediction interval displayed for each of these outcomes. Given the                which may be an important consideration with suggestions that the ef­
+administration of alcohol occurred primarily within 3 h of bedtime, the              fect of a fixed dose of alcohol may be greater in females given an increase
+impact of timing could not be established but dose dependent relation­               in blood alcohol concentration resulting from a reduced volume of total
+ships were identified for alcohol consumption and subsequent sleep                   body water and a reduction in ADH activity [73]. However, impact of
+architecture (summarised in Fig. 4). The clearest effect of alcohol was on           sex remains uncertain given the limited investigations available. Lastly,
+REM sleep, with a low dose of alcohol (≤0.50 g•kg− 1) delaying the first             the review included healthy adult populations aged between 18 and 70
+occurrence of REM sleep and reducing the duration of REM sleep across                years, and therefore the results may not generalise to alternative pop­
+the sleep opportunity. This reduction in REM sleep was observed at                   ulations including adolescents, older adults (>70 years), or individuals
+approximately two standard drinks, with greater disruptions occurring                with alcohol use disorder or sleep disorders. In addition, consideration
+with the consumption of larger doses of alcohol. Disruptions to REM                  should be given to the effect of alcohol within the included population
+sleep are suggested to impair memory consolidation, cognitive function,              given the wide age range. For example, older adults experience
+and emotional regulation, highlighting the negative effect alcohol-                  age-related declines in N3 sleep and may have greater susceptibility to
+induced sleep disruption may have on wellbeing [77]. Interestingly, a                the effect of alcohol [81].
+shortening of sleep onset latency and the time to the first occurrence of
+deep sleep (i.e., N3) was observed only with a high dose of alcohol                  5. Conclusion
+(≥0.85 g•kg− 1). This is an important finding that raises concern around
+the use of alcohol to initiate sleep. Although there may be a benefit to                 Currently, there is considerable uncertainty regarding the effect of
+sleep onset latency, the high dose required to achieve this poses a                  alcohol on the outcomes of subsequent sleep, including total sleep time,
+challenge to subsequent REM sleep, which is reduced in a                             sleep efficiency, and wake after sleep onset. The findings suggest that the
+dose-dependent manner. Therefore, any potential benefit of using                     consumption of a low dose of alcohol will supress the initial occurrence
+alcohol as an ‘over the counter’ sleep aid to initiate sleep is likely out­          of REM sleep with a reduction in the duration of REM sleep across the
+weighed by greater sleep disruptions to REM sleep across the sleep                   sleep opportunity. The observed impairments in REM sleep are greater
+opportunity.                                                                         with larger doses of alcohol. Despite the belief that alcohol facilitates
+                                                                                     sleep onset, a shorter sleep onset latency and latency to deep sleep are
+4.2. Limitations                                                                     only observed following consumption of larger doses of alcohol. Larger
+                                                                                     doses of alcohol will result in greater REM sleep disruptions, high­
+    The present review synthesises current evidence to provide novel                 lighting a concern for the potential use of alcohol as an ‘over the counter’
+insights into the effect of alcohol on subsequent sleep. However, there              sleep aid. There is a need for further well-controlled experimental trials
+are limitations that must be considered when interpreting the findings.              to provide evidence-based guidelines for the consumption of alcohol
+The quality of the included evidence limits the strength of the conclu­              with regard to subsequent night-time sleep. Individual factors including
+sions, with 21 of the 27 studies presenting a risk of bias. To address this,         the effect of sex on these responses require careful investigation.
+further randomised controlled trials are required with the inclusion of a
+clear outline of the randomisation process, implementation of appro­
+priate washout periods, and a pre-registered statistical analysis plan.
+                                                                                     Conflicts of interest
+Without a standardised unit of measure for alcohol dose, it was neces­
+sary to calculate the dose in g⋅kg− 1 when not reported. Although cal­
+                                                                                         The authors do not have any conflicts of interest to disclose.
+culations were made in accordance with standard units for the density of
+alcohol, there are a myriad of factors that may influence the stand­
+                                                                                     Appendix A. Supplementary data
+ardisation of alcohol dose relative to mass that could not be taken into
+account. Additionally, rather than pure ethanol, the alcohol condition
+                                                                                        Supplementary data to this article can be found online at https://doi.
+was administered in a variety of beverage types across studies which
+                                                                                     org/10.1016/j.smrv.2024.102030.
+may introduce a confounding influence. Across the included studies, the
+methodologies employed largely involved the administration of alcohol
+                                                                                     References
+within 3 h of bedtime. Consequently, there exists limited data regarding
+the effect of afternoon alcohol consumption on subsequent sleep, which                [1] Ohayon MM. Epidemiological overview of sleep disorders in the general
+limits the ability to assess the influence of the timing of alcohol intake on             population. Sleep Med Res 2011;2(1):1–9.
+subsequent sleep. Given the limited number of studies reporting out­                  [2] Adams RJ, Appleton SL, Taylor AW, Gill TK, Lang C, McEvoy RD, et al. Sleep health
+                                                                                          of Australian adults in 2016: results of the 2016 sleep health foundation national
+comes for the first and second half of the sleep opportunity, the temporal                survey. Sleep Health 2017;3(1):35–42.
+influence of alcohol on sleep could not be determined using the quan­                 [3] Krueger PM, Friedman EM. Sleep duration in the United States: a cross-sectional
+titative synthesis. With the systematic review findings identifying                       population-based study. Am J Epidemiol 2009;169(9):1052–63.
+                                                                                      [4] Hirshkowitz M, Whiton K, Albert SM, Alessi C, Bruni O, DonCarlos L, et al. National
+greater sleep disruption in the second half of the sleep opportunity, the
+                                                                                          Sleep Foundation’s sleep time duration recommendations: methodology and results
+temporal influence of alcohol warrants further investigation. Impor­                      summary. Sleep Health 2015;1(1):40–3.
+tantly, the dose thresholds are based on statistical significance with the            [5] Scott H, Naik G, Lechat B, Manners J, Fitton J, Nguyen DP, et al. Are we getting
+assumption that changes identified are equivalent to clinically signifi­                  enough sleep? Frequent irregular sleep found in an analysis of over 11 million
+                                                                                          nights of objective in-home sleep data. Sleep Health 2024;10(1):91–7.
+cant alterations in sleep outcomes. There also exists large variability in            [6] Hillman DR, Lack LC. Public health implications of sleep loss: the community
+the pharmacokinetics of alcohol attributed to a combination of                            burden. Med J Aust 2013;199(8):S7–10.
+
+
+                                                                                13
+C. Gardiner et al.                                                                                                                              Sleep Medicine Reviews 80 (2025) 102030
+
+ [7] Shriane AE, Ferguson SA, Jay SM, Vincent GE. Sleep hygiene in shift workers: a              [40] Block AJ, Hellard DW. Ingestion of either scotch or vodka induces equal effects on
+     systematic literature review. Sleep Med Rev 2020;53:101336.                                      sleep and breathing of asymptomatic subjects. Arch Intern Med 1987;147(6):
+ [8] Taillard J, Sagaspe P, Philip P, Bioulac S. Sleep timing, chronotype and social                  1145–7.
+     jetlag: impact on cognitive abilities and psychiatric disorders. Biochem Pharmacol          [41] Block AJ, Hellard DW, Slayton PC. Minimal effect of alcohol ingestion on breathing
+     2021. 114438-.                                                                                   during the sleep of postmenopausal women. Chest 1985;88(2):181–4.
+ [9] Grandner MA. Sleep, health, and society. Sleep Med Clin 2017;12(1):1–22.                    [42] Kido M, Asakawa A, Koyama KK, Takaoka T, Tajima A, Takaoka S, et al. Acute
+[10] Johnson EO, Roehrs T, Roth T, Breslau N. Epidemiology of alcohol and medication                  effects of traditional Japanese alcohol beverages on blood glucose and
+     as aids to sleep in early adulthood. Sleep 1998;21(2):178–86.                                    polysomnography levels in healthy subjects. PeerJ 2016;4:e1853.
+[11] Roehrs T, Roth T. Sleep, sleepiness, and alcohol use. Alcohol Res Health 2001;25            [43] Knowles JB, Laverty SG, Kuechler HA. Effects on REM sleep. Q J Stud Alcohol
+     (2):101–9.                                                                                       1968;29(2):342–9.
+[12] Roehrs T, Roth T. Insomnia pharmacotherapy. Neurotherapeutics 2012;9(4):                    [44] Yules RB, Freedman DX, Chandler KA. The effect of ethyl alcohol on man’s
+     728–38.                                                                                          electroencephalographic sleep cycle. Electroencephalogr Clin Neurophysiol 1966;
+[13] Schweizer CA, Hoggatt KJ, Washington DL, Bean-Mayberry B, Yano EM,                               20(2):109–11.
+     Mitchell MN, et al. Use of alcohol as a sleep aid, unhealthy drinking behaviors, and        [45] Prinz PN, Roehrs TA, Vitaliano PP, Linnoila M, Weitzman ED. Effect of alcohol on
+     sleeping pill use among women veterans. Sleep Health 2019;5(5):495–500.                          sleep and nighttime plasma growth hormone and cortisol concentrations. J Clin
+[14] Rehm J, Mathers C, Popova S, Thavorncharoensap M, Teerawattananon Y, Patra J.                    Endocrinol Metab 1980;51(4):759–64.
+     Alcohol and global health 1: global burden of disease and injury and economic cost          [46] Finnigan F, Hammersley R, Cooper T. An examination of next-day hangover effects
+     attributable to alcohol use and alcohol-use disorders. Lancet 2009;373(9682):                    after a 100 mg/100 ml dose of alcohol in heavy social drinkers. Addiction 1998;93
+     2223–33.                                                                                         (12):1829–38.
+[15] Martin CS, Earleywine M, Musty RE, Perrine MW, Swift RM. Development and                    [47] Ferner RE, Chambers J. Alcohol intake: measure for measure. BMJ 2001;323
+     validation of the biphasic alcohol effects scale. Alcohol Clin Exp Res 1993;17(1):               (7327):1439.
+     140–6.                                                                                      [48] Viechtbauer W. Conducting meta-analyses in r with the metafor package. J Stat
+[16] Holdstock L, de Wit H. Individual differences in the biphasic effects of ethanol.                Softw 2010;36.
+     Alcohol Clin Exp Res 1998;22(9):1903–11.                                                    [49] Pustejovsky J. Clubsandwich: cluster-robust (sandwich) variance estimators with
+[17] Colrain IM, Nicholas CL, Baker FC. Alcohol and the sleeping brain. Handb Clin                    small-sample corrections. R package version 2021;0.5.3 [Internet]. Unknown:
+     Neurol 2014;125:415–31.                                                                          James Pustejovsky [cited 2022 April 4]. Available from: https://CRAN.R-project.or
+[18] Ebrahim IO, Shapiro CM, Williams AJ, Fenwick PB. Alcohol and sleep i: effects on                 g/package=clubSandwich.
+     normal sleep. Alcohol Clin Exp Res 2013;37(4):539–49.                                       [50] Elbourne DR, Altman DG, Higgins JP, Curtin F, Worthington HV, Vail A. Meta-
+[19] Mitchell Jr MC, Teigen EL, Ramchandani VA. Absorption and peak blood alcohol                     analyses involving cross-over trials: methodological issues. Int J Epidemiol 2002;
+     concentration after drinking beer, wine, or spirits. Alcohol Clin Exp Res 2014;38                31(1):140–9.
+     (5):1200–4.                                                                                 [51] Pabon E, Greenlund IM, Carter JR, de Wit H. Effects of alcohol on sleep and
+[20] Stein MD, Friedmann PD. Disturbed sleep and its relationship to alcohol use. Subst               nocturnal heart rate: relationships to intoxication and morning-after effects.
+     Abus 2005;26(1):1–13.                                                                            Alcohol Clin Exp Res 2022;46(10):1875–87.
+[21] Philippens N, Janssen E, Kremers S, Crutzen R. Determinants of natural adult sleep:         [52] Tipton E, Pustejovsky JE. Small-sample adjustments for tests of moderators and
+     an umbrella review. PLoS One 2022;17(11):e0277323.                                               model fit using robust variance estimation in meta-regression. J Educ Behav Stat
+[22] Sterne JAC, Savović J, Page MJ, Elbers RG, Blencowe NS, Boutron I, et al. RoB 2: a              2015;40(6):604–34.
+     revised tool for assessing risk of bias in randomised trials. Br Med J 2019;366:            [53] Smith C, Smith D. Ingestion of ethanol just prior to sleep onset impairs memory for
+     l4898.                                                                                           procedural but not declarative tasks. Sleep 2003;26(2):185–91.
+[23] Arnedt JT, Rohsenow DJ, Almeida AB, Hunt SK, Gokhale M, Gottlieb DJ, et al.                 [54] Rohsenow DJ, Howland J, Minsky SJ, Arnedt JT. Effects of heavy drinking by
+     Sleep following alcohol intoxication in healthy, young adults: effects of sex and                maritime academy cadets on hangover, perceived sleep, and next-day ship power
+     family history of alcoholism. Alcohol Clin Exp Res 2011;35(5):870–8.                             plant operation. J Stud Alcohol 2006;67(3):406–15.
+[24] Van Reen E, Jenni OG, Carskadon MA. Effects of alcohol on sleep and the sleep               [55] Scrima L, Broudy M, Nay KN, Cohn MA. Increased severity of obstructive sleep
+     electroencephalogram in healthy young women. Alcohol Clin Exp Res 2006;30(6):                    apnea after bedtime alcohol ingestion: diagnostic potential and proposed
+     974–81.                                                                                          mechanism of action. Sleep 1982;5(4):318–28.
+[25] Feige B, Gann H, Brueck R, Hornyak M, Litsch S, Hohagen F, et al. Effects of alcohol        [56] Walpole SC, Prieto-Merino D, Edwards P, Cleland J, Stevens G, Roberts I. The
+     on polysomnographically recorded sleep in healthy subjects. Alcohol Clin Exp Res                 weight of nations: an estimation of adult human biomass. BMC Publ Health 2012;
+     2006;30(9):1527–37.                                                                              12(1):439.
+[26] Landolt HP, Roth C, Dijk DJ, Borbély AA. Late-afternoon ethanol intake affects             [57] Mirijello A, Sestito L, Antonelli M, Gasbarrini A, Addolorato G. Identification and
+     nocturnal sleep and the sleep EEG in middle-aged men. J Clin Psychopharmacol                     management of acute alcohol intoxication. Eur J Intern Med 2023;108:1–8.
+     1996;16(6):428–36.                                                                          [58] Ohayon M, Wickwire EM, Hirshkowitz M, Albert SM, Avidan A, Daly FJ, et al.
+[27] Rundell OH, Lester BK, Griffiths WJ, Williams HL. Alcohol and sleep in young                     National Sleep Foundation’s sleep quality recommendations: first report. Sleep
+     adults. Psychopharmacologia 1972;26(3):201–18.                                                   Health 2017;3(1):6–19.
+[28] Kobayashi T, Madokoro S, Wada Y, Misaki K, Nakagawa H. Effect of ethanol on                 [59] Thakkar MM, Sharma R, Sahota P. Alcohol disrupts sleep homeostasis. Alcohol
+     human sleep EEG using correlation dimension analysis. Neuropsychobiology 2002;                   2015;49(4):299–310.
+     46(2):104–10.                                                                               [60] Lieber CS. Hepatic, metabolic and toxic effects of ethanol: 1991 update. Alcohol:
+[29] Miyata S, Noda A, Ito N, Atarashi M, Yasuma F, Morita S, et al. REM sleep is                     Clinical and Experimental Research 1991;15(4):573–92.
+     impaired by a small amount of alcohol in young women sensitive to alcohol. Intern           [61] Wilkinson PK, Sedman AJ, Sakmar E, Kay DR, Wagner JG. Pharmacokinetics of
+     Med 2004;43(8):679–84.                                                                           ethanol after oral administration in the fasting state. J Pharmacokinet Biopharm
+[30] Roehrs T, Papineau K, Rosenthal L, Roth T. Ethanol as a hypnotic in insomniacs:                  1977;5(3):207–24.
+     self administration and effects on sleep and mood. Neuropsychopharmacology                  [62] Zheng D, Yuan X, Ma C, Liu Y, VanEvery H, Sun Y, et al. Alcohol consumption and
+     1999;20(3):279–86.                                                                               sleep quality: a community-based study. Public Health Nutr 2021;24(15):4851–8.
+[31] Roehrs T, Yoon J, Roth T. Nocturnal and next-day effects of ethanol and basal level         [63] Quertemont E, Didone V. Role of acetaldehyde in mediating the pharmacological
+     of sleepiness. Hum Psychopharmacol 1991;6(4):307–11.                                             and behavioral effects of alcohol. Alcohol Res Health 2006;29(4):258–65.
+[32] Stone BM. Sleep and low doses of alcohol. Electroencephalogr Clin Neurophysiol              [64] McCarley RW. Neurobiology of REM sleep. Handb Clin Neurol 2011;98:151–71.
+     1980;48(6):706–9.                                                                           [65] Fuller PM, Gooley JJ, Saper CB. Neurobiology of the sleep-wake cycle: sleep
+[33] Bazil Carl W, Battista J, Basner Robert C. Gabapentin improves sleep in the                      architecture, circadian regulation, and regulatory feedback. J Biol Rhythms 2006;
+     presence of alcohol. J Clin Sleep Med 2005;1(3):284–7.                                           21(6):482–93.
+[34] MacLean AW, Cairns J. Dose-response effects of ethanol on the sleep of young men.           [66] Landolt H-P. Sleep homeostasis: a role for adenosine in humans? Biochem
+     J Stud Alcohol 1982;43(5):434–44.                                                                Pharmacol 2008;75(11):2070–9.
+[35] Rohsenow DJ, Howland J, Arnedt JT, Almeida AB, Greece J, Minsky S, et al.                   [67] Landolt H-P, Rétey JV, Tönz K, Gottselig JM, Khatami R, Buckelmüller I, et al.
+     Intoxication with bourbon versus vodka: effects on hangover, sleep, and next-day                 Caffeine attenuates waking and sleep electroencephalographic markers of sleep
+     neurocognitive performance in young adults. Alcohol Clin Exp Res 2010;34(3):                     homeostasis in humans. Neuropsychopharmacology 2004;29(10):1933–9.
+     509–18.                                                                                     [68] Steriade M, Timofeev I, Grenier F. Natural waking and sleep states: a view from
+[36] Sagawa Y, Kondo H, Matsubuchi N, Takemura T, Kanayama H, Kaneko Y, et al.                        inside neocortical neurons. J Neurophysiol 2001;85(5):1969–85.
+     Alcohol has a dose-related effect on parasympathetic nerve activity during sleep.           [69] Hobson RM, Maughan RJ. Hydration status and the diuretic action of a small dose
+     Alcohol Clin Exp Res 2011;35(11):2093–100.                                                       of alcohol. Alcohol Alcohol 2010;45(4):366–73.
+[37] Williams DL, MacLean AW, Cairns J. Dose-response effects of ethanol on the sleep            [70] Sateia MJ, Buysse DJ, Krystal AD, Neubauer DN, Heald JL. Clinical practice
+     of young women. J Stud Alcohol 1983;44(3):515–23.                                                guideline for the pharmacologic treatment of chronic insomnia in adults: an
+[38] Payseur DK, Belhumeur JR, Curtin LA, Moody AM, Collier SR. The effect of acute                   American Academy of Sleep Medicine clinical practice guideline. J Clin Sleep Med
+     alcohol ingestion on systemic hemodynamics and sleep architecture in young,                      2017;13(2):307–49.
+     healthy men. J Am Coll Health 2022;70(2):509–16.                                            [71] Shrivastava D, Jung S, Saadat M, Sirohi R, Crewson K. How to interpret the results
+[39] Iber C. The AASM manual for the scoring of sleep and associated events: rules,                   of a sleep study. J Community Hosp Intern Med Perspect 2014;4(5):24983.
+     terminology and technical specification. Westchester. Illinois: American Academy            [72] Porkka-Heiskanen T, Zitting KM, Wigren HK. Sleep, its regulation and possible
+     of Sleep Medicine; 2007.                                                                         mechanisms of sleep disturbances. Acta Physiol 2013;208(4):311–28.
+
+
+
+
+                                                                                            14
+C. Gardiner et al.                                                                                                                            Sleep Medicine Reviews 80 (2025) 102030
+
+[73] Baraona E, Abittan CS, Dohmen K, Moretti M, Pozzato G, Chayes ZW, et al. Gender            [77] Blumberg MS, Lesku JA, Libourel PA, Schmidt MH, Rattenborg NC. What is REM
+     differences in pharmacokinetics of alcohol. Alcohol Clin Exp Res 2001;25(4):                    sleep? Curr Biol 2020;30(1):R38–r49.
+     502–7.                                                                                     [78] Norberg Å, Jones AW, Hahn RG, Gabrielsson JL. Role of variability in explaining
+[74] Erol A, Ho AM, Winham SJ, Karpyak VM. Sex hormones in alcohol consumption: a                    ethanol pharmacokinetics. Clin Pharmacokinet 2003;42(1):1–31.
+     systematic review of evidence. Addict Biol 2019;24(2):157–69.                              [79] Jones AW, Jönsson KA, Kechagias S. Effect of high-fat, high-protein, and high-
+[75] Elliott-Sale KJ, Minahan CL, de Jonge XAKJ, Ackerman KE, Sipilä S,                             carbohydrate meals on the pharmacokinetics of a small dose of ethanol. Br J Clin
+     Constantini NW, et al. Methodological considerations for studies in sport and                   Pharmacol 1997;44(6):521–6.
+     exercise science with women as participants: a working guide for standards of              [80] Bosron WF, Ehrig T, Li TK. Genetic factors in alcohol metabolism and alcoholism.
+     practice for research on women. Sports Med 2021;51(5):843–61.                                   Semin Liver Dis 1993;13(2):126–35.
+[76] Proserpio P, Marra S, Campana C, Agostoni EC, Palagini L, Nobili L, et al. Insomnia        [81] Landolt H-P, Rétey JV, Adam M. Reduced neurobehavioral impairment from sleep
+     and menopause: a narrative review on mechanisms and treatments. Climacteric                     deprivation in older adults: contribution of adenosinergic mechanisms. Front
+     2020;23(6):539–49.                                                                              Neurol 2012;3:62.
+
+
+
+
+                                                                                           15
+

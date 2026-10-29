@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:03.32,Cap,,0,0,0,,{\c&HFFFFFF&}다음 날 회의. 또 모르는 말이 나옵니다.
+Dialogue: 0,0:00:03.34,0:00:05.74,Cap,,0,0,0,,{\c&H7AE2FF&}이번 건, KPI 얼라인부터 하죠.
+Dialogue: 0,0:00:05.76,0:00:08.09,Cap,,0,0,0,,{\c&HFFFFFF&}이번엔 제로가 손을 듭니다.
+Dialogue: 0,0:00:08.11,0:00:11.91,Cap,,0,0,0,,{\c&H7AE2FF&}죄송한데, 그게 정확히 무슨 뜻이에요?
+Dialogue: 0,0:00:11.93,0:00:16.86,Cap,,0,0,0,,{\c&HFFFFFF&}잠깐의 정적. 그리고 옆자리에서 들려온 작은 목소리.
+Dialogue: 0,0:00:16.88,0:00:20.13,Cap,,0,0,0,,{\c&H7AE2FF&}사실… 저도 몰랐어요.
+Dialogue: 0,0:00:20.15,0:00:24.53,Cap,,0,0,0,,{\c&HFFFFFF&}팀장님의 설명이 이어지고, 회의는 오히려 일찍 끝납니다.
+Dialogue: 0,0:00:24.55,0:00:27.38,Cap,,0,0,0,,{\c&HFFFFFF&}묻는 사람은 바보처럼 보일까?
+Dialogue: 0,0:00:27.40,0:00:30.89,Cap,,0,0,0,,{\c&HFFFFFF&}한 실험의 결과는 반대였습니다.
+Dialogue: 0,0:00:30.91,0:00:35.89,Cap,,0,0,0,,{\c&HFFFFFF&}조언을 구해 온 상대를, 사람들은 오히려 더 유능하게 봤죠.
+Dialogue: 0,0:00:35.91,0:00:38.26,Cap,,0,0,0,,{\c&HFFFFFF&}단, 과제가 어려울 때.
+Dialogue: 0,0:00:38.28,0:00:43.01,Cap,,0,0,0,,{\c&HFFFFFF&}그리고 그 일을 잘 아는 사람에게 물었을 때의 이야기입니다.
+Dialogue: 0,0:00:43.03,0:00:46.65,Cap,,0,0,0,,{\c&HFFFFFF&}모른다고 말하는 순간, 배움이 시작됩니다.

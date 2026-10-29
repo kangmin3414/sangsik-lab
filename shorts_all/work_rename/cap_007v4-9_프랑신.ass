@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.54,Cap,,0,0,0,,이렇게 냉철했던 데카르트에게도, 딸이 하나 있었습니다.
+Dialogue: 0,0:00:04.54,0:00:07.44,Cap,,0,0,0,,{\c&H33E7F7&}1635년{\c&HFFFFFF&}에 태어난 딸, 프랑신.
+Dialogue: 0,0:00:07.69,0:00:09.78,Cap,,0,0,0,,그는 딸을 프랑스로 데려가,
+Dialogue: 0,0:00:09.78,0:00:12.68,Cap,,0,0,0,,제대로 공부시킬 계획까지 세웁니다.
+Dialogue: 0,0:00:12.93,0:00:15.06,Cap,,0,0,0,,하지만 {\c&H33E7F7&}1640년{\c&HFFFFFF&} 가을,
+Dialogue: 0,0:00:15.06,0:00:20.04,Cap,,0,0,0,,프랑신은 다섯 살의 나이에 성홍열로 세상을 떠납니다.
+Dialogue: 0,0:00:21.09,0:00:22.01,Cap,,0,0,0,,몇 달 뒤,
+Dialogue: 0,0:00:22.01,0:00:27.04,Cap,,0,0,0,,슬픔에 빠진 친구에게 보낸 편지에 데카르트는 이렇게 씁니다.
+Dialogue: 0,0:00:27.04,0:00:31.31,Cap,,0,0,0,,나는 눈물과 슬픔을 부끄러운 것이라 여기지 않는다.
+Dialogue: 0,0:00:31.31,0:00:35.99,Cap,,0,0,0,,강해 보이려고, 늘 아무렇지 않은 척할 필요는 없다.
+Dialogue: 0,0:00:36.74,0:00:41.56,Cap,,0,0,0,,모든 걸 의심했던 사람도, 슬픔 앞에서는 솔직했던 겁니다.

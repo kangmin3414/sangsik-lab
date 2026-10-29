@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.51,Cap,,0,0,0,,모든 게 의심스러워진 제로. 그날 밤, 잠이 오지 않습니다.
+Dialogue: 0,0:00:04.51,0:00:06.88,Cap,,0,0,0,,그럼 대체, 뭘 믿어야 하지?
+Dialogue: 0,0:00:07.74,0:00:10.71,Cap,,0,0,0,,데카르트도 바로 그 질문 앞에 섰습니다.
+Dialogue: 0,0:00:10.71,0:00:12.87,Cap,,0,0,0,,그리고 모든 걸 의심한 끝에,
+Dialogue: 0,0:00:12.87,0:00:15.96,Cap,,0,0,0,,의심할 수 없는 단 하나를 찾아냅니다.
+Dialogue: 0,0:00:16.21,0:00:20.19,Cap,,0,0,0,,악마에게 속고 있다 해도, 속고 있는 내가 있다는 것.
+Dialogue: 0,0:00:20.19,0:00:22.72,Cap,,0,0,0,,이렇게 고민하고 흔들리는 순간에도,
+Dialogue: 0,0:00:22.72,0:00:25.75,Cap,,0,0,0,,생각하는 나는 분명히 여기 있다는 것.
+Dialogue: 0,0:00:26.00,0:00:30.72,Cap,,0,0,0,,나는 생각한다. 그러므로, 나는 존재한다. {\c&H33E7F7&}1637년{\c&HFFFFFF&},
+Dialogue: 0,0:00:30.72,0:00:33.64,Cap,,0,0,0,,『방법서설』에 실린 문장입니다.
+Dialogue: 0,0:00:34.29,0:00:37.75,Cap,,0,0,0,,모든 걸 허문 자리에서, 그가 찾은 첫 번째 바닥.
+Dialogue: 0,0:00:37.75,0:00:39.36,Cap,,0,0,0,,바로 '나'였습니다.

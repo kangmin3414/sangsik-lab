@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../thumb3/node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;padding:0;background:transparent}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+#bg{position:absolute;inset:0}
+#bg:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.05) 2px,transparent 2px);background-size:60px 60px}
+#tag{position:absolute;top:150px;left:0;right:0;text-align:center}
+#tag span{display:inline-block;padding:8px 30px 12px;border-radius:999px;border:5px solid #111114;font:900 36px 'Noto Sans CJK KR','Noto Sans KR',sans-serif;color:#0B1626;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+#title{position:absolute;top:240px;left:0;right:0;text-align:center;font-family:'Jua',sans-serif;line-height:1.08;-webkit-text-stroke:20px #0E0E10;paint-order:stroke fill;text-shadow:0 9px 0 rgba(0,0,0,.55)}
+#title .l1{font-size:108px;color:#fff;display:inline-block}
+#title .l2{font-size:138px;color:#F7E733;transform:rotate(-2deg);display:inline-block}
+#frame{position:absolute;left:0;top:616px;width:1080px;height:509px;border-top:7px solid;border-bottom:7px solid;box-sizing:border-box;background:#000}
+#cta{position:absolute;left:30px;width:1020px;top:1190px;text-align:center}
+#cta .big{font-family:'Jua',sans-serif;font-size:88px;line-height:1.15;color:#fff;-webkit-text-stroke:16px #0E0E10;paint-order:stroke fill}
+#cta .big b{font-weight:normal}
+#cta .arrow{font-family:'Jua',sans-serif;font-size:96px;color:#F7E733;-webkit-text-stroke:14px #0E0E10;paint-order:stroke fill;margin-top:6px}
+</style></head>
+<body><div id="stage"><div id="bg"></div><div id="tag"><span id="tagt"></span></div><div id="title"><div class="l1" id="l1"></div><br><div class="l2" id="l2"></div></div><div id="frame"></div>
+<div id="cta"><div class="big" id="ctab"></div><div class="arrow">▼</div></div></div>
+<script>
+function setup(o) {
+  const bg = document.getElementById('bg');
+  bg.style.background = `radial-gradient(ellipse at 50% 40%, ${o.theme[1]} 0%, ${o.theme[0]} 60%, ${o.theme[2]} 100%)`;
+  document.getElementById('tagt').textContent = o.tag; document.getElementById('tagt').style.background = o.accent;
+  document.getElementById('frame').style.borderColor = o.accent;
+  const l1 = document.getElementById('l1'), l2 = document.getElementById('l2');
+  l1.textContent = o.title[0]; l2.textContent = o.title[1];
+  const fit = (el, max) => { let fs = max; el.style.fontSize = fs + 'px'; while (el.getBoundingClientRect().width > 1020 && fs > 50) { fs -= 4; el.style.fontSize = fs + 'px'; } };
+  fit(l1, 108); fit(l2, 138);
+  document.getElementById('ctab').innerHTML = `${o.cta[0]}<br><b style="color:${o.accent}">${o.cta[1]}</b>`;
+  const mode = o.mode;
+  document.getElementById('cta').style.display = mode === 'cta' ? 'block' : 'none';
+  for (const id of ['bg', 'tag', 'title', 'frame']) document.getElementById(id).style.visibility = mode === 'cta' ? 'hidden' : 'visible';
+}
+window.setup = setup;
+</script></body></html>

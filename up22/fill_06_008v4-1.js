@@ -1,0 +1,10 @@
+window.__deep = (pred) => { let r = null; const w = (root, d) => { if (d > 45 || r) return; for (const el of root.querySelectorAll('*')) { if (pred(el)) { r = el; return; } if (el.shadowRoot) w(el.shadowRoot, d + 1); } }; w(document, 0); return r; };
+await new Promise(r => setTimeout(r, 3500));
+const set = (start, text) => { const tb = window.__deep(el => el.id === 'textbox' && el.getAttribute('contenteditable') && (el.getAttribute('aria-label') || '').startsWith(start)); if (!tb) return null; tb.focus(); document.execCommand('selectAll', false, null); document.execCommand('insertText', false, text); return tb.innerText; };
+const title = "\uc26c\ub294 \ub0a0, \ub0b4 \uc4f8\ubaa8\ub294 \uace0\uc791 20\uc13c\ud2f0? \ud83d\udccf #\ub9cc\uc57d\uc5d0";
+const desc = "\uac13\uc0dd \ud53c\ub4dc\ub97c \ubcf4\ub2e4\uac00 \ub178\ub780 \uc790\ub85c \uc790\uae30\ub97c \uc7ac \ubcf8 \uc81c\ub85c. \uce5c\uad6c\ub4e4\uc740 \uc465\uc465 \ud06c\ub294\ub370, \ub0b4 \uc4f8\ubaa8\ub294 \uace0\uc791 20\uc13c\ud2f0.\n2,300\ub144 \uc804 \uc7a5\uc790\ub77c\uba74 \uc774 \uc790\ub97c \uc5b4\ub5bb\uac8c \ubd24\uc744\uae4c\uc694?\n\ud83d\udccc \uc7a5\uc790\ucc98\ub7fc \ub0a8\uc758 \uc7a3\ub300 \ub0b4\ub824\ub193\uae30, \uc804\uccb4 \uc2e4\ud5d8\uc740 \ucc44\ub110\uc5d0\uc11c!\n\ud83d\udcac \uc624\ub298 \uc5ec\ub7ec\ubd84\uc744 \uc7b0 \uc790\ub294 \ubb50\uc600\ub098\uc694? \ud83d\udc47\n#\ub9cc\uc57d\uc5d0 #\uc7a5\uc790 #\uac13\uc0dd #\uc27c #\ucca0\ud559 #shorts";
+const t = set('\ub3d9\uc601\uc0c1\uc744 \uc124\uba85\ud558\ub294 \uc81c\ubaa9', title); await new Promise(r => setTimeout(r, 300)); const d = set('\uc2dc\uccad\uc790\uc5d0\uac8c', desc);
+await new Promise(r => setTimeout(r, 500));
+const nk = window.__deep(el => el.tagName.toLowerCase() === 'tp-yt-paper-radio-button' && el.getAttribute('name') === 'VIDEO_MADE_FOR_KIDS_NOT_MFK'); if (nk && nk.getAttribute('aria-checked') !== 'true') nk.click();
+if (!(t === title && (d || '').replace(/\n$/, '') === desc && nk && nk.getAttribute('aria-checked') === 'true')) throw new Error('fill failed ' + (t||'').slice(0,20));
+'filled: ' + t

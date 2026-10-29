@@ -1,0 +1,46 @@
+{
+ "2_장자": {
+  "promptTokenCount": 346,
+  "candidatesTokenCount": 1131,
+  "totalTokenCount": 1477,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 346
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 173
+   },
+   {
+    "modality": "AUDIO",
+    "tokenCount": 958
+   }
+  ]
+ },
+ "3_붓다": {
+  "promptTokenCount": 558,
+  "candidatesTokenCount": 2038,
+  "totalTokenCount": 2596,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 558
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 298
+   },
+   {
+    "modality": "AUDIO",
+    "tokenCount": 1740
+   }
+  ]
+ }
+}

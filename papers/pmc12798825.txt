@@ -1,0 +1,377 @@
+1
+2
+3
+4
+AUTHOR CONTRIBUTIONS
+E.L.M, R.H.E., and K.P.W. designed the experiments; C.M.D., E.L.M., J.K.S., L.P., B.C.B., and K.P.W. collected data; all authors analyzed data and edited the paper; C.M.D. and K.P.W. wrote the manuscript; E.L.M. R.H.E., L.P., B.C.B and K.P.W. obtained funding and supervised the research.
+*
+
+## Summary
+People commonly increase sleep duration on the weekend to “recover” from sleep loss incurred during the workweek. Whether ad libitum weekend recovery sleep prevents metabolic dysregulation caused by recurrent insufficient sleep is unknown. Here, we assessed sleep, circadian timing, energy intake, weight-gain, and insulin sensitivity during sustained insufficient sleep (9 nights) and during recurrent insufficient sleep following ad libitum weekend recovery sleep. Healthy, young adults were randomly assigned to one of three groups. 1) control (CON; 9h sleep opportunities, n=8), 2) sleep restriction without weekend recovery sleep (SR; 5h sleep opportunities, n=14), and 3) sleep restriction with weekend recovery sleep (WR; insufficient sleep for 5-d workweek, then 2 days weekend recovery, then 2 nights insufficient sleep, n=14). For SR and WR groups, insufficient sleep increased after-dinner energy intake and body weight versus baseline. During ad libitum weekend recovery sleep, participants cumulatively slept ~1.1h more than baseline and after-dinner energy intake decreased versus insufficient sleep. However, during recurrent insufficient sleep following the weekend, circadian phase was delayed and after-dinner energy intake and body weight increased versus baseline. In SR, whole-body insulin sensitivity decreased ~13% during insufficient sleep versus baseline, and in WR, whole-body, hepatic, and muscle insulin sensitivity decreased ~9–27%, during recurrent insufficient sleep versus baseline. Furthermore, during the weekend, total sleep duration was lower in women versus men, and energy intake decreased to baseline levels in women but not men. Our findings suggest weekend recovery sleep is not an effective strategy to prevent metabolic dysregulation associated with recurrent insufficient sleep.
+
+## eTOC blurb
+Weekend recovery sleep is a common sleep loss countermeasure. Depner et al. show that short sleep led to later timing of energy intake, weight-gain, and reduced insulin sensitivity. Weekend recovery sleep failed to prevent later timing of energy intake, weight-gain, or reduced insulin sensitivity during recurrent short sleep following the weekend.
+
+## INTRODUCTION
+Findings from the Global Burden of Disease study indicate 603.7 million adults were obese in 2015, and cardiovascular disease and diabetes were the first and second, respectively, leading causes of death from high body mass index (BMI) [1]. Insufficient sleep and untreated sleep disorders are recognized risk factors for obesity and diabetes [2–5]. Specifically, insufficient sleep alters several behavioral and physiological processes implicated in metabolic dysregulation including regulation of energy intake and delayed circadian timing, which results in weight-gain, and reduced insulin sensitivity [2, 6–17]. The Sleep Research Society and American Academy of Sleep Medicine recommend adults aged 18–60 years regularly obtain 7h or more of sleep per night to promote optimal health [18, 19]. Yet, estimates show ~35% of American adults report sleeping less than the recommended 7h per night, ~30% report sleeping less than 6h per night, and over 40% of active military personnel report less than 5h sleep per night [20–23]. As a result, the habit of increasing weekend sleep duration in attempt to recover from sleep loss incurred during the workweek is common [24, 25].
+The effectiveness of scheduled weekend recovery sleep (i.e., experimentally controlled recovery sleep opportunities) as a strategy to mitigate adverse physiological consequences of insufficient sleep has been examined for whole-body insulin sensitivity, inflammatory proteins, and blood pressure [26–30]. Findings from these studies are mixed with evidence for and against improved physiological outcomes. It is unknown whether ad libitum weekend recovery sleep can prevent adverse metabolic consequences of recurrent episodes of insufficient sleep when people maintain sleep schedules that cycle between weekend recovery sleep and insufficient sleep during the workweek. Hereafter, we refer to insufficient sleep following weekend recovery sleep as recurrent insufficient sleep.
+We used a randomized, three-group, in-laboratory Clinical Translational Research Center (CTRC) protocol to examine how recurrent insufficient sleep following an ad libitum weekend recovery sleep episode affects circadian phase, energy intake, body weight, and whole body and tissue specific insulin sensitivity (Figure 1), with equal numbers of men and women in each study group. Outcomes were sleep duration during ad libitum weekend recovery sleep, circadian melatonin phase, total daily energy intake, after-dinner energy intake, body weight, and whole body and tissue specific insulin sensitivity. As an exploratory aim, we also examined potential sex differences as many prior studies only examined men [7, 15, 27, 30–32], and we previously reported sex differences in metabolic responses to insufficient sleep [17]. Our major findings show that insufficient sleep led to higher after-dinner energy intake, weight-gain, delayed circadian timing of melatonin onset, and reduced whole-body insulin sensitivity. For participants in the WR group, ad libitum weekend recovery sleep failed to prevent any of these metabolic derangements when assessed during recurrent insufficient sleep following the weekend. Furthermore, the timing of the circadian melatonin offset was delayed and hepatic and muscle insulin sensitivity were reduced during recurrent insufficient sleep following the weekend. Sex differences were observed during weekend recovery sleep. Specifically, total ad libitum weekend recovery sleep duration was lower in women versus men, and energy intake during the weekend decreased to baseline levels in women but not in men. Thus, under conditions of ad libitum energy intake, our findings suggest ad libitum weekend recovery sleep is not likely an effective countermeasure strategy to prevent the negative metabolic consequences associated with recurrent insufficient sleep across multiple workweeks.
+
+## RESULTS AND DISCUSSION
+
+## Ad Libitum Weekend Recovery Sleep Does Not Fully Repay Workweek Sleep Loss
+During the baseline segment (days 1–3), average polysomnography derived sleep duration was similar (P = 0.77) across groups (~8h per night; Table 1). In the control group (CON), average sleep duration during workweek-1, the weekend, and workweek-2 segments was similar (P = 0.65, Table 1; as designed by the study protocol–Figure 1). In the sleep restriction group (SR), sleep duration was lower (P < 0.001) during workweek-1, the weekend, and workweek-2 segments versus baseline, as designed (Table 1; Figure 1). In the weekend recovery group (WR), sleep duration was lower (P < 0.001) during workweeks-1 and −2 compared to baseline, as designed, whereas sleep duration was higher (P < 0.05) on study days 8 (Friday night) and 9 (Saturday night) compared to baseline (Table 1). Cumulatively over study days 8 and 9, participants in the WR group slept a total of ~3.0h more than their baseline sleep duration. However, on study day 10 (Sunday night) when participants in the WR group self-selected their bedtime (lights-off) knowing waketime (lights-on) on study day 11 was scheduled early to simulate Monday morning (i.e., 2h prior to habitual waketime; Figure 1), sleep duration was lower (P < 0.001) compared to baseline (Table 1). Thus, cumulatively across study nights 8–10 with ad libitum weekend recovery sleep, WR participants only slept a total of ~1.1h more than their estimated total sleep need as estimated from each participant’s baseline sleep duration. Therefore, the weekend of ad libitum recovery sleep did not repay on an hour-by-hour basis the more than 12h of sleep lost during the workweek.
+Slow wave activity (SWA) during sleep is a commonly used electroencephalographic (EEG) marker of homeostatic sleep drive that shows increases during nighttime sleep after total sleep deprivation and decreases during nighttime sleep after a daytime nap [33, 34]. Yet, findings of SWA from prior studies of insufficient sleep are mixed; e.g., findings show increased [35–37], decreased [38], or no changes [39, 40] in SWA across days of insufficient sleep. Here, in the control group (CON), cumulative SWA per night was similar across all study segments (P = 0.29, Figure 2A). In the SR group, cumulative SWA per night was lower (all P < 0.001) during workweek-1, the weekend, and workweek-2 segments versus baseline (Figure 2A). In the WR group, cumulative SWA per night was lower (all P < 0.001) during workweeks-1 and −2 compared to baseline and the weekend (Figure 2A). During the weekend in the WR group, cumulative SWA was higher (all P < 0.05) on study days 8 and 9 versus baseline and study day 10, and was lower (P < 0.001) on study day 10 versus baseline (Figure 2B). Higher cumulative SWA in the WR group on study day 9 indicates homeostatic sleep drive was still elevated and therefore WR participants were not fully recovered. Decreased cumulative SWA in the WR group on study day 10 is consistent with lower total sleep duration on study day 10 versus baseline. Our SWA findings suggest that participants in the WR group did not fully recover their sleep debt during ad libitum weekend recovery sleep, and thus some sleep debt was carried over into workweek-2. Our findings from both total sleep duration and cumulative SWA consistently show a weekend of ad libitum recovery sleep is not sufficient to fully recover from a workweek of insufficient sleep. Given the limited amount of total sleep recovered during the ad libitum weekend recovery sleep opportunity provided, it is unclear how much insufficient sleep during the workweek can be recovered in a typical weekend.
+
+## Ad Libitum Weekend Recovery Sleep Delayed the Timing of Sleep, Light Exposure, and Circadian Rhythms
+By design, bedtimes and waketimes in the CON group were fixed throughout the study, and bedtimes and waketimes in the SR group were delayed and advanced by 2h each, respectively, during insufficient sleep versus baseline (Figure 1). In the WR group, self-selected waketimes were ~3.9 ± 0.3h and ~3.5 ± 0.2h later (P < 0.001) on study days 9 (Saturday) and 10 (Sunday), respectively, compared to baseline (Table 1). Also for the WR group, self-selected bedtime on study day 9 was ~1.3 ± 0.4h later (P < 0.01) than baseline, whereas, self-selected bedtime on study day 10 was similar (P = 0.93) to baseline (Table 1).
+The circadian clock times human physiology such that energy intake, physical activity, and wakefulness optimally occur during the biological day, and fasting, physical inactivity, and sleep optimally occur during the biological night [41]. In humans, dim-light melatonin onset and offset define the beginning and end of the biological night, respectively [42]. In the CON group, timing of the dim-light melatonin onset and dim-light melatonin offset, and circadian phase relationships to scheduled bed and wake times were similar (all P > 0.13) across study days (Figure 3A; [the time of dim-light melatonin onset before scheduled bedtime was 1.8 ± 0.7h SEM on day 3, 1.0 ± 0.3h SEM on day 5, and 1.4 ± 0.4h SEM on day 11; the time of dim-light melatonin offset after scheduled waketime was 1.2 ± 1.1h SEM on day 3, 2.0 ± 0.7h SEM on day 5, and 1.6 ± 0.8h SEM on day 11]). In the SR group, dim-light melatonin onset (Figure 3B) was delayed (P < 0.05) ~25 min on study day 11 versus study day 5, and circadian phase relationships to scheduled bed and waketimes were altered. Specifically, the time between dim-light melatonin onset and scheduled bedtime was ~1.9h and ~1.6h wider (all P < 0.05) on study days 5 and 11, respectively, versus baseline, and the time between dim-light melatonin offset and scheduled waketime was ~1.5h and ~2.3h wider (all P < 0.05) on study days 5 and 11, respectively, versus baseline (Figure 2B). Thus, insufficient sleep resulted in more wakefulness during the biological night versus baseline, similar to our previous findings [17]. In the WR group, dim-light melatonin onset was delayed (P < 0.05) ~1.2h and ~1.7h on study days 5 and 11, respectively, versus baseline, and dim-light melatonin offset was delayed (P < 0.05) ~1.4h on study day 11 versus baseline (Figure 3C), and circadian phase relationships to scheduled bed and wake times were altered. Specifically, the time between dim-light melatonin onset and scheduled bedtime was ~0.7h wider (P < 0.001) on study day 5 versus baseline, and the time between dim-light melatonin offset and scheduled waketime was~2.7h and ~3.4h wider (all P < 0.05) on study days 5 and 11, respectively, versus baseline (Figure 3C). Thus, sustained insufficient and recurrent insufficient sleep following weekend recovery sleep resulted in more wakefulness during the biological night versus baseline, but, only weekend recovery sleep significantly delayed the timing of the end of the biological night on the Monday morning of workweek-2.
+In the SR and WR groups, the changes in bed and waketimes resulted in changes in light exposure patterns during insufficient sleep and ad libitum weekend recovery sleep, contributing to the observed changes in circadian phase (Figures 3 and S1); consistent with our prior findings during insufficient sleep [12, 17]. Furthermore, in the WR group during ad libitum weekend recovery sleep, later timing of light exposure at night and in the morning effectively increased light exposure during the evening phase delay and decreased light exposure during the morning phase advance portions of the phase response curve to light (Figure S1). Such changes in the timing of light exposure likely contributed to the observed phase delay on study day 11 (Monday of workweek-2) following ad libitum weekend recovery sleep [42, 43]. As observed here following ad libitum weekend recovery sleep, and elsewhere [12, 17, 43, 44], such delayed circadian timing increases the chance of waking up on Monday morning during the biological night, inducing morning circadian misalignment, consistent with the concept of social jetlag [43, 45].
+
+## Ad Libitum Weekend Recovery Sleep Failed to Prevent Increased After-Dinner Energy Intake and Weight-Gain during Recurrent Insufficient Sleep
+In the CON group, total daily energy intake increased (P < 0.05) ~1,100 kcal during workweek-2 versus baseline (Figure 4A). In the SR and WR groups, total daily energy intake increased (P < 0.05) 480–1130 kcal during workweek-1, weekend, and workweek-2 segments versus baseline (Figure 4A). In the WR group, total daily energy intake decreased (all P < 0.001) ~667 kcal and ~524 kcal during the weekend segment versus the workweek-1 and workweek-2 segments, respectively (Figure 4A).
+In each group, energy intake from breakfast, lunch, and dinner was not statistically different between study segments even though energy intake was ad libitum and the provided meals were ~33% larger than baseline (Figure S2A-C). In the CON group, energy intake from after-dinner snacks was non-significantly increased (P > 0.05 after Bonferroni correction; actual P = 0.03 prior to Bonferroni correction) ~279 kcal during workweek-1 versus baseline (Figure 4B). In the SR group, energy intake from after-dinner snacks increased (all P < 0.001) ~481–507 kcal during the workweek-1, weekend, and workweek-2 segments versus baseline (Figure 4B). In the WR group, energy intake from pre-dinner snacks increased (all P < 0.05) ~211 kcal and ~178 kcal during workweek-1 versus the weekend and workweek-2 segments, respectively (Figure S2D). Also in the WR group, energy intake from after-dinner snacks was non-significantly (P = 0.053) elevated during the weekend versus baseline and increased (all P < 0.01) ~409–641 kcal during workweek-1 and workweek-2 versus baseline and the weekend (Figure 4B).
+In the CON group, protein intake increased (P < 0.05) during workweek-1 versus baseline and fat intake increased (P < 0.05) during workweek-2 versus baseline (Table 2). In the SR and WR groups, intake of carbohydrate, fat, and protein increased (P < 0.05) during workweek-1, weekend, and workweek-2 segments versus baseline (Table 2). However, in the WR group, intake of carbohydrate and fat decreased (P < 0.05) during the weekend versus the workweek-1 and workweek-2 segments, whereas protein intake decreased (P < 0.05) during the weekend versus the workweek-1 segment only (Table 2); although as noted, intakes of these macronutrients were still increased versus baseline.
+In the CON group, hunger on study days 5–13 was similar (all P ≥ 0.22) to baseline (Figure S3A) whereas in the SR group hunger decreased (P < 0.05) ~40% on study day 5 versus baseline and in the WR group hunger decreased (P < 0.05) ~34–44% on study days 5–13 versus baseline (Figure S3B-S3C).
+In the CON group, body weight was non-significantly (P = 0.23) increased 1.0 ± 0.8kg on the morning of study day 13 versus baseline.In the SR and WR groups, body weight was increased to a similar extent (SR versus WR P = 0.91; study day 13 versus baseline all P < 0.05) 1.4 ± 0.5kg and 1.3 ± 0.4kg, respectively, on the morning of study day 13 versus baseline (Figure S2E).
+Compared to the controlled energy balanced diets provided at baseline, energy intake was increased when food was provided ad libitum, consistent with previous findings [17, 31, 46, 47]. However, increased energy intake led to significant weight-gain only in the SR and WR groups. Even though participants in the WR group had decreased total and after-dinner energy intake during the weekend, weight-gain during recurrent insufficient sleep was similar to participants in the SR group. These findings indicate that weekend recovery sleep does not mitigate excess energy intake and weight-gain that occurs during recurrent insufficient sleep following the weekend. As we have discussed previously [4, 17], increased energy intake during insufficient sleep is likely an appropriate physiological adaptation in response to increased energy expenditure due to extended wakefulness during insufficient sleep, but that in response to food provided ad libitum, energy intake exceeds the increased energy expenditure, leading to weight-gain. Also consistent with our previous findings [17], increased total energy intake during insufficient sleep persisted despite decreased hunger ratings, and weekend recovery sleep did not alter these findings.
+Energy intake during an inappropriate biological time of day has negative metabolic consequences in humans [48–51] and rodents [52–54]. Here, energy intake from after-dinner snacks increased from ~290kcal at baseline to greater than 771kcal during insufficient sleep. Similar to our previous findings [17], during insufficient sleep the energy intake from after-dinner snacks accounted for more calories than pre-dinner snacks or any other single meal. These findings of increased energy intake during the biological night during insufficient sleep provide further evidence that insufficient sleep alters the timing of energy intake and such altered timing of energy intake may contribute to metabolic dysregulation associated with insufficient sleep. During weekend recovery sleep, despite bedtime being over one hour later compared to baseline, energy intake from after-dinner snacks was reduced versus workweek-1 and workweek-2, indicating weekend recovery sleep altered the timing of energy intake to more closely reflect timing of energy intake at baseline. This finding suggests that eating more after-dinner snacks during insufficient sleep cannot simply be explained by an increased opportunity to eat in the evening. During recurrent insufficient sleep following the weekend, timing of energy intake immediately occurred later in the day with ~100% more energy consumed as after-dinner snacks relative to the weekend. Thus, our findings suggest any potential benefit of weekend recovery sleep on improving the timing of energy intake is transient and not sustained during recurrent insufficient sleep following the weekend. Furthermore, improved timing of energy intake during ad libitum weekend recovery sleep did not prevent the weight-gain observed during recurrent insufficient sleep following the weekend.
+Regarding macronutrient composition of energy intake during insufficient sleep, findings from prior studies are mixed showing participants tend to increase energy intake from carbohydrates [17, 55, 56] or fats [31, 57] during insufficient sleep. Likely, the food available to participants or individual differences in food preferences among participants in these different studies influenced the outcomes on changes in macronutrient composition of energy intake during insufficient sleep. Trials investigating different meal strategies (e.g., ad libitum meals and snacks, isocaloric meals with ad libitum snacks, buffet style meals/meals selected from a cafeteria, homogenous foods of the same energy density, or time restricted feeding), and investigating how macronutrient composition and specific nutrients like individual fatty acids or carbohydrates influence metabolic physiology during insufficient sleep may provide additional insights into energy intake responses to insufficient sleep. Furthermore, such findings may support the development of interventions focused on the timing and composition of energy intake with the goal of mitigating the metabolic dysregulation associated with insufficient sleep.
+
+## Ad Libitum Weekend Recovery Sleep Failed to Prevent Reduced Insulin Sensitivity during Recurrent Insufficient Sleep
+Plasma glucose and insulin concentrations during the hyperinsulinemic/euglycemic clamp are shown in Figure S4. In the CON group, whole-body insulin sensitivity was similar (full model P = 0.76) on study day 12 versus baseline (Figure 5A), including when controlling for plasma glucose concentrations during the 40-mU/m2•min insulin infusion and energy intake (P = 0.71), or body weight on study days 4 and 12 (i.e. change in body weight) (P = 0.94). In the SR group, whole-body insulin sensitivity was decreased (full model P < 0.05) ~13% on study day 12 versus baseline (Figure 5A), including when controlling for plasma glucose concentrations during the 40-mU/m2•min insulin infusion and energy intake (P < 0.05), or body weight on study days 4 and 12 (P < 0.05). In the WR group, whole-body insulin sensitivity was decreased (full model P < 0.05) ~27% on study day 12 versus baseline (Figure 5A), including when controlling for plasma glucose concentrations during the 40-mU/m2•min insulin infusion and energy intake (P < 0.05), but not when controlling for body weight on study days 4 and 12 (P = 0.054). Our current findings are consistent with prior findings also showing reduced whole-body insulin sensitivity and glucose homeostasis during insufficient sleep [2, 6–16].
+Furthermore, our findings suggest weight-gain contributes, in part, to the reduced whole-body insulin sensitivity in the WR group during recurrent insufficient sleep following weekend recovery sleep. Broussard et al. [27] previously reported 2 days of 12h and 10h scheduled recovery sleep opportunities, respectively, following 4 days with 4.5 h sleep opportunities under controlled energy intake conditions, restored insulin sensitivity to baseline levels using intravenous glucose tolerance tests. Previously, we showed that after a simulated workweek of insufficient 5h per night sleep opportunities, 3 days of 9h recovery sleep opportunities under ad libitum energy intake conditions restored insulin sensitivity to baseline using oral glucose tolerance tests, but that 5 days of 9h recovery sleep opportunities was insufficient to restore insulin sensitivity to baseline using intravenous glucose tolerance tests [12]. Our current findings indicate that any return of insulin sensitivity to baseline levels in response to weekend recovery sleep is not maintained during recurrent insufficient sleep following the weekend.
+In each group, adipose insulin sensitivity was similar (all full models P ≥ 0.24) on study day 12 versus baseline (Figure 5B), including when controlling for only energy intake (all P ≥ 0.21) or only body weight on study days 4 and 12 (all P ≥ 0.45). Findings from a previous study [11] showed reduced insulin signaling in ex vivo human adipocytes collected after 4 days with 4.5h sleep opportunities per night. Different doses of insufficient sleep, different diets (ad libitum versus controlled diets), and different assessment methods likely contribute to differences between our current findings of no change in adipose insulin sensitivity and the previously reported findings [11].
+In the CON and SR groups, hepatic insulin sensitivity was similar (all full models P ≥ 0.57) on study day 12 versus baseline (Figure 5C), including when controlling for only energy intake (all P ≥ 0.50) or only body weight on study days 4 and 12 (all P ≥ 0.17). In the WR group, hepatic insulin sensitivity was non- significantly (full model P = 0.054) decreased ~23% on study day 12 versus baseline (Figure 5C), but was significantly decreased when controlling for only energy intake (P < 0.05) or only body weight on study days 4 and 12 (P < 0.05). These findings suggest changes in total energy intake and weight-gain contribute to the reduced hepatic insulin sensitivity in the WR group during recurrent insufficient sleep following weekend recovery sleep. Given the links between hepatic insulin resistance, non-alcoholic fatty liver disease (NAFLD), development of type 2 diabetes [58], and epidemiological findings suggesting short sleep durations are associated with NAFLD [59], our findings suggest reduced hepatic insulin sensitivity associated with weekend recovery sleep may contribute to metabolic dysregulation. How weekend recovery sleep negatively impacts hepatic insulin sensitivity is unclear, but findings from rodent studies show both the timing of food intake [60–62] and sleep loss [63] can alter the core clock genes in liver. Thus, altered timing of central and peripheral circadian clocks and altered circadian timing of energy intake may contribute to the reduced hepatic insulin sensitivity observed here during recurrent insufficient sleep following weekend recovery sleep. Our findings of no change in hepatic-specific insulin sensitivity during chronic insufficient sleep in the SR group is consistent with findings from Rao et al. [14] showing hepatic insulin sensitivity was not affected following 5 nights with 4h sleep opportunities per night. However, Donga et al. [13] showed one night with a 4h sleep opportunity resulted in hepatic insulin resistance assessed by endogenous glucose production during a hyperinsulinemic/euglycemic clamp. Differences between our current findings and these previously reported findings [13, 14] are likely due to different study protocols and the methodologies used to assess hepatic insulin sensitivity. For example, our participants had ad libitum energy intake during insufficient sleep whereas Rao et al. provided controlled diets and Donga et al. did not report energy intake, the protocols ranged from one night with a 4h sleep opportunity to 8 nights with 5h sleep opportunities, and the insulin infusion levels during clamps were different for each study. Here, careful attention to these protocol differences helped reach our conclusion of no change in hepatic insulin sensitivity in the SR group, and decreased hepatic insulin sensitivity during recurrent insufficient sleep following the weekend.
+In the CON and SR groups, muscle insulin sensitivity was similar (all full models P ≥ 0.24) on study day 12 versus baseline (Figure 5D), including when controlling for only energy intake (all P ≥ 0.21) or only body weight on study days 4 and 12 (CON P = 0.06; SR P = 0.71). In the WR group, muscle insulin sensitivity was decreased (full model P < 0.05) ~9% on study day 12 versus baseline (Figure 4C), including when controlling for only energy intake (P < 0.05) but not when controlling for only body weight on study days 4 and 12 (P = 0.53). Muscle specific insulin sensitivity was not reported in the prior studies by Rao et al. [14] and Donga et al. [13]. Our findings in the SR group suggest changes in insulin sensitivity and glucose utilization in other tissues such as the brain or kidney contributed to the decrease in whole-body insulin sensitivity during insufficient sleep. Alternatively, in the WR group our current findings suggest reduced muscle insulin sensitivity was a contributing factor to reduced whole-body insulin sensitivity during recurrent insufficient sleep following the weekend. Similar to whole-body insulin sensitivity, our findings suggest weight-gain contributes to reduced muscle insulin sensitivity in the WR group during recurrent insufficient sleep following weekend recovery sleep. In addition to weight-gain, altered circadian timing in skeletal muscle could contribute to reduced muscle insulin sensitivity. For example, overexpression of the core clock gene, brain and muscle-ARNT-like factor (BMAL1), in skeletal muscle results in decreased insulin stimulated skeletal muscle glucose uptake during acute sleep loss in mice [64]. These findings suggest disruption of skeletal muscle circadian clocks can contribute to decreased skeletal muscle insulin sensitivity during sleep loss. Furthermore, prior findings from a study in 15 healthy men show one night of total sleep deprivation decreased skeletal muscle expression of BMAL1 and cryptochrome-1 [65], indicating sleep loss can alter expression of the skeletal muscle circadian clock in humans. As such, it is possible that altered timing of central and peripheral circadian clocks, as well as altered timing of food intake, during recurrent insufficient sleep following weekend recovery sleep may contribute to the reduced muscle insulin sensitivity observed here.
+
+## Sex Differences in Total Sleep Time, Energy Intake, and Weight-Gain during Ad Libitum Weekend Recovery Sleep
+In the CON and SR groups, sleep duration throughout each of the study segments was not statistically different in men versus women (all P > 0.78). However, in the WR group there was a sex by study day interaction (P < 0.01), such that ad libitum weekend recovery sleep duration, including naps and nighttime sleep, was higher (P <0.05) in men (10.2 ± 0.6h) versus women (7.9 ± 0.6h) on study day 9 (Saturday; Figures S6C-D). Moreover, in the WR group sleep duration for men was increased (all P < 0.01) on study days 8 (9.8 ± 0.4h) and 9 (10.2 ± 0.6h) versus baseline (8.1 ± 0.1h) (Figure S6C), whereas sleep duration for women was increased (P <0.05) on study day 8 (10.3 ± 0.6h) but not study day 9 (7.9 ± 0.6h; P = 0.91), versus baseline (8.0 ± 0.1h) (Figure S6D). These sex differences in sleep duration were observed despite non-significant (all P ≥ 0.07) sex differences for time in bed (Men: 10.6 ± 0.3h SEM on day 8, 12.1 ± 0.7h SEM on day 9, 7.6 ± 0.5h SEM on day 10; Women: 11.2 ± 0.4h SEM on day 8, 10.8 ± 0.4h SEM on day 9, 6.4 ± 0.3h SEM on day 10) (individual participant data shown in Figure S6A-B). For both men and women in the WR group, total sleep time on study day 10 (Sunday), was decreased (all P < 0.01) versus baseline (Figure S6C-D). As such, cumulatively across the Friday to Sunday nights with ad libitum weekend recovery sleep, men slept ~2.1h more than their baseline average sleep duration, whereas women slept ~0.02h more than their baseline average sleep duration. The reasons for sex differences in recovery sleep duration are unclear, but the pattern was similar for most men and women (Figure 6C-D).
+Similar to our previous findings [17], in each group, total energy intake was higher (all P < 0.05) in men (3,443.4 ± 132.4 kcal/d) versus women (2299.3 ± 55.5 kcal/d), regardless of sleep opportunity. Furthermore, for total energy intake as percent change from baseline, in the WR group there was a sex by study segment interaction (P < 0.001). For men in the WR group, total energy intake as percent change from baseline was increased (all P < 0.01) during workweek-1 (72.0 ± 9.2%), weekend (40.3 ± 7.6%), and workweek-2 (64.7 ± 11.2%) segments. Also for men, the percent change in total energy intake was lower (all P < 0.05) during the weekend versus the workweek-1 and workweek-2 segments. For women in the WR group, total energy intake as percent change from baseline was similar during the weekend (1.9 ± 6.1%) segment compared to baseline (P = 0.77), whereas energy intake was increased (all P < 0.05) during workweek-1 (29.6 ± 8.8%) and workweek-2 (24.6 ± 8.3%) segments compared to the weekend and baseline. Despite greater increased total energy intake during weekend recovery sleep in men versus women, no differences in hunger were detected in men versus women on study day 11, the Monday following weekend recovery sleep.
+In the CON and SR groups, body weight on the morning of study day 13 as percent change from baseline, was not statistically different in men versus women (all P > 0.72), but men in the SR group showed a ~2.8% increase (P < 0.05) in body weight on study day 13 versus baseline, whereas women in the SR group showed a non-significant (P = 0.19) increase of ~1.1%. In the WR group, there was a main effect by sex (P <0.05) for body weight on the morning of study day 13, as percent change from baseline, with men gaining more weight versus women; men in the WR group showed a ~3.0% increase (P <0.05) in body weight on study day 13 versus baseline, whereas women showed a non-significant (P = 0.57) increase of 0.5%.
+
+## Conclusions
+Obtaining extra sleep during the weekend is a common self-selected strategy used to recover from sleep loss incurred during the workweek [24, 25]. Yet, the influence of weekend recovery sleep on metabolic dysregulation associated with insufficient sleep, and specifically recurrent insufficient sleep following the weekend is poorly understood. Thus, our primary aims were to investigate how ad libitum weekend recovery sleep impacts circadian timing, energy intake, body weight, and insulin sensitivity during recurrent insufficient sleep following ad libitum weekend recovery sleep. Our findings show energy intake from after-dinner snacks and body weight were increased, and insulin sensitivity was reduced during recurrent insufficient sleep following ad libitum weekend recovery sleep. Furthermore, during recurrent insufficient sleep following weekend recovery sleep, we show the timing of the internal circadian clock was delayed, and hepatic and muscle insulin sensitivity were reduced. Our findings suggest that benefits of weekend recovery sleep are transient, and identify lower hepatic and muscle insulin sensitivity and delayed circadian timing as potential negative consequences associated with weekend recovery sleep followed by recurrent insufficient sleep. Studies investigating the impact of altered circadian timing on tissue specific insulin sensitivity in humans are warranted. Furthermore, studies focused on different populations such as older adults, and people with obesity and diabetes, examining different workweek insufficient sleep simulations (e.g., different sleep opportunities and the number of nights per week with insufficient sleep), using cross-over designs to improve statistical power and control for individual differences in responses to insufficient [17] and recovery sleep, are needed. Our findings of sex differences in energy intake and recovery sleep highlight the need for trials that are specifically designed to examine differences in men versus women on sleep and metabolic outcomes.
+
+## STAR METHODS
+
+## Contact for Reagent and Resource Sharing
+Further information and requests for resources should be directed to and will be fulfilled by the Lead Contact, Kenneth P. Wright Jr. (kenneth.wright@colorado.edu).
+
+## Experimental Model and Subject Details
+
+## Human Subjects.
+Thirty-six healthy participants (18 women/18 men) aged 25.5 ± 4.7y (mean ± SD), with normal body mass index (BMI) 22.4 ± 1.7kg/m2, and percent body fat 24.9 ± 9.2 completed the study protocol. Additionally, the men were aged 25.2 ± 5.2y, with BMI 22.6 ± 1.7kg/m2, and percent body fat 19.0 ± 6.3, and the women were aged 25.8 ± 4.2y, with BMI 22.2 ± 1.7kg/m2, and percent body fat 31.8 ± 7.3. Of the 36 participants, 25 were Non-Hispanic White (12 women/13men), 4 were Non-Hispanic Asian (3 women/1 man), 5 were Hispanic or Latino (1 woman/4 men), one women was Non-Hispanic Native Hawaiian or Other Pacific Islander, and one women was Non-Hispanic American Indian/Alaska Native. Procedures were approved by the scientific and advisory review committee of the Colorado Clinical and Translational Sciences Institute, the Colorado Multiple Institutional Review Board (IRB), and the University of Colorado Boulder IRB. After providing written informed consent, all participants completed screening procedures consisting of medical, psychological, and sleep history, semi-structured clinical psychiatric interview, physical examination, complete blood count and comprehensive metabolic panel, urine toxicology, 12-lead clinical electrocardiogram, and polysomnographic clinical sleep disorders screen, similar to our previous protocols [12, 17]. Based on these screening procedures, participants were considered free of medical and psychological disorders. Inclusion criteria were: 18–40 years old; BMI 18.5–24.9kg/m2; low to moderate caffeine (< 500mg/day) and alcohol use (average < 2 standard drinks/day/week and ≤ 5 drinks in any day); free of drug dependence and non-smokers. Low to moderate physically active participants were studied to control for the metabolic and physiological effects of detraining during the laboratory protocol. Exclusion criteria were: current or chronic medical/psychiatric conditions; pregnancy; shift work; or dwelling below Denver altitude (1600 m) the year prior to study; travel across more than one time zone three weeks prior to the in-laboratory clinical translational research center (CTRC) study at the at the University of Colorado Hospital; maximal self-reported lifetime BMI > 27.5kg/m2; recent self-reported weight loss; eating disorders and abnormal eating patterns identified by dietitian interview, and a high level of dietary restraint as identified by a three-item eating questionnaire [66], similar to our prior studies [12, 17]. Participants self-reported being medication free and breath alcohol testing and urine toxicology verified drug free status upon CTRC admission.
+
+## Method Details
+
+## Ambulatory Assessment.
+Prior to CTRC admission, participants completed a 7-day ambulatory home-assessment with consistent ~9h sleep schedules based on habitual sleep/wake times verified by wrist actigraphy (Actiwatch-L; Mini-Mitter/Respironics), sleep logs, and voice call-ins to a time stamped recorder to ensure participants were not sleep deprived prior to being studied in the lab. Drugs, medications, and nicotine were proscribed during the 7-day home-assessment prior to CTRC admission for the in-lab protocol. For 3 days prior to the in-lab protocol, caffeine and alcohol were proscribed and participants consumed an outpatient diet provided by CTRC nutritionists that was designed to meet individual daily energy requirements (resting metabolic rate x a 1.5 activity factor). Macronutrient composition consisted of 30% fat, 55% carbohydrate, and 15% protein. Exercise was proscribed for 3 days prior to the in-lab protocol ensuring participants were in energy balance prior to the in-laboratory study.
+
+## In-Laboratory Baseline Protocol.
+Study days 1–3 (Figure 1). Throughout the manuscript the term bedtime refers to lights-out and the term waketime refers to lights-on. Waketime defines the start of a new study day, and each study day consists of wakefulness and the complete nighttime sleep episode. Additionally, we use the term “study night” to refer specifically to the sleep opportunity for a given study day. Scheduled sleep and wake times were based on each participant’s individual habitual sleep schedule (i.e. bedtime and waketime) the week prior to the in-lab protocol. All protocol events were scheduled relative to individual habitual waketimes. Light exposure consisted of natural sunlight (window) and room lighting at ~200 lux to approximate typical light exposure outside the laboratory environment during wake opportunities, except on melatonin assessment days. Night 1 polysomnography (PSG) served as familiarization and sleep disorders screening. Nights 2 and 3 PSG served as baseline sleep analysis. Energy intake on days 1–3 matched caloric and macronutrient composition of the outpatient diet designed to keep participants in energy balance. Energy intake was controlled with scheduled meals consisting of breakfast, lunch, dinner, and an after-dinner snack, with each of these meals contributing to 30%, 30%, 30%, and 10% of total daily energy intake, respectively. Blood was collected every 1h for 24h on study day 3 and analyzed for melatonin (circadian phase marker). Circadian melatonin phase was assessed on study day 3 in dim light (< 10 lux maximum in the angle of gaze at eye level) during scheduled wakefulness, and 0 lux during scheduled sleep. During melatonin phase assessments, subjects did not have access to sunlight and all electronic light-emitting devices were dimmed and maximum light exposure of < 10 lux was confirmed with a photometer. Furthermore, room temperature was maintained at 22–24°C throughout the entire study protocol. Hourly blood samples were collected via an indwelling venous catheter with heparinized saline drip and 12-foot extension tubing through a porthole in the subject room [17, 67]. This permitted blood sampling without entering the room during scheduled sleep. On day 4 prior to introducing sleep loss, insulin sensitivity was assessed using a multi-stage hyperinsulinemic/euglycemic clamp with isotope labeled glucose and glycerol to assess hepatic and adipose tissue specific insulin sensitivity. Participants performed 20 min low intensity stepping sessions (72 steps/min) twice per day at 5h and 8h after scheduled waketime to mimic activities of daily living outside the laboratory as done previously [17]. Visual analog scales were used to assess hunger and physical exhaustion ratings (0 = not hungry at all and 100 = as hungry as I’ve ever felt; 0 = energetic and 100 = physically exhausted) starting 2h after scheduled wake time and every 2 h thereafter during scheduled wakefulness. During free time of scheduled wakefulness, participants were permitted to watch TV, work on personal computers, and use their cell phone. Participants were thus aware of time cues during scheduled wake episodes. Personal electronics were removed from the room during scheduled sleep opportunities starting ~10min prior to scheduled lights-out and the electricity for the TV and lights were controlled by research staff and therefore were off throughout the entire duration of sleep opportunities.
+
+## In-Laboratory Sleep Manipulation.
+Study days 4–13. Similar to baseline, waketime defines the start of a new study day, and each study day consists of wakefulness and the complete nighttime sleep episode. Participants were randomized to one of three groups using a modified Latin square design separately by sex to ensure equal numbers of men and women in each group, and with a higher number of assignments to the SR and WR groups. Age and body mass index were similar between all groups (all P ≥ 0.08). Participants randomized to the CON group (CON; n=8[4 men, 4 women], aged 22.8 ± 4.5y, BMI 22.3 ± 1.9kg/m2) maintained a 9h per night sleep opportunity (Figure 1A). Participants randomized to the SR group (SR; n=14[7 men, 7 women], aged 25.2 ± 4.7y, BMI 22.6 ± 2.0kg/m2) were scheduled to a 5h per night sleep opportunity (Figure 1B). Participants randomized to the WR group (WR; n=14[7 men, 7 women], aged 27.4 ± 4.1y, BMI 22.3 ± 1.2kg/m2) were scheduled to a 5h/night sleep opportunity for nights 4–7 simulating a Monday through Thursday. On night 8, simulating a Friday, participants went to bed 2h later than their habitual bedtime at baseline and were allowed to self-select their waketime on the morning of study day 9. Participants in the WR group then received 2 days ad libitum “weekend recovery” sleep (days 9 & 10; enforced minimum of 10h time in bed, napping permitted) followed by 2 full nights of scheduled 5h/night sleep opportunities (days 11–12; Figure 1C). On study days 9 and 10, only two subjects choose to nap and each subject took one nap lasting ~1.5h. While naps are included in the overall analyses for polysomnography derived outcomes (i.e. total sleep time for that study day), we did not perform separate analyses on just these two naps specifically. For the WR group, study day 10 was a simulated Sunday where participants self-select their bedtime knowing scheduled waketime on study day 11 was 2h earlier than waketime at baseline. For the SR and WR groups, sleep was restricted by delaying and advancing scheduled bedtime and waketime each by 2h, keeping the mid-point of scheduled sleep centered. For all groups, study days 4–8 served as the workweek-1 segment, study days 9–10 served as the weekend segment, and study day 11–13 served as the workweek-2 segment. Light exposure matched baseline with dim-light conditions on study days 5 and 11 to facilitate circadian melatonin phase assessments as done on study day 3. PSG was administered on nights 4, 5, 8, 9, 10, and 11. Macronutrient composition of meals matched the outpatient diet, but with ~33% more calories presented for each meal and all food consumption was ad libitum. Additionally, a variety of modular snacks were available during scheduled wakefulness for all groups as done previously (see supplementary information in [17] for a list of specific food items]. Insulin sensitivity was assessed on study day 12 for all groups using the multi-stage hyperinsulinemic/euglycemic clamp with isotope labeled glucose and glycerol to assess hepatic and adipose tissue specific insulin sensitivity. Blood was collected every 1h over 24h on study days 5 and 11 and analyzed for melatonin (LDN Melatonin Direct Radioimmunoassay; Rocky Mountain Diagnostics) [68, 69] to detect any rapid changes in circadian phase (study day 5) during insufficient sleep and to detect changes following weekend recovery sleep (study day 11). Blood sample collection was performed as in the baseline segment. Participants performed 20 min low intensity stepping sessions (72 steps/min) twice per day at 5h and 8h after schedule waketime to mimic daily physical activity outside the laboratory as done previously [17]. During the weekend segment, participants in the WR group were allowed to self-select the timing of their stair-stepping sessions. Hunger and physical exhaustion were assessed as in the baseline segment. Hunger and physical exhaustion were not assessed during the weekend (study days 9 and 10) or on study days 4 and 12 when the hyperinsulinemic/euglycemic clamp was administered.
+
+## Polysomnography (PSG) and Power Spectral Analysis.
+PSG recordings were collected using monopolar EEGs referenced to contralateral mastoids (C3xA2, C4xA1, O1xA2, and F3xA2), right and left electrooculograms, chin electromyogram, electrocardiogram, and respiration. Scheduled wakefulness was verified by research staff with continuous monitoring and with addition of waking EEG on study days 3, 5, and 11. Power spectral analysis was conducted by Fast Fourier Transformation on C3xA2 derivations using a custom MATLAB (Mathworks, Inc., vR2015a) program as described previously [70]. All epochs scored as wakefulness or artifacts were excluded from power spectral analysis. Briefly, power was calculated using 2s Hanning windows averaged over each 30s epoch to produce estimates of power at a 0.5Hz resolution. We applied high- and low-pass filters of 0.5Hz and 25Hz, respectively. Cumulative slow wave activity was calculated for the delta range of 1–4Hz across the entire sleep episode for each participant and then averaged across participants for baseline (study days 2–3), workweek-1 (study days 4–5), weekend (study days 8–10, including naps for WR), and workweek-2 (study day 11) segments. Log transformed power spectral data were used for statistical analyses and are presented in Figure 2.
+
+## Hyperinsulinemic/Euglycemic Clamp.
+Participants were fasted overnight and throughout the clamp procedure. On the mornings of the clamp procedure at 1h after habitual waketime, an antecubital catheter was placed for infusions of dextrose, insulin, potassium, and stable isotopes of glucose and glycerol. A hand vein was also catheterized on the contralateral arm for blood draws during the clamp using the heated hand vein technique. At 2h after habitual waketime (T=0) blood samples were collected for fasting glucose and insulin analysis and a primed (4 mg/kg) constant (0.04 mg/kg/min) infusion of [6,6-2H2] glucose and a primed (1.6 umol/kg) constant (0.11 umol/kg/min) infusion of [1,1,2,3,3-2H5] glycerol was initiated and continued throughout the clamp. Blood samples were collected at T=90, 100, 110, and 120 min for basal assessment of isotope tracers and total plasma glucose, insulin, and glycerol concentrations. Following basal blood collection, a three-stage hyperinsulinemic/euglycemic clamp was initiated and continued for the next 6h using established methods [71–74]. A primed continuous infusion of insulin was administered at 4-mU/m2•min for 2h, then increased to 8-mU/m2•min for 2h, and lastly to 40-mU/m2•min for the final 2h. A variable infusion of 20% dextrose was administered to maintain blood glucose at approximately 90 mg/dl throughout each stage of the clamp. Arterialized blood was sampled every 5 min for bedside determination of glucose concentration (Analox Instruments USA, Inc., Lunenburg, MA), and the dextrose infusion was adjusted as necessary to maintain the targeted 90 mg/dl blood glucose concentration. Dextrose was “spiked” with 15 μmol/ml (3.1 mg/ml) [6,6–2H2] glucose to minimize changes in isotope enrichment and reduce calculation error. Blood was collected over the final 30 min of each stage (T=210, 220, 230, 240, 330, 340, 350, 360, 450, 460, 470, and 480 min) for assessment of isotope tracers and total plasma glucose, insulin, and glycerol concentrations. Glucose and glycerol isotopic enrichment were measured using gas chromatography/mass spectrometry (GCMS; GC model 6890 series II and MS model 5973A, Hewlett-Packard, Palo Alto, CA). Briefly, [U-13C] glucose and [U-13C] glycerol were added as an internal standard. Then, 100 μl plasma was protein precipitated, dried, and derivatized using 1:1 acetic anhydride:pyridine. Samples were analyzed using CI mode, and appropriate ions measured for calculation of concentration and enrichment.
+
+## Quantification and Statistical Analyses
+
+## Statistics.
+Study segments for data analyses were defined as follows: study days 1–3 (baseline), study days 4–8 (workweek-1), study days 9–10 (weekend), and study days 11–13 (workweek-2). Mixed-Effects ANOVAs with either study day (sleep duration, slow wave activity, circadian melatonin phase, insulin sensitivity) or study segment (for energy intake and weight gain) as fixed factors, and participant as a random factor were used to test for within group differences using Statistica (version 10.0; Statsoft). When there was an effect by sex, we included sex as a covariate in the mixed-models as detailed in the results when appropriate. For whole-body, adipose, hepatic, and muscle insulin sensitivity, the full model mixed-effects ANOVAs were controlled for energy intake and body weight on each day insulin sensitivity was assessed (i.e. study days 4 and 12 to account for change in body weight). For energy intake, average energy intake per kg body weight at baseline and for study days 5–11 was entered as a covariate in mixed-effects ANOVAs. Furthermore, to estimate the individual contributions of energy intake and weight-gain to changes in insulin sensitivity, each mixed-effects ANOVA was run with only energy intake or only body weight as a covariate. For whole-body insulin sensitivity, average plasma glucose concentrations during the 40-mU/m2•min insulin infusion were included as a covariate in every mixed-effects ANOVA model. One-tailed a priori directional mixed-effects ANOVAs were used to analyze the hypothesized reduction in whole-body insulin sensitivity and two-tailed mixed-effects ANOVAs were used to analyze changes in adipose, hepatic, and muscle insulin sensitivity. For whole-body insulin sensitivity, one outlier (≥ 3SD beyond the interquartile range) was detected in the WR group on study day 12 and removed from statistical analyses. This subject was only considered an outlier for whole-body insulin sensitivity and therefore was included in analyses for adipose, hepatic, and muscle insulin sensitivity. Two-tailed t tests were used to test planned within (dependent t test) and between group comparisons for all other primary and secondary outcomes. For all comparisons, statistical significance was defined as P < 0.05. Modified Bonferroni correction for multiple planned comparisons were used to reduce type 1 errors for daily assessments of total sleep time, slow wave activity, energy intake, hunger and physical exhaustion. The study was not specifically powered to examine sex differences and thus are considered exploratory. All statistical results are reported in the Results and Discussion section and in tables and figures when applicable.
+
+## Hyperinsulinemic/Euglycemic Clamp Calculations.
+The rates of glucose and glycerol appearance (Ra) and disappearance (Rd) during the clamp were calculated using a modified Steele equation [75]. Equations described by Finegood et al. were used to account for the tracer in the “spiked” dextrose solution [76]. The concentration of insulin required for 50% inhibition (IC50) of glucose Ra and glycerol Ra was calculated using individual linear curve fitting to define the relationship between insulin concentration and glucose Ra or glycerol Ra for each participant. Adipose insulin sensitivity was defined as the insulin concentration required for 50% inhibition of glycerol appearance. Hepatic insulin sensitivity was defined as the insulin concentration required for 50% inhibition of glucose appearance. Muscle insulin sensitivity was defined as the glucose Rd during the 40-mU/m2•min insulin infusion stage. Our methods for defining tissue specific insulin sensitivity are also published in previous findings from our group [73, 74].
+
+## Supplementary Material
+1
+
+## ACKNOWLEDGMENTS
+We thank the participants, the University Colorado Boulder Clinical Translational Research Center staff, and B. Smith, B. Brainard, B. Griffin, T. Dear, J. Higdon, and G. Wright, for study assistance. This research was supported by NIH HL109706, DK111161, TR001082, DK048520, and Sleep Research Society Foundation 011-JP-16.
+
+## DECLARATION OF INTERESTS
+Conflicts of interests statement: C.M.D., E.L.M., R.H.E., J.K.S., L.P., B.C.B., J.A.H, M.K.G, E.R.S, and S.J.M have nothing to disclose; K.P.W. reports during the conduct of the study being an advisory board member and receiving personal fees from the NIH, scientific advisory board member and personal fees from Torvec, personal fees from Circadian Therapeutics, Inc. and from Kellogg Company, and research support from the NIH, Office of Naval Research, the PAC-12 conference, and Somalogic, Inc. outside the submitted work.
+This is a PDF file of an unedited manuscript that has been accepted for publication. As a service to our customers we are providing this early version of the manuscript. The manuscript will undergo copyediting, typesetting, and review of the resulting proof before it is published in its final citable form. Please note that during the production process errors may be discovered which could affect the content, and all legal disclaimers that apply to the journal pertain.
+
+## REFERENCES
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12.
+13.
+14.
+15.
+16.
+17.
+18.
+19.
+20.
+21.
+22.
+23.
+24.
+25.
+26.
+27.
+28.
+29.
+30.
+31.
+32.
+33.
+34.
+35.
+36.
+37.
+38.
+39.
+40.
+41.
+42.
+43.
+44.
+45.
+46.
+47.
+48.
+49.
+50.
+51.
+52.
+53.
+54.
+55.
+56.
+57.
+58.
+59.
+60.
+61.
+62.
+63.
+64.
+65.
+66.
+67.
+68.
+69.
+70.
+71.
+72.
+73.
+74.
+75.
+76.
+Figure 1.
+Experimental Protocol(A) Control group; (B) Sleep restriction group; (C) Weekend recovery group. Underlines represent scheduled wakefulness, gray boxes represent dim-light (< 10 lux) conditions for melatonin assessments, and black boxes represent scheduled time in bed. Time of day is plotted as relative clock hour with scheduled wake time during baseline days arbitrarily assigned a value of 08:00h and all other times referenced to this value (e.g., breakfast 1.0h after scheduled waketime would be reported as occurring at a relative time of day of 09:00h). Actual sleep timing was based on habitual sleep timing of each individual so all participants were studied at their habitual circadian phase for baseline sleep assessments. 24h blood samples were collected on study days 3, 5, and 11 for assessment of melatonin (24h circadian phase assessments). The hyperinsulinemic/euglycemic clamp was administered on study days 4 and 12 (labeled “CLAMP”). For all groups, study days 1–3 served as the in-laboratory baseline segment, study days 4–8 served as the workweek-1 segment, study days 9–10 served as the weekend segment, and study day 11–13 served as the workweek-2 segment. Additionally, we use the term “study night” to refer specifically to the sleep opportunity for a given study day (e.g., study night 8 refers to the sleep opportunity on study day 8). CON, control group; SR, sleep restriction group; WR, weekend recovery group.
+Figure 2.
+Cumulative Slow Wave Activity(A) Cumulative slow wave activity per night during sleep opportunities on study days 2–3 (baseline), study days 4–5 (workweek-1), study days 8–10 (weekend), and study day 11 (workweek-2) for the CON, SR, and WR groups. (D) Cumulative slow wave activity during weekend recovery days in the WR group. Solid lines represent significant differences between study segments at the end of each line (P < 0.05; within groups). CON, control group; SR, sleep restriction group; WR, weekend recovery group; μV, micro-volt. Data are mean ± SEM.
+Figure 3.
+Circadian Timing of Biological Night and Circadian Phase Relations with Bed and Wake Times.(A) Control group; (B) Sleep restriction group; (C) Weekend recovery group. Gray boxes represent scheduled time in bed. Black upward facing triangles represent dim-light melatonin onset. Black downward facing triangles represent dim-light melatonin offset. Time of day is represented as relative clock hour as in Figure 1. *P < 0.05 versus baseline study day 3 (within groups). #P < 0.05 versus study day 5 (within groups). CON, control group; SR, sleep restriction group; WR, weekend recovery group. Data are mean ± SEM. See also Figure S1.
+Figure 4.
+Total Daily (24h) Energy Intake and After-Dinner Snack Energy Intake.(A) Total Daily Energy Intake; (B) After-Dinner Snack Energy Intake. Solid lines represent significant differences between study segments at the end of each line (P < 0.05; within groups). CON, control group; SR, sleep restriction group; WR, weekend recovery group. Data are mean ± SEM. Note, the y-axis in panels “A” and “B” are on different scales. See also Figure S2 and Figure S3.
+Figure 5.
+Insulin Sensitivity.(A) Whole-body insulin sensitivity. (B) Adipose insulin sensitivity. (C) Hepatic insulin sensitivity. (D) Muscle insulin sensitivity. Solid lines represent significant differences between study days at the end of each line (P < 0.05; within groups) for the full mixed-effects ANOVA models only. P-values for mixed-effects ANOVAs with only energy intake or only body weight as covariates are included in the results. GIR, glucose infusion rate; Rd, rate of disappearance. CON, control group; SR, sleep restriction group; WR, weekend recovery group. Data are mean ± SEM. See also Figure S4 and Figure S5.
+Table 1.
+Total Sleep Time, Waketimes, and Bedtimes.
+SD2 BL
+SD3 BL
+SD4 WW-1
+SD5 WW-1
+SD8 WE-Friday
+SD9 WE-Saturday
+SD10 WE-Sunday
+SD11 WW-2
+|
+Total Sleep Time (h)
+|
+|
+CON
+7.9±0.1
+8.0±0.2
+7.7±0.3
+7.8±0.2
+8.0±0.2
+7.9±0.2
+8.1±0.1
+7.8±0.2
+|
+SR
+8.0±0.1
+7.7±0.2
+4.6±0.1*
+4.7±0.1*
+4.9±0.1*
+4.8±0.0*
+4.9±0.0*
+4.8±0.0*
+|
+WR
+8.1±0.1
+8.1±0.1
+4.5±0.1*
+4.7±0.1*
+10.0±0.4*
+9.2±0.5*
+6.1±0.3*
+4.5±0.1*
+|
+|
+Waketime (clock hour.min)
+|
+|
+CON
+8.2±0.4
+8.2±0.4
+8.2±0.4
+8.2±0.4
+8.2±0.4
+8.2±0.4
+8.2±0.4
+8.2±0.4
+|
+SR
+8.0±0.3
+8.0±0.3
+8.0±0.3
+6.0±0.3
+6.0±0.3
+6.0±0.3
+6.0±0.3
+6.0±0.3
+|
+WR
+8.2±0.3
+8.1±0.3
+8.0±0.3
+6.1±0.3
+6.1±0.3
+12.0±0.4*
+11.6±0.4*
+6.1±0.3
+|
+|
+Bedtime (clock hour.min)
+|
+|
+CON
+23.2±0.4
+23.2±0.4
+23.2±0.4
+23.2±0.4
+23.2±0.4
+23.2±0.4
+23.2±0.4
+23.2±0.4
+|
+SR
+23.0±0.3
+23.0±0.3
+25.0±0.3
+25.0±0.3
+25.0±0.3
+25.0±0.3
+25.0±0.3
+25.0±0.3
+|
+WR
+23.2±0.3
+23.1±0.3
+25.1±0.3
+25.1±0.3
+25.1±0.3
+24.4±0.5*
+23.1±0.4
+25.1±0.3
+|
+For all groups, study days 2–3 represent baseline, study days 4–8 represent workweek-1 (WW-1), study days 9–10 represent the weekend (WE), and study day 11 represents workweek-2 (WW-2). Participants in the WR group self-selected their bedtimes and waketimes on study days 9 and 10; times are for the major sleep episode excluding naps—naps are included in the total sleep duration for WR on days 9 and 10, however, note that only 2 subjects chose to nap and that each subject took just one nap lasting ~1.5h each. CON, control group; SR, sleep restriction group; WR, weekend recovery group; SD, study day. Total sleep time also includes naps.
+*
+P < 0.05 versus baseline (within subjects). Statistically significant differences in waketime and bedtime are only indicated for the self-selected waketimes and bedtimes in the WR group as all other waketimes and bedtimes were set by the study protocol. Waketimes and bedtimes are based on actual clock hour. Data are mean ± SEM. See also Figure S1 and Figure S6.
+Table 2.
+Total Daily Macronutrient Intake.
+CON (n=8)
+SR (n=14)
+WR (n=14)
+|
+|
+BL
+WW-1
+WE
+WW-2
+BL
+WW-1
+WE
+WW-2
+BL
+WW-1
+WE
+WW-2
+|
+Macronutrient Intake (g)
+|
+|
+CHO
+316.9 (18.6)
+441.1 (80.8)
+425.7 (67.3)
+483.0 (102.7)
+302.5 (10.6)
+388.9 (42.2)*
+411.4 (38.3)*
+398.5 (41.0)*
+309.7 (9.1)
+451.0 (35.1)*$
+360.2 (27.0)*
+431.0 (39.2)*$
+|
+FAT
+76.9 (4.5)
+104.6 (15.4)
+100.4 (17.3)
+114.6 (17.6)*
+72.9 (2.7)
+106.8 (12.65)*
+108.8 (12.7)*
+109.2 (12.1)*
+75.5 (2.0)
+121.8 (9.4)*$
+94.5 (8.1)*
+115.8 (9.2)*$
+|
+PRO
+86.5 (5.0)
+114.3 (14.3)*
+114.0 (14.8)
+116.1 (15.5)
+82.3 (3.2)
+113.4 (11.2)*
+115.7 (10.2)*
+112.5 (10.7)*
+85.0 (2.3)
+127.0 (7.6)*$
+108.3 (6.9)*
+118.4 (6.7)*
+|
+For all groups, study days 1–3 represent baseline, study days 4–8 represent workweek-1 (WW-1), study days 9–10 represent the weekend (WE), and study day 11–13 represents workweek-2 (WW-2).
+*
+P < 0.05 versus baseline (within subjects);
+$
+P < 0.05 versus weekend (within subjects). CHO, carbohydrate; PRO, protein; g, grams; CON, control group; SR, sleep restriction group; WR, weekend recovery group. Data are mean (SEM).
+Highlights :
+Sleep loss increased after-dinner energy intake and reduced insulin sensitivity
+In total, participants slept an extra 1.1h during weekend recovery versus baseline
+After-dinner energy intake was reduced during weekend recovery sleep
+Weekend recovery sleep did not prevent weight-gain or reduced insulin sensitivity

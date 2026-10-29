@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>피험자 제로</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: {{w}}px; height: {{h}}px; position: relative">
+<svg width="{{w}}" height="{{h}}" viewBox="0 0 400 600" role="img" aria-label="피험자 제로 {{expr}} {{pose}}" style="display: block; overflow: visible">
+<line x1="40" y1="566" x2="360" y2="566" stroke="#3DF2B0" stroke-width="4" stroke-dasharray="14 10" display="{{groundD}}"></line>
+<ellipse cx="200" cy="560" rx="{{shadowRx}}" ry="10" fill="#000000" opacity="0.2"></ellipse>
+<g transform="translate(0 {{dy}})">
+<g stroke="#141414" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<polyline points="{{legL}}"></polyline>
+<polyline points="{{legR}}"></polyline>
+</g>
+<ellipse cx="{{fLx}}" cy="{{fLy}}" rx="27" ry="14" fill="#FFFFFF" stroke="#141414" stroke-width="7" transform="rotate({{fLr}} {{fLx}} {{fLy}})"></ellipse>
+<ellipse cx="{{fRx}}" cy="{{fRy}}" rx="27" ry="14" fill="#FFFFFF" stroke="#141414" stroke-width="7" transform="rotate({{fRr}} {{fRx}} {{fRy}})"></ellipse>
+<path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z" fill="{{vest}}" stroke="#141414" stroke-width="8" stroke-linejoin="round"></path>
+<line x1="200" y1="256" x2="200" y2="416" stroke="#141414" stroke-width="4"></line>
+<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"></rect>
+<text x="168" y="318" text-anchor="middle" font-family="Black Han Sans, sans-serif" font-size="19" fill="#3DF2B0">00</text>
+<g stroke="#141414" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<polyline points="{{armL}}"></polyline>
+<polyline points="{{armR}}"></polyline>
+</g>
+<ellipse cx="200" cy="170" rx="118" ry="112" fill="#FFFFFF" stroke="#141414" stroke-width="8"></ellipse>
+<ellipse cx="148" cy="212" rx="15" ry="8" fill="#FF9BB0" opacity="0.75" display="{{blushD}}"></ellipse>
+<ellipse cx="252" cy="212" rx="15" ry="8" fill="#FF9BB0" opacity="0.75" display="{{blushD}}"></ellipse>
+<circle cx="165" cy="188" r="25" fill="#FFFFFF" stroke="#141414" stroke-width="6" display="{{whitesD}}"></circle>
+<circle cx="235" cy="188" r="25" fill="#FFFFFF" stroke="#141414" stroke-width="6" display="{{whitesD}}"></circle>
+<path d="{{eyeL}}" fill="{{eyeFill}}" stroke="#141414" stroke-width="{{eyeSW}}" stroke-linecap="round"></path>
+<path d="{{eyeR}}" fill="{{eyeFill}}" stroke="#141414" stroke-width="{{eyeSW}}" stroke-linecap="round"></path>
+<path d="{{strap}}" fill="none" stroke="#1F2D44" stroke-width="16" stroke-linecap="round"></path>
+<circle cx="{{gLx}}" cy="{{gy}}" r="31" fill="#3DF2B0" fill-opacity="{{lensOp}}" stroke="#1F2D44" stroke-width="9"></circle>
+<circle cx="{{gRx}}" cy="{{gy}}" r="31" fill="#3DF2B0" fill-opacity="{{lensOp}}" stroke="#1F2D44" stroke-width="9"></circle>
+<circle cx="{{gLhx}}" cy="{{ghy}}" r="7" fill="#FFFFFF" opacity="0.85"></circle>
+<circle cx="{{gRhx}}" cy="{{ghy}}" r="7" fill="#FFFFFF" opacity="0.85"></circle>
+<path d="{{browL}}" fill="none" stroke="#141414" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="{{browR}}" fill="none" stroke="#141414" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="{{mouth}}" fill="{{mouthFill}}" stroke="#141414" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M306 112 Q292 138 306 148 Q320 138 306 112 Z" fill="#9ED8FF" stroke="#141414" stroke-width="5" stroke-linejoin="round" display="{{sweatD}}"></path>
+<circle cx="{{hLx}}" cy="{{hLy}}" r="22" fill="#FFFFFF" stroke="#141414" stroke-width="7"></circle>
+<circle cx="{{hRx}}" cy="{{hRy}}" r="22" fill="#FFFFFF" stroke="#141414" stroke-width="7"></circle>
+</g>
+</svg>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"expr":{"editor":"enum","options":["기본","신남","놀람","결심","걱정","겁먹음","지침","뿌듯"],"default":"기본"},"pose":{"editor":"enum","options":["서기","손인사","걷기","둥둥","점프","고민"],"default":"서기"},"goggles":{"editor":"enum","options":["올림","내림"],"default":"올림"},"vest":{"editor":"color","default":"#F7E733","options":["#F7E733","#3DF2B0","#FF8A3D"]},"size":{"editor":"int","default":600,"min":120,"max":2400},"$preview":{"width":400,"height":600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ell = (cx, cy, rx, ry) => 'M' + (cx - rx) + ' ' + cy + ' A' + rx + ' ' + ry + ' 0 1 0 ' + (cx + rx) + ' ' + cy + ' A' + rx + ' ' + ry + ' 0 1 0 ' + (cx - rx) + ' ' + cy + ' Z';
+    const dot = (rx, ry) => ({ eyeL: ell(165, 188, rx, ry), eyeR: ell(235, 188, rx, ry), eyeFill: '#141414', eyeSW: 0, whites: false });
+    const E = {
+      '기본': Object.assign(dot(10, 14), { browL: 'M140 150 L186 152', browR: 'M214 152 L260 150', mouth: 'M190 232 Q200 237 210 232', mouthFill: 'none' }),
+      '신남': { eyeL: 'M149 194 Q165 172 181 194', eyeR: 'M219 194 Q235 172 251 194', eyeFill: 'none', eyeSW: 9, whites: false, browL: 'M142 140 Q164 126 186 136', browR: 'M214 136 Q236 126 258 140', mouth: 'M180 222 Q200 254 220 222 Z', mouthFill: '#141414', blush: true },
+      '놀람': { eyeL: ell(165, 190, 9, 10), eyeR: ell(235, 190, 9, 10), eyeFill: '#141414', eyeSW: 0, whites: true, browL: 'M140 136 Q163 118 186 128', browR: 'M214 128 Q237 118 260 136', mouth: ell(200, 238, 10, 14), mouthFill: '#141414' },
+      '결심': Object.assign(dot(10, 12), { browL: 'M138 148 L188 166', browR: 'M212 166 L262 148', mouth: 'M188 234 L212 234', mouthFill: 'none' }),
+      '걱정': Object.assign(dot(10, 14), { browL: 'M142 164 L186 146', browR: 'M214 146 L258 164', mouth: 'M182 236 Q191 228 200 236 Q209 244 218 236', mouthFill: 'none', sweat: true }),
+      '겁먹음': { eyeL: ell(165, 192, 6, 7), eyeR: ell(235, 192, 6, 7), eyeFill: '#141414', eyeSW: 0, whites: true, browL: 'M142 160 L186 138', browR: 'M214 138 L258 160', mouth: 'M180 244 L188 236 L196 244 L204 236 L212 244 L220 236', mouthFill: 'none', sweat: true },
+      '지침': { eyeL: 'M152 184 L178 184 Q178 200 165 200 Q152 200 152 184 Z', eyeR: 'M222 184 L248 184 Q248 200 235 200 Q222 200 222 184 Z', eyeFill: '#141414', eyeSW: 0, whites: false, browL: 'M142 166 L186 170', browR: 'M214 170 L258 166', mouth: 'M190 236 L210 233', mouthFill: 'none' },
+      '뿌듯': Object.assign(dot(10, 11), { browL: 'M142 152 L186 154', browR: 'M214 140 Q236 126 258 136', mouth: 'M184 230 Q204 240 218 224', mouthFill: 'none' })
+    };
+    const P = {
+      '서기': { armL: '148,285 122,345 116,398', hL: [114, 406], armR: '252,285 278,345 284,398', hR: [286, 406], legL: '180,412 176,470 172,522', fL: [160, 534, 0], legR: '220,412 224,470 228,522', fR: [240, 534, 0], dy: 0 },
+      '손인사': { armL: '148,285 122,345 116,398', hL: [114, 406], armR: '252,285 302,245 320,180', hR: [322, 170], legL: '180,412 176,470 172,522', fL: [160, 534, 0], legR: '220,412 224,470 228,522', fR: [240, 534, 0], dy: 0 },
+      '걷기': { armL: '148,285 128,340 152,390', hL: [156, 398], armR: '252,285 282,338 298,386', hR: [302, 394], legL: '180,412 160,466 138,512', fL: [126, 524, -15], legR: '220,412 236,468 254,520', fR: [266, 532, 0], dy: 0 },
+      '둥둥': { armL: '148,285 100,300 72,270', hL: [66, 262], armR: '252,285 300,300 328,270', hR: [334, 262], legL: '180,412 172,468 160,514', fL: [150, 526, 20], legR: '220,412 228,468 240,514', fR: [250, 526, -20], dy: -44 },
+      '점프': { armL: '148,285 104,230 86,170', hL: [82, 160], armR: '252,285 296,230 314,170', hR: [318, 160], legL: '180,412 140,450 168,494', fL: [160, 504, 0], legR: '220,412 262,448 236,494', fR: [244, 504, 0], dy: -64 },
+      '고민': { armL: '148,285 122,345 116,398', hL: [114, 406], armR: '252,290 288,332 246,292', hR: [238, 284], legL: '180,412 176,470 172,522', fL: [160, 534, 0], legR: '220,412 224,470 228,522', fR: [240, 534, 0], dy: 0 }
+    };
+    const expr = E[this.props.expr] ? this.props.expr : '기본';
+    const pose = P[this.props.pose] ? this.props.pose : '서기';
+    const e = E[expr];
+    const p = P[pose];
+    const down = this.props.goggles === '내림';
+    const size = Number(this.props.size) || 600;
+    return {
+      expr, pose,
+      w: Math.round(size * 400 / 600), h: size,
+      vest: this.props.vest ?? '#F7E733',
+      eyeL: e.eyeL, eyeR: e.eyeR, eyeFill: e.eyeFill, eyeSW: e.eyeSW,
+      whitesD: e.whites ? 'inline' : 'none',
+      browL: e.browL, browR: e.browR, mouth: e.mouth, mouthFill: e.mouthFill,
+      sweatD: e.sweat ? 'inline' : 'none',
+      blushD: e.blush ? 'inline' : 'none',
+      strap: down ? 'M84 188 L316 188' : 'M86 138 Q200 52 314 138',
+      gLx: down ? 165 : 163, gRx: down ? 235 : 237, gy: down ? 188 : 90,
+      gLhx: down ? 155 : 153, gRhx: down ? 225 : 227, ghy: down ? 176 : 80,
+      lensOp: down ? 0.35 : 1,
+      armL: p.armL, armR: p.armR, legL: p.legL, legR: p.legR,
+      hLx: p.hL[0], hLy: p.hL[1], hRx: p.hR[0], hRy: p.hR[1],
+      fLx: p.fL[0], fLy: p.fL[1], fLr: p.fL[2], fRx: p.fR[0], fRy: p.fR[1], fRr: p.fR[2],
+      dy: p.dy,
+      shadowRx: Math.round(80 - Math.abs(p.dy) * 0.6),
+      groundD: p.dy < 0 ? 'inline' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

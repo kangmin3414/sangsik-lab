@@ -1,0 +1,29 @@
+const W = 1920, H = 1080;
+function label(x, y, text, o = {}
+function brain(cx, cy, s, region, t, labelText) {
+  const pulse = (Math.sin(t * 4) + 1) / 2;
+  let h = `<g transform="translate(${cx} ${cy}) scale(${s})">`;
+  h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD6DC" stroke="${INK}" stroke-width="9"/>`;
+  [[-200, -80, -120, -150, -20, -120], [-60, -40, 40, -120, 140, -70], [-220, 40, -110, -10, 0, 60], [40, 20, 140, -20, 230, 40], [-120, 120, 0, 90, 90, 130]].forEach(c => h += `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E58F9D" stroke-width="8" stroke-linecap="round"/>`);
+  if (region === 'amygdala') h += `<ellipse cx="20" cy="70" rx="${34 + pulse * 6}" ry="${24 + pulse * 4}" fill="${RED}" stroke="${INK}" stroke-width="6"/><circle cx="20" cy="70" r="${80 + pulse * 30}" fill="url(#redglow)"/>`;
+  if (region === 'hippocampus') h += `<path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${MINT}" stroke-width="${22 + pulse * 6}" stroke-linecap="round"/><path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" opacity=".6"/><circle cx="20" cy="80" r="${120 + pulse * 30}" fill="url(#glow)"/>`;
+  if (region === 'whole') h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="${MINT}" opacity="${f1((0.15 + pulse * 0.2) * 100) / 100}"/>`;
+  if (region === 'neurons') {
+    const g = clamp(t % 4 / 3, 0, 1);
+    const nodes = [[-180, -60], [-60, -140], [80, -120], [200, -30], [-120, 60], [40, 20], [160, 100], [-40, 120]];
+    nodes.forEach(([x, y], i) => nodes.forEach(([x2, y2], j) => { if (j > i && Math.hypot(x - x2, y - y2) < 200) { const k = clamp(g * 2 - (i + j) / 14, 0, 1); h += `<line x1="${x}" y1="${y}" x2="${f1(lerp(x, x2, k))}" y2="${f1(lerp(y, y2, k))}" stroke="${MINT}" stroke-width="6" stroke-linecap="round"/>`; } }));
+    nodes.forEach(([x, y], i) => h += `<circle cx="${x}" cy="${y}" r="${f1(14 + 4 * Math.sin(t * 5 + i))}" fill="${YEL}" stroke="${INK}" stroke-width="5"/>`);
+  }
+  h += `</g>`;
+  if (labelText) h += label(cx + 230 * s, cy - 270 * s, labelText, { size: 36 });
+  return h;
+}
+function phone(x, y, s, o = {}
+function donut(x, y, s, rot = 0) {
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${rot}) scale(${s})"><circle r="60" fill="#E0A060" stroke="${INK}" stroke-width="7"/><path d="M-54 -14 Q-40 -58 0 -58 Q44 -58 56 -12 Q40 6 20 -4 Q0 8 -20 -2 Q-40 8 -54 -14 Z" fill="#FF8FB1" stroke="${INK}" stroke-width="6"/><circle r="20" fill="#2A1A10" stroke="${INK}" stroke-width="6"/>${[[-30, -36, 20], [10, -46, -30], [34, -26, 60], [-14, -24, 90]].map(([a, b, r]) => `<rect x="${a}" y="${b}" width="12" height="5" rx="2.5" fill="${['#fff', YEL, MINT, '#7CC7FF'][Math.abs(r) % 4]}" transform="rotate(${r} ${a} ${b})"/>`).join('')}</g>`;
+}
+function cookie(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><circle r="50" fill="#D9A066" stroke="${INK}" stroke-width="7"/>${[[-18, -14], [16, -20], [-6, 14], [22, 12], [-26, 16]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="7" fill="#4A2A14"/>`).join('')}</g>`; }
+function cake(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-60 40 L-60 -10 L60 -40 L60 40 Z" fill="#FFE6C8" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-60 -10 L60 -40 L60 -20 L-60 10 Z" fill="#FF8FB1"/><path d="M-60 12 L60 -18" stroke="#fff" stroke-width="6"/><circle cx="34" cy="-50" r="14" fill="${RED}" stroke="${INK}" stroke-width="5"/></g>`; }
+function latte(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-44 -80 L44 -80 L36 70 Q0 82 -36 70 Z" fill="#F7E7D2" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-41 -20 L41 -20 L38 30 L-38 30 Z" fill="#C88A52"/><path d="M-38 30 L38 30 L36 70 Q0 82 -36 70 Z" fill="#7A4A2A"/><path d="M-50 -80 Q-40 -126 0 -120 Q40 -130 50 -80 Z" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M-30 -104 Q0 -90 30 -108" fill="none" stroke="#C88A52" stroke-width="7" stroke-linecap="round"/><rect x="12" y="-170" width="10" height="90" rx="4" fill="${PINK}" stroke="${INK}" stroke-width="4" transform="rotate(12 17 -125)"/></g>`; }
+function cube(x, y, s = 1) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-30 -10 L0 -26 L30 -10 L0 6 Z" fill="#FFFFFF" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-30 -10 L0 6 L0 40 L-30 24 Z" fill="#E8EEF6" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M30 -10 L0 6 L0 40 L30 24 Z" fill="#CFD8E4" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><circle cx="-12" cy="10" r="2.5" fill="#B9C6D6"/><circle cx="14" cy="18" r="2.5" fill="#A9B6C6"/></g>`; }
+function soda(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><rect x="-58" y="-110" width="116" height="220" rx="22" fill="#E8414A" stroke="${INK}" stroke-width="8"/><rect x="-50" y="-128" width="100" height="26" rx="10" fill="#C9D3E2" stroke="${INK}" stroke-width="6"/><path d="M-58 -10 Q0 30 58 -10 L58 30 Q0 70 -58 30 Z" fill="#fff" opacity=".9"/><text x="0" y="-40" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="34" fill="#fff">탄산</text><rect x="-40" y="-96" width="14" height="180" rx="7" fill="#fff" opacity=".25"/></g>`; }

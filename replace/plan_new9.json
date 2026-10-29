@@ -1,0 +1,66 @@
+{
+ "eps": {
+  "007v4": {
+   "dir": "descartes4",
+   "video": "상식실험실_실험007_데카르트처럼모든걸의심하기_v8.mp4",
+   "outro_line": 53,
+   "theme": [
+    "#0A0614",
+    "#2A1B40",
+    "#0E0818"
+   ],
+   "accent": "#C9B6FF",
+   "cta": [
+    "데카르트처럼 의심하기",
+    "전체 실험 보기"
+   ],
+   "outro_say": "데카르트처럼 의심하기. 전체 실험은 채널에서.",
+   "num": "007",
+   "timeline": "descartes4/timeline.json",
+   "mix": "descartes4/mix_bgm2.wav",
+   "bed_file": "bgm/cand_2_strings_b.mp3",
+   "bed_offset": 60
+  }
+ },
+ "shorts": [
+  {
+   "ep": "007v4",
+   "name": "007v4-2_지퍼",
+   "lines": [
+    12,
+    15
+   ],
+   "title": [
+    "지퍼 작동 원리,",
+    "설명할 수 있나요?"
+   ],
+   "thumb": 14
+  },
+  {
+   "ep": "007v4",
+   "name": "007v4-3_방망이",
+   "lines": [
+    17,
+    20
+   ],
+   "title": [
+    "명문대생 절반이",
+    "틀린 문제"
+   ],
+   "thumb": 19
+  },
+  {
+   "ep": "007v4",
+   "name": "007v4-8_최선",
+   "lines": [
+    38,
+    41
+   ],
+   "title": [
+    "최고만 고르면",
+    "덜 행복하다?"
+   ],
+   "thumb": 40
+  }
+ ]
+}

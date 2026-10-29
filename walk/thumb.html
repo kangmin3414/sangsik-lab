@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}svg{display:block}</style><script src="../shorts/engine.js"></script></head>
+<body><svg id="v" width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const t = 1.3;
+let h = `<defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath><clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1626"/><stop offset="1" stop-color="#1B3358"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".75"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0 L0 0 0 48" fill="none" stroke="${MINT}" stroke-opacity=".1" stroke-width="2"/></pattern></defs>
+<rect width="1280" height="720" fill="url(#bg)"/><rect width="1280" height="720" fill="url(#grid)"/>`;
+// glowing brain top-right
+h += `<circle cx="1010" cy="250" r="260" fill="url(#glow)"/>`;
+h += `<g transform="translate(1010 250) scale(0.62)"><path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD6DC" stroke="${INK}" stroke-width="12"/>
+${[[-200,-80,-120,-150,-20,-120],[-60,-40,40,-120,140,-70],[-220,40,-110,-10,0,60],[40,20,140,-20,230,40],[-120,120,0,90,90,130]].map(c=>`<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E58F9D" stroke-width="10" stroke-linecap="round"/>`).join('')}
+<path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${MINT}" stroke-width="30" stroke-linecap="round"/></g>`;
+// Zero walking, big
+h += `<ellipse cx="1000" cy="712" rx="120" ry="16" fill="#000" opacity=".35"/>`;
+h += char({ t, seed: 2, x: 1000, y: 712, s: 0.78, pose: walkPose(1.1, 1.0), ex: { expr: '놀람', prev: '놀람', k: 1, blink: 0 }, noBlink: true, still: true, look: [-0.4, 0] });
+// text block left
+h += `<rect x="40" y="40" width="250" height="70" rx="35" fill="${MINT}" stroke="${INK}" stroke-width="6"/><text x="165" y="88" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="40" fill="${NAVY}">하루 30분</text>`;
+h += outlined(60, 250, ['걷기만 했는데'], { size: 104, sw: 20, anchor: 'start' });
+h += outlined(60, 395, [[['뇌가 ', WHITE], ['자랐다', YEL]]], { size: 128, sw: 24, anchor: 'start' });
+h += `<g transform="translate(60 470)"><rect x="0" y="0" width="560" height="90" rx="16" fill="${PINK}" stroke="${INK}" stroke-width="7"/><text x="280" y="62" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="50" fill="#fff" stroke="${INK}" stroke-width="7" paint-order="stroke">치매 위험 −51%</text></g>`;
+h += `<text x="60" y="660" font-family="${FONT}" font-weight="900" font-size="36" fill="${MINT}">만약에연구소 · 실험 002</text>`;
+document.getElementById('v').innerHTML = h;
+</script></body></html>

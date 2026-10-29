@@ -1,0 +1,68 @@
+{
+ "1_데카르트": {
+  "promptTokenCount": 484,
+  "candidatesTokenCount": 1413,
+  "totalTokenCount": 1897,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 484
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 199
+   },
+   {
+    "modality": "AUDIO",
+    "tokenCount": 1214
+   }
+  ]
+ },
+ "2_장자": {
+  "promptTokenCount": 408,
+  "candidatesTokenCount": 926,
+  "totalTokenCount": 1334,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 408
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 138
+   },
+   {
+    "modality": "AUDIO",
+    "tokenCount": 788
+   }
+  ]
+ },
+ "3_붓다": {
+  "promptTokenCount": 645,
+  "candidatesTokenCount": 1780,
+  "totalTokenCount": 2425,
+  "trafficType": "ON_DEMAND",
+  "promptTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 645
+   }
+  ],
+  "candidatesTokensDetails": [
+   {
+    "modality": "TEXT",
+    "tokenCount": 298
+   },
+   {
+    "modality": "AUDIO",
+    "tokenCount": 1482
+   }
+  ]
+ }
+}

@@ -1,0 +1,25 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:03.76,Cap,,0,0,0,,{\c&HFFFFFF&}그런 그가 남긴, 짧은 우화가 있습니다.
+Dialogue: 0,0:00:03.78,0:00:05.38,Cap,,0,0,0,,{\c&HFFFFFF&}어느 추운 겨울날,
+Dialogue: 0,0:00:05.40,0:00:10.27,Cap,,0,0,0,,{\c&HFFFFFF&}고슴도치들이 얼지 않으려고 서로 바짝 붙었습니다.
+Dialogue: 0,0:00:10.29,0:00:14.05,Cap,,0,0,0,,{\c&HFFFFFF&}그러자 서로의 가시에 찔려, 다시 떨어졌죠.
+Dialogue: 0,0:00:14.07,0:00:18.64,Cap,,0,0,0,,{\c&HFFFFFF&}추우면 붙고, 찔리면 떨어지고. 그렇게 오가다,
+Dialogue: 0,0:00:18.66,0:00:22.66,Cap,,0,0,0,,{\c&HFFFFFF&}마침내 견딜 만한 거리를 찾았습니다.
+Dialogue: 0,0:00:22.69,0:00:27.14,Cap,,0,0,0,,{\c&HFFFFFF&}쇼펜하우어는 그 거리를, 예의라고 불렀습니다.
+Dialogue: 0,0:00:27.16,0:00:30.32,Cap,,0,0,0,,{\c&HFFFFFF&}그리고 덧붙였죠. 안에 온기가 많은 사람은,
+Dialogue: 0,0:00:30.34,0:00:32.55,Cap,,0,0,0,,{\c&HFFFFFF&}차라리 떨어져 지낸다고.
+Dialogue: 0,0:00:32.57,0:00:35.34,Cap,,0,0,0,,{\c&HFFFFFF&}사람을 가시 돋친 고슴도치로 본,
+Dialogue: 0,0:00:35.36,0:00:38.32,Cap,,0,0,0,,{\c&HFFFFFF&}고독의 철학자다운 결론이었죠.
+Dialogue: 0,0:00:38.34,0:00:45.03,Cap,,0,0,0,,{\c&H7AE2FF&}그럼 저는… 안이 따뜻해서 혼자인 걸까요, 그냥 추운 걸까요?

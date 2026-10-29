@@ -1,0 +1,29 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:03.92,Cap,,0,0,0,,어느 날 혜자가 투덜댑니다. 왕에게 받은 박씨를 심었더니,
+Dialogue: 0,0:00:03.92,0:00:05.94,Cap,,0,0,0,,엄청나게 큰 박이 열렸는데,
+Dialogue: 0,0:00:06.19,0:00:08.63,Cap,,0,0,0,,물을 담으면 무거워서 들 수가 없고,
+Dialogue: 0,0:00:08.63,0:00:11.44,Cap,,0,0,0,,쪼개면 납작해서 바가지로도 못 쓰겠더라고.
+Dialogue: 0,0:00:11.44,0:00:13.03,Cap,,0,0,0,,그래서 부숴 버렸네.
+Dialogue: 0,0:00:13.48,0:00:15.85,Cap,,0,0,0,,장자가 이야기 하나를 꺼냅니다.
+Dialogue: 0,0:00:15.85,0:00:20.03,Cap,,0,0,0,,송나라에 손 안 트는 약을 잘 만드는 집안이 있었는데,
+Dialogue: 0,0:00:20.03,0:00:23.89,Cap,,0,0,0,,그 약을 바르고 대대로 솜 빨래를 하며 살았지.
+Dialogue: 0,0:00:24.14,0:00:27.15,Cap,,0,0,0,,어떤 사람이 그 비법을 백 금에 사서,
+Dialogue: 0,0:00:27.15,0:00:29.26,Cap,,0,0,0,,오나라 왕에게 가져갔어.
+Dialogue: 0,0:00:29.51,0:00:32.58,Cap,,0,0,0,,한겨울 강 위에서 싸움이 벌어지자,
+Dialogue: 0,0:00:32.58,0:00:37.09,Cap,,0,0,0,,손이 멀쩡한 오나라 군사들이 월나라를 크게 이겼고,
+Dialogue: 0,0:00:37.09,0:00:39.43,Cap,,0,0,0,,그 사람은 땅을 받았지.
+Dialogue: 0,0:00:39.68,0:00:44.73,Cap,,0,0,0,,같은 약인데, 누구는 평생 빨래를 하고, 누구는 땅을 받았어.
+Dialogue: 0,0:00:45.48,0:00:49.98,Cap,,0,0,0,,그 큰 박도 허리에 묶고 강물에 둥둥 떠다니면 될 걸.
+Dialogue: 0,0:00:49.98,0:00:52.17,Cap,,0,0,0,,자네 생각이 꽉 막혔군.

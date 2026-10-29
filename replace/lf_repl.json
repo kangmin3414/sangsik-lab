@@ -1,0 +1,207 @@
+{
+ "007": {
+  "old": "aK6qUwZtAbM",
+  "new": "Hnv5DGK-6tQ",
+  "file": "v9 (new intro)",
+  "when": "2026-10-30 18:00",
+  "done": [
+   "title",
+   "desc v9 chapters",
+   "thumb U",
+   "tags 15",
+   "scheduled"
+  ],
+  "prev": {
+   "old": "dn3xfVniDAg",
+   "new": "aK6qUwZtAbM",
+   "file": "v8 (screen+eating fix)",
+   "when": "2026-10-30 18:00",
+   "done": [
+    "title",
+    "desc",
+    "thumb D1",
+    "playlists x3",
+    "tags 15",
+    "end screen (template 1video+subscribe, 시청자 맞춤)",
+    "ko subs v6",
+    "scheduled",
+    "A/B D1/D2/A"
+   ],
+   "old_private": true,
+   "old_playlist": "삭제 예정 (예전 버전) only",
+   "prev": {
+    "old": "BE-y_GIoxyI",
+    "new": "dn3xfVniDAg",
+    "file": "v7",
+    "when": "2026-10-30 18:00",
+    "done": [
+     "title",
+     "desc",
+     "thumb D1",
+     "playlists x3",
+     "tags 15",
+     "end screen",
+     "ko subs v6",
+     "scheduled"
+    ],
+    "old_private": true,
+    "old_playlist": "삭제 예정 (예전 버전)",
+    "misplaced": "DsFAsvtRaU0 (wrong channel, set private; user should delete)",
+    "v8_new": "aK6qUwZtAbM",
+    "v8_status": "uploaded+scheduled 10/30 18:00; title/desc/D1 thumb/tags15/playlists3 done; TODO: end screen save, ko subs v6, A/B, old dn3xfVniDAg private+삭제예정"
+   }
+  }
+ },
+ "008": {
+  "old": "Ux8ePpM0Skg",
+  "new": "LDiQlSjL7lE",
+  "file": "v9 (new intro)",
+  "when": "2026-11-02 18:00",
+  "done": [
+   "title",
+   "desc v9 chapters",
+   "thumb U",
+   "tags 15",
+   "scheduled"
+  ],
+  "prev": {
+   "old": "aCKY4uU_hm4",
+   "new": "Ux8ePpM0Skg",
+   "file": "v8 (screen fix)",
+   "when": "2026-11-02 18:00",
+   "done": [
+    "title",
+    "desc",
+    "thumb D1",
+    "tags 15",
+    "scheduled",
+    "playlists x3",
+    "end screen",
+    "ko subs v6 (check: page said 자동 자막 생성 중)",
+    "A/B D1/D2/A"
+   ],
+   "prev": {
+    "old": "a7s5Ot9CKt4",
+    "new": "aCKY4uU_hm4",
+    "file": "v7",
+    "when": "2026-11-02 18:00",
+    "done": [
+     "title",
+     "desc",
+     "thumb D1",
+     "playlists x3",
+     "tags 15",
+     "end screen",
+     "ko subs v6",
+     "scheduled"
+    ],
+    "old_private": true,
+    "old_playlist": "삭제 예정 (예전 버전)"
+   },
+   "old_private": true,
+   "old_playlist": "삭제 예정 only"
+  }
+ },
+ "009": {
+  "old": "BdUjt0_eXbk",
+  "new": "koloX4KIqsU",
+  "file": "v6 (screen fix)",
+  "when": "2026-11-05 18:00",
+  "done": [
+   "title",
+   "desc",
+   "thumb D1",
+   "tags 15",
+   "scheduled",
+   "playlists x3",
+   "end screen",
+   "ko subs v4",
+   "A/B D1/D2/A"
+  ],
+  "prev": {
+   "old": "SRqjtupG8Z8",
+   "new": "BdUjt0_eXbk",
+   "file": "v5 (old was v3)",
+   "when": "2026-11-05 18:00",
+   "done": [
+    "title",
+    "desc",
+    "thumb D1",
+    "playlists x3",
+    "tags 15",
+    "end screen",
+    "ko subs v4",
+    "scheduled"
+   ],
+   "old_private": true,
+   "old_playlist": "삭제 예정 (예전 버전)"
+  },
+  "old_private": true,
+  "old_playlist": "삭제 예정 only"
+ },
+ "010": {
+  "old": "jUpuaUHNPR8",
+  "new": "Rw5mOgqfHVw",
+  "file": "v6 (screen+eating fix)",
+  "when": "2026-11-08 18:00",
+  "done": [
+   "title",
+   "desc",
+   "thumb D1",
+   "tags 15",
+   "scheduled",
+   "playlists x3",
+   "end screen",
+   "ko subs v4",
+   "A/B D1/D2/A"
+  ],
+  "prev": {
+   "old": "KzA7iMcgafI",
+   "new": "jUpuaUHNPR8",
+   "file": "v5 (old was v3)",
+   "when": "2026-11-08 18:00",
+   "done": [
+    "title",
+    "desc",
+    "thumb D1",
+    "playlists x3",
+    "tags 15",
+    "end screen",
+    "ko subs v4",
+    "scheduled"
+   ],
+   "old_private": true,
+   "old_playlist": "삭제 예정 (예전 버전)"
+  },
+  "old_private": true,
+  "old_playlist": "삭제 예정 only"
+ },
+ "v9_setup": {
+  "007": {
+   "id": "Hnv5DGK-6tQ",
+   "done": [
+    "upload",
+    "thumb U",
+    "meta",
+    "schedule 10/30 18:00",
+    "playlists",
+    "endscreen",
+    "srt v7",
+    "AB U/D1/T"
+   ]
+  },
+  "008": {
+   "id": "LDiQlSjL7lE",
+   "done": [
+    "upload",
+    "thumb U",
+    "meta",
+    "schedule 11/2 18:00",
+    "playlists",
+    "endscreen",
+    "srt v7",
+    "AB U/D1/T"
+   ]
+  }
+ }
+}

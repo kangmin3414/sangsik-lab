@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:03.16,Cap,,0,0,0,,{\c&HFFFFFF&}생각할 때는 모든 걸 의심했지만,
+Dialogue: 0,0:00:03.18,0:00:06.65,Cap,,0,0,0,,{\c&HFFFFFF&}행동할 때 데카르트는 달랐습니다.
+Dialogue: 0,0:00:06.67,0:00:09.00,Cap,,0,0,0,,{\c&H7AE2FF&}숲에서 길을 잃은 나그네는,
+Dialogue: 0,0:00:09.02,0:00:14.06,Cap,,0,0,0,,{\c&H7AE2FF&}이리저리 헤매지 말고 한 방향으로 곧장 걸어야 한다.
+Dialogue: 0,0:00:14.08,0:00:16.86,Cap,,0,0,0,,{\c&H7AE2FF&}그러면 원하던 곳은 아니더라도,
+Dialogue: 0,0:00:16.88,0:00:21.19,Cap,,0,0,0,,{\c&H7AE2FF&}적어도 숲을 빠져나갈 수는 있을 테니까.
+Dialogue: 0,0:00:21.21,0:00:26.33,Cap,,0,0,0,,{\c&HFFFFFF&}실제로 최고의 선택만 찾으려 끝없이 비교한 대학 졸업생들.
+Dialogue: 0,0:00:26.35,0:00:28.74,Cap,,0,0,0,,{\c&HFFFFFF&}연봉은 {\c&H33E7F7&}20%{\c&HFFFFFF&} 더 높았지만,
+Dialogue: 0,0:00:28.76,0:00:33.09,Cap,,0,0,0,,{\c&HFFFFFF&}자기 선택에 덜 만족했고 더 불안해했습니다.
+Dialogue: 0,0:00:33.11,0:00:36.11,Cap,,0,0,0,,{\c&HFFFFFF&}메뉴 하나 고르는 데 {\c&H33E7F7&}20분{\c&HFFFFFF&}씩 걸리던 제로.
+Dialogue: 0,0:00:36.13,0:00:40.15,Cap,,0,0,0,,{\c&HFFFFFF&}오늘은 {\c&H33E7F7&}3분{\c&HFFFFFF&} 안에 정하고, 정한 건 맛있게 먹었습니다.

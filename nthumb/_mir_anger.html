@@ -1,0 +1,290 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-claude/8ea42618-92c7-5880-934a-1a398f438784/scratchpad/thumb3/node_modules/@fontsource/black-han-sans/index.css">
+<style>body{margin:0;background:#000} #wrap{width:1280px;height:720px;position:relative;overflow:hidden}
+.t{position:absolute;white-space:nowrap;font-family:'Black Han Sans';line-height:1.05;letter-spacing:-1px;paint-order:stroke fill;transform-origin:left center}
+svg{position:absolute;left:0;top:0}</style>
+<script src="file:///tmp/claude-0/-home-claude/8ea42618-92c7-5880-934a-1a398f438784/scratchpad/shorts/engine.js"></script>
+<script>const W = 1920, H = 1080;
+function label(x, y, text, o = {}) {
+  const fs = o.size || 34, w = text.length * fs * 0.92 + 48, h = fs + 28;
+  return `<g transform="translate(${x} ${y})"><rect x="${-w / 2 + 5}" y="${-h / 2 + 7}" width="${w}" height="${h}" rx="${h / 2}" fill="${INK}" opacity=".3"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${o.bg || MINT}" stroke="${INK}" stroke-width="5"/><text x="0" y="${fs * 0.36}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="${fs}" fill="${o.color || NAVY}">${esc(text)}</text></g>`;
+}
+function brain(cx, cy, s, region, t, labelText) {
+  const pulse = (Math.sin(t * 4) + 1) / 2;
+  let h = `<g transform="translate(${cx} ${cy}) scale(${s})">`;
+  h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD6DC" stroke="${INK}" stroke-width="9"/>`;
+  [[-200, -80, -120, -150, -20, -120], [-60, -40, 40, -120, 140, -70], [-220, 40, -110, -10, 0, 60], [40, 20, 140, -20, 230, 40], [-120, 120, 0, 90, 90, 130]].forEach(c => h += `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E58F9D" stroke-width="8" stroke-linecap="round"/>`);
+  if (region === 'amygdala') h += `<ellipse cx="20" cy="70" rx="${34 + pulse * 6}" ry="${24 + pulse * 4}" fill="${RED}" stroke="${INK}" stroke-width="6"/><circle cx="20" cy="70" r="${80 + pulse * 30}" fill="url(#redglow)"/>`;
+  if (region === 'hippocampus') h += `<path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${MINT}" stroke-width="${22 + pulse * 6}" stroke-linecap="round"/><path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" opacity=".6"/><circle cx="20" cy="80" r="${120 + pulse * 30}" fill="url(#glow)"/>`;
+  if (region === 'whole') h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="${MINT}" opacity="${f1((0.15 + pulse * 0.2) * 100) / 100}"/>`;
+  if (region === 'neurons') {
+    const g = clamp(t % 4 / 3, 0, 1);
+    const nodes = [[-180, -60], [-60, -140], [80, -120], [200, -30], [-120, 60], [40, 20], [160, 100], [-40, 120]];
+    nodes.forEach(([x, y], i) => nodes.forEach(([x2, y2], j) => { if (j > i && Math.hypot(x - x2, y - y2) < 200) { const k = clamp(g * 2 - (i + j) / 14, 0, 1); h += `<line x1="${x}" y1="${y}" x2="${f1(lerp(x, x2, k))}" y2="${f1(lerp(y, y2, k))}" stroke="${MINT}" stroke-width="6" stroke-linecap="round"/>`; } }));
+    nodes.forEach(([x, y], i) => h += `<circle cx="${x}" cy="${y}" r="${f1(14 + 4 * Math.sin(t * 5 + i))}" fill="${YEL}" stroke="${INK}" stroke-width="5"/>`);
+  }
+  h += `</g>`;
+  if (labelText) h += label(cx + 230 * s, cy - 270 * s, labelText, { size: 36 });
+  return h;
+}
+function phone(x, y, s, o = {}) {
+  let h = `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(o.rot || 0)}) scale(${f1(s * 1000) / 1000})">`;
+  if (o.glow) h += `<circle r="300" fill="url(#screenGlow)" opacity="${o.glow}"/>`;
+  h += `<rect x="-62" y="-112" width="124" height="224" rx="22" fill="#1F2D44" stroke="${INK}" stroke-width="${o.lw || 7}"/>`;
+  if (o.back) {
+    h += `<rect x="-46" y="-96" width="40" height="52" rx="12" fill="#121B2B" stroke="#0A0F18" stroke-width="3"/><circle cx="-26" cy="-82" r="9" fill="#0A0F18" stroke="#3A4A66" stroke-width="3"/><circle cx="-26" cy="-58" r="9" fill="#0A0F18" stroke="#3A4A66" stroke-width="3"/>`;
+  } else if (o.on) {
+    h += `<rect x="-52" y="-98" width="104" height="196" rx="14" fill="url(#screen)"/>`;
+    if (o.content) h += `<g clip-path="url(#feedClip)">${o.content}</g>`;
+    else for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) h += `<rect x="${-40 + j * 30}" y="${-80 + i * 34}" width="22" height="22" rx="6" fill="${[MINT, PINK, YEL, '#7CC7FF'][(i + j) % 4]}"/>`;
+  } else {
+    h += `<rect x="-52" y="-98" width="104" height="196" rx="14" fill="#0B0F18"/><path d="M-40 -80 L-10 -80" stroke="#fff" stroke-width="5" opacity=".18" stroke-linecap="round"/>`;
+  }
+  h += `<rect x="-14" y="-108" width="28" height="7" rx="3.5" fill="#0A0F18"/>`;
+  return h + `</g>`;
+}
+function donut(x, y, s, rot = 0) {
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${rot}) scale(${s})"><circle r="60" fill="#E0A060" stroke="${INK}" stroke-width="7"/><path d="M-54 -14 Q-40 -58 0 -58 Q44 -58 56 -12 Q40 6 20 -4 Q0 8 -20 -2 Q-40 8 -54 -14 Z" fill="#FF8FB1" stroke="${INK}" stroke-width="6"/><circle r="20" fill="#2A1A10" stroke="${INK}" stroke-width="6"/>${[[-30, -36, 20], [10, -46, -30], [34, -26, 60], [-14, -24, 90]].map(([a, b, r]) => `<rect x="${a}" y="${b}" width="12" height="5" rx="2.5" fill="${['#fff', YEL, MINT, '#7CC7FF'][Math.abs(r) % 4]}" transform="rotate(${r} ${a} ${b})"/>`).join('')}</g>`;
+}
+function cookie(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><circle r="50" fill="#D9A066" stroke="${INK}" stroke-width="7"/>${[[-18, -14], [16, -20], [-6, 14], [22, 12], [-26, 16]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="7" fill="#4A2A14"/>`).join('')}</g>`; }
+function cake(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-60 40 L-60 -10 L60 -40 L60 40 Z" fill="#FFE6C8" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-60 -10 L60 -40 L60 -20 L-60 10 Z" fill="#FF8FB1"/><path d="M-60 12 L60 -18" stroke="#fff" stroke-width="6"/><circle cx="34" cy="-50" r="14" fill="${RED}" stroke="${INK}" stroke-width="5"/></g>`; }
+function latte(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-44 -80 L44 -80 L36 70 Q0 82 -36 70 Z" fill="#F7E7D2" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-41 -20 L41 -20 L38 30 L-38 30 Z" fill="#C88A52"/><path d="M-38 30 L38 30 L36 70 Q0 82 -36 70 Z" fill="#7A4A2A"/><path d="M-50 -80 Q-40 -126 0 -120 Q40 -130 50 -80 Z" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M-30 -104 Q0 -90 30 -108" fill="none" stroke="#C88A52" stroke-width="7" stroke-linecap="round"/><rect x="12" y="-170" width="10" height="90" rx="4" fill="${PINK}" stroke="${INK}" stroke-width="4" transform="rotate(12 17 -125)"/></g>`; }
+function cube(x, y, s = 1) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-30 -10 L0 -26 L30 -10 L0 6 Z" fill="#FFFFFF" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-30 -10 L0 6 L0 40 L-30 24 Z" fill="#E8EEF6" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M30 -10 L0 6 L0 40 L30 24 Z" fill="#CFD8E4" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><circle cx="-12" cy="10" r="2.5" fill="#B9C6D6"/><circle cx="14" cy="18" r="2.5" fill="#A9B6C6"/></g>`; }
+function soda(x, y, s) { return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><rect x="-58" y="-110" width="116" height="220" rx="22" fill="#E8414A" stroke="${INK}" stroke-width="8"/><rect x="-50" y="-128" width="100" height="26" rx="10" fill="#C9D3E2" stroke="${INK}" stroke-width="6"/><path d="M-58 -10 Q0 30 58 -10 L58 30 Q0 70 -58 30 Z" fill="#fff" opacity=".9"/><text x="0" y="-40" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="34" fill="#fff">탄산</text><rect x="-40" y="-96" width="14" height="180" rx="7" fill="#fff" opacity=".25"/></g>`; }
+
+const TEE = '#FF9A55';
+const Z = o => char(Object.assign({ goggles: 'none', vest: TEE, patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)', still: true, noBlink: true }, o));
+const ZV = o => char(Object.assign({ still: true, noBlink: true }, o));   // 002 look: yellow vest + goggles
+const EX = e => ({ expr: e, prev: e, k: 1, blink: 0 });
+function defsAll() {
+  return `<defs>
+<clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath>
+<clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".7"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="redglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${RED}" stop-opacity=".55"/><stop offset="1" stop-color="${RED}" stop-opacity="0"/></radialGradient>
+<radialGradient id="warm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6C2" stop-opacity="1"/><stop offset="1" stop-color="#FFF6C2" stop-opacity="0"/></radialGradient>
+<radialGradient id="screenGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8FDBFF" stop-opacity=".55"/><stop offset="1" stop-color="#8FDBFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6F7FF"/><stop offset="1" stop-color="#BFE6FF"/></linearGradient>
+<clipPath id="feedClip"><rect x="-52" y="-98" width="104" height="196" rx="14"/></clipPath>
+<linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6EC3FF"/><stop offset=".62" stop-color="#CDEEFF"/><stop offset="1" stop-color="#FFF6DE"/></linearGradient>
+<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF9EE"/><stop offset="1" stop-color="#F6E7CC"/></linearGradient>
+<linearGradient id="cafe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3B3"/><stop offset="1" stop-color="#FFF4DF"/></linearGradient>
+<linearGradient id="pinkbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD9E6"/><stop offset="1" stop-color="#FFF4F8"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".5" stop-color="#E6F6FF" stop-opacity=".25"/><stop offset="1" stop-color="#FFFFFF" stop-opacity=".5"/></linearGradient>
+</defs>`;
+}
+const rays = (cx, cy, bg, ray, n = 22) => {
+  let h = `<rect width="1280" height="720" fill="${bg}"/>`;
+  for (let i = 0; i < n; i++) {
+    const a0 = (i / n) * Math.PI * 2, a1 = a0 + Math.PI / n;
+    h += `<path d="M${cx} ${cy} L${f1(cx + 2000 * Math.cos(a0))} ${f1(cy + 2000 * Math.sin(a0))} L${f1(cx + 2000 * Math.cos(a1))} ${f1(cy + 2000 * Math.sin(a1))} Z" fill="${ray}"/>`;
+  }
+  return h;
+};
+const sparkle = (x, y, s, c = YEL) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -30 Q6 -6 30 0 Q6 6 0 30 Q-6 6 -30 0 Q-6 -6 0 -30 Z" fill="${c}" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"/>`;
+const sprout = (x, y, s, flip) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">
+<path d="M0 6 Q-6 -36 6 -72" fill="none" stroke="${INK}" stroke-width="12" stroke-linecap="round"/><path d="M0 6 Q-6 -36 6 -72" fill="none" stroke="#3E9E48" stroke-width="5" stroke-linecap="round"/>
+<path d="M6 -72 Q-44 -106 -70 -74 Q-36 -48 6 -72 Z" fill="#5BC85B" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>
+<path d="M6 -72 Q50 -118 78 -88 Q48 -58 6 -72 Z" fill="#86E070" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`;
+const sweat = (x, y, s) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -26 Q16 0 12 10 Q8 22 0 22 Q-8 22 -12 10 Q-16 0 0 -26 Z" fill="#7CC7FF" stroke="${INK}" stroke-width="4"/>`;
+const hills = (c1, c2) => `<path d="M-20 600 Q220 548 470 592 T980 584 T1300 556 L1300 740 L-20 740 Z" fill="${c1}" stroke="${INK}" stroke-width="6"/>
+<path d="M-20 662 Q300 632 640 664 T1300 650 L1300 740 L-20 740 Z" fill="${c2}" stroke="${INK}" stroke-width="6"/>`;
+const tree = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-10" y="-10" width="20" height="70" fill="#9A6B42" stroke="${INK}" stroke-width="6"/><circle cx="0" cy="-50" r="58" fill="#5DBB63" stroke="${INK}" stroke-width="6"/><circle cx="-22" cy="-66" r="16" fill="#7FD486" opacity=".8"/></g>`;
+const zz = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" font-family="Black Han Sans" fill="${WHITE}" stroke="${INK}" stroke-width="8" paint-order="stroke fill"><text x="0" y="0" font-size="56">Z</text><text x="40" y="-44" font-size="42">z</text><text x="72" y="-80" font-size="32">z</text></g>`;
+const bolt = (x, y, s, c = YEL) => `<path transform="translate(${x} ${y}) scale(${s})" d="M10 -60 L-26 6 L0 6 L-12 60 L28 -10 L2 -10 Z" fill="${c}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+
+const V = {};
+// ---------- 002 A: 걷기만 했는데 뇌가 자랐다 ----------
+V.walkA = () => {
+  let h = `<rect width="1280" height="720" fill="url(#skyA)"/><circle cx="1010" cy="400" r="380" fill="url(#warm)"/>`;
+  h += tree(110, 600, 0.9) + tree(1215, 575, 0.75) + hills('#A6DE86', '#7CC768');
+  h += brain(1010, 430, 0.74, 'hippocampus', 0.35);
+  h += sprout(985, 262, 1.1) + sprout(1088, 256, 0.9, true);
+  h += sparkle(760, 300, 0.9) + sparkle(1225, 330, 0.75) + sparkle(1205, 470, 0.55, WHITE);
+  h += shadow(375, 712, 112) + ZV({ x: 375, y: 726, s: 0.86, pose: walkPose(1.25, 0.95), ex: EX('신남'), look: [0.7, -0.5], tilt: -4 });
+  return h;
+};
+// ---------- 002 B: 하루 9,800보, 치매 위험 51%↓ ----------
+V.walkB = () => {
+  let h = rays(1010, 470, '#FFF1B8', '#FFE68A');
+  h += `<circle cx="1010" cy="470" r="330" fill="url(#warm)"/>`;
+  h += `<path d="M-20 650 Q640 610 1300 650 L1300 740 L-20 740 Z" fill="#9BD98B" stroke="${INK}" stroke-width="6"/>`;
+  h += brain(1010, 465, 0.66, 'none', 0.5);
+  // shield
+  h += `<g transform="translate(1150 545) scale(1.05)"><path d="M0 -92 L78 -64 Q80 30 0 92 Q-80 30 -78 -64 Z" fill="${MINT}" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><path d="M-32 0 L-8 26 L36 -26" fill="none" stroke="${INK}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+  // footprints toward the brain
+  [[560, 668], [628, 650], [700, 668], [770, 650]].forEach(([x, y], i) => h += `<ellipse cx="${x}" cy="${y}" rx="20" ry="11" fill="#5A8F4E" opacity=".55" transform="rotate(-8 ${x} ${y})"/>`);
+  h += shadow(360, 712, 112) + ZV({ x: 360, y: 726, s: 0.86, pose: walkPose(2.4, 0.95), ex: EX('뿌듯'), look: [0.8, -0.3], tilt: -3 });
+  h += sparkle(1240, 330, 0.7) + sparkle(800, 330, 0.6, WHITE);
+  return h;
+};
+// ---------- 003 A: 폰 뒤집어 놔도 집중력 샌다 ----------
+V.phoneA = () => {
+  let h = `<rect width="1280" height="720" fill="url(#wall)"/>`;
+  // focus leaking from head into the face-down phone
+  const flow = [[520, 420, 720, 330, 890, 585], [505, 480, 670, 470, 860, 600]];
+  flow.forEach(([x0, y0, cx, cy, x1, y1]) => h += `<path d="M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}" fill="none" stroke="${INK}" stroke-width="16" stroke-linecap="round" opacity=".9"/><path d="M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}" fill="none" stroke="${MINT}" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 22"/>`);
+  h += sparkle(640, 375, 0.6) + sparkle(760, 430, 0.5) + sparkle(830, 520, 0.42);
+  h += Z({ x: 300, y: 905, s: 1.16, pose: '서기', ex: EX('지침'), look: [0.8, 0.5], tilt: 6 }) + sweat(468, 360, 1.3) + sweat(140, 420, 1.0);
+  // desk
+  h += `<rect x="-20" y="585" width="1320" height="160" fill="#C99A66" stroke="${INK}" stroke-width="9"/><rect x="-20" y="585" width="1320" height="22" fill="#DDB07A" stroke="${INK}" stroke-width="7"/>`;
+  // phone lying face-down
+  h += `<g transform="translate(990 548) scale(1.25)"><path d="M-150 18 L150 18 L180 66 L-180 66 Z" fill="#2E3D5C" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-180 66 L180 66 L180 78 L-180 78 Z" fill="#141C2C" stroke="${INK}" stroke-width="6"/><path d="M-128 24 L-58 24 L-54 56 L-134 56 Z" fill="#1A2438" stroke="#5A6C90" stroke-width="3" stroke-linejoin="round"/><ellipse cx="-112" cy="34" rx="10" ry="6" fill="#0A0F18" stroke="#8796B5" stroke-width="2.5"/><ellipse cx="-80" cy="34" rx="10" ry="6" fill="#0A0F18" stroke="#8796B5" stroke-width="2.5"/><ellipse cx="-96" cy="47" rx="10" ry="6" fill="#0A0F18" stroke="#8796B5" stroke-width="2.5"/><path d="M-20 40 Q0 32 30 40" stroke="#FFFFFF" stroke-width="4" opacity=".25" fill="none"/></g>`;
+  h += `<circle cx="990" cy="600" r="170" fill="url(#redglow)" opacity=".55"/>`;
+  return h;
+};
+// ---------- 003 B: 폰 끊고 2주, 집중력 -10살 ----------
+V.phoneB = () => {
+  let h = rays(1000, 400, '#D8F6FF', '#BDEBFF');
+  h += `<path d="M-20 650 Q640 620 1300 650 L1300 740 L-20 740 Z" fill="#9FD3F0" stroke="${INK}" stroke-width="6"/>`;
+  // locked jar with the phone
+  h += `<g transform="translate(1050 470) scale(0.92)">
+<rect x="-150" y="-190" width="300" height="380" rx="46" fill="#EAF8FF" stroke="${INK}" stroke-width="10"/>
+<rect x="-170" y="-236" width="340" height="62" rx="16" fill="#5B6B86" stroke="${INK}" stroke-width="9"/>
+${phone(0, 10, 1.15, { on: true, lw: 7 })}
+<rect x="-150" y="-190" width="300" height="380" rx="46" fill="url(#glass)"/>
+<path d="M-112 -150 Q-128 0 -112 140" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" opacity=".8"/>
+<g transform="translate(0 -205)"><path d="M-30 -10 L-30 -42 Q-30 -76 0 -76 Q30 -76 30 -42 L30 -10" fill="none" stroke="${INK}" stroke-width="12"/><rect x="-46" y="-14" width="92" height="74" rx="14" fill="${YEL}" stroke="${INK}" stroke-width="9"/><circle cx="0" cy="18" r="9" fill="${INK}"/><rect x="-4" y="20" width="8" height="22" fill="${INK}"/></g>
+</g>`;
+  h += `<g transform="translate(1150 345)"><circle r="34" fill="${RED}" stroke="${INK}" stroke-width="6"/><text x="0" y="14" text-anchor="middle" font-family="Black Han Sans" font-size="34" fill="#fff">99+</text></g>`;
+  h += shadow(380, 712, 112) + Z({ x: 380, y: 726, s: 0.86, pose: '만세', ex: EX('신남'), look: [0.4, -0.6] });
+  h += sparkle(200, 360, 0.8) + sparkle(600, 380, 0.7, WHITE) + sparkle(1235, 620, 0.6);
+  return h;
+};
+// ---------- 004 A: 당 충전? 오히려 방전 ----------
+V.sugarA = () => {
+  let h = `<rect width="1280" height="720" fill="url(#cafe)"/>`;
+  h += `<rect x="1020" y="60" width="210" height="250" rx="14" fill="#FFF2D2" stroke="${INK}" stroke-width="8"/><path d="M1125 60 L1125 310 M1020 185 L1230 185" stroke="${INK}" stroke-width="6"/>`;
+  // battery
+  h += `<g transform="translate(980 420)">
+<rect x="-210" y="-110" width="400" height="220" rx="34" fill="#FFFFFF" stroke="${INK}" stroke-width="12"/>
+<rect x="190" y="-46" width="40" height="92" rx="12" fill="#FFFFFF" stroke="${INK}" stroke-width="10"/>
+<rect x="-188" y="-88" width="74" height="176" rx="16" fill="${RED}"/>
+<path d="M-188 -88 L-114 -88" stroke="#FFFFFF" stroke-width="6" opacity=".5"/>
+</g>`;
+  h += `<g transform="translate(1035 420)"><path d="M-40 -70 L40 70 M40 -70 L-40 70" stroke="${RED}" stroke-width="0"/></g>`;
+  h += bolt(1040, 420, 1.15, '#D9D9D9');
+  // cable from a donut into the battery
+  h += `<path d="M640 590 C700 520 690 430 770 420" fill="none" stroke="${INK}" stroke-width="16" stroke-linecap="round"/><path d="M640 590 C700 520 690 430 770 420" fill="none" stroke="#5B6B86" stroke-width="8" stroke-linecap="round"/>`;
+  h += `<rect x="742" y="398" width="34" height="44" rx="6" fill="#9AA6BD" stroke="${INK}" stroke-width="6"/>`;
+  // table
+  h += `<rect x="-20" y="600" width="1320" height="140" fill="#D9A36B" stroke="${INK}" stroke-width="9"/><rect x="-20" y="600" width="1320" height="20" fill="#E8BC86" stroke="${INK}" stroke-width="7"/>`;
+  h += Z({ x: 300, y: 885, s: 1.1, pose: '서기', ex: EX('졸림'), look: [0.6, 0.6], tilt: 10 }) + zz(445, 372, 0.95);
+  h += donut(650, 600, 0.95, -10) + latte(548, 548, 0.72);
+  return h;
+};
+// ---------- 004 B: 설탕 끊고 3일, 두통이 온다? ----------
+V.sugarB = () => {
+  let h = `<rect width="1280" height="720" fill="url(#pinkbg)"/>`;
+  h += `<path d="M-20 650 Q640 620 1300 650 L1300 740 L-20 740 Z" fill="#F7B9CC" stroke="${INK}" stroke-width="6"/>`;
+  // sweets with a ban sign
+  h += `<g transform="translate(1000 440)">${cake(-60, 70, 1.15)}${donut(80, 60, 1.05, 12)}${soda(-10, -70, 0.95)}
+<circle r="215" fill="none" stroke="${RED}" stroke-width="30"/><path d="M-152 -152 L152 152" stroke="${RED}" stroke-width="30" stroke-linecap="round"/>
+<circle r="215" fill="none" stroke="${INK}" stroke-width="5" opacity=".35"/></g>`;
+  // headache zigzags
+  const zig = (x, y, r, s) => `<path transform="translate(${x} ${y}) rotate(${r}) scale(${s})" d="M0 0 L18 -14 L30 4 L48 -12 L60 6" fill="none" stroke="${RED}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`;
+  h += shadow(390, 712, 112) + Z({ x: 390, y: 726, s: 0.88, pose: '웅크림', ex: EX('걱정'), look: [0.3, -0.2] });
+  h += zig(190, 360, -30, 1.5) + zig(540, 330, 20, 1.5) + zig(585, 430, 50, 1.2) + sweat(250, 440, 1.2);
+  return h;
+};
+
+
+const ZB = (o) => Z(Object.assign({ x: 1010, y: 915, s: 1.25, pose: '서기' }, o));
+const glow = (cx, cy, r, op) => `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r}" fill="url(#warm)" opacity="${op}"/>`;
+const bg = () => `<rect width="1280" height="720" fill="#1E2840"/>` + glow(1010, 420, 380, .28);
+const card = (x, y, w, icon, ic, txt, rot = 0) => `<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-w / 2}" y="-34" width="${w}" height="68" rx="18" fill="#fff" stroke="${INK}" stroke-width="6"/>
+  <circle cx="${-w / 2 + 36}" cy="0" r="20" fill="${ic}" stroke="${INK}" stroke-width="4"/><text x="${-w / 2 + 36}" y="9" text-anchor="middle" font-family="Black Han Sans" font-size="24" fill="#fff">${icon}</text>
+  <text x="${-w / 2 + 66}" y="11" font-family="Black Han Sans" font-size="31" fill="${INK}">${txt}</text></g>`;
+const wob = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"><path d="M-20 -30 Q-34 0 -20 30"/><path d="M-44 -44 Q-64 0 -44 44"/></g>`;
+const qm = (x, y, s, c = YEL) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Black Han Sans" font-size="${s}" fill="${c}" stroke="${INK}" stroke-width="9" paint-order="stroke fill">?</text>`;
+function sStoic() {
+  let h = bg();
+  h += ZB({ ex: EX('겁먹음'), look: [-0.5, 0], tilt: -4 });
+  h += card(620, 330, 380, '!', '#FF6B6B', '팀장: 잠깐 볼까요?', -4) + card(660, 430, 300, '✕', '#8E7CC3', '악플 1개', 3) + card(610, 530, 330, '!', '#F5A623', '차 막힘 40분', -2);
+  h += wob(848, 380, 1.1) + sweat(1150, 300, 1.3);
+  return h;
+}
+function sDesc() {
+  let h = bg();
+  h += ZB({ ex: EX('놀람'), look: [-0.6, 0.1] });
+  h += `<g transform="translate(640 430) rotate(-6)"><rect x="-200" y="-120" width="400" height="240" rx="22" fill="#fff" stroke="${INK}" stroke-width="7"/>
+    <text x="-170" y="-58" font-family="Black Han Sans" font-size="40" fill="${RED}">[속보] 충격!!</text>
+    <rect x="-170" y="-30" width="340" height="16" rx="8" fill="#C9D3E0"/><rect x="-170" y="0" width="280" height="16" rx="8" fill="#C9D3E0"/>
+    <g transform="translate(110 70)"><rect x="-64" y="-28" width="128" height="56" rx="28" fill="#4C8DF6" stroke="${INK}" stroke-width="5"/><text x="0" y="12" text-anchor="middle" font-family="Black Han Sans" font-size="30" fill="#fff">공유</text></g>
+    <text x="-170" y="84" font-family="Black Han Sans" font-size="30" fill="#8A93A3">단톡방 · 방금</text></g>`;
+  h += qm(860, 330, 110) + qm(1180, 280, 80);
+  return h;
+}
+function sZhuang() {
+  let h = bg();
+  h += ZB({ x: 1040, ex: EX('지침'), look: [-0.4, 0.2], tilt: 6 });
+  // tall ruler
+  h += `<g transform="translate(735 500) rotate(-3)"><rect x="-46" y="-220" width="92" height="460" rx="10" fill="#F7D774" stroke="${INK}" stroke-width="7"/>`;
+  for (let i = 0; i < 11; i++) h += `<line x1="-46" y1="${-200 + i * 40}" x2="${i % 5 === 0 ? -6 : -22}" y2="${-200 + i * 40}" stroke="${INK}" stroke-width="5"/>`;
+  h += `<text x="18" y="-120" font-family="Black Han Sans" font-size="40" fill="${INK}" writing-mode="tb">쓸모</text>`;
+  h += `<line x1="-70" y1="170" x2="60" y2="170" stroke="${RED}" stroke-width="9"/><g transform="translate(-150 170)"><rect x="-74" y="-30" width="148" height="60" rx="30" fill="${RED}" stroke="${INK}" stroke-width="5"/><text x="0" y="12" text-anchor="middle" font-family="Black Han Sans" font-size="34" fill="#fff">20cm</text></g></g>`;
+  h += card(480, 330, 270, '✓', '#2DBE7E', '6시 기상 갓생', -5) + card(470, 430, 270, '✓', '#2DBE7E', '자격증 합격!', 4);
+  h += sweat(1190, 300, 1.2);
+  return h;
+}
+function sSocr() {
+  let h = bg();
+  h += ZB({ ex: EX('걱정'), look: [-0.6, -0.1], tilt: -6 });
+  h += `<g transform="translate(600 440)"><path d="M-190 -80 Q-190 -114 -156 -114 L176 -114 Q210 -114 210 -80 L210 50 Q210 84 176 84 L-156 84 Q-190 84 -190 50 L-190 30 L-282 62 L-190 -10 Z" fill="#fff" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>
+    <text x="10" y="-14" text-anchor="middle" font-family="Black Han Sans" font-size="58" fill="${INK}">린하게,</text><text x="10" y="54" text-anchor="middle" font-family="Black Han Sans" font-size="58" fill="${INK}">피벗 각!</text></g>`;
+  h += `<g transform="translate(450 318)"><rect x="-64" y="-26" width="128" height="48" rx="14" fill="#C3CDD8" stroke="${INK}" stroke-width="5"/><text x="0" y="12" text-anchor="middle" font-family="Black Han Sans" font-size="30" fill="${INK}">팀장님</text></g>`;
+  h += `<text x="1010" y="250" text-anchor="middle" font-family="Black Han Sans" font-size="96" fill="${YEL}" stroke="${INK}" stroke-width="10" paint-order="stroke fill">???</text>`;
+  h += sweat(1180, 330, 1.3) + sweat(840, 360, 1.0);
+  return h;
+}
+function thought(x, y, s, txt) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-120 40 Q-160 40 -160 4 Q-160 -34 -118 -36 Q-108 -80 -48 -76 Q-20 -110 34 -94 Q90 -104 104 -52 Q156 -48 154 2 Q152 40 110 40 Z" fill="#fff" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>
+  <text x="0" y="12" text-anchor="middle" font-family="Black Han Sans" font-size="40" fill="${INK}">${txt}</text></g>`;
+}
+function sBuddha() {
+  let h = bg();
+  h += ZB({ ex: EX('지침'), look: [-0.4, 0.4] });
+  h += phone(820, 520, 1.05, { rot: 12, glow: .5 });
+  h += thought(560, 330, 1.0, '답장해야지…') + thought(620, 470, 0.9, '내일 걱정');
+  h += `<g transform="translate(1010 760)"><ellipse cx="0" cy="-60" rx="150" ry="40" fill="#fff" stroke="${INK}" stroke-width="7"/><path d="M-150 -60 Q-140 40 0 40 Q140 40 150 -60" fill="#E9EEF5" stroke="${INK}" stroke-width="7"/></g>`;
+  return h;
+}
+function sTime() {
+  let h = bg();
+  h += ZB({ x: 1060, ex: EX('놀람'), look: [-0.6, 0.2] });
+  h += `<g transform="translate(640 430) rotate(-5)"><rect x="-230" y="-190" width="460" height="380" rx="18" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-230" y="-190" width="460" height="70" rx="18" fill="${RED}" stroke="${INK}" stroke-width="7"/>
+    <text x="0" y="-140" text-anchor="middle" font-family="Black Han Sans" font-size="42" fill="#fff">2026</text>`;
+  const lit = { 3: '#FFD84D', 17: '#7FD3FF', 29: '#FF9EC4' };
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 7; c++) { const i = r * 7 + c, x = -200 + c * 58, y = -100 + r * 56;
+    h += `<rect x="${x}" y="${y}" width="46" height="44" rx="8" fill="${lit[i] || '#E3E7EE'}" stroke="${lit[i] ? INK : '#C9D0DA'}" stroke-width="${lit[i] ? 5 : 3}"/>`;
+    if (lit[i]) h += `<text x="${x + 23}" y="${y + 33}" text-anchor="middle" font-size="28">★</text>`; }
+  h += `</g>`;
+  return h;
+}
+function sAnger() {
+  let h = bg();
+  h += ZB({ ex: EX('결심'), look: [-0.5, 0.2] });
+  h += `<g transform="translate(640 450) rotate(-6)"><rect x="-210" y="-140" width="420" height="280" rx="24" fill="#fff" stroke="${INK}" stroke-width="7"/>
+    <rect x="-180" y="-104" width="330" height="96" rx="22" fill="#FFE1E1" stroke="${RED}" stroke-width="5"/><text x="-160" y="-44" font-family="Black Han Sans" font-size="40" fill="${RED}">너 진짜 왜 그래?!</text>
+    <g transform="translate(110 76)"><rect x="-78" y="-32" width="156" height="64" rx="32" fill="${RED}" stroke="${INK}" stroke-width="6"/><text x="0" y="13" text-anchor="middle" font-family="Black Han Sans" font-size="36" fill="#fff">전송</text></g>
+    <path d="M-150 60 L-60 60" stroke="#C9D3E0" stroke-width="14" stroke-linecap="round"/></g>`;
+  h += `<g fill="#fff" stroke="${INK}" stroke-width="6" opacity=".95"><path d="M900 250 q-20 -30 0 -60 q20 -30 0 -60" fill="none"/><path d="M1120 250 q-20 -30 0 -60 q20 -30 0 -60" fill="none"/></g>`;
+  h += bolt(860, 300, 0.9, RED);
+  return h;
+}
+function sMom() {
+  let h = bg();
+  h += ZB({ ex: EX('지침'), look: [0, 0.4] });
+  h += `<g transform="translate(1010 205) scale(1.15)"><path d="M-150 60 Q-200 60 -200 14 Q-200 -36 -146 -38 Q-138 -104 -60 -100 Q-24 -150 44 -128 Q114 -142 132 -70 Q196 -64 194 0 Q192 60 140 60 Z" fill="#6E7A8C" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/></g>`;
+  for (const [x, y] of [[90, 60], [70, 220], [-90, 160]]) h += `<g transform="translate(${1010 + x} ${y})"><circle r="34" fill="url(#warm)"/>` + sparkle(0, 0, 0.55) + `</g>`;
+  h += `<g transform="translate(640 470) rotate(-8)"><rect x="-110" y="-140" width="220" height="280" rx="12" fill="#7A5236" stroke="${INK}" stroke-width="7"/><rect x="-62" y="-90" width="124" height="54" rx="6" fill="#F1DFBA" stroke="${INK}" stroke-width="4"/>
+    <text x="0" y="-52" text-anchor="middle" font-family="'Nanum Pen Script', Black Han Sans" font-size="40" fill="#4A3424">1998</text><text x="0" y="40" text-anchor="middle" font-family="Black Han Sans" font-size="30" fill="#F1DFBA">좋았던 일</text></g>`;
+  return h;
+}
+</script></head><body><div id="wrap">
+<svg id="v" width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="t" style="left:40px;top:26px;font-size:83px;color:#FFFFFF;-webkit-text-stroke:14px #141414;text-shadow:0 6px 0 rgba(0,0,0,.35);transform:rotate(0deg)">화나서 보낸 메시지,</div>
+<div class="t" style="left:40px;top:115px;font-size:101px;color:#F7E733;-webkit-text-stroke:16px #141414;text-shadow:0 6px 0 rgba(0,0,0,.35);transform:rotate(-2deg)">후회한 적 있다면</div>
+<svg id="g" width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg"><g transform="translate(40 618)"><rect x="0" y="0" width="356" height="66" rx="33" fill="#2B3A5E" stroke="#141414" stroke-width="6"/>
+<text x="28" y="44" font-family="Black Han Sans" font-size="32" fill="#7FE0C2">🔬 심리학 실험 · 화</text></g></svg>
+</div><script>document.getElementById('v').innerHTML = defsAll() + sAnger();</script></body></html>

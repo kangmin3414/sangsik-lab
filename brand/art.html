@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}svg{display:block}</style>
+<script src="../shorts/engine.js"></script></head>
+<body><svg id="v" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const which = location.hash.slice(1) || 'thumb';
+const T = 2.0;
+const flipX = (x, inner) => `<g transform="translate(${2 * x} 0) scale(-1 1)">${inner}</g>`;
+const DEFS = `<defs>
+<clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath>
+<clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+<radialGradient id="glowM" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".75"/><stop offset=".55" stop-color="${MINT}" stop-opacity=".18"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="glowY" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE38A" stop-opacity=".95"/><stop offset=".5" stop-color="#FFB86B" stop-opacity=".35"/><stop offset="1" stop-color="#FFB86B" stop-opacity="0"/></radialGradient>
+<radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+<linearGradient id="thumbBg" x1="0" y1="0" x2="1" y2=".4"><stop offset="0" stop-color="#081322"/><stop offset=".55" stop-color="#12304F"/><stop offset="1" stop-color="#2C5F7C"/></linearGradient>
+<linearGradient id="labBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#091424"/><stop offset="1" stop-color="#17305A"/></linearGradient>
+<linearGradient id="path" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D9BF"/><stop offset="1" stop-color="#CDB28D"/></linearGradient>
+<pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M56 0 L0 0 0 56" fill="none" stroke="${MINT}" stroke-opacity=".09" stroke-width="2"/></pattern>
+<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>`;
+function rays(cx, cy, r, n, color, op, rot = 0) {
+  let h = '';
+  for (let i = 0; i < n; i++) {
+    const a0 = (i / n) * Math.PI * 2 + rot, a1 = a0 + Math.PI / n * 0.55;
+    h += `<path d="M${cx} ${cy} L${f1(cx + Math.cos(a0) * r)} ${f1(cy + Math.sin(a0) * r)} L${f1(cx + Math.cos(a1) * r)} ${f1(cy + Math.sin(a1) * r)} Z" fill="${color}" opacity="${op}"/>`;
+  }
+  return h;
+}
+function sparkle(x, y, s, c = '#fff') {
+  return `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -30 Q4 -4 30 0 Q4 4 0 30 Q-4 4 -30 0 Q-4 -4 0 -30 Z" fill="${c}" stroke="${INK}" stroke-width="${3 / s}"/>`;
+}
+function brainArt(cx, cy, s) {
+  return `<g transform="translate(${cx} ${cy}) scale(${s})">
+  <circle r="420" fill="url(#glowM)"/>
+  <path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD3DB" stroke="${INK}" stroke-width="12"/>
+  <path d="M-260 60 C-270 -60 -190 -170 -60 -190" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".7"/>
+  ${[[-200, -80, -120, -150, -20, -120], [-60, -40, 40, -120, 140, -70], [-220, 40, -110, -10, 0, 60], [40, 20, 140, -20, 230, 40], [-120, 120, 0, 90, 90, 130], [150, -140, 220, -90, 260, -10]].map(c => `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E48A9B" stroke-width="12" stroke-linecap="round"/>`).join('')}
+  <path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${MINT}" stroke-width="34" stroke-linecap="round"/>
+  <path d="M-60 60 C-20 20 60 30 90 70 C110 100 80 130 50 115 C30 105 40 85 60 90" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round" opacity=".55"/>
+  </g>`;
+}
+
+function thumb() {
+  const W = 1280, H = 720;
+  let h = DEFS + `<rect width="${W}" height="${H}" fill="url(#thumbBg)"/><rect width="${W}" height="${H}" fill="url(#grid)" opacity=".7"/>`;
+  // sunrise glow + city/river silhouette on the right
+  h += `<circle cx="1040" cy="560" r="520" fill="url(#glowY)" opacity=".55"/>`;
+  h += `<path opacity=".55" d="M520 560 L560 520 L600 540 L660 470 L720 500 L790 440 L860 490 L930 450 L1010 500 L1090 460 L1180 510 L1280 480 L1280 600 L520 600 Z" fill="#1C3A5A" opacity=".85"/>`;
+  // winding walking path toward the viewer
+  h += `<path d="M1010 600 C960 640 820 660 760 720 L1280 720 L1280 690 C1180 660 1080 640 1060 600 Z" fill="url(#path)" stroke="${INK}" stroke-width="6"/>`;
+  h += `<path d="M520 610 L1280 610 L1280 720 L520 720 Z" fill="#2F6B4F" opacity=".0"/>`;
+  // power rays behind the brain
+  h += `<g opacity=".9">${rays(1030, 215, 640, 18, '#3DF2B0', 0.07, 0.1)}</g>`;
+  h += brainArt(1030, 215, 0.6);
+  [[820, 90, 0.95, YEL], [1235, 360, 0.75, '#fff'], [1230, 70, 0.6, MINT], [790, 330, 0.55, '#fff']].forEach(([x, y, s, c]) => h += sparkle(x, y, s, c));
+  // zero, big, waist-up
+  h += `<ellipse cx="940" cy="760" rx="300" ry="70" fill="#000" opacity=".25"/>`;
+  h += char({ t: T, seed: 2, x: 980, y: 1000, s: 1.25, pose: walkPose(1.2, 0.9), ex: { expr: '놀람', prev: '놀람', k: 1, blink: 0 }, noBlink: true, still: true, look: [0.35, -0.85], tilt: -4, light: 1 });
+  // the doctor at the right edge, pointing at the brain
+  h += `<rect width="${W}" height="${H}" fill="url(#vig)"/>`;
+  return [W, H, h];
+}
+
+function banner() {
+  const W = 2560, H = 1440;
+  let h = DEFS + `<rect width="${W}" height="${H}" fill="url(#labBg)"/><rect width="${W}" height="${H}" fill="url(#grid)"/>`;
+  h += `<ellipse cx="1280" cy="760" rx="1100" ry="520" fill="url(#glowM)" opacity=".35"/>`;
+  // left decor: monitors with graphs and a brain scan (outside the safe area)
+  [[70, 420, 360, 230], [90, 690, 320, 200]].forEach(([x, y, w, hh], i) => {
+    h += `<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="18" fill="#06101C" stroke="${INK}" stroke-width="9"/>`;
+    let p = ''; for (let k = 0; k <= 24; k++) p += `${f1(x + 24 + k * (w - 48) / 24)},${f1(y + hh / 2 + Math.sin(k * 0.8 + i * 2) * hh * 0.25)} `;
+    h += `<polyline points="${p}" fill="none" stroke="${i ? YEL : MINT}" stroke-width="6"/><rect x="${x + 18}" y="${y + 16}" width="${w * 0.3}" height="12" rx="6" fill="${MINT}" opacity=".6"/>`;
+  });
+  h += `<g opacity=".95">${brainArt(260, 1110, 0.42)}</g>`;
+  // right decor: beakers and a round window with the moon
+  h += `<circle cx="2330" cy="470" r="170" fill="#0E2442" stroke="${INK}" stroke-width="12"/><circle cx="2380" cy="430" r="62" fill="#FFF3C4"/><circle cx="2360" cy="420" r="62" fill="#0E2442"/>${[[2250, 400], [2290, 560], [2410, 540], [2230, 500]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#fff"/>`).join('')}`;
+  h += `<rect x="2120" y="980" width="440" height="24" rx="8" fill="#2E4260" stroke="${INK}" stroke-width="7"/>`;
+  [[2200, MINT, 120], [2320, YEL, 160], [2440, PINK, 110]].forEach(([x, c, hh]) => { h += `<path d="M${x - 30} ${980 - hh} L${x - 30} ${980 - 60} Q${x - 70} ${980 - 10} ${x} 980 Q${x + 70} ${980 - 10} ${x + 30} ${980 - 60} L${x + 30} ${980 - hh} Z" fill="${c}" fill-opacity=".85" stroke="${INK}" stroke-width="7"/><rect x="${x - 38}" y="${980 - hh - 14}" width="76" height="16" rx="6" fill="#DCE6F0" stroke="${INK}" stroke-width="5"/>`; });
+  h += particles(3.3, 7, 70, [0, 0, W, H], MINT, { speed: 40, r: 5, op: 0.7 });
+  // inside the safe area (507..2053 x 508..932): characters on the right third
+  h += `<ellipse cx="1830" cy="905" rx="200" ry="42" fill="url(#glowM)"/><ellipse cx="1830" cy="905" rx="150" ry="30" fill="#2E4260" stroke="${INK}" stroke-width="7"/><ellipse cx="1830" cy="905" rx="110" ry="20" fill="none" stroke="${MINT}" stroke-width="5"/>`;
+  h += char({ t: T, seed: 3, x: 1830, y: 860, s: 0.6, pose: '둥둥', ex: { expr: '신남', prev: '신남', k: 1, blink: 0 }, noBlink: true, still: true, goggles: 'down', rot: 6 });
+  [[1960, 600, 0.6, YEL], [1700, 560, 0.45, '#fff'], [1985, 760, 0.4, MINT]].forEach(([x, y, s, c]) => h += sparkle(x, y, s, c));
+  h += doctor(1560, 925, 0.52, { t: T, expr: '미소', pose: 'point' });
+  h += `<rect width="${W}" height="${H}" fill="url(#vig)" opacity=".7"/>`;
+  return [W, H, h];
+}
+
+function profile() {
+  const W = 800, H = 800;
+  let h = DEFS + `<rect width="${W}" height="${H}" fill="url(#labBg)"/><rect width="${W}" height="${H}" fill="url(#grid)"/>`;
+  h += `<circle cx="400" cy="380" r="420" fill="url(#glowM)" opacity=".8"/>`;
+  h += `<g opacity=".5">${rays(400, 360, 600, 16, MINT, 0.12, 0.2)}</g>`;
+  h += char({ t: T, seed: 4, x: 400, y: 1280, s: 2.25, pose: '서기', ex: { expr: '신남', prev: '신남', k: 1, blink: 0 }, noBlink: true, still: true, tilt: -5, light: 1 });
+  [[150, 170, 0.9, YEL], [660, 150, 0.7, '#fff'], [690, 330, 0.5, MINT]].forEach(([x, y, s, c]) => h += sparkle(x, y, s, c));
+  h += `<circle cx="400" cy="400" r="384" fill="none" stroke="${MINT}" stroke-width="10" stroke-dasharray="4 22" stroke-linecap="round"/>`;
+  return [W, H, h];
+}
+
+const [W, H, h] = ({ thumb, banner, profile })[which]();
+const svg = document.getElementById('v');
+svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+svg.innerHTML = h;
+</script></body></html>

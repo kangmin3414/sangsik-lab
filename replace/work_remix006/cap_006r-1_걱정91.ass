@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.11,0:00:02.62,Cap,,0,0,0,,미국 펜실베이니아주립대 연구팀은,
+Dialogue: 0,0:00:02.64,0:00:06.97,Cap,,0,0,0,,걱정이 많은 사람들에게 열흘 동안 걱정을 기록하게 하고,
+Dialogue: 0,0:00:06.99,0:00:09.72,Cap,,0,0,0,,실제로 일어났는지 확인했습니다.
+Dialogue: 0,0:00:09.74,0:00:13.97,Cap,,0,0,0,,그 결과, 걱정의 {\c&H33E7F7&}91%{\c&HFFFFFF&}는 일어나지 않았어요.
+Dialogue: 0,0:00:13.99,0:00:15.04,Cap,,0,0,0,,세네카의 말처럼,
+Dialogue: 0,0:00:15.06,0:00:18.77,Cap,,0,0,0,,우리는 현실보다 상상 속에서 더 자주 괴로워하는 거죠.
+Dialogue: 0,0:00:18.97,0:00:22.36,Cap,,0,0,0,,노예였던 에픽테토스는 이렇게 가르쳤습니다.
+Dialogue: 0,0:00:22.38,0:00:27.17,Cap,,0,0,0,,세상에는 우리에게 달린 것과, 달리지 않은 것이 있다.
+Dialogue: 0,0:00:27.19,0:00:31.90,Cap,,0,0,0,,날씨, 남의 생각, 이미 지난 일은 내 것이 아니지만,
+Dialogue: 0,0:00:31.92,0:00:35.54,Cap,,0,0,0,,내 판단과 내 행동은 온전히 내 것이죠.

@@ -1,0 +1,10 @@
+window.__deep = (pred) => { let r = null; const w = (root, d) => { if (d > 45 || r) return; for (const el of root.querySelectorAll('*')) { if (pred(el)) { r = el; return; } if (el.shadowRoot) w(el.shadowRoot, d + 1); } }; w(document, 0); return r; };
+await new Promise(r => setTimeout(r, 3500));
+const set = (start, text) => { const tb = window.__deep(el => el.id === 'textbox' && el.getAttribute('contenteditable') && (el.getAttribute('aria-label') || '').startsWith(start)); if (!tb) return null; tb.focus(); document.execCommand('selectAll', false, null); document.execCommand('insertText', false, text); return tb.innerText; };
+const title = "\uac00\ub09c\ud560 \ubfd0, \uace0\ub2ec\ud508 \uac74 \uc544\ub2d9\ub2c8\ub2e4 \ud83e\uddf5 #\uc0c1\uc2dd\uc2e4\ud5d8\uc2e4";
+const desc = "\uae30\uc6b4 \uc637\uc5d0 \ub048\uc73c\ub85c \ub3d9\uc5ec\ub9e8 \uc2e0\ubc1c\ub85c \uc655 \uc55e\uc5d0 \uc120 \uc7a5\uc790. \"\uc5b4\ucc0c \uadf8\ub9ac \uace0\ub2ec\ud30c \ubcf4\uc774\uc2dc\uc624?\"\n\uc7a5\uc790\uc758 \ub300\ub2f5\uc740 \ud55c \uc904\uc774\uc5c8\uc2b5\ub2c8\ub2e4.\n\ud83d\udccc \uc7a5\uc790\ucc98\ub7fc \ub0a8\uc758 \uc7a3\ub300 \ub0b4\ub824\ub193\uae30, \uc804\uccb4 \uc2e4\ud5d8\uc740 \ucc44\ub110\uc5d0\uc11c!\n\ud83d\udcac \uac00\ub09c\uacfc \uace0\ub2ec\ud514, \uac19\uc740 \uac78\uae4c\uc694? \ud83d\udc47\n\ud83d\udcda \u300e\uc7a5\uc790\u300f \uc0b0\ubaa9(\u5c71\u6728)\ud3b8\n#\uc0c1\uc2dd\uc2e4\ud5d8\uc2e4 #\uc7a5\uc790 #\ub3d9\uc591\ucca0\ud559 #\uba85\uc5b8 #shorts";
+const t = set('\ub3d9\uc601\uc0c1\uc744 \uc124\uba85\ud558\ub294 \uc81c\ubaa9', title); await new Promise(r => setTimeout(r, 300)); const d = set('\uc2dc\uccad\uc790\uc5d0\uac8c', desc);
+await new Promise(r => setTimeout(r, 500));
+const nk = window.__deep(el => el.tagName.toLowerCase() === 'tp-yt-paper-radio-button' && el.getAttribute('name') === 'VIDEO_MADE_FOR_KIDS_NOT_MFK'); if (nk && nk.getAttribute('aria-checked') !== 'true') nk.click();
+if (!(t === title && (d || '').replace(/\n$/, '') === desc && nk && nk.getAttribute('aria-checked') === 'true')) throw new Error('fill failed ' + (t||'').slice(0,20));
+'filled: ' + t

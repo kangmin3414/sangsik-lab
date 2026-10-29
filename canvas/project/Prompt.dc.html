@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>제로 AI 이미지 프롬프트</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=Noto+Sans+KR:wght@500;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1400px; height: 1700px; box-sizing: border-box; padding: 64px 72px; background: #0B1626; color: #F2F0EA; font-family: 'Noto Sans KR', sans-serif; display: flex; flex-direction: column; gap: 32px">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 20px; letter-spacing: 3px; color: #3DF2B0">PROMPT KIT v1</div>
+<div style="font-family: 'Black Han Sans', sans-serif; font-size: 72px; line-height: 1">AI 이미지 프롬프트</div>
+<div style="font-size: 24px; line-height: 1.5; color: #B8C4D2">한 컷 = [시간] + 고정 문구 + 장면 문장 + 끝 문구. 캐릭터 시트 이미지를 참조 이미지로 함께 올리면 제로가 매번 같은 모습으로 나옵니다.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-weight: 700; font-size: 26px; color: #F7E733">① 고정 문구 · 매 컷 맨 앞에 그대로</div>
+<div style="background: #13223A; border: 2px solid #3DF2B0; border-radius: 12px; padding: 24px 28px; font-family: 'JetBrains Mono', monospace; font-size: 20px; line-height: 1.6; white-space: pre-wrap">Hand-drawn 2D doodle cartoon, flat colors, bold black outlines, slightly imperfect marker lines. Main character ZERO: a big round pure-white head slightly wider than tall, two small black oval eyes, thick expressive black eyebrows, a tiny single-line mouth, round mint-green lab goggles pushed up on the forehead with a dark navy strap, a bright yellow sleeveless lab vest with a center zipper and a small navy chest patch reading "00", thin black stick arms and legs, round white mitten hands with no fingers, small white sneakers. Same character design in every image.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-weight: 700; font-size: 26px; color: #F7E733">② 장면 문장 · 매 컷 바뀌는 부분</div>
+<div style="background: #13223A; border: 2px solid #3DF2B0; border-radius: 12px; padding: 24px 28px; font-family: 'JetBrains Mono', monospace; font-size: 20px; line-height: 1.6; white-space: pre-wrap">[0:12] ZERO is [행동] in [장소], [표정 키워드], [카메라: wide shot / medium shot / close-up on face].
+
+예) [1:42] ZERO is bouncing one meter above a Seoul crosswalk at morning rush hour, wide white eyes with tiny pupils and eyebrows raised high, office workers staring, wide shot.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-weight: 700; font-size: 26px; color: #F7E733">③ 끝 문구 · 배경 스타일 둘 중 하나</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 22px; font-weight: 700">A. 흰 배경 두들 <span style="font-weight: 500; color: #B8C4D2">— 가장 빠름</span></div>
+<div style="background: #13223A; border: 2px solid #3DF2B0; border-radius: 12px; padding: 20px 24px; font-family: 'JetBrains Mono', monospace; font-size: 19px; line-height: 1.6; white-space: pre-wrap">Plain off-white background with a simple flat ground strip, minimal props, no text or numbers anywhere except the "00" chest patch, no gradients, no shadows, no photorealism, no 3D, 16:9 aspect ratio, educational YouTube explainer style.</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 22px; font-weight: 700">B. 실험실 무드 배경 <span style="font-weight: 500; color: #B8C4D2">— 몰입감</span></div>
+<div style="background: #13223A; border: 2px solid #3DF2B0; border-radius: 12px; padding: 20px 24px; font-family: 'JetBrains Mono', monospace; font-size: 19px; line-height: 1.6; white-space: pre-wrap">Detailed hand-illustrated background with cinematic lighting that matches the scene, ZERO stays flat and simple, no text or numbers anywhere except the "00" chest patch, no photorealism, no 3D, 16:9 aspect ratio, educational YouTube explainer style.</div>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="font-weight: 700; font-size: 26px; color: #F7E733">④ 표정 키워드 · ②의 [표정 키워드] 자리에</div>
+<div style="display: grid; grid-template-columns: 160px minmax(0, 1fr); row-gap: 10px; column-gap: 20px; font-size: 20px; line-height: 1.45">
+<div style="font-weight: 700">기본</div><div style="font-family: 'JetBrains Mono', monospace">calm face, relaxed flat eyebrows</div>
+<div style="font-weight: 700">신남</div><div style="font-family: 'JetBrains Mono', monospace">happy closed curved eyes, big open smile, pink blush</div>
+<div style="font-weight: 700">놀람</div><div style="font-family: 'JetBrains Mono', monospace">wide white eyes with tiny pupils, eyebrows raised high, small round open mouth</div>
+<div style="font-weight: 700">결심</div><div style="font-family: 'JetBrains Mono', monospace">eyebrows angled sharply down toward the center, flat mouth</div>
+<div style="font-weight: 700">걱정</div><div style="font-family: 'JetBrains Mono', monospace">eyebrows tilted up in the middle, wavy mouth, one blue sweat drop</div>
+<div style="font-weight: 700">겁먹음</div><div style="font-family: 'JetBrains Mono', monospace">wide white eyes with dot pupils, zigzag trembling mouth, sweat drop</div>
+<div style="font-weight: 700">지침</div><div style="font-family: 'JetBrains Mono', monospace">half-closed droopy eyes, flat eyebrows, tiny tired mouth</div>
+<div style="font-weight: 700">뿌듯</div><div style="font-family: 'JetBrains Mono', monospace">one eyebrow raised, small confident smirk</div>
+<div style="font-weight: 700">실험 중</div><div style="font-family: 'JetBrains Mono', monospace">mint goggles pulled down over the eyes</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1400,"height":1700}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

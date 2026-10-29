@@ -1,0 +1,169 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;background:#000}
+#wrap{position:relative;width:1080px;height:1920px;overflow:hidden}
+svg{display:block}
+#t{position:absolute;left:0;right:0;top:170px;text-align:center;font-family:'Jua',sans-serif;line-height:1.06;-webkit-text-stroke:22px #0E0E10;paint-order:stroke fill;text-shadow:0 10px 0 rgba(0,0,0,.6),0 0 50px rgba(0,0,0,.7)}
+#t .a{display:inline-block;color:#fff;font-size:130px}
+#t .b{display:inline-block;color:#F7E733;font-size:160px;transform:rotate(-2deg)}
+</style></head>
+<body><div id="wrap"><svg id="s" width="1080" height="1920" viewBox="0 0 1080 1920"></svg><div id="t"><span class="a" id="a"></span><br><span class="b" id="b"></span></div></div>
+<script>
+const V = location.hash.slice(1) || 'hippo';
+let seed = 5;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114', MINT = '#3DF2B0', YEL = '#F7E733', PINK = '#FF5FA2';
+const CFG = {
+  hippo: { a: '걷기만 했는데', b: '뇌가 자랐다?', bg: ['#030812', '#0B2440', '#06101F'], glow: '#3DF2B0', rim: '#7DFFD8', expr: 'shock', arms: 'cheeks' },
+  idea: { a: '걷기만 해도', b: '아이디어 +60%', bg: ['#0C0702', '#3A2408', '#140C04'], glow: '#FFD24A', rim: '#FFE38A', expr: 'sparkle', arms: 'up' },
+  stress: { a: '20분만 걸어도', b: '스트레스 뚝', bg: ['#04120A', '#0E3A22', '#07160E'], glow: '#7DEB8C', rim: '#B8FFC2', expr: 'relaxed', arms: 'none' },
+  dementia: { a: '하루 9,800보', b: '치매 위험 절반?', bg: ['#0A0618', '#2A1650', '#100A22'], glow: '#B48CFF', rim: '#D8C4FF', expr: 'hope', arms: 'watch' },
+  bdnf: { a: '30분 걸으면', b: '뇌에 비료가?', bg: ['#03120A', '#0C3A22', '#04140C'], glow: '#9BF06A', rim: '#D2FFB0', expr: 'proud', arms: 'can' },
+}[V];
+document.getElementById('a').textContent = CFG.a; document.getElementById('b').textContent = CFG.b;
+// fit text width
+for (const id of ['a', 'b']) { const el = document.getElementById(id); let fs = parseFloat(getComputedStyle(el).fontSize); while (el.getBoundingClientRect().width > 1020 && fs > 60) { fs -= 4; el.style.fontSize = fs + 'px'; } }
+
+const HX = 540, HY = 1285, S = 1.55;
+let d = `<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1920" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${CFG.bg[0]}"/><stop offset=".5" stop-color="${CFG.bg[1]}"/><stop offset="1" stop-color="${CFG.bg[2]}"/></linearGradient>
+<radialGradient id="glowG"><stop offset="0" stop-color="${CFG.glow}" stop-opacity=".55"/><stop offset=".45" stop-color="${CFG.glow}" stop-opacity=".18"/><stop offset="1" stop-color="${CFG.glow}" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".5" cy=".28" r=".9"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".45" stop-color="#FAF5EE"/><stop offset=".76" stop-color="#E2DCD6"/><stop offset="1" stop-color="#9C9AAE"/></radialGradient>
+<radialGradient id="handG" cx=".45" cy=".3" r=".9"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".55" stop-color="#F4EEE5"/><stop offset="1" stop-color="#A9A8BA"/></radialGradient>
+<linearGradient id="tee" x1="200" y1="0" x2="880" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#C8642E"/><stop offset=".5" stop-color="#FF9A55"/><stop offset="1" stop-color="#C8642E"/></linearGradient>
+<linearGradient id="eyeW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D3D8E2"/><stop offset=".4" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EEF0F4"/></linearGradient>
+<radialGradient id="brainG" cx=".45" cy=".35" r=".8"><stop offset="0" stop-color="#FFE3E8"/><stop offset=".6" stop-color="#FFC2CE"/><stop offset="1" stop-color="#E88FA3"/></radialGradient>
+<radialGradient id="bulbG" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#FFFBE0"/><stop offset=".5" stop-color="#FFE45A"/><stop offset="1" stop-color="#F2B020"/></radialGradient>
+<radialGradient id="vig" cx="540" cy="1000" r="1200" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient>
+<linearGradient id="topDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b30" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="30"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse rx="192" ry="180"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="-16" cy="14" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<mask id="rimL" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="16" cy="14" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="teeC"><path id="teeP" d="M220 1940 L250 1700 Q276 1598 392 1570 Q540 1548 688 1570 Q804 1598 830 1700 L860 1940 Z"/></clipPath>
+<clipPath id="mouthC"><path id="mouthP" d="M-74 92 Q0 102 74 92 Q66 178 0 182 Q-66 178 -74 92 Z"/></clipPath>
+</defs>`;
+let g = `<rect width="1080" height="1920" fill="url(#bg)"/>`;
+for (let i = 0; i < 90; i++) { const x = rnd() * 1080, y = rnd() * 1920, r = rnd() * 2 + .5; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${CFG.rim}" opacity="${(.12 + rnd() * .35).toFixed(2)}"/>`; }
+g += `<circle cx="540" cy="900" r="620" fill="url(#glowG)"/>`;
+
+/* ---------- props (behind / above the head) ---------- */
+const brain = (cx, cy, s, extra = '') => {
+  let b = `<g transform="translate(${cx} ${cy}) scale(${s})">`;
+  b += `<circle r="240" fill="url(#glowG)"/>`;
+  b += `<path d="M-160 20 C-176 -70 -110 -130 -24 -130 C70 -142 168 -96 172 -12 C178 46 144 86 88 92 L66 128 L32 128 L28 96 C-36 108 -150 100 -160 20 Z" fill="url(#brainG)" stroke="${INK}" stroke-width="10"/>`;
+  b += `<path d="M6 -128 Q-4 -40 10 92" fill="none" stroke="#D97A90" stroke-width="7" stroke-linecap="round"/>`;
+  [[-120, -40, -80, -90, -20, -70], [-130, 30, -70, -10, -20, 30], [40, -90, 90, -60, 140, -80], [40, -10, 100, -40, 150, 10], [-80, 70, -30, 50, 0, 80], [50, 60, 90, 40, 120, 70]].forEach(c => b += `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#D97A90" stroke-width="7" stroke-linecap="round"/>`);
+  b += `<ellipse cx="-70" cy="-80" rx="40" ry="16" fill="#fff" opacity=".7" transform="rotate(-20 -70 -80)"/>`;
+  return b + extra + `</g>`;
+};
+const label = (x, y, text, bg, fs = 64, rot = 0, color = '#0B1626') => { const w = text.length * fs * 0.62 + 70, h = fs + 40; return `<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-w / 2 + 8}" y="${-h / 2 + 10}" width="${w}" height="${h}" rx="${h / 2}" fill="#000" opacity=".4"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${bg}" stroke="${INK}" stroke-width="8"/><text x="0" y="${fs * 0.36}" text-anchor="middle" font-family="Jua, sans-serif" font-size="${fs}" fill="${color}">${text}</text></g>`; };
+const spark = (x, y, s, c) => `<path d="M${x} ${y - s} Q${x + s * .18} ${y - s * .18} ${x + s} ${y} Q${x + s * .18} ${y + s * .18} ${x} ${y + s} Q${x - s * .18} ${y + s * .18} ${x - s} ${y} Q${x - s * .18} ${y - s * .18} ${x} ${y - s} Z" fill="${c}"/>`;
+const bulb = (x, y, s, rot) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><circle r="120" fill="url(#glowG)"/>${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<line x1="${(Math.cos(i * .785) * 70).toFixed(1)}" y1="${(Math.sin(i * .785) * 70 - 10).toFixed(1)}" x2="${(Math.cos(i * .785) * 96).toFixed(1)}" y2="${(Math.sin(i * .785) * 96 - 10).toFixed(1)}" stroke="#FFE45A" stroke-width="8" stroke-linecap="round"/>`).join('')}<path d="M-46 -10 A50 50 0 1 1 46 -10 Q36 20 26 40 L-26 40 Q-36 20 -46 -10 Z" fill="url(#bulbG)" stroke="${INK}" stroke-width="8"/><path d="M-16 20 Q0 -16 16 20" fill="none" stroke="#C98A10" stroke-width="5"/><rect x="-26" y="40" width="52" height="34" rx="8" fill="#C9C2B4" stroke="${INK}" stroke-width="7"/><path d="M-22 -40 Q-30 -20 -26 -4" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/></g>`;
+
+let behind = '', front = '';
+if (V === 'hippo') {
+  const hip = `<path d="M-40 30 C-10 0 50 6 72 36 C88 58 66 82 42 72 C26 64 34 48 50 52" fill="none" stroke="${MINT}" stroke-width="24" stroke-linecap="round"/><path d="M-40 30 C-10 0 50 6 72 36 C88 58 66 82 42 72 C26 64 34 48 50 52" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".8"/><circle cx="20" cy="40" r="110" fill="url(#glowG)"/>`;
+  behind += brain(540, 800, 1.15, hip);
+  for (let i = 0; i < 14; i++) behind += spark(260 + rnd() * 560, 650 + rnd() * 320, 8 + rnd() * 14, i % 2 ? MINT : '#fff');
+  front += label(850, 690, '+2%', YEL, 84, 8);
+}
+if (V === 'idea') {
+  [[280, 820, 1.0, -18], [540, 720, 1.2, 0], [800, 820, 1.0, 18], [150, 1000, .75, -30], [930, 1000, .75, 30]].forEach(([x, y, s, r]) => behind += bulb(x, y, s, r));
+  for (let i = 0; i < 18; i++) behind += spark(80 + rnd() * 920, 640 + rnd() * 500, 8 + rnd() * 16, i % 3 ? YEL : '#fff');
+}
+if (V === 'stress') {
+  // red stress cloud breaking up on the left, calm leaves on the right
+  behind += `<g opacity=".95"><g transform="translate(250 820)"><circle r="190" fill="#FF4D4D" opacity=".25" filter="url(#b30)"/>${[[-80, 0, 90], [0, -40, 110], [90, 10, 90], [20, 50, 80]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#4A1A24" stroke="${INK}" stroke-width="8"/>`).join('')}<path d="M10 70 L-30 160 L10 150 L-20 240" fill="none" stroke="${YEL}" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/><text x="0" y="0" text-anchor="middle" font-family="Jua, sans-serif" font-size="52" fill="#FF8A8A">코르티솔</text></g>`;
+  for (let i = 0; i < 10; i++) { const x = 390 + i * 26, y = 760 + Math.sin(i) * 40; behind += `<circle cx="${x}" cy="${y}" r="${18 - i * 1.4}" fill="#4A1A24" stroke="${INK}" stroke-width="5" opacity="${(1 - i / 11).toFixed(2)}"/>`; }
+  behind += `</g>`;
+  for (let i = 0; i < 16; i++) { const x = 640 + rnd() * 400, y = 640 + rnd() * 500, r = rnd() * 360; behind += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${r.toFixed(0)}) scale(${(1.6 + rnd() * 1.6).toFixed(2)})"><path d="M0 -14 Q11 -2 0 14 Q-11 -2 0 -14 Z" fill="${['#58B868', '#7DEB8C', '#3FA055'][i % 3]}" stroke="${INK}" stroke-width="2.5"/><path d="M0 -12 L0 12" stroke="#2E7A3E" stroke-width="1.5"/></g>`; }
+  front += label(900, 880, '20분', MINT, 80, 8);
+}
+if (V === 'dementia') {
+  behind += brain(300, 820, .8, `<path d="M-60 -150 L60 -150 L60 -60 Q60 20 0 60 Q-60 20 -60 -60 Z" transform="translate(0 70) scale(1.4)" fill="${CFG.glow}" opacity=".35" stroke="#fff" stroke-width="6"/>`);
+  front += label(250, 1010, '−51%', PINK, 80, -6, '#fff');
+}
+if (V === 'bdnf') {
+  const sprouts = [[-90, -120], [-10, -140], [80, -120], [140, -60]].map(([x, y], i) => `<path d="M${x} ${y + 20} Q${x - 6} ${y - 40} ${x + 4} ${y - 70}" fill="none" stroke="#3E9A3A" stroke-width="10" stroke-linecap="round"/><path d="M${x + 4} ${y - 60} Q${x + 50} ${y - 90} ${x + 70} ${y - 50} Q${x + 30} ${y - 30} ${x + 4} ${y - 60} Z" fill="#7DEB6A" stroke="${INK}" stroke-width="5"/><path d="M${x} ${y - 40} Q${x - 46} ${y - 70} ${x - 64} ${y - 30} Q${x - 26} ${y - 14} ${x} ${y - 40} Z" fill="#58C84A" stroke="${INK}" stroke-width="5"/>`).join('');
+  const neur = [[-110, -10], [-40, -60], [40, 20], [110, -30], [-60, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="12" fill="${YEL}" stroke="${INK}" stroke-width="4"/>`).join('') + `<path d="M-110 -10 L-40 -60 L40 20 L110 -30 M-40 -60 L-60 50 L40 20" fill="none" stroke="${MINT}" stroke-width="6" stroke-linecap="round"/>`;
+  behind += brain(600, 830, 1.05, sprouts + neur);
+  // drops falling from the can
+  for (let i = 0; i < 9; i++) { const x = 400 + i * 22, y = 650 + (i % 3) * 40; behind += `<path d="M${x} ${y} q8 14 0 22 q-8 -8 0 -22 Z" fill="#9FE3FF" stroke="${INK}" stroke-width="3"/>`; }
+}
+
+/* ---------- body ---------- */
+let body = `<use href="#teeP" fill="url(#tee)"/>`;
+body += `<g clip-path="url(#teeC)"><ellipse cx="540" cy="1575" rx="250" ry="46" fill="#5A2A10" opacity=".55" filter="url(#b8)"/><path d="M830 1700 L860 1940" stroke="${CFG.rim}" stroke-width="16" opacity=".45" filter="url(#b4)"/><path d="M250 1700 L220 1940" stroke="${CFG.rim}" stroke-width="16" opacity=".35" filter="url(#b4)"/></g>`;
+body += `<use href="#teeP" fill="none" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/>`;
+body += `<path d="M418 1576 Q540 1622 662 1576" fill="none" stroke="${INK}" stroke-width="22" stroke-linecap="round"/><path d="M418 1576 Q540 1622 662 1576" fill="none" stroke="#D9692E" stroke-width="10" stroke-linecap="round"/>`;
+const sleeve = (x, y, rot) => `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M-46 -40 L40 -34 Q54 0 40 34 L-46 40 Z" fill="url(#tee)"/><path d="M-46 -40 L40 -34 Q54 0 40 34 L-46 40" fill="none" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/></g>`;
+const arm = d => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>`;
+const handC = (x, y, r = 50) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#handG)" stroke="${INK}" stroke-width="9"/><path d="M${x - 18} ${y + 14} Q${x} ${y + 28} ${x + 18} ${y + 14}" fill="none" stroke="#A9A8BA" stroke-width="6" stroke-linecap="round"/>`;
+let armsBack = '', armsFront = '';
+if (CFG.arms === 'cheeks') { armsFront += arm('M285 1660 Q180 1520 268 1372') + arm('M795 1660 Q900 1520 812 1372') + handC(262, 1360, 60) + handC(818, 1360, 60); body += sleeve(280, 1650, -115) + sleeve(800, 1650, -65); }
+if (CFG.arms === 'up') { armsBack += arm('M285 1660 Q120 1400 170 1090') + arm('M795 1660 Q960 1400 910 1090'); armsFront += handC(170, 1070, 60) + handC(910, 1070, 60); body += sleeve(280, 1650, -110) + sleeve(800, 1650, -70); }
+if (CFG.arms === 'watch') {
+  armsFront += arm('M795 1660 Q990 1420 880 1220');
+  armsFront += `<g transform="translate(862 1190) rotate(-12)"><rect x="-110" y="-26" width="220" height="52" rx="16" fill="#2A2F3E" stroke="${INK}" stroke-width="8"/><circle r="170" fill="url(#glowG)"/><rect x="-118" y="-88" width="236" height="176" rx="40" fill="#1B2030" stroke="${INK}" stroke-width="9"/><rect x="-100" y="-70" width="200" height="140" rx="28" fill="#06140E"/><text x="0" y="-24" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="28" fill="#8FE8B8">걸음 수</text><text x="0" y="40" text-anchor="middle" font-family="Jua, sans-serif" font-size="74" fill="${MINT}">9,800</text></g>`;
+  armsFront += handC(840, 1080, 56);
+  body += sleeve(800, 1650, -70);
+}
+if (CFG.arms === 'can') {
+  armsBack += arm('M285 1660 Q90 1350 250 960');
+  armsFront += `<g transform="translate(300 900) rotate(-24)"><circle r="160" fill="url(#glowG)" opacity=".6"/><path d="M-90 -60 L70 -60 L80 70 Q0 90 -80 70 Z" fill="#4FB8E8" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><path d="M70 -20 L190 -100 L206 -80 L84 20" fill="#4FB8E8" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><ellipse cx="200" cy="-92" rx="22" ry="12" transform="rotate(-34 200 -92)" fill="#BFE6FF" stroke="${INK}" stroke-width="6"/><path d="M-90 -40 Q-170 -30 -150 50 Q-130 90 -86 50" fill="none" stroke="${INK}" stroke-width="12"/><path d="M-60 -40 L-40 50" stroke="#fff" stroke-width="10" opacity=".5" stroke-linecap="round"/></g>`;
+  armsFront += handC(250, 960, 56);
+  body += sleeve(280, 1650, -110) + sleeve(800, 1650, -70);
+}
+
+/* ---------- head ---------- */
+let h = `<ellipse rx="192" ry="180" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)"><ellipse cx="0" cy="206" rx="220" ry="76" fill="#6E6680" opacity=".38" filter="url(#b14)"/>
+  <ellipse cx="-126" cy="72" rx="42" ry="22" fill="#FF6E7E" opacity="${CFG.expr === 'shock' ? .2 : .42}" filter="url(#b8)"/><ellipse cx="126" cy="72" rx="42" ry="22" fill="#FF6E7E" opacity="${CFG.expr === 'shock' ? .2 : .42}" filter="url(#b8)"/>
+  <ellipse cx="70" cy="-118" rx="62" ry="25" transform="rotate(20 70 -118)" fill="#fff" opacity=".85" filter="url(#b8)"/></g>`;
+h += `<ellipse rx="192" ry="180" fill="${CFG.rim}" mask="url(#rimR)" opacity=".85"/><ellipse rx="192" ry="180" fill="${CFG.rim}" mask="url(#rimL)" opacity=".55"/>`;
+h += `<path d="M92 -146 Q124 -124 138 -92" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>`;
+h += `<ellipse rx="192" ry="180" fill="none" stroke="${INK}" stroke-width="10"/>`;
+const E = CFG.expr;
+const wideEye = (sx, px, py, pr) => { const cx = 66 * sx; return `<ellipse cx="${cx}" cy="22" rx="44" ry="52" fill="url(#eyeW)" stroke="${INK}" stroke-width="7"/><circle cx="${cx + px}" cy="${22 + py}" r="${pr}" fill="#0B0B10"/><circle cx="${cx + px + pr * .35}" cy="${22 + py - pr * .4}" r="${Math.max(4, pr * .35)}" fill="#fff"/>`; };
+if (E === 'shock') {
+  h += wideEye(-1, 2, -18, 13) + wideEye(1, -2, -18, 13);
+  h += `<path d="M-140 -78 Q-96 -112 -40 -96" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/><path d="M40 -96 Q96 -112 140 -78" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+  h += `<ellipse cx="0" cy="128" rx="38" ry="50" fill="#3A1018" stroke="${INK}" stroke-width="8"/><ellipse cx="0" cy="156" rx="22" ry="14" fill="#FF7E8E"/>`;
+  [[-180, -20, 1.1, 10], [178, 10, .9, -12]].forEach(([x, y, s, r]) => h += `<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M0 -26 Q16 0 13 12 Q9 26 0 26 Q-9 26 -13 12 Q-16 0 0 -26 Z" fill="#BFE6FF" stroke="${INK}" stroke-width="3.5"/><ellipse cx="-4" cy="8" rx="3.5" ry="7" fill="#fff"/></g>`);
+}
+if (E === 'sparkle' || E === 'hope') {
+  const px = E === 'hope' ? 14 : 0, py = E === 'hope' ? -6 : 4, pr = E === 'hope' ? 20 : 30;
+  h += wideEye(-1, px, py, pr) + wideEye(1, px, py, pr);
+  if (E === 'sparkle') [-1, 1].forEach(sx => h += spark(66 * sx - 8, 14, 12, '#fff') + `<circle cx="${66 * sx + 12}" cy="38" r="5" fill="#fff"/>`);
+  h += `<path d="M-138 -64 Q-94 -100 -40 -84" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/><path d="M40 -84 Q94 -100 138 -64" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+  if (E === 'sparkle') { h += `<use href="#mouthP" fill="#5A1E2A"/><g clip-path="url(#mouthC)"><rect x="-80" y="84" width="160" height="26" fill="#fff"/><ellipse cx="0" cy="176" rx="42" ry="26" fill="#FF7E8E"/></g><use href="#mouthP" fill="none" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`; }
+  else { h += `<path d="M-40 112 Q0 150 40 112 Q20 120 0 120 Q-20 120 -40 112 Z" fill="#5A1E2A" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`; }
+}
+if (E === 'relaxed') {
+  h += `<path d="M-100 26 Q-66 52 -32 26" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="M32 26 Q66 52 100 26" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+  h += `<path d="M-130 -40 Q-88 -62 -40 -50" fill="none" stroke="${INK}" stroke-width="18" stroke-linecap="round"/><path d="M40 -50 Q88 -62 130 -40" fill="none" stroke="${INK}" stroke-width="18" stroke-linecap="round"/>`;
+  h += `<path d="M-46 112 Q0 146 46 112" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
+  h += `<path d="M-150 84 l10 -14 M-132 86 l10 -14 M110 86 l10 -14 M128 84 l10 -14" stroke="#E2485E" stroke-width="4" stroke-linecap="round" opacity=".7"/>`;
+}
+if (E === 'proud') {
+  h += `<path d="M-100 30 Q-64 -8 -28 30" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="M28 30 Q64 -8 100 30" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+  h += `<path d="M-120 -46 Q-80 -74 -38 -54" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/><path d="M38 -54 Q80 -74 120 -46" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+  h += `<use href="#mouthP" fill="#5A1E2A"/><g clip-path="url(#mouthC)"><rect x="-80" y="84" width="160" height="26" fill="#fff"/><ellipse cx="0" cy="176" rx="42" ry="26" fill="#FF7E8E"/></g><use href="#mouthP" fill="none" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+}
+const head = `<g transform="translate(${HX} ${HY}) rotate(${V === 'dementia' ? 6 : (V === 'bdnf' ? -6 : 0)}) scale(${S})">${h}</g>`;
+
+g += behind + armsBack + body + head + armsFront + front;
+g += `<rect width="1080" height="700" fill="url(#topDark)"/>`;
+g += `<rect width="1080" height="1920" fill="url(#vig)"/>`;
+g += `<rect width="1080" height="1920" filter="url(#grain)" opacity=".13" style="mix-blend-mode:overlay"/>`;
+document.getElementById('s').innerHTML = d + g;
+</script>
+</body></html>

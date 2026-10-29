@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:06.53,Cap,,0,0,0,,{\c&HFFFFFF&}장자는 옻나무 밭을 돌보던 작은 관리. 평생 가난했습니다.
+Dialogue: 0,0:00:06.55,0:00:09.40,Cap,,0,0,0,,{\c&HFFFFFF&}기운 옷에, 끈으로 동여맨 신발.
+Dialogue: 0,0:00:09.42,0:00:14.46,Cap,,0,0,0,,{\c&HFFFFFF&}그 차림으로 위나라 왕을 만났을 때, 왕이 묻습니다.
+Dialogue: 0,0:00:14.48,0:00:17.37,Cap,,0,0,0,,{\c&H7AE2FF&}어찌 그리 고달파 보이시오?
+Dialogue: 0,0:00:17.39,0:00:19.05,Cap,,0,0,0,,{\c&HFFFFFF&}장자의 대답.
+Dialogue: 0,0:00:19.07,0:00:22.65,Cap,,0,0,0,,{\c&H7AE2FF&}가난할 뿐, 고달픈 건 아닙니다.

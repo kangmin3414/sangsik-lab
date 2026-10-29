@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:01.40,Cap,,0,0,0,,약 {\c&H33E7F7&}400년{\c&HFFFFFF&} 전,
+Dialogue: 0,0:00:01.40,0:00:06.28,Cap,,0,0,0,,스물세 살의 한 청년이 바로 이 질문 앞에서 길을 잃습니다.
+Dialogue: 0,0:00:06.53,0:00:10.75,Cap,,0,0,0,,유럽에서 손꼽히는 학교를 마쳤지만, 남은 건 의심뿐.
+Dialogue: 0,0:00:10.75,0:00:11.48,Cap,,0,0,0,,배울수록,
+Dialogue: 0,0:00:11.48,0:00:15.95,Cap,,0,0,0,,내가 얼마나 모르는지만 알게 됐다고 그는 돌아봅니다.
+Dialogue: 0,0:00:16.20,0:00:20.24,Cap,,0,0,0,,그래서 책을 덮고, 세상이라는 큰 책을 읽으러 떠납니다.
+Dialogue: 0,0:00:20.24,0:00:23.36,Cap,,0,0,0,,여러 나라를 떠돌고, 군대에도 들어가죠.
+Dialogue: 0,0:00:23.81,0:00:26.49,Cap,,0,0,0,,{\c&H33E7F7&}1619년{\c&HFFFFFF&} 겨울, 독일의 한 마을.
+Dialogue: 0,0:00:26.49,0:00:29.02,Cap,,0,0,0,,난로가 있는 작은 방에 틀어박혀,
+Dialogue: 0,0:00:29.02,0:00:31.81,Cap,,0,0,0,,그는 하루 종일 생각에 잠깁니다.
+Dialogue: 0,0:00:32.06,0:00:35.59,Cap,,0,0,0,,그리고 결심하죠. 조금이라도 의심할 수 있는 건,
+Dialogue: 0,0:00:35.59,0:00:37.54,Cap,,0,0,0,,일단 전부 의심해 보자.
+Dialogue: 0,0:00:37.99,0:00:41.83,Cap,,0,0,0,,이 청년이 바로 프랑스의 철학자, 르네 데카르트.
+Dialogue: 0,0:00:41.83,0:00:43.83,Cap,,0,0,0,,수학 시간에 배우는 x축,
+Dialogue: 0,0:00:43.83,0:00:47.07,Cap,,0,0,0,,y축 좌표를 만든 사람 중 하나입니다.

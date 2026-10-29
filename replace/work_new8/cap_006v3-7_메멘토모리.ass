@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.90,Cap,,0,0,0,,{\c&HFFFFFF&}마르쿠스는 지금 당장이라도 삶을 떠날 수 있다는 듯이,
+Dialogue: 0,0:00:04.92,0:00:08.68,Cap,,0,0,0,,{\c&HFFFFFF&}행동하고 말하고 생각하라고 적었습니다.
+Dialogue: 0,0:00:08.70,0:00:12.96,Cap,,0,0,0,,{\c&HFFFFFF&}실제로 자신의 죽음을 생생하게 상상해 본 사람들은,
+Dialogue: 0,0:00:12.98,0:00:15.40,Cap,,0,0,0,,{\c&HFFFFFF&}고마운 마음이 크게 늘었어요.
+Dialogue: 0,0:00:15.42,0:00:20.25,Cap,,0,0,0,,{\c&HFFFFFF&}평범한 하루를 떠올린 사람들은 오히려 조금 줄었고요.
+Dialogue: 0,0:00:20.27,0:00:23.11,Cap,,0,0,0,,{\c&HFFFFFF&}물론 너무 자주 하면 지칠 수 있어요.
+Dialogue: 0,0:00:23.13,0:00:25.97,Cap,,0,0,0,,{\c&HFFFFFF&}그래서 제로는 딱 한 번 상상해 보고,
+Dialogue: 0,0:00:25.99,0:00:28.96,Cap,,0,0,0,,{\c&HFFFFFF&}오랜만에 부모님께 전화를 걸었습니다.

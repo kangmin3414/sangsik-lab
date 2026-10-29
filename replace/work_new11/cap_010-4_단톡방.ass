@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.24,Cap,,0,0,0,,{\c&HFFFFFF&}점심시간, 친구들 단톡방. 다들 서로 답장하는데,
+Dialogue: 0,0:00:04.26,0:00:07.94,Cap,,0,0,0,,{\c&HFFFFFF&}제로의 메시지에만 아무 답이 없습니다.
+Dialogue: 0,0:00:07.96,0:00:10.75,Cap,,0,0,0,,{\c&HFFFFFF&}따끔. 첫 번째 화살입니다.
+Dialogue: 0,0:00:10.77,0:00:13.75,Cap,,0,0,0,,{\c&H7AE2FF&}다들 나 싫어하나?
+Dialogue: 0,0:00:13.77,0:00:16.33,Cap,,0,0,0,,{\c&HFFFFFF&}두 번째 화살을 집어 들려다가,
+Dialogue: 0,0:00:16.35,0:00:18.73,Cap,,0,0,0,,{\c&HFFFFFF&}제로는 활을 내려놓습니다.
+Dialogue: 0,0:00:18.75,0:00:21.84,Cap,,0,0,0,,{\c&H7AE2FF&}아, 서운함이 왔구나.
+Dialogue: 0,0:00:21.86,0:00:24.46,Cap,,0,0,0,,{\c&HFFFFFF&}잠시 뒤, 친구의 답장.
+Dialogue: 0,0:00:24.48,0:00:27.00,Cap,,0,0,0,,{\c&H7AE2FF&}미안, 회의 중이었어!
+Dialogue: 0,0:00:27.02,0:00:28.82,Cap,,0,0,0,,{\c&HFFFFFF&}아픔은 피할 수 없어도,
+Dialogue: 0,0:00:28.84,0:00:32.17,Cap,,0,0,0,,{\c&HFFFFFF&}두 번째 화살은 쏘지 않을 수 있습니다.

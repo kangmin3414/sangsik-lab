@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>피험자 제로 캐릭터 시트</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=Noto+Sans+KR:wght@500;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 2400px; height: 1700px; box-sizing: border-box; padding: 72px 80px; background: #F2F0EA; color: #0B1626; font-family: 'Noto Sans KR', sans-serif; display: flex; flex-direction: column; gap: 48px">
+
+<div style="display: flex; align-items: flex-end; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; letter-spacing: 3px; color: #1A7F61">만약에연구소 · CHARACTER SHEET v1</div>
+<div style="font-family: 'Black Han Sans', sans-serif; font-size: 96px; line-height: 1">피험자 제로</div>
+</div>
+<div style="max-width: 900px; font-size: 26px; line-height: 1.5; color: #3B4A5E; text-align: right">머리와 몸은 한 번만 만들고, 매 장면에서는 눈썹·눈·입과 팔다리 선만 바꿉니다. AI 이미지 생성에서도 매번 같은 캐릭터로 나오도록 특징을 다섯 개로 줄였습니다.</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-weight: 700; font-size: 30px">표정 8종 <span style="font-weight: 500; color: #5A6878">— 눈썹이 감정의 80%를 맡습니다</span></div>
+<div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="기본" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">기본</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="신남" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">신남</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="놀람" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">놀람</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="결심" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">결심</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="걱정" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">걱정</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="겁먹음" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">겁먹음</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="지침" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">지침</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="뿌듯" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">뿌듯</div></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 16px">
+<div style="font-weight: 700; font-size: 30px">포즈 6종 <span style="font-weight: 500; color: #5A6878">— 몸통은 그대로, 팔다리 선만 움직입니다</span></div>
+<div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="기본" pose="서기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">서기</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="신남" pose="손인사" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">손인사</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="결심" pose="걷기" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">걷기</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="놀람" pose="둥둥" goggles="내림" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">둥둥 (고글 내림)</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="신남" pose="점프" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">점프</div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px"><dc-import name="Zero" expr="걱정" pose="고민" size="320" hint-size="213px,320px"></dc-import><div style="font-weight: 700; font-size: 24px">고민</div></div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; flex-grow: 1">
+<div style="background: #FFFFFF; border: 3px solid #0B1626; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-weight: 700; font-size: 28px">특징 다섯 개 (이것만 지키면 제로)</div>
+<ol style="margin: 0; padding-left: 30px; font-size: 23px; line-height: 1.6">
+<li>가로가 조금 더 넓은 흰 동그란 머리, 굵은 검은 외곽선</li>
+<li>이마 위로 올린 민트색 동그란 고글, 남색 끈</li>
+<li>작은 검은 타원 눈 + 굵은 눈썹, 입은 선 하나</li>
+<li>노란 민소매 실험 조끼, 가운데 지퍼, 가슴 ‘00’ 패치</li>
+<li>막대 팔다리, 손가락 없는 흰 장갑 손, 흰 운동화</li>
+</ol>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #0B1626; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 14px">
+<div style="font-weight: 700; font-size: 28px">제작 시간을 줄이는 규칙</div>
+<ul style="margin: 0; padding-left: 28px; font-size: 23px; line-height: 1.6">
+<li>손가락·옷 주름·명암은 그리지 않습니다</li>
+<li>표정은 눈썹부터 바꾸고, 입은 웬만하면 선 하나로</li>
+<li>움직임은 컷 전환 + 편집기 줌·흔들림으로 대신합니다</li>
+<li>배경만 장면마다 새로 만들고, 제로는 같은 시트를 참조합니다</li>
+<li>고글이 내려오면 ‘실험 시작’, 올라가면 ‘실험 끝’ 신호</li>
+</ul>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #0B1626; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 18px">
+<div style="font-weight: 700; font-size: 28px">색 6개</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 21px">
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #FFFFFF; border: 3px solid #141414"></div>머리 #FFFFFF</div>
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #141414"></div>선 #141414</div>
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #F7E733; border: 3px solid #141414"></div>조끼 #F7E733</div>
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #3DF2B0; border: 3px solid #141414"></div>고글 #3DF2B0</div>
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #1F2D44"></div>끈·패치 #1F2D44</div>
+<div style="display: flex; align-items: center; gap: 12px"><div style="width: 48px; height: 48px; border-radius: 10px; background: #FF9BB0; border: 3px solid #141414"></div>볼터치 #FF9BB0</div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2400,"height":1700}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

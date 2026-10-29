@@ -1,0 +1,38 @@
+# ---- section-aware score: every part of the story gets its own music (ep.005 palette: piano / flute / strings) ----
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "shorts"))
+import music as M
+MOODS = {
+ 'commute': dict(root=164.81, mode='aeolian', bpm=100, prog=[0, 5, 2, 6], lead='pizz', pattern='pulse', oct=0, leadGain=.42, drone=.16, perc='tick'),
+ 'portrait':dict(root=130.81, mode='aeolian', bpm=60, prog=[0, 5, 3, 4], lead='piano', pattern='sparse', oct=1, leadGain=.5, pad=.24, warm=.5),
+ 'title':   dict(root=196.0, mode='ionian', bpm=96, prog=[0, 4, 5, 3], lead='marimba', pattern='arp', oct=1, leadGain=.42, pad=.14, perc='shaker'),
+ 'alps':    dict(root=174.61, mode='ionian', bpm=92, prog=[0, 3, 4, 0], lead='flute', pattern='melody', oct=1, leadGain=.34, pad=.22, density=.45),
+ 'herd':    dict(root=146.83, mode='aeolian', bpm=116, prog=[0, 0, 5, 4], lead='pizz', pattern='pulse', oct=1, leadGain=.4, perc='tick'),
+ 'storm':   dict(root=110.0, mode='aeolian', bpm=58, prog=[0, 5, 3, 4], lead='piano', pattern='sparse', oct=1, leadGain=.5, drone=.22, pad=.12, warm=.4),
+ 'recur':   dict(root=164.81, mode='phrygian', bpm=72, prog=[0, 1, 0, 6], lead='musicbox', pattern='waltz', meter=3, oct=1, leadGain=.4, pad=.12),
+ 'amor':    dict(root=196.0, mode='ionian', bpm=84, prog=[0, 5, 3, 4], lead='kalimba', pattern='arp', oct=1, leadGain=.4, pad=.2),
+ 'honest':  dict(root=146.83, mode='dorian', bpm=64, prog=[0, 3, 0, 4], lead='harp', pattern='sparse', oct=1, leadGain=.45, pad=.26, warm=.5),
+ 'recap':   dict(root=196.0, mode='ionian', bpm=108, prog=[0, 4, 5, 3], lead='marimba', pattern='arp', oct=1, leadGain=.42, perc='shaker'),
+ 'ending':  dict(root=155.56, mode='ionian', bpm=72, prog=[0, 5, 3, 4], lead='piano', pattern='arp', oct=1, leadGain=.42, pad=.26),
+ 'thanks':  dict(root=155.56, mode='ionian', bpm=72, prog=[3, 4, 0, 0], lead='bell', pattern='melody', oct=1, leadGain=.34, pad=.26, density=.55),
+}
+CH = {1: 'alps', 2: 'herd', 3: 'storm', 4: 'recur', 5: 'amor'}
+cur_ch = {}; cc = 0
+for l in L:
+    if l["scene"] == "chapter": cc = l["args"]["n"]
+    cur_ch[l["i"]] = cc
+def mood_of(l):
+    sc = l["scene"]
+    if sc == "hook": return "commute"
+    if sc == "nietzsche": return "portrait"
+    if sc == "title": return "title"
+    if sc == "labn": return "honest"
+    if sc == "recap": return "recap"
+    if sc in ("meta", "become", "dusk"): return "ending"
+    if sc == "thanks": return "thanks"
+    return CH.get(cur_ch[l["i"]], "title")
+secs = M.sections_from(L, mood_of, DUR)
+for s0 in secs: print("  music %6.1f-%6.1f %s" % s0)
+music = M.score(secs, DUR, MOODS, seed=23)
+vr = np.sqrt(np.mean(voice[np.abs(voice) > 0.02] ** 2)); mr = np.sqrt(np.mean(music ** 2))
+music *= vr * 10 ** (-13 / 20) / (mr + 1e-9)

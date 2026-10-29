@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+html,body{margin:0;padding:0;background:#000;overflow:hidden}
+svg{display:block}
+</style>
+</head>
+<body>
+<svg id="v" width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const FONT = "'Noto Sans CJK KR', sans-serif";
+const MONO = "'DejaVu Sans Mono', monospace";
+const INK = '#141414', NAVY = '#0B1626', MINT = '#3DF2B0', YEL = '#F7E733', PINK = '#FF5FA2', RED = '#FF4D4D', WHITE = '#FFFFFF';
+
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const prog = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const easeInOut = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+const easeOut = k => 1 - Math.pow(1 - k, 3);
+const easeOutBack = k => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/* ---------- ZERO (same geometry as the canvas component) ---------- */
+const ell = (cx, cy, rx, ry) => `M${cx - rx} ${cy} A${rx} ${ry} 0 1 0 ${cx + rx} ${cy} A${rx} ${ry} 0 1 0 ${cx - rx} ${cy} Z`;
+const dot = (rx, ry) => ({ eyeL: ell(165, 188, rx, ry), eyeR: ell(235, 188, rx, ry), eyeFill: INK, eyeSW: 0 });
+const E = {
+  '기본': Object.assign(dot(10, 14), { browL: 'M140 150 L186 152', browR: 'M214 152 L260 150', mouth: 'M190 232 Q200 237 210 232', mouthFill: 'none' }),
+  '신남': { eyeL: 'M149 194 Q165 172 181 194', eyeR: 'M219 194 Q235 172 251 194', eyeFill: 'none', eyeSW: 9, browL: 'M142 140 Q164 126 186 136', browR: 'M214 136 Q236 126 258 140', mouth: 'M180 222 Q200 254 220 222 Z', mouthFill: INK, blush: true },
+  '놀람': { eyeL: ell(165, 190, 9, 10), eyeR: ell(235, 190, 9, 10), eyeFill: INK, eyeSW: 0, whites: true, browL: 'M140 136 Q163 118 186 128', browR: 'M214 128 Q237 118 260 136', mouth: ell(200, 238, 10, 14), mouthFill: INK },
+  '결심': Object.assign(dot(10, 12), { browL: 'M138 148 L188 166', browR: 'M212 166 L262 148', mouth: 'M188 234 L212 234', mouthFill: 'none' }),
+  '걱정': Object.assign(dot(10, 14), { browL: 'M142 164 L186 146', browR: 'M214 146 L258 164', mouth: 'M182 236 Q191 228 200 236 Q209 244 218 236', mouthFill: 'none', sweat: true }),
+  '겁먹음': { eyeL: ell(165, 192, 6, 7), eyeR: ell(235, 192, 6, 7), eyeFill: INK, eyeSW: 0, whites: true, browL: 'M142 160 L186 138', browR: 'M214 138 L258 160', mouth: 'M180 244 L188 236 L196 244 L204 236 L212 244 L220 236', mouthFill: 'none', sweat: true },
+  '지침': { eyeL: 'M152 184 L178 184 Q178 200 165 200 Q152 200 152 184 Z', eyeR: 'M222 184 L248 184 Q248 200 235 200 Q222 200 222 184 Z', eyeFill: INK, eyeSW: 0, browL: 'M142 166 L186 170', browR: 'M214 170 L258 166', mouth: 'M190 236 L210 233', mouthFill: 'none' },
+  '뿌듯': Object.assign(dot(10, 11), { browL: 'M142 152 L186 154', browR: 'M214 140 Q236 126 258 136', mouth: 'M184 230 Q204 240 218 224', mouthFill: 'none' })
+};
+const P = {
+  '서기': { armL: '148,285 122,345 116,398', hL: [114, 406], armR: '252,285 278,345 284,398', hR: [286, 406], legL: '180,412 176,470 172,522', fL: [160, 534, 0], legR: '220,412 224,470 228,522', fR: [240, 534, 0], dy: 0 },
+  '손인사': { armL: '148,285 122,345 116,398', hL: [114, 406], armR: '252,285 302,245 320,180', hR: [322, 170], legL: '180,412 176,470 172,522', fL: [160, 534, 0], legR: '220,412 224,470 228,522', fR: [240, 534, 0], dy: 0 },
+  '걷기1': { armL: '148,285 128,340 152,390', hL: [156, 398], armR: '252,285 282,338 298,386', hR: [302, 394], legL: '180,412 160,466 138,512', fL: [126, 524, -15], legR: '220,412 230,470 240,522', fR: [252, 534, 0], dy: 0 },
+  '걷기2': { armL: '148,285 118,338 102,386', hL: [98, 394], armR: '252,285 272,340 248,390', hR: [244, 398], legL: '180,412 172,468 160,520', fL: [148, 532, -8], legR: '220,412 240,466 262,512', fR: [274, 524, 15], dy: 0 },
+  '둥둥': { armL: '148,285 100,300 72,270', hL: [66, 262], armR: '252,285 300,300 328,270', hR: [334, 262], legL: '180,412 172,468 160,514', fL: [150, 526, 20], legR: '220,412 228,468 240,514', fR: [250, 526, -20], dy: 0 },
+  '점프': { armL: '148,285 104,230 86,170', hL: [82, 160], armR: '252,285 296,230 314,170', hR: [318, 160], legL: '180,412 140,450 168,494', fL: [160, 504, 0], legR: '220,412 262,448 236,494', fR: [244, 504, 0], dy: 0 },
+  '웅크림': { armL: '148,285 128,340 160,372', hL: [166, 378], armR: '252,285 272,340 240,372', hR: [234, 378], legL: '180,412 146,452 166,492', fL: [160, 504, 0], legR: '220,412 254,452 234,492', fR: [240, 504, 0], dy: 30 },
+  '미끄럼': { armL: '148,285 96,240 70,190', hL: [66, 180], armR: '252,285 304,236 334,200', hR: [340, 192], legL: '180,412 214,462 262,488', fL: [276, 494, -30], legR: '220,412 262,452 312,466', fR: [326, 470, -30], dy: 0 },
+  '납작': { armL: '148,285 92,262 52,230', hL: [44, 222], armR: '252,285 308,262 348,230', hR: [356, 222], legL: '180,412 150,470 120,520', fL: [108, 532, 0], legR: '220,412 250,470 280,520', fR: [292, 532, 0], dy: 0 }
+};
+function zero(o) {
+  const e = E[o.expr || '기본'], p = P[o.pose || '서기'];
+  const s = o.s || 1, sx = o.sx || 1, sy = o.sy || 1, rot = o.rot || 0;
+  const vest = o.vest || YEL, gog = o.goggles || 'up';
+  const down = gog === 'down';
+  let h = `<g transform="translate(${o.x} ${o.y}) rotate(${rot}) scale(${s * sx} ${s * sy}) translate(-200 -560)">`;
+  h += `<g transform="translate(0 ${p.dy})">`;
+  h += `<g stroke="${INK}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"><polyline points="${p.legL}"/><polyline points="${p.legR}"/></g>`;
+  h += `<ellipse cx="${p.fL[0]}" cy="${p.fL[1]}" rx="27" ry="14" fill="#fff" stroke="${INK}" stroke-width="7" transform="rotate(${p.fL[2]} ${p.fL[0]} ${p.fL[1]})"/>`;
+  h += `<ellipse cx="${p.fR[0]}" cy="${p.fR[1]}" rx="27" ry="14" fill="#fff" stroke="${INK}" stroke-width="7" transform="rotate(${p.fR[2]} ${p.fR[0]} ${p.fR[1]})"/>`;
+  h += `<path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z" fill="${vest}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+  if (o.tie) h += `<path d="M200 262 L190 290 L200 360 L210 290 Z" fill="${o.tie}" stroke="${INK}" stroke-width="4"/>`;
+  if (o.patch !== false) {
+    h += `<line x1="200" y1="256" x2="200" y2="416" stroke="${INK}" stroke-width="4"/>`;
+    h += `<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"/><text x="168" y="318" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="18" fill="${MINT}">00</text>`;
+  }
+  h += `<g stroke="${INK}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"><polyline points="${p.armL}"/><polyline points="${p.armR}"/></g>`;
+  const hx = o.headSx || 1;
+  h += `<ellipse cx="200" cy="170" rx="${118 * hx}" ry="112" fill="#fff" stroke="${INK}" stroke-width="8"/>`;
+  if (o.hair) h += `<path d="M86 152 Q84 62 200 58 Q316 62 314 152 Q296 112 250 104 Q200 120 150 104 Q104 112 86 152 Z" fill="${o.hair}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+  if (o.puffy) h += `<ellipse cx="200" cy="170" rx="${118 * 1.12}" ry="116" fill="#fff" stroke="${INK}" stroke-width="8"/>`;
+  if (e.blush) h += `<ellipse cx="148" cy="212" rx="15" ry="8" fill="#FF9BB0" opacity=".8"/><ellipse cx="252" cy="212" rx="15" ry="8" fill="#FF9BB0" opacity=".8"/>`;
+  if (e.whites) h += `<circle cx="165" cy="188" r="25" fill="#fff" stroke="${INK}" stroke-width="6"/><circle cx="235" cy="188" r="25" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+  const shiver = o.shiver ? Math.sin(o.shiver * 90) * 3 : 0;
+  h += `<g transform="translate(${shiver} 0)"><path d="${e.eyeL}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/><path d="${e.eyeR}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/></g>`;
+  if (gog !== 'none') {
+    const strap = down ? 'M84 188 L316 188' : 'M86 138 Q200 52 314 138';
+    const gy = down ? 188 : 90, gl = down ? 165 : 163, gr = down ? 235 : 237, op = down ? 0.35 : 1;
+    h += `<path d="${strap}" fill="none" stroke="#1F2D44" stroke-width="16" stroke-linecap="round"/>`;
+    h += `<circle cx="${gl}" cy="${gy}" r="31" fill="${MINT}" fill-opacity="${op}" stroke="#1F2D44" stroke-width="9"/><circle cx="${gr}" cy="${gy}" r="31" fill="${MINT}" fill-opacity="${op}" stroke="#1F2D44" stroke-width="9"/>`;
+    h += `<circle cx="${gl - 10}" cy="${gy - 10}" r="7" fill="#fff" opacity=".85"/><circle cx="${gr - 10}" cy="${gy - 10}" r="7" fill="#fff" opacity=".85"/>`;
+  }
+  h += `<path d="${e.browL}" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="${e.browR}" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+  h += `<path d="${e.mouth}" fill="${e.mouthFill}" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`;
+  if (e.sweat || o.sweat) h += `<path d="M306 112 Q292 138 306 148 Q320 138 306 112 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="5"/>`;
+  h += `<circle cx="${p.hL[0]}" cy="${p.hL[1]}" r="22" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="${p.hR[0]}" cy="${p.hR[1]}" r="22" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+  h += `</g></g>`;
+  return h;
+}
+const shadow = (x, y, w, op = 0.22) => `<ellipse cx="${x}" cy="${y}" rx="${w}" ry="${w * 0.14}" fill="#000" opacity="${op}"/>`;
+
+/* ---------- THE DOCTOR (silhouette, face never shown) ---------- */
+function doctor(x, y, s, glass = MINT, shake = 0) {
+  return `<g transform="translate(${x + shake} ${y}) scale(${s})">
+  <ellipse cx="-34" cy="-6" rx="34" ry="14" fill="#1F2D44" stroke="${INK}" stroke-width="6"/><ellipse cx="34" cy="-6" rx="34" ry="14" fill="#1F2D44" stroke="${INK}" stroke-width="6"/>
+  <path d="M-96 -40 L-74 -540 Q0 -580 74 -540 L96 -40 Q0 -20 -96 -40 Z" fill="#E9EEF3" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M-24 -548 L0 -400 L24 -548 Z" fill="#1F2D44" stroke="${INK}" stroke-width="6"/>
+  <line x1="0" y1="-400" x2="0" y2="-60" stroke="${INK}" stroke-width="5"/>
+  <path d="M-72 -520 Q-118 -400 -112 -260" fill="none" stroke="${INK}" stroke-width="50" stroke-linecap="round"/><path d="M-72 -520 Q-118 -400 -112 -260" fill="none" stroke="#E9EEF3" stroke-width="36" stroke-linecap="round"/>
+  <path d="M72 -520 Q118 -400 112 -260" fill="none" stroke="${INK}" stroke-width="50" stroke-linecap="round"/><path d="M72 -520 Q118 -400 112 -260" fill="none" stroke="#E9EEF3" stroke-width="36" stroke-linecap="round"/>
+  <circle cx="-112" cy="-240" r="24" fill="#fff" stroke="${INK}" stroke-width="7"/><circle cx="112" cy="-240" r="24" fill="#fff" stroke="${INK}" stroke-width="7"/>
+  <ellipse cx="0" cy="-668" rx="104" ry="98" fill="#1F2D44" stroke="${INK}" stroke-width="9"/>
+  <circle cx="-38" cy="-670" r="27" fill="none" stroke="${glass}" stroke-width="7"/><circle cx="38" cy="-670" r="27" fill="none" stroke="${glass}" stroke-width="7"/>
+  <line x1="-11" y1="-670" x2="11" y2="-670" stroke="${glass}" stroke-width="6"/>
+  <line x1="-50" y1="-684" x2="-30" y2="-664" stroke="#fff" stroke-width="5" opacity=".8"/><line x1="26" y1="-684" x2="46" y2="-664" stroke="#fff" stroke-width="5" opacity=".8"/>
+  </g>`;
+}
+
+/* ---------- text helpers (all SVG, outlined like Korean variety captions) ---------- */
+function outlined(x, y, lines, o = {}) {
+  const fs = o.size || 72, lh = o.lh || fs * 1.18, fill = o.fill || WHITE, stroke = o.stroke || INK, sw = o.sw || fs * 0.2;
+  let h = '';
+  lines.forEach((ln, i) => {
+    const yy = y + i * lh;
+    if (Array.isArray(ln)) {
+      // segments [[text,color],...]
+      let inner = ln.map(([tx, c]) => `<tspan fill="${c || fill}">${esc(tx)}</tspan>`).join('');
+      h += `<text x="${x}" y="${yy}" text-anchor="${o.anchor || 'middle'}" font-family="${FONT}" font-weight="900" font-size="${fs}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" paint-order="stroke" fill="${fill}">${inner}</text>`;
+    } else {
+      h += `<text x="${x}" y="${yy}" text-anchor="${o.anchor || 'middle'}" font-family="${FONT}" font-weight="900" font-size="${fs}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" paint-order="stroke" fill="${fill}">${esc(ln)}</text>`;
+    }
+  });
+  return h;
+}
+function pop(t, t0, t1, cx, cy, inner, o = {}) {
+  if (t < t0 || t > t1) return '';
+  const k = prog(t, t0, t0 + (o.inDur || 0.28));
+  let sc = o.noPop ? 1 : lerp(0.2, 1, easeOutBack(k));
+  const out = prog(t, t1 - 0.15, t1);
+  const op = (o.noPop ? k : Math.min(1, k * 3)) * (1 - out);
+  const rot = o.rot || 0;
+  const wob = o.wobble ? Math.sin((t - t0) * 14) * o.wobble : 0;
+  return `<g opacity="${op}" transform="translate(${cx} ${cy}) rotate(${rot + wob}) scale(${sc})">${inner}</g>`;
+}
+function burst(r, color, points = 14) {
+  let d = '';
+  for (let i = 0; i < points * 2; i++) {
+    const a = Math.PI * i / points, rr = i % 2 ? r * 0.62 : r;
+    d += (i ? 'L' : 'M') + (Math.cos(a) * rr).toFixed(1) + ' ' + (Math.sin(a) * rr * 0.72).toFixed(1);
+  }
+  return `<path d="${d}Z" fill="${color}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+}
+function fx(t, t0, t1, x, y, text, color, o = {}) {
+  const size = o.size || 130;
+  let inner = '';
+  if (o.burst) inner += burst(o.burst, o.burstColor || YEL);
+  inner += outlined(0, size * 0.35, [text], { size, fill: color, sw: size * 0.16 });
+  return pop(t, t0, t1, x, y, inner, { rot: o.rot || -6, wobble: o.wobble || 0 });
+}
+function tag(t, t0, t1, x, y, text, bg, o = {}) {
+  const fs = o.size || 50, w = text.length * fs * 0.98 + 56, hgt = fs + 34;
+  const inner = `<rect x="${-w / 2}" y="${-hgt / 2}" width="${w}" height="${hgt}" rx="${hgt / 2}" fill="${bg}" stroke="${INK}" stroke-width="6"/>
+  <text x="0" y="${fs * 0.36}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="${fs}" fill="${o.color || INK}">${esc(text)}</text>`;
+  return pop(t, t0, t1, x, y, inner, { rot: o.rot || 4 });
+}
+// narration caption (bottom-centre, always readable)
+function cap(t, t0, t1, lines, o = {}) {
+  const y = o.y || 1330;
+  return pop(t, t0, t1, 540, y, outlined(0, 0, lines, { size: o.size || 66, sw: 15 }), { noPop: true, inDur: 0.18 });
+}
+// the doctor's line in a lab-terminal box
+function drBox(t, t0, t1, lines, o = {}) {
+  if (t < t0 || t > t1) return '';
+  const k = prog(t, t0, t0 + 0.2), out = prog(t, t1 - 0.15, t1);
+  const y = o.y || 1190, fs = o.size || 50, lh = fs * 1.38, hgt = 70 + lines.length * lh;
+  const n = (lines.join('').length);
+  const shownChars = Math.floor(prog(t, t0, t0 + Math.min(1.4, n * 0.045)) * n);
+  let used = 0;
+  const shake = o.shake ? Math.sin(t * 60) * 4 : 0;
+  let h = `<g opacity="${k * (1 - out)}" transform="translate(${shake} ${(1 - easeOut(k)) * 30})">`;
+  h += `<rect x="70" y="${y}" width="940" height="${hgt}" rx="24" fill="${NAVY}" fill-opacity=".94" stroke="${o.border || MINT}" stroke-width="6"/>`;
+  h += `<rect x="100" y="${y - 30}" width="150" height="60" rx="30" fill="${o.border || MINT}" stroke="${INK}" stroke-width="5"/>`;
+  h += `<text x="175" y="${y + 12}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="36" fill="${NAVY}">박사</text>`;
+  lines.forEach((ln, i) => {
+    const take = clamp(shownChars - used, 0, ln.length);
+    used += ln.length;
+    h += `<text x="110" y="${y + 70 + i * lh + fs * 0.25}" font-family="${FONT}" font-weight="700" font-size="${fs}" fill="#fff">${esc(ln.slice(0, take))}</text>`;
+  });
+  return h + `</g>`;
+}
+// top HUD like a lab readout
+function hud(vals) {
+  let h = '';
+  const boxes = [['중력', vals.g, vals.gc], ['체중계', vals.w, vals.wc], ['경과', vals.d, vals.dc]];
+  boxes.forEach(([lab, val, col], i) => {
+    const x = 60 + i * 330;
+    h += `<rect x="${x}" y="170" width="300" height="112" rx="18" fill="${NAVY}" fill-opacity=".86" stroke="${col || MINT}" stroke-width="4"/>`;
+    h += `<text x="${x + 24}" y="210" font-family="${FONT}" font-weight="700" font-size="26" fill="${col || MINT}">${lab}</text>`;
+    h += `<text x="${x + 24}" y="262" font-family="${FONT}" font-weight="900" font-size="46" fill="${col === RED ? RED : '#fff'}">${esc(val)}</text>`;
+  });
+  return h;
+}
+function speedLines(cx, cy, r0, r1, n, t, color = '#fff', op = 0.7) {
+  let h = '';
+  for (let i = 0; i < n; i++) {
+    const a = i / n * Math.PI * 2 + Math.sin(i * 12.9) * 0.08;
+    const j = (Math.sin(i * 7.3 + t * 30) + 1) * 0.5;
+    const ra = r0 + j * 60;
+    h += `<line x1="${cx + Math.cos(a) * ra}" y1="${cy + Math.sin(a) * ra}" x2="${cx + Math.cos(a) * r1}" y2="${cy + Math.sin(a) * r1}" stroke="${color}" stroke-width="${6 + (i % 3) * 4}" opacity="${op}"/>`;
+  }
+  return h;
+}
+
+/* ---------- backgrounds (webtoon flat colour) ---------- */
+const DEFS = `<defs>
+<linearGradient id="labG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626"/><stop offset="1" stop-color="#16294A"/></linearGradient>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7CC8FF"/><stop offset="1" stop-color="#DDF2FF"/></linearGradient>
+<linearGradient id="noon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5DB6FF"/><stop offset="1" stop-color="#CBEBFF"/></linearGradient>
+<linearGradient id="room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1DE"/><stop offset="1" stop-color="#FBDDBB"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".55"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="redglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${RED}" stop-opacity=".55"/><stop offset="1" stop-color="${RED}" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0 L0 0 0 60" fill="none" stroke="${MINT}" stroke-opacity=".08" stroke-width="2"/></pattern>
+<pattern id="tile" width="120" height="120" patternUnits="userSpaceOnUse"><rect width="120" height="120" fill="#E3F2F7"/><path d="M120 0 L0 0 0 120" fill="none" stroke="#B9D7E2" stroke-width="5"/></pattern>
+<pattern id="win" width="90" height="110" patternUnits="userSpaceOnUse"><rect width="90" height="110" fill="#F4F1EA"/><rect x="18" y="22" width="54" height="62" rx="4" fill="#9CC9EA" stroke="#5C7A93" stroke-width="4"/></pattern>
+<pattern id="win2" width="90" height="110" patternUnits="userSpaceOnUse"><rect width="90" height="110" fill="#EDE6DA"/><rect x="18" y="22" width="54" height="62" rx="4" fill="#A9D3F0" stroke="#5C7A93" stroke-width="4"/></pattern>
+<pattern id="office" width="180" height="200" patternUnits="userSpaceOnUse"><rect width="180" height="200" fill="#C9D3DE"/><rect x="16" y="24" width="148" height="140" rx="6" fill="#8FC3E8" stroke="#3E5C78" stroke-width="6"/><line x1="90" y1="24" x2="90" y2="164" stroke="#3E5C78" stroke-width="5"/></pattern>
+<pattern id="pave" width="100" height="60" patternUnits="userSpaceOnUse"><rect width="100" height="60" fill="#D9C7B0"/><path d="M100 0 L0 0 0 60" fill="none" stroke="#BFA78C" stroke-width="4"/></pattern>
+</defs>`;
+
+function labBG(t, o = {}) {
+  let h = `<rect width="1080" height="1920" fill="url(#labG)"/><rect width="1080" height="1920" fill="url(#grid)"/>`;
+  // monitors on the back wall
+  [[90, 430, 280, 200], [400, 380, 300, 240], [730, 430, 280, 200]].forEach(([x, y, w, hh], i) => {
+    h += `<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="14" fill="#06101C" stroke="${INK}" stroke-width="8"/>`;
+    let pts = '';
+    for (let k = 0; k <= 20; k++) pts += `${x + 20 + k * (w - 40) / 20},${y + hh / 2 + Math.sin(k * 0.9 + t * (3 + i) + i) * hh * 0.25} `;
+    h += `<polyline points="${pts}" fill="none" stroke="${o.alert ? RED : MINT}" stroke-width="5"/>`;
+  });
+  h += `<rect x="0" y="1300" width="1080" height="620" fill="#0E1C30"/>`;
+  for (let i = -6; i <= 6; i++) h += `<line x1="${540 + i * 60}" y1="1300" x2="${540 + i * 260}" y2="1920" stroke="${MINT}" stroke-opacity=".08" stroke-width="3"/>`;
+  h += `<path d="M0 1500 Q200 1460 300 1560 T 700 1600" fill="none" stroke="#24364F" stroke-width="18" stroke-linecap="round"/>`;
+  h += `<path d="M1080 1540 Q900 1480 820 1580" fill="none" stroke="#24364F" stroke-width="18" stroke-linecap="round"/>`;
+  return h;
+}
+function platform(cx, cy, glow) {
+  return `<ellipse cx="${cx}" cy="${cy}" rx="300" ry="160" fill="url(#glow)" opacity="${glow}"/>
+  <ellipse cx="${cx}" cy="${cy + 16}" rx="250" ry="58" fill="#1C2B42" stroke="${INK}" stroke-width="8"/>
+  <ellipse cx="${cx}" cy="${cy}" rx="250" ry="58" fill="#2E4260" stroke="${INK}" stroke-width="8"/>
+  <ellipse cx="${cx}" cy="${cy}" rx="190" ry="40" fill="none" stroke="${MINT}" stroke-width="6" opacity="${0.4 + glow * 0.6}"/>`;
+}
+function bedroomBG() {
+  return `<rect width="1080" height="1920" fill="url(#room)"/>
+  <rect x="0" y="0" width="1080" height="330" fill="#F4D5B2"/><line x1="0" y1="330" x2="1080" y2="330" stroke="${INK}" stroke-width="8"/>
+  <rect x="640" y="520" width="340" height="420" rx="10" fill="#BFE6FF" stroke="${INK}" stroke-width="10"/>
+  <line x1="810" y1="520" x2="810" y2="940" stroke="${INK}" stroke-width="8"/><line x1="640" y1="730" x2="980" y2="730" stroke="${INK}" stroke-width="8"/>
+  <circle cx="900" cy="600" r="44" fill="#FFE27A"/>
+  <path d="M640 940 L560 1400 L900 1400 L980 940 Z" fill="#FFF6B0" opacity=".45"/>
+  <rect x="110" y="560" width="230" height="300" rx="8" fill="#FF9BB0" stroke="${INK}" stroke-width="8"/>
+  <circle cx="225" cy="680" r="60" fill="#fff" stroke="${INK}" stroke-width="6"/><circle cx="205" cy="672" r="7" fill="${INK}"/><circle cx="245" cy="672" r="7" fill="${INK}"/>
+  <rect x="0" y="1420" width="1080" height="500" fill="#D8A878"/><line x1="0" y1="1420" x2="1080" y2="1420" stroke="${INK}" stroke-width="8"/>
+  <rect x="140" y="1240" width="800" height="200" rx="16" fill="#9B6B47" stroke="${INK}" stroke-width="9"/>
+  <rect x="160" y="1200" width="200" height="90" rx="40" fill="#fff" stroke="${INK}" stroke-width="8"/>`;
+}
+function blanket(lift) {
+  return `<path d="M300 ${1250 - lift} Q560 ${1190 - lift * 1.6} 930 ${1240 - lift * 0.4} L930 1330 Q600 1360 300 1330 Z" fill="#7FB8FF" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+}
+function bathroomBG() {
+  return `<rect width="1080" height="1920" fill="url(#tile)"/>
+  <rect x="300" y="380" width="480" height="520" rx="30" fill="#CFEFFF" stroke="${INK}" stroke-width="10"/>
+  <line x1="380" y1="460" x2="460" y2="380" stroke="#fff" stroke-width="18" opacity=".7"/>
+  <rect x="0" y="1440" width="1080" height="480" fill="#B9D3DD"/><line x1="0" y1="1440" x2="1080" y2="1440" stroke="${INK}" stroke-width="8"/>
+  <rect x="820" y="1060" width="200" height="380" rx="20" fill="#fff" stroke="${INK}" stroke-width="8"/>`;
+}
+function scale(cx, cy, val, color) {
+  return `<rect x="${cx - 170}" y="${cy - 40}" width="340" height="70" rx="22" fill="#F2F5F7" stroke="${INK}" stroke-width="8"/>
+  <rect x="${cx - 70}" y="${cy + 40}" width="140" height="64" rx="10" fill="#0B1626" stroke="${INK}" stroke-width="6"/>
+  <text x="${cx}" y="${cy + 88}" text-anchor="middle" font-family="${MONO}" font-weight="700" font-size="40" fill="${color}">${esc(val)}</text>`;
+}
+function apartments(off, ground) {
+  let h = '';
+  const blocks = [[-40, 300, '101동'], [300, 230, '102동'], [640, 340, '103동'], [950, 260, '104동']];
+  blocks.forEach(([x, top, name], i) => {
+    const xx = ((x - off) % 1440 + 1440) % 1440 - 180;
+    h += `<rect x="${xx}" y="${top}" width="300" height="${ground - top}" fill="url(#${i % 2 ? 'win2' : 'win'})" stroke="${INK}" stroke-width="8"/>`;
+    h += `<rect x="${xx}" y="${top}" width="300" height="40" fill="#D8D1C4" stroke="${INK}" stroke-width="8"/>`;
+    h += `<text x="${xx + 150}" y="${top + 120}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="54" fill="#C2423F" stroke="#F4F1EA" stroke-width="8" paint-order="stroke">${name}</text>`;
+  });
+  return h;
+}
+function trees(off, ground) {
+  let h = '';
+  for (let i = 0; i < 7; i++) {
+    const x = ((i * 220 - off * 1.3) % 1540 + 1540) % 1540 - 230;
+    h += `<rect x="${x - 10}" y="${ground - 120}" width="20" height="120" fill="#7A5235" stroke="${INK}" stroke-width="5"/>`;
+    h += `<circle cx="${x}" cy="${ground - 160}" r="80" fill="#58B868" stroke="${INK}" stroke-width="7"/><circle cx="${x - 30}" cy="${ground - 185}" r="22" fill="#7BD58A"/>`;
+  }
+  return h;
+}
+function streetBG(off) {
+  return `<rect width="1080" height="1920" fill="url(#sky)"/>
+  <path d="M0 640 Q260 520 520 640 T 1080 600 L1080 900 L0 900 Z" fill="#9CCB9A" opacity=".6"/>
+  ${apartments(off * 0.4, 1260)}${trees(off * 0.7, 1300)}
+  <rect x="0" y="1300" width="1080" height="300" fill="url(#pave)"/><line x1="0" y1="1300" x2="1080" y2="1300" stroke="${INK}" stroke-width="8"/>
+  <rect x="0" y="1600" width="1080" height="320" fill="#5E6670"/><line x1="0" y1="1600" x2="1080" y2="1600" stroke="${INK}" stroke-width="8"/>
+  <rect x="0" y="1585" width="1080" height="22" fill="#B9B3A8"/>`;
+}
+function crosswalkBG(t) {
+  const blink = Math.floor(t * 3) % 2 === 0;
+  let h = `<rect width="1080" height="1920" fill="url(#sky)"/>${apartments(200, 1100)}
+  <rect x="0" y="1100" width="1080" height="820" fill="#5E6670"/><line x1="0" y1="1100" x2="1080" y2="1100" stroke="${INK}" stroke-width="8"/>`;
+  for (let i = 0; i < 8; i++) h += `<rect x="${i * 150 - 30}" y="1260" width="90" height="300" fill="#F6F6F2" stroke="${INK}" stroke-width="5" transform="skewX(-12)"/>`;
+  h += `<rect x="900" y="560" width="22" height="720" fill="#3C4450" stroke="${INK}" stroke-width="5"/>
+  <rect x="850" y="560" width="120" height="200" rx="12" fill="#222" stroke="${INK}" stroke-width="7"/>
+  <rect x="868" y="580" width="84" height="74" rx="8" fill="#401818"/>
+  <rect x="868" y="668" width="84" height="74" rx="8" fill="${blink ? '#38E07B' : '#173A24'}"/>
+  <circle cx="910" cy="684" r="9" fill="${blink ? '#E9FFF0' : '#2A5A3A'}"/><path d="M910 694 L900 720 M910 694 L922 718 M910 694 L910 706" stroke="${blink ? '#E9FFF0' : '#2A5A3A'}" stroke-width="7" stroke-linecap="round"/>`;
+  return h;
+}
+function storeBG(clerkExpr) {
+  let h = `<rect width="1080" height="1920" fill="url(#sky)"/>
+  <rect x="0" y="300" width="1080" height="1060" fill="#F7F7F2" stroke="${INK}" stroke-width="8"/>
+  <rect x="0" y="330" width="1080" height="150" fill="#2E9E6A" stroke="${INK}" stroke-width="8"/>
+  <rect x="0" y="480" width="1080" height="26" fill="#2B6FD6"/>
+  <text x="540" y="436" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="88" fill="#fff" stroke="${INK}" stroke-width="10" paint-order="stroke">24시 편의점</text>
+  <rect x="80" y="560" width="920" height="800" fill="#D6F1FF" stroke="${INK}" stroke-width="10"/>`;
+  [[110, 640], [110, 820], [110, 1000]].forEach(([x, y]) => {
+    h += `<rect x="${x}" y="${y}" width="380" height="16" fill="#9AA6B2"/>`;
+    for (let i = 0; i < 6; i++) h += `<rect x="${x + 10 + i * 62}" y="${y - 70}" width="48" height="70" rx="6" fill="${['#FF8A8A', '#FFD25A', '#7FD1FF', '#9BE29B', '#C79BFF', '#FFB36B'][i]}" stroke="${INK}" stroke-width="4"/>`;
+  });
+  h += zero({ x: 760, y: 1160, s: 0.75, expr: clerkExpr, goggles: 'none', vest: '#4FA3E0', patch: false, hair: '#2A2A2A' });
+  h += `<rect x="560" y="1080" width="420" height="280" fill="#B0844F" stroke="${INK}" stroke-width="9"/>`;
+  h += `<line x1="540" y1="560" x2="540" y2="1360" stroke="${INK}" stroke-width="10"/>
+  <line x1="150" y1="620" x2="300" y2="760" stroke="#fff" stroke-width="22" opacity=".55"/><line x1="620" y1="620" x2="760" y2="760" stroke="#fff" stroke-width="22" opacity=".45"/>
+  <rect x="0" y="1360" width="1080" height="560" fill="url(#pave)"/><line x1="0" y1="1360" x2="1080" y2="1360" stroke="${INK}" stroke-width="8"/>`;
+  return h;
+}
+// tall rooftop world: rooftop floor at y=1300, ground at y=3500
+function rooftopWorld(t) {
+  let h = `<rect x="0" y="-200" width="1080" height="1700" fill="url(#noon)"/>
+  <path d="M0 900 L80 860 L160 900 L220 820 L300 880 L380 840 L470 900 L560 800 L650 880 L760 820 L860 900 L960 850 L1080 890 L1080 1300 L0 1300 Z" fill="#9FB3C8" stroke="${INK}" stroke-width="5"/>
+  <path d="M760 820 L760 600 L752 600 L752 560 L768 560 L768 600 L760 600" fill="#9FB3C8" stroke="${INK}" stroke-width="5"/><ellipse cx="760" cy="640" rx="22" ry="12" fill="#9FB3C8" stroke="${INK}" stroke-width="5"/>
+  <path d="M0 1050 Q300 980 540 1060 T 1080 1020 L1080 1300 L0 1300 Z" fill="#7FA0BF" opacity=".55"/>
+  <rect x="0" y="1300" width="1080" height="60" fill="#B7B2A8" stroke="${INK}" stroke-width="8"/>
+  <rect x="0" y="1360" width="1080" height="2140" fill="url(#office)" stroke="${INK}" stroke-width="8"/>`;
+  // office workers in two windows
+  h += zero({ x: 486, y: 2420, s: 0.42, expr: t > 40.6 ? '놀람' : '기본', goggles: 'none', vest: '#5D7FA8', patch: false, hair: '#2A2A2A', tie: '#C2423F' });
+  h += zero({ x: 666, y: 2420, s: 0.42, expr: t > 40.8 ? '놀람' : '기본', goggles: 'none', vest: '#A8705D', patch: false, hair: '#3A2A1A' });
+  // railing
+  h += `<line x1="0" y1="1210" x2="1080" y2="1210" stroke="${INK}" stroke-width="12"/>`;
+  for (let i = 0; i < 12; i++) h += `<line x1="${40 + i * 92}" y1="1210" x2="${40 + i * 92}" y2="1300" stroke="${INK}" stroke-width="10"/>`;
+  // ground + flower bed
+  h += `<rect x="0" y="3500" width="1080" height="500" fill="url(#pave)"/><line x1="0" y1="3500" x2="1080" y2="3500" stroke="${INK}" stroke-width="8"/>
+  <rect x="200" y="3440" width="680" height="90" rx="20" fill="#6B4A2E" stroke="${INK}" stroke-width="8"/>`;
+  for (let i = 0; i < 16; i++) {
+    const x = 230 + i * 40, c = ['#FF6B8A', '#FFD25A', '#FF9B5A', '#FFFFFF'][i % 4];
+    h += `<line x1="${x}" y1="3448" x2="${x}" y2="3410" stroke="#3F8F4A" stroke-width="7"/><circle cx="${x}" cy="${3404 - (i % 3) * 8}" r="17" fill="${c}" stroke="${INK}" stroke-width="5"/>`;
+  }
+  return h;
+}
+function boneMonitor(t) {
+  let h = `<rect x="140" y="420" width="800" height="640" rx="26" fill="#06101C" stroke="${INK}" stroke-width="12"/>
+  <rect x="160" y="440" width="760" height="600" rx="16" fill="url(#grid)"/>`;
+  const g = (x) => `<path d="M${x - 26} 520 Q${x} 490 ${x + 26} 520 L${x + 18} 600 L${x + 16} 940 L${x + 28} 990 Q${x} 1010 ${x - 28} 990 L${x - 16} 940 L${x - 18} 600 Z" fill="#DFFFF2" fill-opacity=".85" stroke="${MINT}" stroke-width="6"/>`;
+  h += g(430) + g(560);
+  const scanY = 470 + ((t * 300) % 540);
+  h += `<rect x="160" y="${scanY}" width="760" height="8" fill="${MINT}" opacity=".6"/>`;
+  [[430, 700], [560, 760], [430, 860]].forEach(([x, y]) => h += `<circle cx="${x}" cy="${y}" r="18" fill="none" stroke="${PINK}" stroke-width="6" stroke-dasharray="6 6"/>`);
+  h += `<text x="700" y="560" font-family="${FONT}" font-weight="900" font-size="44" fill="${MINT}">골밀도</text>
+  <text x="700" y="626" font-family="${FONT}" font-weight="900" font-size="56" fill="${PINK}">▼ 감소 중</text>`;
+  return h;
+}
+
+/* ---------- the timeline ---------- */
+function shakeAt(t, t0, dur, amp) {
+  if (t < t0 || t > t0 + dur) return [0, 0];
+  const k = 1 - (t - t0) / dur;
+  return [Math.sin(t * 97) * amp * k, Math.cos(t * 83) * amp * k];
+}
+function punch(t, t0) { const k = prog(t, t0, t0 + 0.35); return lerp(1.06, 1, easeOut(k)); }
+
+function render(t) {
+  let scene = '', over = '';
+  let hudV = { g: '1.00 G', w: '60.0 kg', d: '0일차' };
+  let cam = 1, sx = 0, sy = 0;
+
+  if (t < 4) {
+    // S0 lab intro
+    const lift = easeInOut(prog(t, 2.0, 3.6)) * 40;
+    const glow = 0.3 + 0.7 * prog(t, 1.2, 2.2);
+    scene += labBG(t) + platform(600, 1330, glow);
+    scene += doctor(150, 1400, 0.55);
+    scene += shadow(600, 1330, 90 - lift);
+    scene += zero({ x: 600, y: 1320 - lift, s: 0.82, expr: t < 2.0 ? '걱정' : '놀람', goggles: t < 2.0 ? 'up' : 'down', pose: t < 2.0 ? '서기' : '둥둥' });
+    const g = lerp(1, 0.17, easeInOut(prog(t, 1.6, 3.4)));
+    hudV = { g: g.toFixed(2) + ' G', w: '60.0 kg', d: '0일차' };
+    over += pop(t, 0.2, 4.0, 540, 560, outlined(0, 0, ['만약에 나만', [['중력이 ', WHITE], ['1/6', YEL], ['이라면?', WHITE]]], { size: 108, sw: 22 }), { rot: -2 });
+    over += tag(t, 2.0, 4.0, 770, 1000, '실험 시작', MINT, { rot: 5 });
+    over += fx(t, 1.0, 3.9, 290, 860, '위이잉~', MINT, { size: 84, rot: -10, wobble: 3 });
+    cam = punch(t, 0);
+  } else if (t < 9.5) {
+    // S1 bedroom, hits ceiling
+    const up = easeOut(prog(t, 5.0, 5.6));
+    const down = easeInOut(prog(t, 6.6, 9.5));
+    const y = t < 5.6 ? lerp(1340, 640, up) : lerp(640, 900, down);
+    scene += bedroomBG();
+    if (t < 5.0) scene += zero({ x: 560, y: 1340, s: 0.8, expr: '지침', pose: '서기' }) + blanket(0);
+    else {
+      scene += blanket(t < 5.6 ? 60 * up : 60 - 50 * prog(t, 5.6, 6.2));
+      scene += zero({ x: 560, y: y, s: 0.8, expr: t < 5.6 ? '놀람' : (t < 7.2 ? '겁먹음' : '걱정'), pose: '점프', rot: t > 5.6 && t < 6.8 ? 180 : lerp(180, 360, easeInOut(prog(t, 6.8, 8.0))) % 360, goggles: 'up' });
+    }
+    if (t > 5.6 && t < 6.2) scene += speedLines(560, 330, 120, 420, 18, t, INK, 0.6);
+    [sx, sy] = shakeAt(t, 5.6, 0.45, 26);
+    hudV = { g: '0.17 G', w: '?', d: '1일차' };
+    over += cap(t, 4.1, 9.4, ['1일차 아침,', '일어나기만 했는데…']);
+    over += fx(t, 5.6, 7.0, 540, 470, '쿵!!', YEL, { size: 170, burst: 170, burstColor: '#fff', rot: -8 });
+    over += tag(t, 6.1, 9.4, 770, 1050, '(천장 직행)', PINK, { rot: 5 });
+    cam = punch(t, 4);
+  } else if (t < 16) {
+    // S2 bathroom scale
+    const onScale = t > 10.2;
+    const v = lerp(60, 10, easeOut(prog(t, 10.4, 11.4)));
+    scene += bathroomBG();
+    scene += scale(540, 1450, onScale ? v.toFixed(1) + 'kg' : '0.0kg', onScale ? YEL : '#9fb');
+    scene += zero({ x: onScale ? 540 : 300, y: onScale ? 1420 : 1460, s: 0.82, pose: onScale ? (t > 10.9 && t < 12.5 ? '손인사' : '서기') : '걷기1', expr: t < 10.9 ? '기본' : (t < 12.5 ? '신남' : (t < 13.4 ? '놀람' : '지침')) });
+    hudV = { g: '0.17 G', w: onScale ? v.toFixed(1) + ' kg' : '—', d: '1일차' };
+    over += cap(t, 9.6, 12.4, ['체중계에 올라가 보니'], { y: 990 });
+    over += fx(t, 10.9, 12.5, 540, 700, '다이어트 성공?!', PINK, { size: 104, rot: -5 });
+    over += drBox(t, 12.5, 15.9, ['체중계는 바닥을 누르는 힘만 잽니다.', '질량은 그대로 60kg이에요.']);
+    over += tag(t, 13.4, 15.9, 800, 900, '(급 진지)', YEL, { rot: -5 });
+    cam = punch(t, 9.5);
+  } else if (t < 23) {
+    // S3 commute, bouncing
+    const lt = t - 16;
+    const off = lt * 140;
+    scene += streetBG(off);
+    const hop = 1.3, ph = (lt % hop) / hop;
+    const hy = Math.sin(ph * Math.PI) * 420;
+    const zx = 330;
+    scene += shadow(zx, 1450, 80 - hy * 0.12);
+    scene += zero({ x: zx, y: 1440 - hy, s: 0.72, pose: ph < 0.12 || ph > 0.88 ? '웅크림' : '둥둥', expr: lt < 2.2 ? '놀람' : '걱정' });
+    scene += zero({ x: 820, y: 1460, s: 0.62, pose: '서기', expr: lt > 1.5 ? '놀람' : '기본', goggles: 'none', vest: '#5D7FA8', patch: false, hair: '#2A2A2A', tie: '#C2423F', shiver: lt > 1.5 ? t : 0 });
+    hudV = { g: '0.17 G', w: '10.0 kg', d: '1일차' };
+    over += cap(t, 16.1, 22.9, ['출근길.', '걸을 때마다 통통 튄다']);
+    [17.0, 18.3, 19.6, 20.9, 22.2].forEach((tt, i) => over += fx(t, tt - 0.04, tt + 0.55, 330 + (i % 2 ? 40 : -40), 1260, '통!', ['#FF8A3D', MINT, YEL, PINK, '#FF8A3D'][i], { size: 90, rot: i % 2 ? 8 : -8 }));
+    over += tag(t, 18.2, 22.9, 820, 860, '(동공지진)', PINK, { rot: 6 });
+    cam = punch(t, 16);
+  } else if (t < 30) {
+    // S4 crosswalk 3m jump, slow motion
+    scene += crosswalkBG(t);
+    const j = prog(t, 24.6, 28.6);
+    const hy = Math.sin(j * Math.PI) * 680;
+    const crouch = t > 24.0 && t < 24.6;
+    scene += shadow(500, 1460, 90 - hy * 0.08);
+    scene += zero({ x: 500, y: 1450 - hy, s: 0.8, pose: crouch ? '웅크림' : (j > 0 && j < 1 ? '점프' : '서기'), expr: t < 24.0 ? '결심' : (j > 0 && j < 1 ? '신남' : (t > 28.6 ? '뿌듯' : '결심')) });
+    if (j > 0.15 && j < 0.85) {
+      scene += `<line x1="800" y1="${1450 - hy}" x2="800" y2="1450" stroke="${MINT}" stroke-width="8" stroke-dasharray="18 12"/><line x1="770" y1="${1450 - hy}" x2="830" y2="${1450 - hy}" stroke="${MINT}" stroke-width="8"/><line x1="770" y1="1450" x2="830" y2="1450" stroke="${MINT}" stroke-width="8"/>`;
+      scene += outlined(850, 1450 - hy / 2, [(hy / 680 * 3).toFixed(1) + 'm'], { size: 70, fill: MINT, anchor: 'start', sw: 14 });
+      scene += speedLines(500, 1450 - hy - 280, 260, 700, 22, t, '#fff', 0.35);
+    }
+    hudV = { g: '0.17 G', w: '10.0 kg', d: '1일차' };
+    over += cap(t, 23.1, 24.5, ['신호가 깜빡인다!']);
+    over += fx(t, 24.6, 26.0, 300, 1120, '슈우웅~', '#7FD1FF', { size: 96, rot: -12 });
+    over += cap(t, 25.4, 29.9, [[['지구 50cm', WHITE]], [['→ 여기선 ', WHITE], ['3m', YEL], [' · 체공 3.8초', WHITE]]]);
+    over += tag(t, 26.6, 28.6, 300, 760, 'SLOW', MINT, { rot: -6 });
+    cam = punch(t, 23);
+  } else if (t < 37) {
+    // S5 cannot stop -> glass door
+    let zx, expr, pose, sxq = 1, rot = 0;
+    if (t < 32.5) { zx = lerp(-120, 300, prog(t, 30, 32.5)); pose = Math.floor(t * 7) % 2 ? '걷기1' : '걷기2'; expr = '결심'; }
+    else if (t < 34.5) { zx = lerp(300, 610, easeInOut(prog(t, 32.5, 34.5))); pose = '미끄럼'; expr = '겁먹음'; rot = -8; }
+    else { zx = 640; pose = '납작'; expr = '지침'; sxq = 1.12; }
+    scene += storeBG(t > 34.5 ? '놀람' : '기본');
+    scene += shadow(zx, 1500, 80);
+    if (t > 32.5 && t < 34.5) for (let i = 0; i < 5; i++) scene += `<line x1="${zx - 160 - i * 50}" y1="${1440 + i * 14}" x2="${zx - 60 - i * 40}" y2="${1440 + i * 14}" stroke="${INK}" stroke-width="7" stroke-linecap="round" opacity=".7"/>`;
+    scene += zero({ x: zx, y: 1490, s: 0.78, pose, expr, sx: sxq, sy: t > 34.5 ? 0.94 : 1, rot, goggles: 'up', sweat: t > 32.5 && t < 34.5 });
+    if (t > 34.5 && t < 35.2) scene += speedLines(640, 1100, 200, 560, 20, t, INK, 0.55);
+    [sx, sy] = shakeAt(t, 34.5, 0.5, 30);
+    hudV = { g: '0.17 G', w: '10.0 kg', d: '1일차' };
+    over += cap(t, 30.1, 32.4, ['문제는…', '멈출 때다']);
+    over += fx(t, 32.5, 34.4, 330, 1150, '끼이이익~', '#fff', { size: 92, rot: -4, wobble: 4 });
+    over += fx(t, 34.5, 36.0, 640, 880, '쾅!', YEL, { size: 190, burst: 200, burstColor: '#FF8A3D', rot: 6 });
+    over += cap(t, 34.9, 36.9, [[['브레이크도 ', WHITE], ['6분의 1', YEL]]]);
+    over += tag(t, 35.3, 36.9, 760, 1520, '(마찰력 실종)', PINK, { rot: -5 });
+    cam = punch(t, 30);
+  } else if (t < 46) {
+    // S6 rooftop fall: 3.5 s from 39.0 to 42.5
+    const f = prog(t, 39.0, 42.5);
+    const zyW = t < 39 ? 1210 : lerp(1210, 3440, f * f);
+    const camY = clamp(zyW - 1150, 0, 3500 - 1500);
+    scene += `<g transform="translate(0 ${-camY})">${rooftopWorld(t)}`;
+    if (t >= 42.5) scene += shadow(540, 3446, 70);
+    scene += zero({ x: 540, y: zyW, s: 0.74, pose: t < 39 ? '서기' : (t < 42.5 ? '둥둥' : '손인사'), expr: t < 39 ? '결심' : (t < 42.5 ? '기본' : '신남') });
+    scene += `</g>`;
+    if (t > 38.6 && t < 39.0) scene += zero({ x: 220, y: 1500, s: 0.5, expr: '겁먹음', goggles: 'none', vest: '#A8705D', patch: false, hair: '#3A2A1A', pose: '손인사' });
+    hudV = { g: '0.17 G', w: '10.0 kg', d: '1일차' };
+    over += cap(t, 37.1, 38.9, ['점심시간 옥상,', '10m 아래로…']);
+    over += cap(t, 39.1, 42.4, ['천천히… 아주 천천히']);
+    if (t > 39 && t < 42.6) over += outlined(860, 900, ['낙하', (Math.min(3.5, t - 39)).toFixed(1) + '초'], { size: 64, fill: MINT, sw: 14 });
+    over += fx(t, 42.5, 44.0, 540, 1040, '사뿐~', MINT, { size: 110, rot: -6 });
+    over += tag(t, 42.8, 44.1, 760, 1160, '(슈퍼히어로?!)', YEL, { rot: 5 });
+    over += drBox(t, 44.1, 45.9, ['오늘은 괜찮습니다.', '…오늘은요.'], { y: 640 });
+    cam = punch(t, 37);
+  } else if (t < 51.5) {
+    // S7 day 7 bone scan
+    scene += labBG(t) + `<g transform="translate(108 -40) scale(0.8)">${boneMonitor(t)}</g>`;
+    scene += doctor(180, 1600, 0.45);
+    scene += zero({ x: 820, y: 1560, s: 0.62, expr: '걱정', pose: '서기' });
+    hudV = { g: '0.17 G', w: '10.0 kg', d: '7일차' };
+    over += pop(t, 46.0, 47.0, 540, 1000, outlined(0, 0, ['7일차'], { size: 150, fill: YEL, sw: 26 }), {});
+    over += drBox(t, 47.0, 51.4, ['우주정거장에선 한 달에 골밀도가', '1~1.5% 줄어듭니다.', '6분의 1 중력은? 아직 아무도 몰라요.'], { size: 46, y: 900 });
+    cam = punch(t, 46);
+  } else if (t < 57) {
+    // S8 twist
+    const alert = t > 54.2;
+    const v = t < 53.8 ? 10 : lerp(10, 5, easeInOut(prog(t, 53.8, 55.2)));
+    const float = easeInOut(prog(t, 55.0, 57.0)) * 260;
+    scene += labBG(t, { alert }) + platform(560, 1440, 0.3);
+    scene += scale(560, 1420, v.toFixed(1) + 'kg', alert ? RED : YEL);
+    scene += doctor(170, 1560, 0.5, alert ? RED : MINT, alert ? Math.sin(t * 40) * 3 : 0);
+    scene += shadow(560, 1410, 80 - float * 0.2);
+    scene += zero({ x: 560, y: 1390 - float, s: 0.72, pose: float > 10 ? '둥둥' : '서기', expr: t < 54.2 ? '신남' : '겁먹음', goggles: 'up', shiver: alert ? t : 0 });
+    if (alert) {
+      const fl = (Math.sin(t * 12) + 1) / 2;
+      scene += `<rect width="1080" height="1920" fill="${RED}" opacity="${0.1 + fl * 0.18}"/><circle cx="540" cy="360" r="320" fill="url(#redglow)" opacity="${fl}"/>`;
+    }
+    const g = t < 54.2 ? 0.17 : lerp(0.17, 0.08, prog(t, 54.2, 55.4));
+    hudV = { g: g.toFixed(2) + ' G', gc: alert ? RED : MINT, w: v.toFixed(1) + ' kg', wc: alert ? RED : MINT, d: '7일차' };
+    over += drBox(t, 51.6, 53.6, ['실험 종료. 중력 복구.'], { y: 700 });
+    over += cap(t, 53.0, 54.2, ['휴, 이제 끝…?']);
+    over += fx(t, 54.3, 57.0, 300, 560, '삐- 삐-', RED, { size: 96, rot: -8, wobble: 5 });
+    over += drBox(t, 55.2, 57.0, ['저는… 설정값을 바꾼 적이', '없습니다.'], { border: RED, shake: true, y: 700 });
+    cam = 1 + prog(t, 54.2, 57) * 0.06;
+  } else {
+    // S9 end card
+    scene += `<rect width="1080" height="1920" fill="${NAVY}"/><rect width="1080" height="1920" fill="url(#grid)"/>`;
+    const fl = Math.sin(t * 3) * 14;
+    scene += zero({ x: 540, y: 1080 + fl, s: 0.5, pose: '둥둥', expr: '겁먹음', goggles: 'down' });
+    over += pop(t, 57.0, 60.1, 540, 430, outlined(0, 0, [[['실험 001 · ', MINT], ['2부', YEL]]], { size: 70, sw: 14 }), {});
+    over += pop(t, 57.2, 60.1, 540, 1260, outlined(0, 0, ['중력이 매일', [['절반씩', YEL], [' 줄어든다면?', WHITE]]], { size: 92, sw: 18 }), {});
+    over += pop(t, 57.8, 60.1, 540, 1530, `<rect x="-400" y="-56" width="800" height="104" rx="52" fill="${MINT}" stroke="${INK}" stroke-width="6"/><text x="0" y="16" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="46" fill="${NAVY}">다음 실험은 댓글로 의뢰하세요</text>`, {});
+  }
+
+  // global fade at very start / end
+  const fadeIn = 1 - prog(t, 0, 0.25);
+  const out = `<g transform="translate(${540 + sx} ${960 + sy}) scale(${cam}) translate(-540 -960)">${scene}</g>
+  ${t < 57 ? hud(hudV) : ''}
+  ${over}
+  <text x="1040" y="1880" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="28" fill="#fff" opacity=".55">만약에연구소</text>
+  <rect width="1080" height="1920" fill="#000" opacity="${fadeIn}"/>`;
+  document.getElementById('v').innerHTML = DEFS + out;
+}
+window.render = render;
+render(0);
+</script>
+</body>
+</html>

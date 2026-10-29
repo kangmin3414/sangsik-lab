@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>썸네일 예시 실험 001</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=JetBrains+Mono:wght@700&amp;display=swap">
+<style>
+body{margin:0}
+.lab{background-color:#0B1626;background-image:linear-gradient(rgba(61,242,176,0.07) 1px, transparent 1px),linear-gradient(90deg, rgba(61,242,176,0.07) 1px, transparent 1px);background-size:60px 60px}
+</style>
+</helmet>
+<div class="lab" style="width: 1280px; height: 720px; position: relative; overflow: hidden; color: #F2F0EA">
+
+<div style="position: absolute; left: 0; top: 650px; width: 1280px; height: 70px; background: #13223A"></div>
+<div style="position: absolute; left: 700px; top: 650px; width: 520px; height: 70px; display: flex; gap: 28px">
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+<div style="width: 60px; height: 70px; background: #2A3A52"></div>
+</div>
+
+<div style="position: absolute; left: 48px; top: 44px; padding: 8px 20px; background: #3DF2B0; border-radius: 8px; font-family: 'Black Han Sans', sans-serif; font-size: 44px; line-height: 1.1; color: #0B1626">실험 001</div>
+
+<div style="position: absolute; left: 56px; top: 170px; display: flex; flex-direction: column; font-family: 'Black Han Sans', sans-serif; line-height: 0.95; color: #F7E733">
+<div style="font-size: 260px">3m</div>
+<div style="font-size: 220px">점프</div>
+</div>
+
+<div style="position: absolute; right: 48px; top: 48px; padding: 10px 18px; border: 3px solid #3DF2B0; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 34px; color: #3DF2B0">중력 1/6 G</div>
+
+<div style="position: absolute; left: 752px; top: 122px">
+<dc-import name="Zero" expr="놀람" pose="점프" size="560" hint-size="373px,560px"></dc-import>
+</div>
+
+<svg width="80" height="104" viewBox="0 0 80 104" aria-hidden="true" style="position: absolute; left: 1150px; top: 546px">
+<line x1="40" y1="3" x2="40" y2="101" stroke="#3DF2B0" stroke-width="4"></line>
+<line x1="24" y1="3" x2="56" y2="3" stroke="#3DF2B0" stroke-width="4"></line>
+<line x1="24" y1="101" x2="56" y2="101" stroke="#3DF2B0" stroke-width="4"></line>
+</svg>
+<div style="position: absolute; left: 1198px; top: 580px; font-family: 'JetBrains Mono', monospace; font-size: 30px; color: #3DF2B0">3.0m</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

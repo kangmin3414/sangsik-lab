@@ -1,0 +1,21 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.12,0:00:02.60,Cap,,0,0,0,,미국 연구팀은 연인이 있는 사람들에게,
+Dialogue: 0,0:00:02.62,0:00:07.61,Cap,,0,0,0,,지금의 연인을 만나지 못했을 수도 있었던 순간을 떠올려 보게 했습니다.
+Dialogue: 0,0:00:07.63,0:00:10.83,Cap,,0,0,0,,그러자 어떻게 만났는지를 떠올린 사람들보다,
+Dialogue: 0,0:00:10.85,0:00:14.86,Cap,,0,0,0,,관계에 더 만족하게 됐어요. 있는 것을 잠시 빼 보면,
+Dialogue: 0,0:00:14.88,0:00:17.45,Cap,,0,0,0,,그 소중함이 더 또렷해지는 거죠.
+Dialogue: 0,0:00:17.67,0:00:20.23,Cap,,0,0,0,,에픽테토스는 아끼는 컵이 있다면,
+Dialogue: 0,0:00:20.25,0:00:24.38,Cap,,0,0,0,,이건 깨질 수 있는 컵이라고 떠올려 보라고 했습니다.
+Dialogue: 0,0:00:24.40,0:00:29.27,Cap,,0,0,0,,그러면 깨져도 덜 흔들리고, 깨지기 전엔 더 소중해지니까요.

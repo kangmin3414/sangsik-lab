@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.45,Cap,,0,0,0,,{\c&HFFFFFF&}문제 하나. 야구 방망이와 공을 합치면 {\c&H33E7F7&}1,100{\c&HFFFFFF&}원.
+Dialogue: 0,0:00:04.47,0:00:09.74,Cap,,0,0,0,,{\c&HFFFFFF&}방망이가 공보다 {\c&H33E7F7&}1,000{\c&HFFFFFF&}원 더 비쌉니다. 공은 얼마일까?
+Dialogue: 0,0:00:09.76,0:00:14.06,Cap,,0,0,0,,{\c&HFFFFFF&}{\c&H33E7F7&}3초{\c&HFFFFFF&} 드리겠습니다.
+Dialogue: 0,0:00:14.08,0:00:18.99,Cap,,0,0,0,,{\c&HFFFFFF&}혹시 {\c&H33E7F7&}100{\c&HFFFFFF&}원? 공 값이 {\c&H33E7F7&}100{\c&HFFFFFF&}원이면 방망이는 {\c&H33E7F7&}1,100{\c&HFFFFFF&}원,
+Dialogue: 0,0:00:19.01,0:00:23.67,Cap,,0,0,0,,{\c&HFFFFFF&}합치면 {\c&H33E7F7&}1,200{\c&HFFFFFF&}원이 돼 버립니다. 정답은 {\c&H33E7F7&}50{\c&HFFFFFF&}원.
+Dialogue: 0,0:00:23.69,0:00:28.13,Cap,,0,0,0,,{\c&HFFFFFF&}하버드, MIT, 프린스턴 학생들도 절반 넘게,
+Dialogue: 0,0:00:28.15,0:00:31.66,Cap,,0,0,0,,{\c&HFFFFFF&}처음 떠오른 {\c&H33E7F7&}100{\c&HFFFFFF&}원을 골랐습니다.

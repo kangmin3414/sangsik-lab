@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.30,0:00:01.30,Cap,,0,0,0,,오후 {\c&H33E7F7&}3시{\c&HFFFFFF&}.
+Dialogue: 0,0:00:01.32,0:00:02.37,Cap,,0,0,0,,머리가 멍해지면,
+Dialogue: 0,0:00:02.39,0:00:04.81,Cap,,0,0,0,,손이 먼저 가는 곳이 있습니다.
+Dialogue: 0,0:00:04.83,0:00:06.91,Cap,,0,0,0,,달콤한 라떼에 쿠키 한 조각.
+Dialogue: 0,0:00:06.93,0:00:08.41,Cap,,0,0,0,,이름하여, 당 충전.
+Dialogue: 0,0:00:08.43,0:00:11.18,Cap,,0,0,0,,그런데 단 걸 먹으면, 정말 힘이 날까?
+Dialogue: 0,0:00:11.20,0:00:13.93,Cap,,0,0,0,,영국 워릭대 연구팀이 {\c&H33E7F7&}31개{\c&HFFFFFF&} 연구,
+Dialogue: 0,0:00:13.95,0:00:17.77,Cap,,0,0,0,,성인 약 {\c&H33E7F7&}1,300명{\c&HFFFFFF&}의 결과를 모았습니다.
+Dialogue: 0,0:00:17.79,0:00:18.98,Cap,,0,0,0,,결과는 정반대.
+Dialogue: 0,0:00:19.00,0:00:21.51,Cap,,0,0,0,,당을 먹은 사람들은 한 시간 안에,
+Dialogue: 0,0:00:21.53,0:00:24.29,Cap,,0,0,0,,더 피곤하고 덜 또렷해졌습니다.
+Dialogue: 0,0:00:24.31,0:00:26.59,Cap,,0,0,0,,기분이 나아지는 효과도 거의 없었죠.
+Dialogue: 0,0:00:26.61,0:00:28.28,Cap,,0,0,0,,당 충전이라 믿었던 건,
+Dialogue: 0,0:00:28.30,0:00:30.91,Cap,,0,0,0,,사실 슈가 크래시였던 셈입니다.

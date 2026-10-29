@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><script src="../shorts/engine.js"></script></head><body style="margin:0">
+<svg id="v" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath>
+<clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath></defs><rect width="1920" height="1080" fill="#E9E1D0"/><g id="g"></g></svg>
+<script>
+const TEE='#FF9A55';
+const base={goggles:'none',patch:false,tee:true};
+const cs=[
+ Object.assign({},base,{vest:'#2B2B33',vshade:'rgba(0,0,0,0.3)',wig:'#3A2A1E',pencil:'#3A2A1E',bandCollar:true}),
+ Object.assign({},base,{vest:TEE,vshade:'rgba(150,60,0,0.22)',wig:'#6B4A2E',bandCollar:true}),
+ Object.assign({},base,{vest:'#CFDCC8',vshade:'rgba(0,0,0,0.15)',topknot:'#D9D9D9',longBeard:'#F4F4F4',robe:'#4E6E58'}),
+ Object.assign({},base,{vest:TEE,vshade:'rgba(150,60,0,0.22)',topknot:'#2B2B2B',robe:'#8A4A20'}),
+ Object.assign({},base,{vest:'#9DB8D9',vshade:'rgba(0,0,0,0.18)',topknot:'#2B2B2B',beard:'#2B2B2B',robe:'#3E5C84'}),
+];
+let h='';
+cs.forEach((o,i)=>{h+=char(Object.assign({t:1,seed:i+1,x:220+i*370,y:620,s:0.9,expr:i%2?'신남':'기본'},o));
+ h+=char(Object.assign({t:1,seed:i+9,x:220+i*370,y:1060,s:0.6,expr:'놀람',pose:'만세'},o));});
+document.getElementById('g').innerHTML=h;
+</script></body></html>

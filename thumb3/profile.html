@@ -1,0 +1,119 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}#wrap{width:800px;height:800px;overflow:hidden}svg{display:block}</style></head>
+<body><div id="wrap"><svg id="s" width="800" height="800" viewBox="0 0 800 800"></svg></div>
+<script>
+const CIRCLE = location.hash.includes('circle');
+let seed = 11;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114';
+let d = `<defs>
+<radialGradient id="bg" cx="400" cy="360" r="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#26304A"/><stop offset=".45" stop-color="#121A2C"/><stop offset="1" stop-color="#04060C"/></radialGradient>
+<radialGradient id="glow" cx="400" cy="360" r="330" gradientUnits="userSpaceOnUse"><stop offset=".6" stop-color="#FFB547" stop-opacity="0"/><stop offset=".8" stop-color="#FFB547" stop-opacity=".18"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".52" cy=".3" r=".85"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".45" stop-color="#FBF5EC"/><stop offset=".76" stop-color="#E4DDD6"/><stop offset="1" stop-color="#A6A6BA"/></radialGradient>
+<radialGradient id="handG" cx=".5" cy=".25" r=".95"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".5" stop-color="#F4EEE5"/><stop offset="1" stop-color="#A9A8BA"/></radialGradient>
+<linearGradient id="hoodG" x1="0" y1="560" x2="0" y2="800" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3A4256"/><stop offset="1" stop-color="#1A1E28"/></linearGradient>
+<linearGradient id="slvG" x1="0" y1="600" x2="0" y2="800" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#454E66"/><stop offset="1" stop-color="#232834"/></linearGradient>
+<linearGradient id="eyeW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCC0CC"/><stop offset=".38" stop-color="#FAFAF7"/><stop offset="1" stop-color="#ECECEA"/></linearGradient>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b22" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse rx="200" ry="188"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="200" ry="188" fill="#fff"/><ellipse cx="-15" cy="10" rx="200" ry="188" fill="#000" filter="url(#b4)"/></mask>
+<mask id="rimL" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="200" ry="188" fill="#fff"/><ellipse cx="15" cy="10" rx="200" ry="188" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="lidL"><polygon points="-120,6 -12,14 -12,96 -120,96"/></clipPath>
+<clipPath id="lidR"><polygon points="12,-20 120,-20 120,96 12,96"/></clipPath>
+<clipPath id="ringC"><ellipse cx="400" cy="552" rx="184" ry="50"/></clipPath>
+<clipPath id="hand"><path id="handP" d="M288 612 Q282 562 304 546 Q306 528 324 530 Q334 516 348 526 Q360 514 374 524 Q388 514 400 528 Q412 514 426 524 Q440 514 452 526 Q466 516 476 530 Q494 528 496 546 Q518 562 512 612 Q506 656 400 660 Q294 656 288 612 Z"/></clipPath>
+<clipPath id="circ"><circle cx="400" cy="400" r="400"/></clipPath>
+</defs>`;
+let g = '';
+g += `<rect width="800" height="800" fill="url(#bg)"/>`;
+// soft dust specks
+for (let i = 0; i < 60; i++) { const x = rnd() * 800, y = rnd() * 800, r = rnd() * 1.6 + .4; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#FFE2AE" opacity="${(.12 + rnd() * .35).toFixed(2)}"/>`; }
+// glowing ring
+g += `<circle cx="400" cy="360" r="330" fill="url(#glow)"/>`;
+g += `<circle cx="400" cy="360" r="262" fill="none" stroke="#FFA93A" stroke-width="40" opacity=".45" filter="url(#b22)"/>`;
+g += `<circle cx="400" cy="360" r="262" fill="none" stroke="#FFC766" stroke-width="12" opacity=".9" filter="url(#b4)"/>`;
+g += `<circle cx="400" cy="360" r="262" fill="none" stroke="#FFF4D8" stroke-width="3.5"/>`;
+// backlight behind head
+g += `<ellipse cx="400" cy="380" rx="230" ry="210" fill="#FFB866" opacity=".22" filter="url(#b22)"/>`;
+
+// hoodie body
+const body = 'M70 800 L96 690 Q120 620 236 590 Q400 556 564 590 Q680 620 704 690 L730 800 Z';
+g += `<path d="${body}" fill="url(#hoodG)" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+g += `<path d="M110 676 Q130 630 200 606" fill="none" stroke="#FFC77A" stroke-width="6" stroke-linecap="round" opacity=".45" filter="url(#b2)"/><path d="M690 676 Q670 630 600 606" fill="none" stroke="#FFC77A" stroke-width="6" stroke-linecap="round" opacity=".45" filter="url(#b2)"/>`;
+// hood collar
+g += `<ellipse cx="400" cy="552" rx="188" ry="54" fill="#30374A" stroke="${INK}" stroke-width="8"/>`;
+g += `<g clip-path="url(#ringC)"><ellipse cx="400" cy="540" rx="176" ry="36" fill="#000" opacity=".6" filter="url(#b8)"/></g>`;
+// drawstrings peeking below hands
+[[352, 600, 340, 720], [448, 600, 462, 726]].forEach(([x1, y1, x2, y2]) => {
+  const dd = `M${x1} ${y1} Q${(x1 + x2) / 2} ${(y1 + y2) / 2} ${x2} ${y2}`;
+  g += `<path d="${dd}" fill="none" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="${dd}" fill="none" stroke="#DADDE6" stroke-width="5" stroke-linecap="round"/><rect x="${x2 - 5}" y="${y2 - 2}" width="10" height="16" rx="4" fill="#9AA1B2" stroke="${INK}" stroke-width="3"/>`;
+});
+
+// ---------- head ----------
+let h = '';
+h += `<ellipse rx="200" ry="188" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)">
+  <ellipse cx="0" cy="214" rx="230" ry="80" fill="#5E5A74" opacity=".42" filter="url(#b14)"/>
+  <ellipse cx="-126" cy="82" rx="38" ry="20" fill="#FF7A7A" opacity=".28" filter="url(#b8)"/>
+  <ellipse cx="126" cy="82" rx="38" ry="20" fill="#FF7A7A" opacity=".28" filter="url(#b8)"/>
+  <ellipse cx="70" cy="-120" rx="64" ry="26" transform="rotate(20 70 -120)" fill="#fff" opacity=".85" filter="url(#b8)"/>
+</g>`;
+h += `<ellipse rx="200" ry="188" fill="#FFB04A" mask="url(#rimR)" opacity=".9"/>`;
+h += `<ellipse rx="200" ry="188" fill="#FFB04A" mask="url(#rimL)" opacity=".75"/>`;
+h += `<path d="M96 -150 Q128 -128 142 -96" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>`;
+h += `<ellipse rx="200" ry="188" fill="none" stroke="${INK}" stroke-width="10"/>`;
+// eyes: left half-lidded (knowing), right open under a raised brow
+const eye = (sx) => {
+  const cx = 64 * sx, clip = sx < 0 ? 'lidL' : 'lidR';
+  let e = `<g clip-path="url(#${clip})"><ellipse cx="${cx}" cy="34" rx="38" ry="42" fill="url(#eyeW)"/>
+    <circle cx="${cx + 4}" cy="42" r="20" fill="#3A2820"/><circle cx="${cx + 4}" cy="42" r="11.5" fill="#09090B"/>
+    <circle cx="${cx + 11}" cy="34" r="6.5" fill="#fff"/><circle cx="${cx - 2}" cy="52" r="3" fill="#fff" opacity=".85"/>
+    <ellipse cx="${cx}" cy="34" rx="38" ry="42" fill="none" stroke="${INK}" stroke-width="6"/></g>`;
+  if (sx < 0) e += `<path d="M-108 8 Q-64 10 -18 12" fill="none" stroke="${INK}" stroke-width="11" stroke-linecap="round"/>`;
+  return e;
+};
+h += eye(-1) + eye(1);
+h += `<path d="M-136 -16 Q-84 -30 -30 -14" fill="none" stroke="${INK}" stroke-width="23" stroke-linecap="round"/>`;
+h += `<path d="M30 -46 Q82 -86 136 -58" fill="none" stroke="${INK}" stroke-width="23" stroke-linecap="round"/>`;
+// smirk
+h += `<path d="M-34 122 Q4 136 42 112" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
+h += `<path d="M38 104 Q46 110 44 120" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>`;
+g += `<g transform="translate(400 360) rotate(-4)">${h}</g>`;
+
+// ---------- forearms + clasped hands ----------
+const SLV = (dd) => `<path d="${dd}" fill="none" stroke="${INK}" stroke-width="96" stroke-linecap="round" stroke-linejoin="round"/><path d="${dd}" fill="none" stroke="url(#slvG)" stroke-width="80" stroke-linecap="round" stroke-linejoin="round"/>`;
+g += SLV('M318 640 Q288 720 262 830') + SLV('M482 640 Q512 720 538 830');
+
+// cuffs
+[[318, 642, 14], [482, 642, -14]].forEach(([x, y, r]) => { g += `<g transform="translate(${x} ${y}) rotate(${r})"><rect x="-46" y="-14" width="92" height="28" rx="12" fill="#3E4558" stroke="${INK}" stroke-width="6"/><path d="M-30 -10 V10 M-15 -11 V11 M0 -11 V11 M15 -11 V11 M30 -10 V10" stroke="#22262F" stroke-width="3"/></g>`; });
+// thumbs pressed together, pointing up under the chin
+g += `<path d="M372 540 Q368 494 387 492 Q400 492 400 514 L400 540 Z" fill="url(#handG)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+g += `<path d="M428 540 Q432 494 413 492 Q400 492 400 514 L400 540 Z" fill="url(#handG)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+// hand mass
+g += `<use href="#handP" fill="url(#handG)"/>`;
+g += `<g clip-path="url(#hand)"><ellipse cx="400" cy="672" rx="150" ry="40" fill="#5E5A74" opacity=".45" filter="url(#b8)"/><path d="M300 560 Q296 600 306 636" stroke="#FFC77A" stroke-width="10" fill="none" opacity=".5" filter="url(#b4)"/><path d="M500 560 Q504 600 494 636" stroke="#FFC77A" stroke-width="10" fill="none" opacity=".5" filter="url(#b4)"/></g>`;
+g += `<use href="#handP" fill="none" stroke="${INK}" stroke-width="8"/>`;
+// interlaced fingers
+g += `<g fill="none" stroke="${INK}" stroke-width="5.5" stroke-linecap="round">
+  <path d="M324 532 Q318 568 326 600"/><path d="M348 528 Q344 570 350 610"/><path d="M374 526 Q370 572 376 616"/>
+  <path d="M400 530 L400 656"/>
+  <path d="M426 526 Q430 572 424 616"/><path d="M452 528 Q456 570 450 610"/><path d="M476 532 Q482 568 474 600"/>
+  <path d="M300 618 Q350 636 396 632"/><path d="M500 618 Q450 636 404 632"/>
+</g>`;
+g += `<path d="M446 552 Q464 550 472 562" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>`;
+
+// grade
+g += `<rect width="800" height="800" fill="url(#bg)" opacity="0"/>`;
+g += `<rect width="800" height="800" filter="url(#grain)" opacity=".14" style="mix-blend-mode:overlay"/>`;
+const vig = `<radialGradient id="vig" cx="400" cy="400" r="560" gradientUnits="userSpaceOnUse"><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>`;
+d = d.replace('</defs>', vig + '</defs>');
+g += `<rect width="800" height="800" fill="url(#vig)"/>`;
+if (CIRCLE) g = `<rect width="800" height="800" fill="#0F0F0F"/><g clip-path="url(#circ)">${g}</g>`;
+document.getElementById('s').innerHTML = d + g;
+</script></body></html>

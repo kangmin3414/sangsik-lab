@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:03.92,Cap,,0,0,0,,{\c&HFFFFFF&}다시, 금요일 밤. 연락처를 내리던 손가락이,
+Dialogue: 0,0:00:03.94,0:00:07.93,Cap,,0,0,0,,{\c&HFFFFFF&}한 이름에서 멈춥니다. 대학 동기, 서준.
+Dialogue: 0,0:00:07.95,0:00:11.13,Cap,,0,0,0,,{\c&HFFFFFF&}수업이 끝나면 강변을 같이 걷던 친구.
+Dialogue: 0,0:00:11.15,0:00:15.90,Cap,,0,0,0,,{\c&HFFFFFF&}누가 먼저랄 것도 없이, {\c&H33E7F7&}3년{\c&HFFFFFF&}째 연락이 끊겼습니다.
+Dialogue: 0,0:00:15.92,0:00:20.29,Cap,,0,0,0,,{\c&H7AE2FF&}이제 와서 연락하면… 이상하게 생각하지 않을까?
+Dialogue: 0,0:00:20.31,0:00:23.75,Cap,,0,0,0,,{\c&HFFFFFF&}{\c&H33E7F7&}5,900명{\c&HFFFFFF&}이 넘는 사람이 참여한 실험에서,
+Dialogue: 0,0:00:23.77,0:00:31.17,Cap,,0,0,0,,{\c&HFFFFFF&}짧은 안부를 보낸 사람들은 받는 사람이 얼마나 반가워할지를 실제보다 낮게 짐작했습니다.
+Dialogue: 0,0:00:31.19,0:00:34.59,Cap,,0,0,0,,{\c&HFFFFFF&}뜻밖의 연락일수록, 그 반가움은 더 컸고요.
+Dialogue: 0,0:00:34.61,0:00:37.89,Cap,,0,0,0,,{\c&HFFFFFF&}잘 지내? 갑자기 생각나서.
+Dialogue: 0,0:00:37.91,0:00:43.84,Cap,,0,0,0,,{\c&HFFFFFF&}전송. 숫자 {\c&H33E7F7&}1{\c&HFFFFFF&}은 금방 사라졌는데, 답이 없습니다.
+Dialogue: 0,0:00:43.86,0:00:45.94,Cap,,0,0,0,,{\c&H7AE2FF&}괜히 보냈나…
+Dialogue: 0,0:00:45.95,0:00:49.39,Cap,,0,0,0,,{\c&HFFFFFF&}그날 밤, 제로는 휴대폰을 뒤집어 놓고,
+Dialogue: 0,0:00:49.41,0:00:51.69,Cap,,0,0,0,,{\c&HFFFFFF&}오래 잠들지 못했습니다.

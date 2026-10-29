@@ -1,0 +1,32 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.79,Cap,,0,0,0,,{\c&HFFFFFF&}어느 날, 친구 카이레폰이 델포이 신전에 묻습니다.
+Dialogue: 0,0:00:04.81,0:00:08.28,Cap,,0,0,0,,{\c&H7AE2FF&}소크라테스보다 지혜로운 사람이 있습니까?
+Dialogue: 0,0:00:08.30,0:00:09.92,Cap,,0,0,0,,{\c&HFFFFFF&}신탁의 대답.
+Dialogue: 0,0:00:09.94,0:00:11.59,Cap,,0,0,0,,{\c&H7AE2FF&}없다.
+Dialogue: 0,0:00:11.61,0:00:14.23,Cap,,0,0,0,,{\c&HFFFFFF&}소크라테스는 어리둥절합니다.
+Dialogue: 0,0:00:14.25,0:00:18.51,Cap,,0,0,0,,{\c&H7AE2FF&}나는 아는 게 없는데?
+Dialogue: 0,0:00:18.53,0:00:21.60,Cap,,0,0,0,,{\c&HFFFFFF&}그래서 직접 확인에 나섭니다.
+Dialogue: 0,0:00:21.62,0:00:25.08,Cap,,0,0,0,,{\c&HFFFFFF&}먼저, 지혜롭다고 소문난 정치가.
+Dialogue: 0,0:00:25.10,0:00:28.58,Cap,,0,0,0,,{\c&HFFFFFF&}몇 가지 묻자, 금세 말이 막힙니다.
+Dialogue: 0,0:00:28.60,0:00:31.81,Cap,,0,0,0,,{\c&HFFFFFF&}시인들은 멋진 시를 짓습니다.
+Dialogue: 0,0:00:31.83,0:00:36.21,Cap,,0,0,0,,{\c&HFFFFFF&}그런데 그 시가 무슨 뜻인지는, 설명하지 못하죠.
+Dialogue: 0,0:00:36.23,0:00:39.33,Cap,,0,0,0,,{\c&HFFFFFF&}장인들은 자기 일에 정통합니다.
+Dialogue: 0,0:00:39.35,0:00:43.74,Cap,,0,0,0,,{\c&HFFFFFF&}문제는, 그래서 다른 일까지 안다고 믿는다는 것.
+Dialogue: 0,0:00:43.76,0:00:45.56,Cap,,0,0,0,,{\c&HFFFFFF&}소크라테스의 결론.
+Dialogue: 0,0:00:45.58,0:00:50.49,Cap,,0,0,0,,{\c&H7AE2FF&}저 사람은 모르면서 안다고 생각한다. 나는 모르고,
+Dialogue: 0,0:00:50.51,0:00:53.45,Cap,,0,0,0,,{\c&H7AE2FF&}안다고 생각하지도 않는다.
+Dialogue: 0,0:00:53.47,0:00:58.69,Cap,,0,0,0,,{\c&H7AE2FF&}그러니 그만큼은, 내가 조금 더 지혜로운 셈이다.
+Dialogue: 0,0:00:58.71,0:01:02.28,Cap,,0,0,0,,{\c&HFFFFFF&}'나는 모른다는 것을 안다.' 이 유명한 말은,
+Dialogue: 0,0:01:02.30,0:01:05.04,Cap,,0,0,0,,{\c&HFFFFFF&}사실 이 대목을 줄인 표현입니다.

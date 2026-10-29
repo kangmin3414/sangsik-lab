@@ -1,0 +1,139 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/jua/index.css">
+<style>
+html,body{margin:0;background:#000}
+#wrap{position:relative;width:1280px;height:720px;overflow:hidden}
+svg{display:block}
+#t{position:absolute;left:0;right:0;top:14px;text-align:center;font-family:'Jua',sans-serif;font-size:172px;line-height:1.05;color:#fff;
+  -webkit-text-stroke:22px #0E0E10;paint-order:stroke fill;letter-spacing:-1px;
+  text-shadow:0 9px 0 rgba(0,0,0,.6),0 0 46px rgba(0,0,0,.7);transform:rotate(-1.2deg)}
+</style></head>
+<body><div id="wrap"><svg id="s" width="1280" height="720" viewBox="0 0 1280 720"></svg><div id="t"></div></div>
+<script>
+const P = new URLSearchParams(location.hash.slice(1));
+const TEXT = P.get('text');
+if (TEXT) document.getElementById('t').textContent = TEXT;
+let seed = 21;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114';
+const d = `<defs>
+<linearGradient id="wall" x1="0" y1="0" x2="0" y2="720" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#02040A"/><stop offset=".55" stop-color="#0A1226"/><stop offset="1" stop-color="#070B18"/></linearGradient>
+<radialGradient id="screenGlow" cx="930" cy="470" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9FE3FF" stop-opacity=".55"/><stop offset=".35" stop-color="#4FA8FF" stop-opacity=".22"/><stop offset="1" stop-color="#2A5CFF" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".78" cy=".42" r=".95"><stop offset="0" stop-color="#F4FBFF"/><stop offset=".38" stop-color="#DCE8F6"/><stop offset=".72" stop-color="#8E9DBB"/><stop offset="1" stop-color="#3E4762"/></radialGradient>
+<radialGradient id="handG" cx=".8" cy=".4" r=".9"><stop offset="0" stop-color="#F4FBFF"/><stop offset=".55" stop-color="#C9D7EA"/><stop offset="1" stop-color="#5E6A88"/></radialGradient>
+<linearGradient id="teeG" x1="200" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5A2A12"/><stop offset=".6" stop-color="#A2532A"/><stop offset="1" stop-color="#E08A5A"/></linearGradient>
+<linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2FBFF"/><stop offset="1" stop-color="#9FDCFF"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#BFE6FF" stop-opacity=".16"/><stop offset=".5" stop-color="#BFE6FF" stop-opacity=".05"/><stop offset="1" stop-color="#BFE6FF" stop-opacity=".22"/></linearGradient>
+<linearGradient id="table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2A22"/><stop offset="1" stop-color="#140E0C"/></linearGradient>
+<linearGradient id="eyeW" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9D3E2"/><stop offset=".6" stop-color="#FAFCFF"/><stop offset="1" stop-color="#E4F2FF"/></linearGradient>
+<radialGradient id="drop" cx=".65" cy=".35" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#BFE6FF"/><stop offset="1" stop-color="#6FB6E8"/></radialGradient>
+<radialGradient id="vig" cx="700" cy="430" r="820" gradientUnits="userSpaceOnUse"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".8"/></radialGradient>
+<linearGradient id="topDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>
+<radialGradient id="moonGlow"><stop offset="0" stop-color="#FFF2C0" stop-opacity=".5"/><stop offset="1" stop-color="#FFF2C0" stop-opacity="0"/></radialGradient>
+<radialGradient id="redGlow"><stop offset="0" stop-color="#FF3B3B" stop-opacity=".5"/><stop offset="1" stop-color="#FF3B3B" stop-opacity="0"/></radialGradient>
+<filter id="b1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1"/></filter>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b24" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="24"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse rx="192" ry="180"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="-22" cy="6" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="jarC"><path id="jarP" d="M830 360 Q830 330 860 330 L1010 330 Q1040 330 1040 360 L1040 610 Q1040 640 1010 640 L860 640 Q830 640 830 610 Z"/></clipPath>
+<clipPath id="scrC"><rect x="-56" y="-104" width="112" height="208" rx="16"/></clipPath>
+<clipPath id="teeC"><path id="teeP" d="M150 760 L170 668 Q190 612 270 596 Q370 582 470 596 Q540 610 566 660 L600 760 Z"/></clipPath>
+</defs>`;
+let g = '';
+g += `<rect width="1280" height="720" fill="url(#wall)"/>`;
+// window with moon (left)
+g += `<g filter="url(#b1)"><rect x="40" y="210" width="230" height="250" rx="10" fill="#0B1634" stroke="#000" stroke-width="10"/>`;
+for (let i = 0; i < 12; i++) g += `<circle cx="${(60 + rnd() * 190).toFixed(1)}" cy="${(230 + rnd() * 200).toFixed(1)}" r="${(0.8 + rnd() * 1.6).toFixed(1)}" fill="#fff" opacity="${(.3 + rnd() * .5).toFixed(2)}"/>`;
+g += `<circle cx="200" cy="270" r="26" fill="#FFF2C0"/><circle cx="212" cy="262" r="24" fill="#0B1634"/><circle cx="200" cy="270" r="90" fill="url(#moonGlow)"/>`;
+g += `<line x1="155" y1="210" x2="155" y2="460" stroke="#000" stroke-width="8"/><line x1="40" y1="335" x2="270" y2="335" stroke="#000" stroke-width="8"/></g>`;
+// distant apartment lights in the window
+for (let i = 0; i < 8; i++) g += `<rect x="${(60 + rnd() * 180).toFixed(1)}" y="${(380 + rnd() * 60).toFixed(1)}" width="6" height="5" fill="#FFD27A" opacity=".6"/>`;
+// screen glow on the room
+g += `<rect width="1280" height="720" fill="url(#screenGlow)"/>`;
+// table
+g += `<path d="M700 640 L1280 640 L1280 720 L660 720 Z" fill="url(#table)"/><path d="M700 640 L1280 640" stroke="#6E8FB8" stroke-width="3" opacity=".5"/>`;
+g += `<ellipse cx="935" cy="646" rx="170" ry="16" fill="#9FE3FF" opacity=".25" filter="url(#b8)"/>`;
+// digital clock 02:00
+g += `<rect x="1110" y="560" width="150" height="70" rx="12" fill="#0A0A0E" stroke="#000" stroke-width="5"/><circle cx="1185" cy="595" r="80" fill="url(#redGlow)"/><text x="1185" y="613" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="44" fill="#FF4D4D">02:00</text>`;
+
+// ---------- jar with the phone inside ----------
+let j = '';
+j += `<g transform="translate(935 485) rotate(-4)">`;
+j += `<circle r="150" fill="#9FE3FF" opacity=".35" filter="url(#b24)"/>`;
+j += `<rect x="-64" y="-112" width="128" height="224" rx="22" fill="#18233A" stroke="${INK}" stroke-width="7"/>`;
+j += `<rect x="-56" y="-104" width="112" height="208" rx="16" fill="url(#screen)"/>`;
+j += `<g clip-path="url(#scrC)">`;
+[['메시지', '#FF5FA2', -70], ['좋아요', '#F7E733', -20], ['단톡방', '#3DF2B0', 30]].forEach(([tx, c, y]) => { j += `<rect x="-48" y="${y}" width="96" height="40" rx="10" fill="#fff" stroke="#B9D3E3" stroke-width="2"/><circle cx="-30" cy="${y + 20}" r="11" fill="${c}"/><rect x="-14" y="${y + 10}" width="50" height="7" rx="3.5" fill="#6F86A3"/><rect x="-14" y="${y + 23}" width="36" height="6" rx="3" fill="#B9C8DA"/>`; });
+j += `</g>`;
+j += `<rect x="-16" y="-108" width="32" height="7" rx="3.5" fill="#0A0F18"/>`;
+j += `<g transform="translate(58 -108)"><circle r="30" fill="#FF3B3B" stroke="${INK}" stroke-width="5"/><text x="0" y="10" text-anchor="middle" font-family="'Noto Sans KR','Noto Sans CJK KR',sans-serif" font-weight="900" font-size="26" fill="#fff">99+</text></g>`;
+j += `</g>`;
+g += j;
+// glass jar over the phone
+g += `<use href="#jarP" fill="url(#glass)" stroke="#CFEFFF" stroke-width="5" opacity=".95"/>`;
+g += `<path d="M852 370 L852 600" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".35"/><path d="M1020 380 L1020 520" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".5"/>`;
+g += `<rect x="818" y="300" width="234" height="40" rx="10" fill="#5A6478" stroke="${INK}" stroke-width="6"/><rect x="826" y="306" width="218" height="10" rx="5" fill="#9AA8C0" opacity=".7"/>`;
+// padlock on the lid
+g += `<g transform="translate(935 300)"><path d="M-22 0 L-22 -26 Q0 -54 22 -26 L22 0" fill="none" stroke="#C9D3E2" stroke-width="10"/><rect x="-34" y="-6" width="68" height="54" rx="10" fill="#F7E733" stroke="${INK}" stroke-width="6"/><circle cx="0" cy="16" r="7" fill="${INK}"/><rect x="-3" y="18" width="6" height="16" fill="${INK}"/></g>`;
+// light dust
+for (let i = 0; i < 30; i++) { const x = 640 + rnd() * 560, y = 220 + rnd() * 420; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.8 + rnd() * 1.6).toFixed(1)}" fill="#CFF0FF" opacity="${(.25 + rnd() * .5).toFixed(2)}"/>`; }
+
+// ---------- ZERO ----------
+// body (orange tee, mostly in shadow)
+g += `<use href="#teeP" fill="url(#teeG)"/>`;
+g += `<g clip-path="url(#teeC)"><path d="M560 640 L600 760" stroke="#9FE3FF" stroke-width="16" opacity=".5" filter="url(#b4)"/><ellipse cx="370" cy="600" rx="170" ry="34" fill="#000" opacity=".45" filter="url(#b8)"/></g>`;
+g += `<use href="#teeP" fill="none" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+g += `<path d="M300 610 Q370 636 440 610" fill="none" stroke="${INK}" stroke-width="16" stroke-linecap="round"/><path d="M300 610 Q370 636 440 610" fill="none" stroke="#7A3A1A" stroke-width="7" stroke-linecap="round"/>`;
+// reaching arm (sleeve + stick arm + hand)
+g += `<path d="M520 640 Q556 622 584 624 L596 668 Q566 670 540 684 Z" fill="url(#teeG)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+g += `<path d="M590 646 Q690 628 772 566" fill="none" stroke="${INK}" stroke-width="18" stroke-linecap="round"/>`;
+// tremble lines
+g += `<g stroke="#CFEFFF" stroke-width="5" stroke-linecap="round" opacity=".7"><path d="M770 508 l14 -14"/><path d="M800 520 l18 -6"/><path d="M748 500 l4 -18"/></g>`;
+// open reaching hand
+g += `<g transform="translate(786 556) rotate(-30)"><path d="M-30 18 Q-40 -10 -24 -26 Q-22 -46 -6 -44 Q2 -60 18 -50 Q34 -54 36 -36 Q52 -30 46 -8 Q50 20 24 34 Q-6 46 -30 18 Z" fill="url(#handG)" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M-6 -42 L-2 -14 M18 -48 L16 -16 M38 -32 L30 -8" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" fill="none"/></g>`;
+
+// head
+let h = '';
+h += `<ellipse rx="192" ry="180" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)">
+  <ellipse cx="-40" cy="200" rx="230" ry="80" fill="#1A2033" opacity=".55" filter="url(#b14)"/>
+  <ellipse cx="-170" cy="0" rx="80" ry="200" fill="#0A0E1A" opacity=".45" filter="url(#b24)"/>
+  <ellipse cx="110" cy="-110" rx="60" ry="24" transform="rotate(28 110 -110)" fill="#fff" opacity=".7" filter="url(#b8)"/>
+</g>`;
+h += `<ellipse rx="192" ry="180" fill="#8FE0FF" mask="url(#rimR)" opacity=".95"/>`;
+h += `<path d="M132 -132 Q158 -104 168 -66" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>`;
+h += `<ellipse rx="192" ry="180" fill="none" stroke="${INK}" stroke-width="10"/>`;
+// sweat beads + drops
+[[-80, -110, 4], [40, -130, 3.5], [-130, -60, 4], [120, -50, 4.5], [-20, -150, 3]].forEach(([x, y, r]) => { h += `<circle cx="${x}" cy="${y}" r="${r}" fill="#CFEAFF" stroke="#6E8FB0" stroke-width="1.2"/><circle cx="${x + r * .3}" cy="${y - r * .35}" r="${r * .35}" fill="#fff"/>`; });
+const drop = (x, y, s, rot) => `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -26 Q16 0 13 12 Q9 26 0 26 Q-9 26 -13 12 Q-16 0 0 -26 Z" fill="url(#drop)" stroke="${INK}" stroke-width="3.5"/><ellipse cx="4" cy="8" rx="3.5" ry="7" fill="#fff"/></g>`;
+h += drop(-180, -20, 1.1, 10) + drop(176, 30, 0.9, -12) + drop(-150, 90, 0.75, 6);
+// eye bags
+[-1, 1].forEach(sx => { const cx = 66 * sx; h += `<path d="M${cx - 40} 78 Q${cx} 98 ${cx + 40} 78" fill="none" stroke="#6B4E8C" stroke-width="7" stroke-linecap="round" opacity=".75"/><path d="M${cx - 30} 94 Q${cx} 108 ${cx + 30} 94" fill="none" stroke="#6B4E8C" stroke-width="4" stroke-linecap="round" opacity=".45"/>`; });
+// wide eyes, tiny pupils glued to the phone (right)
+[-1, 1].forEach(sx => {
+  const cx = 66 * sx;
+  h += `<ellipse cx="${cx}" cy="22" rx="44" ry="52" fill="url(#eyeW)" stroke="${INK}" stroke-width="6.5"/>`;
+  h += `<path d="M${cx - 30} 4 Q${cx - 20} 14 ${cx - 26} 30" stroke="#E88A9A" stroke-width="2" fill="none" opacity=".7"/><path d="M${cx - 34} 36 Q${cx - 22} 38 ${cx - 18} 50" stroke="#E88A9A" stroke-width="2" fill="none" opacity=".6"/>`;
+  h += `<circle cx="${cx + 20}" cy="20" r="16" fill="#0B0B10"/><rect x="${cx + 22}" y="10" width="7" height="10" rx="1.5" fill="#BFF0FF"/><circle cx="${cx + 14}" cy="28" r="2.5" fill="#fff" opacity=".8"/>`;
+});
+// worried brows (inner ends raised)
+h += `<path d="M-140 -42 Q-96 -66 -32 -78" fill="none" stroke="${INK}" stroke-width="22" stroke-linecap="round"/>`;
+h += `<path d="M32 -78 Q96 -66 140 -42" fill="none" stroke="${INK}" stroke-width="22" stroke-linecap="round"/>`;
+// biting lip
+h += `<path d="M-44 122 Q-22 112 0 120 Q22 128 44 116" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
+h += `<path d="M-14 119 L-14 134 Q-7 138 0 134 L0 121 M0 121 L0 134 Q7 138 14 134 L14 122" fill="#fff" stroke="${INK}" stroke-width="4.5" stroke-linejoin="round"/>`;
+g += `<g transform="translate(400 420) rotate(7)">${h}</g>`;
+
+// grade
+g += `<rect width="1280" height="240" fill="url(#topDark)"/>`;
+g += `<rect width="1280" height="720" fill="url(#vig)"/>`;
+g += `<rect width="1280" height="720" filter="url(#grain)" opacity=".15" style="mix-blend-mode:overlay"/>`;
+document.getElementById('s').innerHTML = d + g;
+</script>
+</body></html>

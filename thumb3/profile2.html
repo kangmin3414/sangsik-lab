@@ -1,0 +1,114 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/jua/index.css">
+<style>html,body{margin:0;background:#000}#wrap{width:800px;height:800px;overflow:hidden}svg{display:block}</style></head>
+<body><div id="wrap"><svg id="s" width="800" height="800" viewBox="0 0 800 800"></svg></div>
+<script>
+const CIRCLE = location.hash.includes('circle');
+let seed = 11;
+const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const INK = '#111114';
+let d = `<defs>
+<radialGradient id="bg" cx="400" cy="340" r="560" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2E3A5A"/><stop offset=".45" stop-color="#151E33"/><stop offset="1" stop-color="#05070E"/></radialGradient>
+<radialGradient id="glow" cx="400" cy="340" r="330" gradientUnits="userSpaceOnUse"><stop offset=".6" stop-color="#FFB547" stop-opacity="0"/><stop offset=".8" stop-color="#FFB547" stop-opacity=".2"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient>
+<radialGradient id="headG" cx=".5" cy=".3" r=".85"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".5" stop-color="#FCF7EF"/><stop offset=".78" stop-color="#EDE5DC"/><stop offset="1" stop-color="#B9B4C2"/></radialGradient>
+<radialGradient id="handG" cx=".45" cy=".3" r=".9"><stop offset="0" stop-color="#FFFEFA"/><stop offset=".55" stop-color="#F6F0E7"/><stop offset="1" stop-color="#B8B4C4"/></radialGradient>
+<linearGradient id="tee" x1="140" y1="0" x2="660" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E9773A"/><stop offset=".5" stop-color="#FF9A55"/><stop offset="1" stop-color="#E9773A"/></linearGradient>
+<linearGradient id="mug" x1="328" y1="0" x2="472" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#16B488"/><stop offset=".35" stop-color="#3DF2B0"/><stop offset=".6" stop-color="#7DFFD0"/><stop offset="1" stop-color="#19A57E"/></linearGradient>
+<radialGradient id="coffee" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#9A5A32"/><stop offset="1" stop-color="#5A321C"/></radialGradient>
+<filter id="b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter>
+<filter id="b4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="b8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+<filter id="b14" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<filter id="b22" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .5"/></feComponentTransfer></filter>
+<clipPath id="headC"><ellipse rx="192" ry="180"/></clipPath>
+<mask id="rimR" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="-14" cy="10" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<mask id="rimL" maskContentUnits="userSpaceOnUse"><rect x="-260" y="-260" width="520" height="520" fill="#000"/><ellipse rx="192" ry="180" fill="#fff"/><ellipse cx="14" cy="10" rx="192" ry="180" fill="#000" filter="url(#b4)"/></mask>
+<clipPath id="mouthC"><path id="mouthP" d="M-72 88 Q0 98 72 88 Q64 170 0 174 Q-64 170 -72 88 Z"/></clipPath>
+<clipPath id="teeC"><path id="teeP" d="M140 800 L160 640 Q178 560 260 530 Q400 498 540 530 Q622 560 640 640 L660 800 Z"/></clipPath>
+<clipPath id="mugC"><path id="mugP" d="M330 568 L338 700 Q340 720 362 720 L438 720 Q460 720 462 700 L470 568 Z"/></clipPath>
+<clipPath id="circ"><circle cx="400" cy="400" r="400"/></clipPath>
+<radialGradient id="vig" cx="400" cy="400" r="560" gradientUnits="userSpaceOnUse"><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+</defs>`;
+let g = '';
+g += `<rect width="800" height="800" fill="url(#bg)"/>`;
+for (let i = 0; i < 60; i++) { const x = rnd() * 800, y = rnd() * 800, r = rnd() * 1.6 + .4; g += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#FFE2AE" opacity="${(.12 + rnd() * .35).toFixed(2)}"/>`; }
+// glowing ring
+g += `<circle cx="400" cy="340" r="330" fill="url(#glow)"/>`;
+g += `<circle cx="400" cy="340" r="262" fill="none" stroke="#FFA93A" stroke-width="40" opacity=".45" filter="url(#b22)"/>`;
+g += `<circle cx="400" cy="340" r="262" fill="none" stroke="#FFC766" stroke-width="12" opacity=".9" filter="url(#b4)"/>`;
+g += `<circle cx="400" cy="340" r="262" fill="none" stroke="#FFF4D8" stroke-width="3.5"/>`;
+g += `<ellipse cx="400" cy="350" rx="230" ry="210" fill="#FFB866" opacity=".22" filter="url(#b22)"/>`;
+
+// ---------- thin t-shirt (short sleeves) ----------
+const sleeve = (sx) => { const m = v => 400 + (v - 400) * sx; return `<path d="M${m(196)} 590 Q${m(150)} 630 ${m(126)} 700 L${m(196)} 726 Q${m(206)} 690 ${m(226)} 660 Z" fill="url(#tee)" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`; };
+g += sleeve(1) + sleeve(-1);
+g += `<use href="#teeP" fill="url(#tee)"/>`;
+g += `<g clip-path="url(#teeC)"><ellipse cx="400" cy="520" rx="200" ry="40" fill="#8A3A12" opacity=".45" filter="url(#b8)"/>
+  <path d="M170 640 Q186 580 250 548" stroke="#FFD2A6" stroke-width="10" fill="none" opacity=".5" filter="url(#b4)"/><path d="M630 640 Q614 580 550 548" stroke="#FFD2A6" stroke-width="10" fill="none" opacity=".5" filter="url(#b4)"/>
+  <path d="M250 800 Q262 720 248 660" stroke="#B9531F" stroke-width="5" fill="none" opacity=".5"/><path d="M550 800 Q538 720 552 660" stroke="#B9531F" stroke-width="5" fill="none" opacity=".5"/></g>`;
+g += `<use href="#teeP" fill="none" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+// crew-neck rib
+g += `<path d="M292 514 Q400 552 508 514" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/><path d="M292 514 Q400 552 508 514" fill="none" stroke="#D9692E" stroke-width="9" stroke-linecap="round"/>`;
+
+// ---------- head ----------
+let h = '';
+h += `<ellipse rx="192" ry="180" fill="url(#headG)"/>`;
+h += `<g clip-path="url(#headC)">
+  <ellipse cx="0" cy="206" rx="220" ry="76" fill="#6E6680" opacity=".35" filter="url(#b14)"/>
+  <ellipse cx="-124" cy="66" rx="40" ry="22" fill="#FF6E7E" opacity=".45" filter="url(#b8)"/>
+  <ellipse cx="124" cy="66" rx="40" ry="22" fill="#FF6E7E" opacity=".45" filter="url(#b8)"/>
+  <ellipse cx="68" cy="-116" rx="62" ry="25" transform="rotate(20 68 -116)" fill="#fff" opacity=".85" filter="url(#b8)"/>
+</g>`;
+h += `<ellipse rx="192" ry="180" fill="#FFB04A" mask="url(#rimR)" opacity=".85"/>`;
+h += `<ellipse rx="192" ry="180" fill="#FFB04A" mask="url(#rimL)" opacity=".7"/>`;
+h += `<path d="M92 -144 Q124 -122 138 -90" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>`;
+h += `<ellipse rx="192" ry="180" fill="none" stroke="${INK}" stroke-width="10"/>`;
+// blush hatch
+[[-124, 66], [124, 66]].forEach(([x, y]) => { h += `<path d="M${x - 16} ${y + 6} l8 -12 M${x - 2} ${y + 6} l8 -12 M${x + 12} ${y + 6} l8 -12" stroke="#E2485E" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>`; });
+// happy closed eyes + lifted brows
+h += `<path d="M-100 30 Q-64 -8 -28 30" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+h += `<path d="M28 30 Q64 -8 100 30" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+h += `<path d="M-120 -42 Q-80 -70 -38 -50" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+h += `<path d="M38 -50 Q80 -70 120 -42" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round"/>`;
+// big open smile
+h += `<use href="#mouthP" fill="#5A1E2A"/>`;
+h += `<g clip-path="url(#mouthC)"><rect x="-80" y="80" width="160" height="24" fill="#fff"/><ellipse cx="0" cy="168" rx="40" ry="24" fill="#FF7E8E"/></g>`;
+h += `<use href="#mouthP" fill="none" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+g += `<g transform="translate(400 340) rotate(4)">${h}</g>`;
+
+// ---------- arms (stick limbs) ----------
+g += `<g fill="none" stroke="${INK}" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M162 714 Q196 778 262 778 Q310 768 334 692"/>
+  <path d="M638 714 Q606 778 548 778 Q506 764 498 684"/>
+</g>`;
+// ---------- mug ----------
+g += `<g transform="translate(0 20)">`;
+g += `<path d="M468 598 Q522 594 520 640 Q518 688 464 684" fill="none" stroke="${INK}" stroke-width="26" stroke-linecap="round"/>`;
+g += `<path d="M468 598 Q522 594 520 640 Q518 688 464 684" fill="none" stroke="#2FD9A0" stroke-width="13" stroke-linecap="round"/>`;
+g += `<use href="#mugP" fill="url(#mug)"/>`;
+g += `<g clip-path="url(#mugC)"><rect x="440" y="560" width="40" height="170" fill="#0E7E5E" opacity=".35"/><path d="M352 590 L358 700" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".55"/></g>`;
+g += `<use href="#mugP" fill="none" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
+g += `<text x="402" y="690" text-anchor="middle" font-family="Jua, sans-serif" font-size="92" fill="#fff" stroke="${INK}" stroke-width="10" paint-order="stroke fill">?</text>`;
+// rim + coffee + latte heart
+g += `<ellipse cx="400" cy="568" rx="70" ry="17" fill="#8CFFD9" stroke="${INK}" stroke-width="7"/>`;
+g += `<ellipse cx="400" cy="570" rx="58" ry="11" fill="url(#coffee)"/>`;
+g += `<path d="M400 576 Q384 566 390 561 Q396 557 400 563 Q404 557 410 561 Q416 566 400 576 Z" fill="#F4E2C8"/>`;
+// hands
+const hand = (x, y, r, flip) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#handG)" stroke="${INK}" stroke-width="7"/><path d="M${x - 12 * flip} ${y - 14} Q${x - 2 * flip} ${y - 6} ${x - 12 * flip} ${y + 2} M${x - 12 * flip} ${y + 4} Q${x - 2 * flip} ${y + 12} ${x - 12 * flip} ${y + 20}" fill="none" stroke="${INK}" stroke-width="4.5" stroke-linecap="round" opacity=".8"/>`;
+g += hand(334, 650, 32, -1) + hand(500, 644, 32, 1);
+// steam: three small curls between rim and chin
+g += `<g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-width="6" opacity=".7" filter="url(#b2)">
+  <path d="M376 556 q-9 -10 0 -20 q9 -10 0 -20"/><path d="M400 552 q-9 -10 0 -20 q9 -10 0 -22"/><path d="M424 556 q-9 -10 0 -20 q9 -10 0 -20"/>
+</g>`;
+g += `</g>`;
+// sparkles
+const spark = (x, y, s, c) => `<path d="M${x} ${y - s} Q${x + s * .18} ${y - s * .18} ${x + s} ${y} Q${x + s * .18} ${y + s * .18} ${x} ${y + s} Q${x - s * .18} ${y + s * .18} ${x - s} ${y} Q${x - s * .18} ${y - s * .18} ${x} ${y - s} Z" fill="${c}"/>`;
+g += spark(140, 238, 22, '#FFD27A') + spark(664, 196, 17, '#7DFFD0') + spark(694, 420, 12, '#FFD27A') + spark(112, 452, 12, '#7DFFD0') + spark(612, 108, 9, '#FFF4D8');
+// grade
+g += `<rect width="800" height="800" filter="url(#grain)" opacity=".12" style="mix-blend-mode:overlay"/>`;
+g += `<rect width="800" height="800" fill="url(#vig)"/>`;
+if (CIRCLE) g = `<rect width="800" height="800" fill="#0F0F0F"/><g clip-path="url(#circ)">${g}</g>`;
+document.getElementById('s').innerHTML = d + g;
+</script></body></html>

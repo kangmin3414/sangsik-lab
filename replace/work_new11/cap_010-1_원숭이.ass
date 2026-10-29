@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:04.23,Cap,,0,0,0,,{\c&HFFFFFF&}붓다는 이런 마음을 숲속 원숭이에 비유했습니다.
+Dialogue: 0,0:00:04.25,0:00:09.65,Cap,,0,0,0,,{\c&HFFFFFF&}가지 하나를 놓자마자, 곧바로 다른 가지를 잡는 원숭이.
+Dialogue: 0,0:00:09.67,0:00:12.26,Cap,,0,0,0,,{\c&HFFFFFF&}원숭이를 혼낼 필요는 없습니다.
+Dialogue: 0,0:00:12.28,0:00:14.61,Cap,,0,0,0,,{\c&H7AE2FF&}아, 다른 가지로 갔네.
+Dialogue: 0,0:00:14.63,0:00:18.31,Cap,,0,0,0,,{\c&HFFFFFF&}알아차리고, 숟가락으로 돌아오면 됩니다.
+Dialogue: 0,0:00:18.33,0:00:23.30,Cap,,0,0,0,,{\c&HFFFFFF&}천천히, 한 숟가락. 밥의 단맛. 김치의 아삭함.
+Dialogue: 0,0:00:23.32,0:00:27.69,Cap,,0,0,0,,{\c&HFFFFFF&}제로는 처음으로 점심 맛을 느낍니다.
+Dialogue: 0,0:00:27.71,0:00:30.38,Cap,,0,0,0,,{\c&HFFFFFF&}하버드 연구팀이 {\c&H33E7F7&}2,250명{\c&HFFFFFF&}에게,
+Dialogue: 0,0:00:30.40,0:00:33.36,Cap,,0,0,0,,{\c&HFFFFFF&}하루 중 아무 때나 물었습니다.
+Dialogue: 0,0:00:33.38,0:00:35.78,Cap,,0,0,0,,{\c&H7AE2FF&}지금 뭘 하고 있나요?
+Dialogue: 0,0:00:35.80,0:00:38.08,Cap,,0,0,0,,{\c&H7AE2FF&}마음은 거기 있나요?
+Dialogue: 0,0:00:38.10,0:00:41.88,Cap,,0,0,0,,{\c&HFFFFFF&}깨어 있는 시간의 {\c&H33E7F7&}46.9%{\c&HFFFFFF&}. 거의 절반을,
+Dialogue: 0,0:00:41.90,0:00:46.47,Cap,,0,0,0,,{\c&HFFFFFF&}사람들은 딴생각으로 보냈습니다. 그리고 딴생각할 때,
+Dialogue: 0,0:00:46.49,0:00:48.91,Cap,,0,0,0,,{\c&HFFFFFF&}대체로 덜 행복했죠.
+Dialogue: 0,0:00:48.93,0:00:53.45,Cap,,0,0,0,,{\c&HFFFFFF&}행복은 다음 일이 아니라, 지금 하는 일 안에 있었습니다.

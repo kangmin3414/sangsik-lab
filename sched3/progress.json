@@ -1,0 +1,36 @@
+{
+ "rescheduled_2026-10-25": "all 39 existing videos moved per plan3.json (LF-006 -> 10/27 18:00); verified read-back OK",
+ "LF-007": {
+  "id": "BE-y_GIoxyI",
+  "when": "2026-10-30 18:00",
+  "title": "데카르트가 모든 걸 의심한 진짜 이유 | 가짜 뉴스 시대의 생각법 5가지",
+  "thumb": "명화",
+  "subs": "ko srt v5",
+  "endscreen": "imported from sugar LF",
+  "playlist": "🏠 일상 만약에",
+  "tags": 21
+ },
+ "LF-008": {
+  "id": "a7s5Ot9CKt4",
+  "when": "2026-11-02 18:00",
+  "note": "end screen save to verify"
+ },
+ "LF-009": {
+  "id": "SRqjtupG8Z8",
+  "when": "2026-11-05 18:00"
+ },
+ "LF-010": {
+  "id": "KzA7iMcgafI",
+  "when": "2026-11-08 18:00"
+ },
+ "LF-011": {
+  "id": "NlnVZppG1d8",
+  "when": "2026-11-11 18:00",
+  "file": "v2"
+ },
+ "LF-012": {
+  "id": "wlCrcVEqozo",
+  "when": "2026-11-14 18:00"
+ },
+ "verified_2026-10-25_final": "66/66 planned slots match Studio (LF-011/012 were left as drafts; scheduled 11/11, 11/14 18:00 on re-check)"
+}

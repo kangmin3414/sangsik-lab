@@ -1,0 +1,335 @@
+[
+ {
+  "key": "003-3",
+  "name": "003-3_유령진동",
+  "old_id": "PjC2YUDHEcE",
+  "when": "2026-10-23 19:00",
+  "title_prefix": "주머니가 부르르",
+  "mp4": "replace/out/쇼츠_003-3_유령진동.mp4",
+  "thumb": "replace/out/썸네일_003-3_유령진동.png"
+ },
+ {
+  "key": "005-2",
+  "name": "005-2_걷기",
+  "old_id": "1YVkMKxtUcc",
+  "when": "2026-10-24 12:00",
+  "title_prefix": "니체가 매일 산길을",
+  "mp4": "replace/out/쇼츠_005-2_걷기.mp4",
+  "thumb": "thumbs22/out/썸네일_005-2_걷기_v3.png"
+ },
+ {
+  "key": "005-3",
+  "name": "005-3_동조",
+  "old_id": "m95aPCcl0XE",
+  "when": "2026-10-24 19:00",
+  "title_prefix": "정답이 뻔한데도 75%가",
+  "mp4": "replace/out/쇼츠_005-3_동조.mp4",
+  "thumb": "replace/out/썸네일_005-3_동조.png"
+ },
+ {
+  "key": "005-5",
+  "name": "005-5_영원회귀",
+  "old_id": "DKeKMuwlHb0",
+  "when": "2026-10-25 12:00",
+  "title_prefix": "오늘이 영원히 반복된다면",
+  "mp4": "replace/out/쇼츠_005-5_영원회귀.mp4",
+  "thumb": "thumbs22/out/썸네일_005-5_영원회귀_v3.png"
+ },
+ {
+  "key": "005-4",
+  "name": "005-4_시련",
+  "old_id": "8HgKNxXunFc",
+  "when": "2026-10-25 19:00",
+  "title_prefix": "\"나를 죽이지 못하는 것은",
+  "mp4": "replace/out/쇼츠_005-4_시련.mp4",
+  "thumb": "replace/out/썸네일_005-4_시련.png"
+ },
+ {
+  "key": "004-3",
+  "name": "004-3_당충전",
+  "old_id": "YV5hteXHCFI",
+  "when": "2026-10-26 19:00",
+  "title_prefix": "피곤할 때 단 거 먹으면",
+  "mp4": "replace/out/쇼츠_004-3_당충전.mp4",
+  "thumb": "replace/out/썸네일_004-3_당충전.png"
+ },
+ {
+  "key": "003-1",
+  "name": "003-1_과의존",
+  "old_id": "0vMNm7KJvak",
+  "when": "2026-10-27 19:00",
+  "title_prefix": "청소년 10명 중 4명이",
+  "mp4": "replace/out/쇼츠_003-1_과의존.mp4",
+  "thumb": "replace/out/썸네일_003-1_과의존.png"
+ },
+ {
+  "key": "004-1",
+  "name": "004-1_탄산",
+  "old_id": "3qLJSwmsCCY",
+  "when": "2026-10-28 19:00",
+  "title_prefix": "탄산음료 한 캔에",
+  "mp4": "replace/out/쇼츠_004-1_탄산.mp4",
+  "thumb": "replace/out/썸네일_004-1_탄산.png"
+ },
+ {
+  "key": "003-5",
+  "name": "003-5_수면",
+  "old_id": "bTZ2pFKttIA",
+  "when": "2026-10-29 19:00",
+  "title_prefix": "자기 전 태블릿",
+  "mp4": "replace/out/쇼츠_003-5_수면.mp4",
+  "thumb": "replace/out/썸네일_003-5_수면.png"
+ },
+ {
+  "key": "004-5",
+  "name": "004-5_간",
+  "old_id": "elB4nu7yNtU",
+  "when": "2026-10-30 19:00",
+  "title_prefix": "설탕 끊은 9일, 간 지방이",
+  "mp4": "replace/out/쇼츠_004-5_간.mp4",
+  "thumb": "replace/out/썸네일_004-5_간.png"
+ },
+ {
+  "key": "005-1",
+  "name": "005-1_신은죽었다",
+  "old_id": "m-ZW9fYn_e0",
+  "when": "2026-10-31 12:00",
+  "title_prefix": "'신은 죽었다', 니체가",
+  "mp4": "replace/out/쇼츠_005-1_신은죽었다.mp4",
+  "thumb": "thumbs22/out/썸네일_005-1_신은죽었다_v3.png"
+ },
+ {
+  "key": "007v4-2",
+  "name": "007v4-2_지퍼",
+  "old_id": "379pg7gdm7A",
+  "when": "2026-10-31 19:00",
+  "title_prefix": "지퍼 원리, 설명할 수",
+  "mp4": "replace/out/쇼츠_007v4-2_지퍼.mp4",
+  "thumb": "replace/out/썸네일_007v4-2_지퍼.png"
+ },
+ {
+  "key": "005-6",
+  "name": "005-6_아모르파티",
+  "old_id": "6nv-cYOnTlQ",
+  "when": "2026-11-01 12:00",
+  "title_prefix": "'아모르 파티', 노래 말고",
+  "mp4": "replace/out/쇼츠_005-6_아모르파티.mp4",
+  "thumb": "thumbs22/out/썸네일_005-6_아모르파티_v3.png"
+ },
+ {
+  "key": "007v4-3",
+  "name": "007v4-3_방망이",
+  "old_id": "QRjsv2mSpZo",
+  "when": "2026-11-01 19:00",
+  "title_prefix": "방망이+공=1,100원",
+  "mp4": "replace/out/쇼츠_007v4-3_방망이.mp4",
+  "thumb": "replace/out/썸네일_007v4-3_방망이.png"
+ },
+ {
+  "key": "003-6",
+  "name": "003-6_SNS",
+  "old_id": "gd_Zpn_swxY",
+  "when": "2026-11-02 19:00",
+  "title_prefix": "페이스북 일주일 끊었더니",
+  "mp4": "replace/out/쇼츠_003-6_SNS.mp4",
+  "thumb": "replace/out/썸네일_003-6_SNS.png"
+ },
+ {
+  "key": "004-2",
+  "name": "004-2_금단",
+  "old_id": "z3fTRAAEJGY",
+  "when": "2026-11-03 19:00",
+  "title_prefix": "단 음료 끊은 사흘",
+  "mp4": "replace/out/쇼츠_004-2_금단.mp4",
+  "thumb": "replace/out/썸네일_004-2_금단.png"
+ },
+ {
+  "key": "003-7",
+  "name": "003-7_인터넷차단",
+  "old_id": "bDEAIhlbDDk",
+  "when": "2026-11-04 19:00",
+  "title_prefix": "모바일 인터넷 2주 끊자",
+  "mp4": "replace/out/쇼츠_003-7_인터넷차단.mp4",
+  "thumb": "replace/out/썸네일_003-7_인터넷차단.png"
+ },
+ {
+  "key": "004-4",
+  "name": "004-4_9일",
+  "old_id": "BSuDKZM6GD0",
+  "when": "2026-11-05 19:00",
+  "title_prefix": "설탕 뺀 9일, 혈압",
+  "mp4": "replace/out/쇼츠_004-4_9일.mp4",
+  "thumb": "replace/out/썸네일_004-4_9일.png"
+ },
+ {
+  "key": "003-2",
+  "name": "003-2_불안",
+  "old_id": "ni_ukEQ4ApU",
+  "when": "2026-11-06 19:00",
+  "title_prefix": "폰 없이 단 10분",
+  "mp4": "replace/out/쇼츠_003-2_불안.mp4",
+  "thumb": "replace/out/썸네일_003-2_불안.png"
+ },
+ {
+  "key": "007v4-8",
+  "name": "007v4-8_최선",
+  "old_id": "o5Qlx33MiNU",
+  "when": "2026-11-07 12:00",
+  "title_prefix": "최고만 고르면 덜 행복하다",
+  "mp4": "replace/out/쇼츠_007v4-8_최선.mp4",
+  "thumb": "thumbs22/out/썸네일_007v4-8_최선_v3.png"
+ },
+ {
+  "key": "007v4-6",
+  "name": "007v4-6_AI얼굴",
+  "old_id": "0wEKhNOaqZo",
+  "when": "2026-11-07 19:00",
+  "title_prefix": "진짜 얼굴 vs AI 얼굴",
+  "mp4": "replace/out/쇼츠_007v4-6_AI얼굴.mp4",
+  "thumb": "replace/out/썸네일_007v4-6_AI얼굴.png"
+ },
+ {
+  "key": "007v4-4",
+  "name": "007v4-4_10초",
+  "old_id": "B_-reMXdP88",
+  "when": "2026-11-08 12:00",
+  "title_prefix": "공유 버튼 누르기 전",
+  "mp4": "replace/out/쇼츠_007v4-4_10초.mp4",
+  "thumb": "thumbs22/out/썸네일_007v4-4_10초_v3.png"
+ },
+ {
+  "key": "008v4-7",
+  "name": "008v4-7_쉼",
+  "old_id": "_-CYOhVfanw",
+  "when": "2026-11-08 19:00",
+  "title_prefix": "쉬는 게 시간 낭비라고",
+  "mp4": "replace/out/쇼츠_008v4-7_쉼.mp4",
+  "thumb": "replace/out/썸네일_008v4-7_쉼.png"
+ },
+ {
+  "key": "004-6",
+  "name": "004-6_입맛",
+  "old_id": "5S-JwIWy2wg",
+  "when": "2026-11-09 19:00",
+  "title_prefix": "설탕 줄인 석 달",
+  "mp4": "replace/out/쇼츠_004-6_입맛.mp4",
+  "thumb": "replace/out/썸네일_004-6_입맛.png"
+ },
+ {
+  "key": "008v4-1",
+  "name": "008v4-1_쓸모",
+  "old_id": "8SDyjPHa4K4",
+  "when": "2026-11-14 12:00",
+  "title_prefix": "쉬는 날, 내 쓸모는",
+  "mp4": "replace/out/쇼츠_008v4-1_쓸모.mp4",
+  "thumb": "thumbs22/out/썸네일_008v4-1_쓸모_v3.png"
+ },
+ {
+  "key": "008v4-5",
+  "name": "008v4-5_상자",
+  "old_id": "E4IbdPiAPHc",
+  "when": "2026-11-14 19:00",
+  "title_prefix": "상자를 비우면 보이는 것",
+  "mp4": "replace/out/쇼츠_008v4-5_상자.mp4",
+  "thumb": "replace/out/썸네일_008v4-5_상자.png"
+ },
+ {
+  "key": "008v4-6",
+  "name": "008v4-6_나무",
+  "old_id": "-Q9rY0N171M",
+  "when": "2026-11-15 12:00",
+  "title_prefix": "쓸모없어서 크게 자란 나무",
+  "mp4": "replace/out/쇼츠_008v4-6_나무.mp4",
+  "thumb": "thumbs22/out/썸네일_008v4-6_나무_v3.png"
+ },
+ {
+  "key": "008v4-8",
+  "name": "008v4-8_오리",
+  "old_id": "AhKo4EXEjWU",
+  "when": "2026-11-15 19:00",
+  "title_prefix": "오리 다리는 짧은 게",
+  "mp4": "replace/out/쇼츠_008v4-8_오리.mp4",
+  "thumb": "replace/out/썸네일_008v4-8_오리.png"
+ },
+ {
+  "key": "006v3-7",
+  "name": "006v3-7_메멘토모리",
+  "old_id": "_VOquSp7j60",
+  "when": "2026-11-21 12:00",
+  "title_prefix": "죽음을 떠올리면 오히려",
+  "mp4": "replace/out/쇼츠_006v3-7_메멘토모리.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-7_메멘토모리_v3.png"
+ },
+ {
+  "key": "006v3-2",
+  "name": "006v3-2_걱정",
+  "old_id": "kDF2h_4Ub80",
+  "when": "2026-11-21 19:00",
+  "title_prefix": "걱정의 91%는",
+  "mp4": "replace/out/쇼츠_006v3-2_걱정.mp4",
+  "thumb": "replace/out/썸네일_006v3-2_걱정.png"
+ },
+ {
+  "key": "006v3-5",
+  "name": "006v3-5_거리두기",
+  "old_id": "vzJm82Skgdc",
+  "when": "2026-11-22 12:00",
+  "title_prefix": "남의 고민엔 현자",
+  "mp4": "replace/out/쇼츠_006v3-5_거리두기.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-5_거리두기_v3.png"
+ },
+ {
+  "key": "006v3-4",
+  "name": "006v3-4_초콜릿",
+  "old_id": "zxsF1Jv_hnM",
+  "when": "2026-11-22 19:00",
+  "title_prefix": "초콜릿을 일주일 끊었더니",
+  "mp4": "replace/out/쇼츠_006v3-4_초콜릿.mp4",
+  "thumb": "replace/out/썸네일_006v3-4_초콜릿.png"
+ },
+ {
+  "key": "006v3-8",
+  "name": "006v3-8_저녁성찰",
+  "old_id": "9sE90K89xXE",
+  "when": "2026-11-28 12:00",
+  "title_prefix": "자기 전 15분 돌아보기",
+  "mp4": "replace/out/쇼츠_006v3-8_저녁성찰.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-8_저녁성찰_v3.png"
+ },
+ {
+  "key": "006v3-6",
+  "name": "006v3-6_연인",
+  "old_id": "cRTZH7z_QJk",
+  "when": "2026-11-28 19:00",
+  "title_prefix": "연인을 못 만났다고",
+  "mp4": "replace/out/쇼츠_006v3-6_연인.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-6_연인_v3.png"
+ },
+ {
+  "key": "006v3-3",
+  "name": "006v3-3_아침",
+  "old_id": "e0CvP-scpbg",
+  "when": "2026-11-29 12:00",
+  "title_prefix": "로마 황제가 매일 아침",
+  "mp4": "replace/out/쇼츠_006v3-3_아침.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-3_아침_v3.png"
+ },
+ {
+  "key": "006v3-1",
+  "name": "006v3-1_스토아",
+  "old_id": "0ogfbJa4C5g",
+  "when": "2026-11-29 19:00",
+  "title_prefix": "황제·노예·부자가",
+  "mp4": "replace/out/쇼츠_006v3-1_스토아.mp4",
+  "thumb": "thumbs22/out/썸네일_006v3-1_스토아_v3.png"
+ },
+ {
+  "key": "007v4-5",
+  "name": "007v4-5_조각",
+  "old_id": "xTpXlyFSoDI",
+  "when": "2026-12-05 12:00",
+  "title_prefix": "시작이 어려운 건 게을러서가",
+  "mp4": "replace/out/쇼츠_007v4-5_조각.mp4",
+  "thumb": "thumbs22/out/썸네일_007v4-5_조각_v3.png"
+ }
+]

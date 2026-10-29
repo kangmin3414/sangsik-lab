@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}svg{display:block}</style>
+<script src="../shorts/engine.js"></script>
+</head>
+<body>
+<svg id="v" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const W = 1920, H = 1080;
+window.TL = window.TL || { duration: 10, lines: [] };
+const TEE = '#FF9A55';
+// ZERO, new look: no goggles, no vest — a plain orange t-shirt
+let STACHE = false, ROMAN = true; // ep.006: Zero wears a laurel wreath + toga sash during the Stoic week
+const Z = o => char(Object.assign({ goggles: 'none', vest: TEE, patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)', wreath: ROMAN, toga: ROMAN ? '#F4F1EA' : false }, o));
+// the three Stoics, same family as Zero
+const MA = o => char(Object.assign({ goggles: 'none', vest: '#7A3E8E', patch: false, tee: true, vshade: 'rgba(0,0,0,0.25)', hair: '#6B4A2E', beard: '#6B4A2E', wreath: true, toga: '#F4F1EA', togaStripe: '#7A3E8E' }, o)); // Marcus Aurelius, emperor
+const EP = o => char(Object.assign({ goggles: 'none', vest: '#9C7A55', patch: false, tee: true, vshade: 'rgba(0,0,0,0.22)', beard: '#9A9A9A' }, o)); // Epictetus, born a slave
+const SE = o => char(Object.assign({ goggles: 'none', vest: '#F2EEE4', patch: false, tee: true, vshade: 'rgba(0,0,0,0.12)', beard: '#B8B8B8', hair: '#B8B8B8', toga: '#F2EEE4', togaStripe: '#C8423A' }, o)); // Seneca, rich advisor
+E['화남'] = Object.assign(dotEyes(10, 12), { bL: [138, 140, 163, 156, 188, 168], bR: [212, 168, 237, 156, 262, 140], mouth: 'M184 242 Q200 228 216 242', mouthFill: 'none' });
+// Nietzsche himself, same family as Zero: swept hair, walrus moustache, dark coat
+const NZ = o => char(Object.assign({ goggles: 'none', vest: '#3B3F4E', patch: false, tee: true, vshade: 'rgba(0,0,0,0.28)', hair: '#5A4130', stache: '#5A4130', noMouth: true, collar: true, tie: '#1E2230' }, o));
+// extra expression + poses
+E['잠'] = { eyeL: 'M150 190 Q165 202 180 190', eyeR: 'M220 190 Q235 202 250 190', eyeFill: 'none', eyeSW: 8, bL: [142, 158, 164, 154, 186, 158], bR: [214, 158, 236, 154, 258, 158], mouth: 'M192 236 Q200 242 208 236', mouthFill: 'none' };
+const LEGS = { legL: P['서기'].legL, legR: P['서기'].legR, fL: P['서기'].fL, fR: P['서기'].fR, dy: 0 };
+P['폰보기'] = Object.assign({ armL: [[148, 285], [146, 346], [184, 326]], hL: [188, 322], armR: [[252, 285], [254, 346], [216, 326]], hR: [212, 322] }, LEGS);
+P['주머니'] = Object.assign({ armL: [[148, 285], [122, 345], [116, 398]], hL: [114, 406], armR: [[252, 285], [282, 340], [266, 394]], hR: [262, 400] }, LEGS);
+P['책상'] = Object.assign({ armL: [[148, 285], [146, 342], [178, 372]], hL: [182, 376], armR: [[252, 285], [258, 342], [228, 372]], hR: [224, 376] }, LEGS);
+P['폰넣기'] = Object.assign({ armL: [[148, 285], [122, 345], [116, 398]], hL: [114, 406], armR: [[252, 285], [304, 300], [346, 316]], hR: [352, 318] }, LEGS);
+const handG = (x, y, s, h) => [x + (h[0] - 200) * s, y + (h[1] - 560) * s];
+const env = t => (TL.env && TL.env[Math.floor(t * 24)]) || 0;
+
+function defs(t) {
+  const seed = Math.floor(t * 12) % 60;
+  return `<defs>
+<clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath>
+<clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+<filter id="boil" x="0" y="0" width="${W}" height="${H}" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>
+<radialGradient id="vig" cx=".5" cy=".5" r=".72"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></radialGradient>
+<linearGradient id="labG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B1626"/><stop offset="1" stop-color="#16294A"/></linearGradient>
+<linearGradient id="morning" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD0FF"/><stop offset="1" stop-color="#FFF1D6"/></linearGradient>
+<linearGradient id="sunset" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B6FB8"/><stop offset=".55" stop-color="#F59A6A"/><stop offset="1" stop-color="#FFD9A0"/></linearGradient>
+<linearGradient id="river" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7DB7E0"/><stop offset="1" stop-color="#4E86B8"/></linearGradient>
+<linearGradient id="cream" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4EFE4"/><stop offset="1" stop-color="#E9E1D0"/></linearGradient>
+<linearGradient id="nightRoom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#151B36"/><stop offset="1" stop-color="#232C52"/></linearGradient>
+<linearGradient id="dayRoom" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6EBDD"/><stop offset="1" stop-color="#EBDCC6"/></linearGradient>
+<linearGradient id="feedBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A1F4A"/><stop offset="1" stop-color="#3E2C63"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${MINT}" stop-opacity=".6"/><stop offset="1" stop-color="${MINT}" stop-opacity="0"/></radialGradient>
+<radialGradient id="warm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient>
+<radialGradient id="screenGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#8FDBFF" stop-opacity=".55"/><stop offset="1" stop-color="#8FDBFF" stop-opacity="0"/></radialGradient>
+<radialGradient id="redglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${RED}" stop-opacity=".5"/><stop offset="1" stop-color="${RED}" stop-opacity="0"/></radialGradient>
+<radialGradient id="amber" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFB547" stop-opacity=".7"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient>
+<linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6F7FF"/><stop offset="1" stop-color="#BFE6FF"/></linearGradient>
+<pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0 L0 0 0 60" fill="none" stroke="${MINT}" stroke-opacity=".08" stroke-width="2"/></pattern>
+<pattern id="hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="14" stroke="${INK}" stroke-width="2.4" opacity=".16"/></pattern>
+<pattern id="paper" width="200" height="200" patternUnits="userSpaceOnUse"><rect width="200" height="200" fill="none"/><circle cx="30" cy="40" r="1.6" fill="${INK}" opacity=".07"/><circle cx="140" cy="90" r="1.3" fill="${INK}" opacity=".06"/><circle cx="90" cy="160" r="1.8" fill="${INK}" opacity=".05"/></pattern>
+<pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="3" fill="#fff" opacity=".07"/></pattern>
+<clipPath id="leftHalf"><rect x="-600" y="-600" width="1560" height="2280"/></clipPath>
+<clipPath id="rightHalf"><rect x="960" y="-600" width="1560" height="2280"/></clipPath>
+<clipPath id="pclip"><rect x="-260" y="-270" width="520" height="460" rx="22"/></clipPath>
+<clipPath id="feedClip"><rect x="-52" y="-98" width="104" height="196" rx="14"/></clipPath>
+</defs>`;
+}
+const camT = (cx, cy, z) => `translate(${W / 2} ${H / 2}) scale(${f1(z * 1000) / 1000}) translate(${f1(-cx)} ${f1(-cy)})`;
+const flip = (x, inner) => `<g transform="translate(${f1(2 * x)} 0) scale(-1 1)">${inner}</g>`;
+const camLerp = (k, A, B) => { k = easeInOut(clamp(k, 0, 1)); return [lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k)]; };
+const BG = f => `<rect x="-600" y="-600" width="3120" height="2280" fill="${f}"/>`;
+
+/* ---------- shared pieces ---------- */
+function label(x, y, text, o = {}) {
+  const fs = o.size || 34, w = text.length * fs * 0.92 + 48, h = fs + 28;
+  return `<g transform="translate(${x} ${y})"><rect x="${-w / 2 + 5}" y="${-h / 2 + 7}" width="${w}" height="${h}" rx="${h / 2}" fill="${INK}" opacity=".3"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${o.bg || MINT}" stroke="${INK}" stroke-width="5"/><text x="0" y="${fs * 0.36}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="${fs}" fill="${o.color || NAVY}">${esc(text)}</text></g>`;
+}
+function bubble(x, y, w, h, inner, o = {}) { // thought cloud
+  let s = `<g transform="translate(${f1(x)} ${f1(y)})">`;
+  s += `<circle cx="${-w * 0.42}" cy="${h * 0.62}" r="12" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="${-w * 0.52}" cy="${h * 0.86}" r="7" fill="#fff" stroke="${INK}" stroke-width="4"/>`;
+  s += `<rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${o.bg || '#fff'}" stroke="${INK}" stroke-width="6"/>`;
+  return s + inner + `</g>`;
+}
+function phone(x, y, s, o = {}) {
+  let h = `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(o.rot || 0)}) scale(${f1(s * 1000) / 1000})">`;
+  if (o.glow) h += `<circle r="300" fill="url(#screenGlow)" opacity="${o.glow}"/>`;
+  h += `<rect x="-62" y="-112" width="124" height="224" rx="22" fill="#1F2D44" stroke="${INK}" stroke-width="${o.lw || 7}"/>`;
+  if (o.back) {
+    h += `<rect x="-46" y="-96" width="40" height="52" rx="12" fill="#121B2B" stroke="#0A0F18" stroke-width="3"/><circle cx="-26" cy="-82" r="9" fill="#0A0F18" stroke="#3A4A66" stroke-width="3"/><circle cx="-26" cy="-58" r="9" fill="#0A0F18" stroke="#3A4A66" stroke-width="3"/>`;
+  } else if (o.on) {
+    h += `<rect x="-52" y="-98" width="104" height="196" rx="14" fill="url(#screen)"/>`;
+    if (o.content) h += `<g clip-path="url(#feedClip)">${o.content}</g>`;
+    else for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) h += `<rect x="${-40 + j * 30}" y="${-80 + i * 34}" width="22" height="22" rx="6" fill="${[MINT, PINK, YEL, '#7CC7FF'][(i + j) % 4]}"/>`;
+  } else {
+    h += `<rect x="-52" y="-98" width="104" height="196" rx="14" fill="#0B0F18"/><path d="M-40 -80 L-10 -80" stroke="#fff" stroke-width="5" opacity=".18" stroke-linecap="round"/>`;
+  }
+  h += `<rect x="-14" y="-108" width="28" height="7" rx="3.5" fill="#0A0F18"/>`;
+  return h + `</g>`;
+}
+function hand(x, y, s) { return `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(22 * s)}" fill="#fff" stroke="${INK}" stroke-width="${f1(7 * s)}"/>`; }
+function studyTag(t, lt, text) { return pop(t, t - lt + 0.2, t + 999, 240, 150, label(0, 0, text, { size: 34, bg: YEL }), { rot: -3, bob: 3 }); }
+
+/* ---------- rooms ---------- */
+function windowNight(x, y, w, hh, t) {
+  let h = `<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="12" fill="#0B1430" stroke="${INK}" stroke-width="10"/>`;
+  for (let i = 0; i < 14; i++) h += `<circle cx="${x + 30 + (i * 97) % (w - 60)}" cy="${y + 30 + (i * 53) % (hh - 60)}" r="${2 + (i % 3)}" fill="#fff" opacity="${f1((0.4 + 0.5 * Math.abs(Math.sin(t * 1.3 + i))) * 100) / 100}"/>`;
+  h += `<circle cx="${x + w * 0.68}" cy="${y + hh * 0.34}" r="44" fill="#FFF2C0"/><circle cx="${x + w * 0.68 + 18}" cy="${y + hh * 0.34 - 10}" r="40" fill="#0B1430"/><circle cx="${x + w * 0.68}" cy="${y + hh * 0.34}" r="140" fill="url(#warm)" opacity=".35"/>`;
+  h += `<line x1="${x + w / 2}" y1="${y}" x2="${x + w / 2}" y2="${y + hh}" stroke="${INK}" stroke-width="8"/><line x1="${x}" y1="${y + hh / 2}" x2="${x + w}" y2="${y + hh / 2}" stroke="${INK}" stroke-width="8"/>`;
+  h += `<path d="M${x - 40} ${y - 20} Q${x + 30} ${y + hh / 2} ${x - 10} ${y + hh + 40} L${x - 70} ${y + hh + 40} L${x - 70} ${y - 20} Z" fill="#3E4C7A" stroke="${INK}" stroke-width="6"/><path d="M${x + w + 40} ${y - 20} Q${x + w - 30} ${y + hh / 2} ${x + w + 10} ${y + hh + 40} L${x + w + 70} ${y + hh + 40} L${x + w + 70} ${y - 20} Z" fill="#3E4C7A" stroke="${INK}" stroke-width="6"/>`;
+  return h;
+}
+function windowDay(x, y, w, hh, t) {
+  let h = `<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="12" fill="#A9DBFF" stroke="${INK}" stroke-width="10"/>`;
+  h += `<ellipse cx="${x + w * 0.3}" cy="${y + hh * 0.7}" rx="50" ry="18" fill="#fff" opacity=".9"/>`;
+  h += `<circle cx="${x + w * 0.75}" cy="${y + hh * 0.3}" r="34" fill="#FFF3B0"/>`;
+  h += `<line x1="${x + w / 2}" y1="${y}" x2="${x + w / 2}" y2="${y + hh}" stroke="${INK}" stroke-width="8"/><line x1="${x}" y1="${y + hh / 2}" x2="${x + w}" y2="${y + hh / 2}" stroke="${INK}" stroke-width="8"/>`;
+  return h;
+}
+function bedroom(t, o = {}) {
+  const night = o.night !== false;
+  let h = BG(night ? 'url(#nightRoom)' : 'url(#dayRoom)') + BG('url(#hatch)').replace('/>', ' opacity=".35"/>');
+  h += windowNight(1240, 150, 420, 330, t);
+  h += `<rect x="-600" y="880" width="3120" height="600" fill="${night ? '#10152B' : '#C9AE8C'}"/><line x1="-600" y1="880" x2="2520" y2="880" stroke="${INK}" stroke-width="7"/>`;
+  // nightstand + clock
+  h += `<rect x="1420" y="700" width="230" height="180" rx="10" fill="#5A3E2C" stroke="${INK}" stroke-width="7"/><line x1="1420" y1="780" x2="1650" y2="780" stroke="${INK}" stroke-width="5"/><circle cx="1535" cy="745" r="8" fill="#C9A46A"/>`;
+  h += `<rect x="1450" y="626" width="170" height="74" rx="14" fill="#0E0E12" stroke="${INK}" stroke-width="6"/><text x="1535" y="680" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="46" fill="#FF4D4D">${o.clock || '02:00'}</text><rect x="1450" y="626" width="170" height="74" rx="14" fill="#FF4D4D" opacity=".08"/>`;
+  // bed
+  h += `<rect x="420" y="540" width="920" height="300" rx="34" fill="#3B4A7A" stroke="${INK}" stroke-width="9"/><rect x="450" y="570" width="860" height="40" rx="14" fill="#4E5F96"/>`;
+  h += `<rect x="390" y="790" width="980" height="110" rx="26" fill="#E3E8F4" stroke="${INK}" stroke-width="9"/>`;
+  return h;
+}
+function blanket(y0) { return `<path d="M394 ${y0} Q640 ${y0 - 30} 900 ${y0 - 6} Q1140 ${y0 + 14} 1366 ${y0 - 10} L1370 902 L390 902 Z" fill="#5C7AD6" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><path d="M470 ${y0 + 40} Q700 ${y0 + 20} 900 ${y0 + 40}" fill="none" stroke="#4762B8" stroke-width="7" stroke-linecap="round"/>`; }
+
+function bedScene(t, lt, a) {
+  if (a.sleep) return bedSleep(t, lt);
+  let h = bedroom(t, { clock: '02:00' });
+  if (a.dark) h += BG('#000').replace('/>', ' opacity=".35"/>');
+  h += `<ellipse cx="620" cy="770" rx="150" ry="46" fill="#fff" stroke="${INK}" stroke-width="7"/>`; // pillow
+  const x = 820, y = 900, s = 0.74;
+  h += `<circle cx="${x}" cy="660" r="${a.dark ? 330 : 240}" fill="url(#screenGlow)" opacity="${a.dark ? 1 : 0.8}"/>`;
+  const ex = a.notif ? exprAt([[0, '지침'], [0.6, '놀람']], lt) : exprAt([[0, a.dark ? '기본' : '지침']], t);
+  h += Z({ t, seed: 3, x, y, s, pose: '폰보기', ex, look: [0, 0.9], light: 1, shade: '#C9D9F0', tilt: a.dark ? 0 : -6 + Math.sin(t * 0.8) * 2 });
+  h += blanket(800);
+  const [px, py] = handG(x, y, s, [200, 318]);
+  h += phone(px, py - 6, 0.42, { on: 1, glow: 0 });
+  h += hand(px - 24, py + 8, s) + hand(px + 24, py + 8, s);
+  h += `<ellipse cx="${x}" cy="636" rx="92" ry="78" fill="#BFEAFF" opacity="${a.dark ? 0.22 : 0.14}"/>`;
+  if (a.notif) {
+    const items = [['새 메시지 3', PINK, 1180, 470, -6], ['좋아요 +12', YEL, 520, 430, 5], ['알림 99+', MINT, 1160, 640, 4], ['단톡방 · 읽지 않음', '#7CC7FF', 470, 600, -4]];
+    items.forEach(([txt, c, xx, yy, r], i) => {
+      const t0 = t - lt + 0.3 + i * 0.5;
+      h += pop(t, t0, t + 99, xx, yy, label(0, 0, txt, { size: 34, bg: c }), { rot: r, bob: 4 });
+      const k = clamp((t - t0) / 0.6, 0, 1); if (k > 0 && k < 1) h += `<circle cx="${px}" cy="${py}" r="${f1(40 + 160 * k)}" fill="none" stroke="#fff" stroke-width="6" opacity="${f1((1 - k) * 100) / 100}"/>`;
+    });
+  } else if (a.dark) {
+    h += pop(t, t - lt + 0.5, t + 99, 1150, 380, bubble(0, 0, 360, 130, `<circle cx="-110" cy="0" r="34" fill="${YEL}" stroke="${INK}" stroke-width="5"/>${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<line x1="${f1(-110 + Math.cos(i * 0.785) * 44)}" y1="${f1(Math.sin(i * 0.785) * 44)}" x2="${f1(-110 + Math.cos(i * 0.785) * 58)}" y2="${f1(Math.sin(i * 0.785) * 58)}" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`).join('')}<text x="40" y="14" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="40" fill="${NAVY}">아직 낮인가?</text>`), { rot: 3, bob: 5 });
+  } else {
+    const k = prog(lt, 0, 4);
+    h += pop(t, t - lt + 0.4, t + 99, 1240, 600, label(0, 0, k < 0.5 ? '딱 5분만…' : '…벌써 새벽 2시?', { size: 40, bg: '#fff' }), { rot: -4, bob: 4 });
+  }
+  return h;
+}
+function bedSleep(t, lt) {
+  let h = bedroom(t, { clock: '23:30' });
+  h += BG('#000').replace('/>', ' opacity=".18"/>');
+  // phone charging far away on a shelf, screen off
+  h += `<rect x="40" y="610" width="260" height="20" rx="6" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/>` + phone(170, 560, 0.36, {}) + `<path d="M170 600 Q170 650 120 700 Q90 740 110 880" fill="none" stroke="#DDE3EE" stroke-width="5"/><circle cx="196" cy="530" r="6" fill="#48E08A"/>`;
+  h += pop(t, t - lt + 0.6, t + 99, 170, 440, label(0, 0, '침대 밖', { size: 32, bg: MINT }), { rot: -3, bob: 3 });
+  h += `<ellipse cx="1180" cy="770" rx="150" ry="46" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+  h += Z({ t, seed: 4, x: 930, y: 775, s: 0.62, rot: 90, ex: { expr: '잠', prev: '잠', k: 1, blink: 0 }, noBlink: true, light: 1, shade: '#C9D9F0' });
+  h += `<path d="M394 760 Q640 730 900 752 Q1000 760 1060 740 L1080 900 L390 902 Z" fill="#5C7AD6" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>`;
+  for (let i = 0; i < 3; i++) { const k = ((t * 0.5 + i / 3) % 1); h += `<text x="${f1(1270 + k * 120 + i * 10)}" y="${f1(620 - k * 220)}" font-family="${FONT}" font-weight="900" font-size="${f1(40 + k * 40)}" fill="#fff" stroke="${INK}" stroke-width="4" paint-order="stroke fill" opacity="${f1(Math.sin(k * Math.PI) * 100) / 100}">Z</text>`; }
+  return h;
+}
+function livingRoom(t, night) {
+  let h = BG(night ? 'url(#nightRoom)' : 'url(#dayRoom)') + BG('url(#hatch)').replace('/>', ' opacity=".3"/>');
+  h += night ? windowNight(1300, 130, 380, 300, t) : windowDay(1300, 130, 380, 300, t);
+  h += `<rect x="-600" y="880" width="3120" height="600" fill="${night ? '#10152B' : '#C9AE8C'}"/><line x1="-600" y1="880" x2="2520" y2="880" stroke="${INK}" stroke-width="7"/>`;
+  // plant
+  h += `<rect x="1760" y="760" width="90" height="120" rx="10" fill="#C77B4A" stroke="${INK}" stroke-width="6"/>${[-40, 0, 40].map((d, i) => `<ellipse cx="${1805 + d}" cy="${700 - (i % 2) * 40}" rx="34" ry="70" transform="rotate(${d / 2} ${1805 + d} 760)" fill="#58B868" stroke="${INK}" stroke-width="6"/>`).join('')}`;
+  return h;
+}
+function sofa(x, y) { return `<rect x="${x}" y="${y}" width="620" height="200" rx="40" fill="#3FA7A0" stroke="${INK}" stroke-width="9"/><rect x="${x - 30}" y="${y + 70}" width="90" height="190" rx="30" fill="#358F89" stroke="${INK}" stroke-width="8"/><rect x="${x + 560}" y="${y + 70}" width="90" height="190" rx="30" fill="#358F89" stroke="${INK}" stroke-width="8"/><rect x="${x + 40}" y="${y + 140}" width="540" height="120" rx="24" fill="#47B8B0" stroke="${INK}" stroke-width="8"/>`; }
+
+function phoneboxScene(t, lt, a) {
+  if (a.night) return otherRoomScene(t, lt);
+  let h = livingRoom(t, false);
+  h += `<rect x="1000" y="740" width="560" height="34" rx="10" fill="#8C6638" stroke="${INK}" stroke-width="8"/><rect x="1040" y="774" width="30" height="110" fill="#7A5A32" stroke="${INK}" stroke-width="6"/><rect x="1490" y="774" width="30" height="110" fill="#7A5A32" stroke="${INK}" stroke-width="6"/>`;
+  const drop = prog(lt, 0.5, 1.3), close = easeInOut(prog(lt, 1.4, 1.9));
+  // box back + phone + front
+  h += `<rect x="1150" y="600" width="260" height="140" rx="10" fill="#9C6B3E" stroke="${INK}" stroke-width="8"/>`;
+  if (drop < 1) { const x = lerp(1060, 1280, easeInOut(drop)), y = lerp(560, 640, drop * drop); h += phone(x, y, 0.5, { on: 1, rot: lerp(-20, 0, drop) }); }
+  h += `<rect x="1140" y="650" width="280" height="100" rx="12" fill="#B57D48" stroke="${INK}" stroke-width="8"/><text x="1280" y="718" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="42" fill="#5A3A1C">폰 금고</text>`;
+  // lid hinged at back-left
+  h += `<g transform="rotate(${f1(lerp(-72, 0, close))} 1146 604)"><rect x="1140" y="586" width="282" height="34" rx="10" fill="#C48B54" stroke="${INK}" stroke-width="8"/></g>`;
+  if (lt > 2.0) h += pop(t, t - lt + 2.0, t + 99, 1280, 760, `<rect x="-30" y="-10" width="60" height="50" rx="8" fill="${YEL}" stroke="${INK}" stroke-width="6"/><path d="M-18 -10 L-18 -30 Q0 -52 18 -30 L18 -10" fill="none" stroke="${INK}" stroke-width="8"/>`, {});
+  if (lt > 2.3) h += pop(t, t - lt + 2.3, t + 99, 1440, 540, label(0, 0, '7일', { size: 44, bg: PINK }), { rot: 8, bob: 4 });
+  const putting = lt < 1.3;
+  h += Z({ t, seed: 6, x: 820, y: 960, s: 0.82, pose: putting ? '폰넣기' : '손인사', ex: exprAt([[0, '결심'], [1.6, '뿌듯']], lt), look: [0.8, 0.2] });
+  return h;
+}
+function otherRoomScene(t, lt) {
+  let h = BG('url(#nightRoom)') + BG('url(#hatch)').replace('/>', ' opacity=".3"/>');
+  h += `<rect x="-600" y="880" width="3120" height="600" fill="#10152B"/><line x1="-600" y1="880" x2="2520" y2="880" stroke="${INK}" stroke-width="7"/>`;
+  // doorway to the other room, with the phone charging inside
+  h += `<rect x="1100" y="300" width="380" height="580" fill="#0A0E1E" stroke="${INK}" stroke-width="10"/>`;
+  h += `<rect x="1180" y="560" width="220" height="16" rx="5" fill="#5A3E2C"/>` + phone(1290, 520, 0.3, {}) + `<circle cx="1312" cy="494" r="5" fill="#48E08A"/>`;
+  const close = easeInOut(prog(lt, 1.2, 2.2));
+  h += `<g transform="translate(1100 300) scale(${f1(lerp(0.12, 1, close) * 1000) / 1000} 1)"><rect x="0" y="0" width="380" height="580" fill="#8A6A4A" stroke="${INK}" stroke-width="9"/><circle cx="330" cy="300" r="14" fill="${YEL}" stroke="${INK}" stroke-width="5"/></g>`;
+  h += label(1290, 250, '다른 방', { size: 40, bg: MINT });
+  h += windowNight(240, 150, 360, 280, t);
+  h += Z({ t, seed: 7, x: 760, y: 960, s: 0.82, pose: lt > 2.2 ? '손인사' : '서기', ex: exprAt([[0, '기본'], [2.2, '신남']], lt), look: [0.9, 0] });
+  return h;
+}
+function withdrawScene(t, lt, a) {
+  let h = livingRoom(t, false) + sofa(420, 600);
+  // coffee table with an empty phone spot
+  h += `<rect x="1040" y="760" width="420" height="30" rx="10" fill="#8C6638" stroke="${INK}" stroke-width="7"/><rect x="1070" y="790" width="24" height="90" fill="#7A5A32" stroke="${INK}" stroke-width="5"/><rect x="1406" y="790" width="24" height="90" fill="#7A5A32" stroke="${INK}" stroke-width="5"/>`;
+  h += `<rect x="1210" y="716" width="80" height="40" rx="10" fill="none" stroke="${INK}" stroke-width="4" stroke-dasharray="10 8" opacity=".6"/><text x="1250" y="706" text-anchor="middle" font-family="${FONT}" font-weight="700" font-size="24" fill="#6B5A48">폰 자리</text>`;
+  const reach = Math.sin(t * 2.6) > 0.2;
+  h += Z({ t, seed: 8, x: 860, y: 960, s: 0.82, pose: reach ? '주머니' : '서기', ex: exprAt([[0, '걱정']], t), look: [Math.sin(t * 3.1) * 0.9, 0.2], shiver: true, sweat: true });
+  h += bubble(1240, 360, 230, 150, phone(30, 0, 0.42, { on: 1 }) + `<text x="-58" y="22" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="70" fill="${PINK}">?</text>`);
+  if (a.clock) {
+    // wall clock spinning + anxiety gauge
+    const ang = lt * 160;
+    h += `<g transform="translate(300 280)"><circle r="92" fill="#fff" stroke="${INK}" stroke-width="9"/>${[...Array(12)].map((_, i) => `<line x1="${f1(Math.cos(i * 0.5236) * 70)}" y1="${f1(Math.sin(i * 0.5236) * 70)}" x2="${f1(Math.cos(i * 0.5236) * 80)}" y2="${f1(Math.sin(i * 0.5236) * 80)}" stroke="${INK}" stroke-width="5"/>`).join('')}<line x1="0" y1="0" x2="${f1(Math.sin(ang * Math.PI / 180) * 64)}" y2="${f1(-Math.cos(ang * Math.PI / 180) * 64)}" stroke="${RED}" stroke-width="8" stroke-linecap="round"/><line x1="0" y1="0" x2="${f1(Math.sin(ang / 12 * Math.PI / 180) * 44)}" y2="${f1(-Math.cos(ang / 12 * Math.PI / 180) * 44)}" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><circle r="9" fill="${INK}"/></g>`;
+    const k = easeInOut(prog(lt, 0.5, 7));
+    h += `<g transform="translate(250 770)"><rect x="-40" y="-330" width="80" height="330" rx="40" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-28" y="${f1(-18 - 294 * k)}" width="56" height="${f1(294 * k + 6)}" rx="28" fill="${k > 0.6 ? RED : (k > 0.3 ? '#FFB547' : '#48C88A')}"/><text x="0" y="50" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="38" fill="${NAVY}">불안</text></g>`;
+  }
+  return h;
+}
+function phantomScene(t, lt) {
+  let h = livingRoom(t, false) + sofa(420, 600);
+  const x = 860, y = 960, s = 0.82, buzz = lt < 2.2;
+  h += Z({ t, seed: 9, x: x + (buzz ? Math.sin(t * 80) * 2 : 0), y, s, pose: '주머니', ex: exprAt([[0, '기본'], [0.4, '놀람'], [2.4, '걱정']], lt), look: [0.7, 0.9] });
+  const [hx, hy] = handG(x, y, s, [262, 400]);
+  if (buzz && lt > 0.3) {
+    for (let i = 0; i < 3; i++) { const k = ((t * 4 + i / 3) % 1); h += `<path d="M${f1(hx + 40 + k * 30)} ${f1(hy - 40)} q12 20 0 40 q-12 20 0 40" fill="none" stroke="${PINK}" stroke-width="7" stroke-linecap="round" opacity="${f1((1 - k) * 100) / 100}"/>`; }
+    h += pop(t, t - lt + 0.4, t + 99, hx + 200, hy - 120, outlined(0, 0, ['부르르?'], { size: 64, sw: 12, fill: PINK }), { rot: -6, bob: 4 });
+  } else if (!buzz) {
+    h += `<path d="M${f1(hx - 10)} ${f1(hy + 10)} q30 6 40 40 q-24 22 -52 0 Z" fill="#fff" stroke="${INK}" stroke-width="5"/>`; // inside-out pocket
+    h += pop(t, t - lt + 2.3, t + 99, 1230, 470, bubble(0, 0, 340, 130, `<text x="0" y="14" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="44" fill="${NAVY}">알림… 없음</text>`), { rot: 3, bob: 4 });
+  }
+  return h;
+}
+function deskScene(t, lt) {
+  let h = BG('#DDE6EE') + BG('url(#hatch)').replace('/>', ' opacity=".25"/>');
+  // shelf
+  h += `<rect x="200" y="200" width="420" height="22" fill="#8C6638" stroke="${INK}" stroke-width="6"/>${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${220 + i * 52}" y="${110 + (i % 2) * 14}" width="40" height="${90 - (i % 2) * 14}" fill="${[MINT, PINK, YEL, '#7CC7FF', '#FF9A55', '#B38CFF'][i]}" stroke="${INK}" stroke-width="5"/>`).join('')}`;
+  h += `<rect x="-600" y="880" width="3120" height="600" fill="#B79A7A"/>`;
+  h += Z({ t, seed: 10, x: 900, y: 960, s: 0.8, pose: '책상', ex: exprAt([[0, '지침']], t), look: [Math.sin(t * 0.9) > 0.3 ? 0.9 : 0, 0.6] });
+  h += `<rect x="440" y="740" width="1040" height="40" rx="10" fill="#8C6638" stroke="${INK}" stroke-width="8"/><rect x="480" y="780" width="960" height="320" fill="#7A5A32" stroke="${INK}" stroke-width="8"/>`;
+  h += `<path d="M780 742 L900 718 L1020 742 L1020 748 L780 748 Z" fill="#fff" stroke="${INK}" stroke-width="6"/><line x1="900" y1="718" x2="900" y2="746" stroke="${INK}" stroke-width="4"/>`;
+  h += phone(1220, 732, 0.36, { back: 1, rot: 90 });
+  // the phone keeps tugging at attention
+  const pulse = (Math.sin(t * 4) + 1) / 2;
+  h += `<circle cx="1220" cy="732" r="${f1(60 + pulse * 30)}" fill="none" stroke="${PINK}" stroke-width="5" opacity="${f1((1 - pulse) * 0.8 * 100) / 100}"/>`;
+  h += bubble(1250, 420, 220, 130, phone(0, 0, 0.36, { on: 1 }) + `<text x="70" y="16" font-family="${FONT}" font-weight="900" font-size="40" fill="${NAVY}">…</text>`);
+  const k = easeInOut(prog(lt, 0.3, 4));
+  h += `<g transform="translate(300 400)"><text x="0" y="-60" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="36" fill="${NAVY}">집중력</text><rect x="-90" y="-40" width="180" height="80" rx="14" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="90" y="-16" width="16" height="32" rx="4" fill="${INK}"/><rect x="-78" y="-28" width="${f1(156 * (1 - 0.45 * k))}" height="56" rx="8" fill="${k > 0.6 ? '#FFB547' : '#48C88A'}"/></g>`;
+  return h;
+}
+function drainScene(t, lt, a) {
+  let h = BG('url(#cream)') + BG('url(#paper)');
+  const panels = [['책상 위', 'desk'], ['주머니·가방', 'pocket'], ['다른 방', 'room']];
+  panels.forEach(([name, kind], i) => {
+    const cx = 380 + i * 580, k = easeOutBack(clamp((lt - 0.2 - i * 0.35) / 0.4, 0, 1));
+    let p = `<rect x="-250" y="-180" width="500" height="360" rx="26" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+    p += `<rect x="-180" y="60" width="360" height="22" rx="8" fill="#8C6638" stroke="${INK}" stroke-width="5"/><rect x="-160" y="82" width="320" height="80" fill="#7A5A32" stroke="${INK}" stroke-width="5"/>`;
+    p += Z({ t, seed: 20 + i, x: -20, y: 160, s: 0.36, pose: '책상', ex: exprAt([[0, kind === 'room' ? '결심' : '걱정']], t), look: [kind === 'desk' ? 0.9 : 0, 0.6] });
+    p += `<rect x="-120" y="40" width="80" height="22" fill="#fff" stroke="${INK}" stroke-width="4"/>`;
+    if (kind === 'desk') p += phone(110, 52, 0.2, { back: 1, rot: 90, lw: 10 });
+    if (kind === 'pocket') p += `<rect x="120" y="0" width="90" height="70" rx="12" fill="#C77B4A" stroke="${INK}" stroke-width="5"/><path d="M135 0 Q165 -36 195 0" fill="none" stroke="${INK}" stroke-width="5"/>` + phone(150, 8, 0.16, { back: 1, lw: 12 });
+    if (kind === 'room') p += `<rect x="130" y="-120" width="90" height="170" fill="#8A6A4A" stroke="${INK}" stroke-width="5"/><circle cx="200" cy="-34" r="7" fill="${YEL}"/><path d="M60 -40 L118 -40 M104 -52 L118 -40 L104 -28" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` + phone(30, -40, 0.16, { back: 1, lw: 12 });
+    p += label(0, -140, name, { size: 36, bg: [PINK, YEL, MINT][i] });
+    h += `<g transform="translate(${cx} 360) scale(${f1(clamp(k, 0, 1.2) * 1000) / 1000})">${p}</g>`;
+    if (a.result) {
+      const hgt = [120, 175, 220][i] * easeOut(prog(lt, 0.4 + i * 0.25, 1.6 + i * 0.25));
+      h += `<rect x="${cx - 90}" y="${f1(860 - hgt)}" width="180" height="${f1(hgt)}" rx="12" fill="${['#FF8A8A', '#FFD25A', '#48C88A'][i]}" stroke="${INK}" stroke-width="7"/>`;
+      if (i === 2 && lt > 2.2) h += pop(t, t - lt + 2.2, t + 99, cx, 860 - 220 - 50, `<path d="M-50 20 L-50 -20 L-25 5 L0 -30 L25 5 L50 -20 L50 20 Z" fill="${YEL}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`, {});
+    } else h += pop(t, t - lt + 1.2 + i * 0.3, t + 99, cx, 720, outlined(0, 0, ['?'], { size: 110, sw: 18, fill: '#fff' }), { bob: 6 });
+  });
+  if (a.result) {
+    h += `<line x1="120" y1="860" x2="1800" y2="860" stroke="${INK}" stroke-width="6"/><text x="120" y="720" font-family="${FONT}" font-weight="900" font-size="34" fill="${NAVY}">집중력 시험 점수</text>`;
+    h += pop(t, t - lt + 3.2, t + 99, 960, 600, label(0, 0, '꺼 두거나 뒤집어도 똑같았다', { size: 36, bg: PINK }), { rot: -3, bob: 3 });
+  }
+  return h;
+}
+function sleeplabScene(t, lt) {
+  let h = '';
+  const side = (night, tablet) => {
+    let s = BG(night ? 'url(#nightRoom)' : '#3A2A2A');
+    s += `<rect x="-600" y="860" width="3120" height="600" fill="${night ? '#10152B' : '#2A1E1A'}"/>`;
+    return s;
+  };
+  // left: tablet (blue), right: paper book (warm)
+  let L = side(true) + `<rect x="200" y="600" width="680" height="240" rx="30" fill="#3B4A7A" stroke="${INK}" stroke-width="8"/><rect x="170" y="800" width="740" height="100" rx="24" fill="#E3E8F4" stroke="${INK}" stroke-width="8"/>`;
+  L += `<circle cx="540" cy="640" r="260" fill="url(#screenGlow)"/>`;
+  L += Z({ t, seed: 30, x: 540, y: 900, s: 0.62, pose: '폰보기', ex: exprAt([[0, '기본']], t), look: [0, 0.9], shade: '#C9D9F0' });
+  L += `<path d="M180 820 Q540 790 900 820 L904 902 L176 902 Z" fill="#5C7AD6" stroke="${INK}" stroke-width="8"/>`;
+  L += `<g transform="translate(540 770)"><rect x="-80" y="-58" width="160" height="116" rx="14" fill="#1F2D44" stroke="${INK}" stroke-width="6"/><rect x="-68" y="-46" width="136" height="92" rx="8" fill="url(#screen)"/>${[0, 1, 2, 3].map(i => `<rect x="-56" y="${-36 + i * 20}" width="${110 - (i % 2) * 30}" height="8" rx="4" fill="#9CB3C8"/>`).join('')}</g>`;
+  L += hand(468, 784, 0.62) + hand(612, 784, 0.62);
+  L += `<ellipse cx="540" cy="575" rx="78" ry="66" fill="#BFEAFF" opacity=".2"/>`;
+  L += label(540, 260, '태블릿', { size: 48, bg: '#7CC7FF' });
+  let R = side(false) + `<rect x="1040" y="600" width="680" height="240" rx="30" fill="#7A4A3A" stroke="${INK}" stroke-width="8"/><rect x="1010" y="800" width="740" height="100" rx="24" fill="#F4E8D8" stroke="${INK}" stroke-width="8"/>`;
+  R += `<path d="M1660 300 L1700 300 L1700 600" fill="none" stroke="${INK}" stroke-width="8"/><path d="M1610 300 L1750 300 L1720 240 L1640 240 Z" fill="#FFC56E" stroke="${INK}" stroke-width="6"/><circle cx="1680" cy="420" r="300" fill="url(#amber)"/>`;
+  R += Z({ t, seed: 31, x: 1380, y: 900, s: 0.62, pose: '폰보기', ex: exprAt([[0, '졸림']], t), look: [0, 0.9], shade: '#F3D2B0', light: -1 });
+  R += `<path d="M1020 820 Q1380 790 1740 820 L1744 902 L1016 902 Z" fill="#C9705A" stroke="${INK}" stroke-width="8"/>`;
+  R += `<g transform="translate(1380 772)"><path d="M0 -50 Q-60 -64 -100 -46 L-100 46 Q-60 30 0 44 Q60 30 100 46 L100 -46 Q60 -64 0 -50 Z" fill="#FFF8E8" stroke="${INK}" stroke-width="6"/><line x1="0" y1="-50" x2="0" y2="44" stroke="${INK}" stroke-width="4"/>${[0, 1, 2].map(i => `<line x1="-80" y1="${-26 + i * 22}" x2="-20" y2="${-28 + i * 22}" stroke="#C9B89A" stroke-width="5"/><line x1="20" y1="${-28 + i * 22}" x2="80" y2="${-26 + i * 22}" stroke="#C9B89A" stroke-width="5"/>`).join('')}</g>`;
+  R += hand(1290, 784, 0.62) + hand(1470, 784, 0.62);
+  R += label(1380, 260, '종이책', { size: 48, bg: '#FFC56E' });
+  h += `<g clip-path="url(#leftHalf)">${L}</g><g clip-path="url(#rightHalf)">${R}</g>`;
+  h += `<line x1="960" y1="-600" x2="960" y2="1680" stroke="${INK}" stroke-width="12"/>`;
+  h += pop(t, t - lt + 0.8, t + 99, 960, 420, label(0, 0, '자기 전 4시간 × 5일 밤', { size: 40, bg: YEL }), { rot: -2, bob: 3 });
+  return h;
+}
+function list4Scene(t, lt, a) {
+  let h = BG('url(#cream)') + BG('url(#paper)');
+  h += outlined(860, 150, [[['태블릿', '#4FA3E0'], ['으로 읽은 밤에는', '#fff']]], { size: 64, sw: 13 });
+  const D = a._dur || 9;
+  const rows = [['잠드는 데 더 오래', 'clock', 0.0], ['멜라토닌 감소', 'moon', 0.27], ['생체시계 1시간+ 늦춰짐', 'shift', 0.43], ['다음 날 아침 더 피곤', 'yawn', 0.73]];
+  rows.forEach(([txt, icon, f], i) => {
+    const k = easeOutBack(clamp((lt - 0.2 - f * D) / 0.45, 0, 1)), y = 290 + i * 128;
+    let ic = `<circle r="50" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+    if (icon === 'clock') ic += `<line x1="0" y1="0" x2="0" y2="-32" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><line x1="0" y1="0" x2="22" y2="10" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
+    if (icon === 'moon') ic += `<circle cx="-4" cy="0" r="28" fill="#FFD25A"/><circle cx="10" cy="-8" r="26" fill="#fff"/><path d="M30 10 L30 34 M20 24 L30 34 L40 24" stroke="${RED}" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+    if (icon === 'shift') ic += `<circle r="30" fill="none" stroke="${INK}" stroke-width="6"/><path d="M-8 -40 A42 42 0 0 1 40 -6 M30 -18 L40 -6 L48 -20" fill="none" stroke="${RED}" stroke-width="6" stroke-linecap="round"/><line x1="0" y1="0" x2="0" y2="-20" stroke="${INK}" stroke-width="6"/>`;
+    if (icon === 'yawn') ic += `<circle cx="-14" cy="-10" r="5" fill="${INK}"/><circle cx="14" cy="-10" r="5" fill="${INK}"/><ellipse cx="0" cy="18" rx="12" ry="16" fill="${INK}"/>`;
+    h += `<g opacity="${f1(clamp(k, 0, 1) * 100) / 100}" transform="translate(${f1(lerp(-200, 0, clamp(k, 0, 1)))} 0)"><g transform="translate(420 ${y})">${ic}</g><text x="510" y="${y + 20}" font-family="${FONT}" font-weight="900" font-size="58" fill="${NAVY}">${esc(txt)}</text></g>`;
+  });
+  h += `<text x="860" y="810" text-anchor="middle" font-family="${FONT}" font-weight="500" font-size="30" fill="#6B6255">${esc(a.src)} · 종이책으로 읽은 밤과 비교</text>`;
+  h += Z({ t, seed: 32, x: 1640, y: 1000, s: 0.5, ex: exprAt([[0, '졸림']], t), pose: '서기', look: [-0.6, 0] });
+  return h;
+}
+function feedContent(t) {
+  const off = (t * 70) % 270;
+  let c = `<g transform="translate(0 ${f1(-off)})">`;
+  for (let r = 0; r < 4; r++) {
+    const y = -90 + r * 270 / 2;
+    const kind = r % 3;
+    c += `<rect x="-46" y="${y}" width="92" height="120" rx="8" fill="#fff"/>`;
+    if (kind === 0) c += `<rect x="-40" y="${y + 6}" width="80" height="70" rx="6" fill="#7CD3FF"/><circle cx="22" cy="${y + 24}" r="10" fill="#FFE27A"/><rect x="-40" y="${y + 60}" width="80" height="16" fill="#F5D7A0"/><path d="M-18 ${y + 60} L-14 ${y + 26} M-14 ${y + 26} q-14 -2 -18 8 M-14 ${y + 26} q14 -4 16 8" stroke="#3E8E4A" stroke-width="4" fill="none"/>`;
+    if (kind === 1) c += `<rect x="-40" y="${y + 6}" width="80" height="70" rx="6" fill="#FFE9D6"/><ellipse cx="0" cy="${y + 52}" rx="30" ry="10" fill="#fff" stroke="#C9B89A" stroke-width="2"/><path d="M-18 ${y + 50} L-18 ${y + 30} L18 ${y + 30} L18 ${y + 50} Z" fill="#FF8FB1"/><circle cx="0" cy="${y + 26}" r="6" fill="${RED}"/>`;
+    if (kind === 2) c += `<rect x="-40" y="${y + 6}" width="80" height="70" rx="6" fill="#B38CFF"/>${[0, 1, 2, 3, 4].map(i => `<rect x="${-34 + i * 15}" y="${y + 14 + (i % 3) * 14}" width="6" height="10" fill="${[YEL, PINK, MINT][i % 3]}" transform="rotate(${i * 30} ${-31 + i * 15} ${y + 19 + (i % 3) * 14})"/>`).join('')}`;
+    c += `<path d="M-36 ${y + 96} c-6 -8 4 -14 8 -6 c4 -8 14 -2 8 6 l-8 8 z" fill="${RED}"/><rect x="-18" y="${y + 92}" width="50" height="8" rx="4" fill="#C3CDD8"/>`;
+  }
+  return c + `</g>`;
+}
+function feedScene(t, lt, a) {
+  if (a.happy) return park(t, lt, { calm: 1, hearts: 1 }, t);
+  let h = BG('url(#feedBg)') + BG('url(#dots)');
+  h += phone(1220, 470, 2.6, { on: 1, content: feedContent(t), glow: 0.8, lw: 4 });
+  [['♥ 1.2만', 1580, 250], ['♥ 8,402', 1560, 560], ['♥ 3.4만', 860, 600]].forEach(([txt, x, y], i) => h += pop(t, t - lt + 0.3 + i * 0.4, t + 99, x, y, label(0, 0, txt, { size: 36, bg: PINK, color: '#fff' }), { rot: [-6, 5, -3][i], bob: 5 }));
+  h += Z({ t, seed: 40, x: 540, y: 960, s: 0.82, pose: '턱괴기', ex: exprAt([[0, '걱정']], t), look: [0.9, -0.2], light: -1, shade: '#C9C0E8' });
+  if (!a.study) h += pop(t, t - lt + 1.4, t + 99, 520, 300, bubble(0, 0, 470, 120, `<text x="0" y="14" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="38" fill="${NAVY}">나만 빼고 다 행복해 보여…</text>`), { rot: -2, bob: 4 });
+  else {
+    h += pop(t, t - lt + 1.2, t + 99, 470, 250, label(0, 0, 'A 그룹 · 계속 사용', { size: 36, bg: '#C3CDD8' }), { rot: -3, bob: 3 });
+    h += pop(t, t - lt + 1.8, t + 99, 490, 345, label(0, 0, 'B 그룹 · 일주일 끊기', { size: 36, bg: MINT }), { rot: 2, bob: 3 });
+  }
+  return h;
+}
+function blockScene(t, lt) {
+  let h = BG('url(#labG)') + BG('url(#grid)');
+  h += `<ellipse cx="900" cy="480" rx="420" ry="380" fill="url(#glow)" opacity=".4"/>`;
+  const shield = `<path d="M0 -60 L44 -42 L44 0 Q44 40 0 62 Q-44 40 -44 0 L-44 -42 Z" fill="${MINT}" stroke="${INK}" stroke-width="5"/><path d="M-22 -4 Q0 -24 22 -4 M-12 10 Q0 0 12 10" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><line x1="-26" y1="-26" x2="26" y2="30" stroke="${RED}" stroke-width="7" stroke-linecap="round"/><text x="0" y="96" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="15" fill="${NAVY}">인터넷 차단</text>`;
+  h += phone(900, 470, 2.4, { on: 1, content: shield, lw: 4 });
+  h += pop(t, t - lt + 0.8, t + 99, 760, 790, label(0, 0, '전화 ✓', { size: 38, bg: '#fff' }), {});
+  h += pop(t, t - lt + 1.0, t + 99, 1040, 790, label(0, 0, '문자 ✓', { size: 38, bg: '#fff' }), {});
+  // 14-day calendar ticking
+  const done = Math.floor(clamp((lt - 0.6) * 2.2, 0, 14));
+  h += `<g transform="translate(1380 300)"><rect x="-20" y="-80" width="380" height="260" rx="20" fill="#fff" stroke="${INK}" stroke-width="7"/><rect x="-20" y="-80" width="380" height="60" rx="20" fill="${RED}" stroke="${INK}" stroke-width="7"/><text x="170" y="-38" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="34" fill="#fff">2주</text>`;
+  for (let i = 0; i < 14; i++) { const x = 10 + (i % 7) * 48, y = 10 + Math.floor(i / 7) * 70; h += `<rect x="${x}" y="${y}" width="40" height="56" rx="8" fill="${i < done ? MINT : '#EEF2F6'}" stroke="${INK}" stroke-width="3"/>${i < done ? `<path d="M${x + 8} ${y + 28} L${x + 17} ${y + 38} L${x + 33} ${y + 16}" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` : ''}`; }
+  h += `</g>`;
+  h += Z({ t, seed: 41, x: 330, y: 960, s: 0.7, ex: exprAt([[0, '결심']], t), look: [0.8, -0.2], light: -1, shade: '#B9D3E3' });
+  return h;
+}
+
+/* ---------- park & friends (outdoor) ---------- */
+function park(t, lt, a, run) {
+  const sunset = !!a.sunset;
+  const off = run * 120;
+  let h = `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#${sunset ? 'sunset' : 'morning'})"/>`;
+  h += sunset ? `<circle cx="1450" cy="430" r="90" fill="#FFD27A" opacity=".95"/><circle cx="1450" cy="430" r="220" fill="url(#warm)"/>` : `<circle cx="1550" cy="190" r="70" fill="#FFF3B0"/><circle cx="1550" cy="190" r="200" fill="url(#warm)" opacity=".6"/>`;
+  h += clouds(t, 80, 18, 4, 3);
+  const fo = -(off * 0.15) % 600;
+  h += `<g transform="translate(${f1(fo)} 0)">`;
+  for (let i = -1; i < 7; i++) { const x = i * 600; h += `<path d="M${x} 560 L${x} 470 L${x + 60} 470 L${x + 60} 430 L${x + 130} 430 L${x + 130} 500 L${x + 200} 500 L${x + 200} 440 L${x + 260} 440 L${x + 260} 520 L${x + 340} 520 L${x + 340} 450 L${x + 420} 450 L${x + 420} 490 L${x + 520} 490 L${x + 520} 470 L${x + 600} 470 L${x + 600} 560 Z" fill="${sunset ? '#8E7BA8' : '#A9C3DA'}" stroke="${INK}" stroke-width="4"/>`; }
+  h += `</g>`;
+  h += `<rect x="-600" y="560" width="3120" height="170" fill="url(#river)"/>`;
+  for (let i = 0; i < 14; i++) { const x = ((i * 170 - off * 0.45) % 2400 + 2400) % 2400 - 200; h += `<line x1="${f1(x)}" y1="${600 + (i % 4) * 26}" x2="${f1(x + 60)}" y2="${600 + (i % 4) * 26}" stroke="#fff" stroke-width="4" opacity=".55"/>`; }
+  h += `<rect x="-600" y="730" width="3120" height="40" fill="#8CCB7A" stroke="${INK}" stroke-width="5"/>`;
+  h += trees2(off * 0.8, 790, t, sunset);
+  h += `<rect x="-600" y="800" width="3120" height="160" fill="#D9C7B0" stroke="${INK}" stroke-width="6"/>`;
+  for (let i = 0; i < 16; i++) { const x = ((i * 160 - off) % 2560 + 2560) % 2560 - 300; h += `<rect x="${f1(x)}" y="874" width="80" height="8" rx="4" fill="#fff" opacity=".8"/>`; }
+  h += `<rect x="-600" y="960" width="3120" height="400" fill="#9BCF84"/><rect x="-600" y="960" width="3120" height="400" fill="url(#hatch)"/>`;
+  if (a.friends) {
+    h += shadow(620, 888, 70) + char({ t, seed: 51, x: 620, y: 884, s: 0.72, pose: walkPose(t * 7.5 + 1.2, 0.85), ex: { expr: '신남', prev: '신남', k: 1, blink: 0 }, goggles: 'none', vest: '#7CC7FF', patch: false, tee: true, hair: '#2A2A2A', look: [0.6, 0] });
+    h += shadow(1180, 888, 70) + char({ t, seed: 52, x: 1180, y: 884, s: 0.72, pose: walkPose(t * 7.5 + 2.4, 0.85), ex: { expr: '뿌듯', prev: '뿌듯', k: 1, blink: 0 }, goggles: 'none', vest: '#FF8FB1', patch: false, tee: true, hair: '#6B3E26', look: [-0.6, 0] });
+    h += pop(t, t - lt + 0.4, t + 99, 520, 360, label(0, 0, '오랜만이다!', { size: 38, bg: '#fff' }), { rot: -4, bob: 4 });
+    h += pop(t, t - lt + 1.2, t + 99, 1320, 380, label(0, 0, 'ㅋㅋㅋㅋ', { size: 38, bg: YEL }), { rot: 5, bob: 4 });
+  }
+  const ex = a.calm ? '신남' : '뿌듯';
+  h += shadow(900, 888, 84);
+  h += Z({ t, seed: 2, x: 900, y: 884, s: 0.8, pose: walkPose(t * 7.5, 0.85), ex: { expr: ex, prev: ex, k: 1, blink: 0 }, look: [0.3, -0.1], light: sunset ? -1 : 1, shade: sunset ? '#F3C9A8' : '#D5E2EE' });
+  if (a.hearts) h += particles(t, 12, 14, [600, 300, 1200, 800], PINK, { speed: 60, r: 9, op: 0.9 });
+  if (sunset) h += `<rect x="-600" y="-600" width="3120" height="2280" fill="#FF9A5A" opacity=".12"/>`;
+  return h;
+}
+function trees2(off, ground, t, sunset) {
+  let h = '';
+  for (let i = 0; i < 10; i++) {
+    const x = ((i * 260 - off) % 2600 + 2600) % 2600 - 300, sw = Math.sin(t * 1.5 + i) * 3, c = sunset ? '#5E9A5A' : '#58B868';
+    h += `<rect x="${f1(x - 10)}" y="${ground - 110}" width="20" height="110" fill="#7A5235" stroke="${INK}" stroke-width="5"/>`;
+    h += `<g transform="rotate(${f1(sw)} ${f1(x)} ${ground - 90})"><circle cx="${f1(x)}" cy="${ground - 150}" r="72" fill="${c}" stroke="${INK}" stroke-width="7"/><path d="M${f1(x + 10)} ${ground - 214} A72 72 0 0 1 ${f1(x + 70)} ${ground - 140} L${f1(x + 36)} ${ground - 140} Z" fill="#3F9A50" opacity=".55"/><circle cx="${f1(x - 26)}" cy="${ground - 172}" r="20" fill="#7BD58A"/></g>`;
+  }
+  return h;
+}
+
+/* ---------- lab / title / chapter / stats / recap / outro ---------- */
+function brain(cx, cy, s, region, t, labelText) {
+  const pulse = (Math.sin(t * 4) + 1) / 2;
+  let h = `<g transform="translate(${cx} ${cy}) scale(${s})">`;
+  h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="#FFD6DC" stroke="${INK}" stroke-width="9"/>`;
+  [[-200, -80, -120, -150, -20, -120], [-60, -40, 40, -120, 140, -70], [-220, 40, -110, -10, 0, 60], [40, 20, 140, -20, 230, 40], [-120, 120, 0, 90, 90, 130]].forEach(c => h += `<path d="M${c[0]} ${c[1]} Q${c[2]} ${c[3]} ${c[4]} ${c[5]}" fill="none" stroke="#E58F9D" stroke-width="8" stroke-linecap="round"/>`);
+  if (region === 'amygdala') h += `<ellipse cx="20" cy="70" rx="${34 + pulse * 6}" ry="${24 + pulse * 4}" fill="${RED}" stroke="${INK}" stroke-width="6"/><circle cx="20" cy="70" r="${80 + pulse * 30}" fill="url(#redglow)"/>`;
+  if (region === 'pineal') h += `<circle cx="10" cy="10" r="${f1(110 + pulse * 30)}" fill="url(#amber)"/><ellipse cx="10" cy="10" rx="26" ry="20" fill="#FFB547" stroke="${INK}" stroke-width="6"/><g transform="translate(150 -120)"><circle r="40" fill="#FFF2C0" stroke="${INK}" stroke-width="5"/><circle cx="16" cy="-10" r="36" fill="#FFD6DC"/></g>`;
+  if (region === 'whole') h += `<path d="M-300 40 C-320 -120 -200 -230 -40 -230 C120 -250 300 -170 310 -20 C320 80 260 150 160 160 L120 230 L60 230 L50 170 C-60 190 -280 180 -300 40 Z" fill="none" stroke="${MINT}" stroke-width="16" opacity="${f1((0.35 + pulse * 0.4) * 100) / 100}"/>`;
+  if (region === 'drain') {
+    for (let i = 0; i < 14; i++) { const k = ((t * 0.6 + i / 14) % 1); const x = lerp(120, 380, k), y = lerp(-20, 60, k) + Math.sin(k * 9 + i) * 18; h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(10 * (1 - k * 0.5))}" fill="${MINT}" stroke="${INK}" stroke-width="3" opacity="${f1((1 - k * 0.6) * 100) / 100}"/>`; }
+    h += phone(420, 70, 0.55, { back: 1 });
+  }
+  h += `</g>`;
+  if (labelText) h += label(cx + 230 * s, cy - 270 * s, labelText, { size: 36 });
+  return h;
+}
+function labScene(t, lt, a) {
+  let h = BG('url(#labG)') + BG('url(#grid)');
+  h += `<rect x="-600" y="840" width="3120" height="600" fill="#0E1C30"/>`;
+  h += `<ellipse cx="960" cy="440" rx="620" ry="380" fill="url(#glow)" opacity=".35"/>`;
+  h += `<rect x="520" y="110" width="880" height="640" rx="28" fill="#06101C" stroke="${INK}" stroke-width="12"/><rect x="540" y="130" width="840" height="600" rx="18" fill="url(#grid)"/>`;
+  h += brain(a.region === 'drain' ? 900 : 960, 450, 0.95, a.region || 'whole', t, a.label);
+  h += `<rect x="540" y="${f1(130 + (t * 220) % 600)}" width="840" height="6" fill="${MINT}" opacity=".4"/>`;
+  const dex = (a.region === 'amygdala' || a.region === 'drain' || a.label === '더 확인이 필요해요') ? '진지' : (a.label === '쉽지 않은 실험' ? '당황' : (a.region === 'pineal' ? '미소' : '기본'));
+  h += doctor(300, 960, 0.6, { t, tilt: 4, pose: 'point', expr: dex, talk: env(t) });
+  h += Z({ t, seed: 6, x: 1620, y: 960, s: 0.62, ex: exprAt([[0, '기본'], [0.0001, a.region === 'amygdala' ? '걱정' : (a.region === 'pineal' ? '졸림' : '놀람')]], lt), look: [-0.8, -0.5], light: -1, shade: '#B9D3E3', pose: a.region === 'whole' ? '턱괴기' : '서기' });
+  return h;
+}
+/* title + recap live in scenes6.js */
+function chapterScene(t, lt, a) {
+  let h = BG(NAVY) + BG('url(#grid)');
+  h += particles(t, 9, 30, [0, 0, 1920, 1080], MINT, { speed: 30, r: 4, op: 0.5 });
+  const k = easeOut(prog(lt, 0, 0.6));
+  h += `<g opacity="${f1(k * 100) / 100}" transform="translate(${f1((1 - k) * -60)} 0)">`;
+  h += outlined(960, 330, [[[String(a.n), YEL], [' / 7', MINT]]], { size: 64, sw: 12 });
+  h += label(960, 450, a.when, { size: 48, bg: YEL });
+  h += outlined(960, 640, [a.name], { size: 116, sw: 22 });
+  h += `</g>`;
+  for (let i = 1; i <= 7; i++) h += `<circle cx="${960 + (i - 4) * 60}" cy="760" r="${i === a.n ? 16 : 11}" fill="${i <= a.n ? MINT : '#33465F'}" stroke="${INK}" stroke-width="4"/>`;
+  const zx = lerp(-200, 2100, prog(lt, 0, 6));
+  h += Z({ t, seed: 9, x: zx, y: 862, s: 0.3, pose: walkPose(t * 9, 0.9), ex: exprAt([[0, '기본']], t) });
+  return h;
+}
+function countUp(text, k) {
+  if (text.includes('→')) return text; // two-number cards stay exact
+  return text.replace(/\d[\d,\.]*/, m => {
+    const num = parseFloat(m.replace(/,/g, '')); if (isNaN(num)) return m;
+    const dec = (m.split('.')[1] || '').length, v = num * k;
+    let s = v.toFixed(dec); if (m.includes(',')) s = Math.round(v).toLocaleString('en-US');
+    return s;
+  });
+}
+function statScene(t, lt, a) {
+  let h = BG('url(#cream)') + BG('url(#paper)');
+  const k = easeOut(prog(lt, 0.1, 1.2));
+  const big = a.big, fs = big.length > 8 ? 150 : 210;
+  h += `<g transform="translate(900 430) scale(${f1(lerp(0.85, 1, easeOutBack(prog(lt, 0, 0.5))) * 1000) / 1000})">`;
+  h += `<text x="0" y="40" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="${fs}" fill="${NAVY}" stroke="${INK}" stroke-width="2">${esc(countUp(big, k))}</text></g>`;
+  h += `<rect x="${900 - 360}" y="560" width="720" height="10" rx="5" fill="${PINK}" transform="scale(${f1(k * 1000) / 1000} 1)" transform-origin="900 565"/>`;
+  h += `<text x="900" y="660" text-anchor="middle" font-family="${FONT}" font-weight="700" font-size="${a.sub.length > 26 ? 42 : 52}" fill="${NAVY}">${esc(a.sub)}</text>`;
+  h += `<text x="900" y="740" text-anchor="middle" font-family="${FONT}" font-weight="500" font-size="28" fill="#6B6255">${esc(a.src)}</text>`;
+  h += Z({ t, seed: 10, x: 1680, y: 1020, s: 0.5, ex: exprAt([[0, '놀람'], [1.4, '뿌듯']], lt), pose: lt > 1.4 ? '손인사' : '서기', light: 1 });
+  return h;
+}
+function outroScene(t, lt, a) {
+  let h = park(t, lt, { sunset: 1 }, t);
+  if (!a.next) {
+    h += pop(t, t - lt + 0.3, t + 99, 1380, 360, `<path d="M-250 -90 L250 -90 Q280 -90 280 -60 L280 50 Q280 80 250 80 L-60 80 L-110 140 L-100 80 L-250 80 Q-280 80 -280 50 L-280 -60 Q-280 -90 -250 -90 Z" fill="#fff" stroke="${INK}" stroke-width="7"/><text x="0" y="10" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="44" fill="${NAVY}">내 스크린 타임은?</text>`, { rot: 3, bob: 5 });
+  } else {
+    h += `<rect x="-600" y="-600" width="3120" height="2280" fill="${NAVY}" opacity="${f1(easeOut(prog(lt, 0, 0.6)) * 0.82 * 100) / 100}"/>`;
+    h += pop(t, t - lt + 0.3, t + 99, 960, 300, outlined(0, 0, [[['다음 실험 · ', MINT], ['만약에연구소', YEL]]], { size: 56, sw: 12 }), {});
+    h += pop(t, t - lt + 0.7, t + 99, 960, 520, outlined(0, 0, ['만약에, 한 달 동안', '설탕을 끊는다면?'], { size: 96, sw: 18 }), {});
+  }
+  return h;
+}
+
+/* ---------- subtitles ---------- */
+function chunksOf(s) {
+  const parts = s.split(/(?<=[,.?!])\s+/);
+  const out = []; let cur = '';
+  parts.forEach(p => { if ((cur + ' ' + p).trim().length <= 34) cur = (cur + ' ' + p).trim(); else { if (cur) out.push(cur); cur = p; } });
+  if (cur) out.push(cur);
+  return out;
+}
+function subtitle(t) {
+  const L = TL.lines; let cur = null;
+  for (const l of L) if (t >= l.t0 - 0.05 && t <= l.t1 + 0.25) cur = l;
+  if (!cur) return '';
+  const ch = chunksOf(cur.sub), tot = ch.reduce((a, c) => a + c.length, 0);
+  let acc = cur.t0, idx = 0;
+  for (let i = 0; i < ch.length; i++) { const d = (cur.t1 - cur.t0) * ch[i].length / tot; if (t >= acc) idx = i; acc += d; }
+  const text = ch[idx];
+  const lines = text.length > 22 ? (() => { const m = Math.floor(text.length / 2); let sp = text.indexOf(' ', m); if (sp < 0 || sp - m > 8) sp = text.lastIndexOf(' ', m); return sp > 0 ? [text.slice(0, sp), text.slice(sp + 1)] : [text]; })() : [text];
+  const y0 = lines.length === 2 ? 948 : 1000;
+  return outlined(960, y0, lines, { size: 50, sw: 11, lh: 62, shadow: false });
+}
+
+/* ---------- main ---------- */
+function render(t) {
+  const L = TL.lines;
+  let i = 0; while (i + 1 < L.length && t >= L[i + 1].t0 - 0.15) i++;
+  const line = L[i] || { scene: 'title', args: {}, t0: 0, t1: 1 };
+  let rs = i; while (rs > 0 && L[rs - 1].scene === line.scene && L[rs - 1].scene !== 'chapter' && line.scene !== 'stat') rs--;
+  const runT0 = (L[rs] || line).t0, lt = t - (line.t0 - 0.15), runLt = t - (runT0 - 0.15);
+  const a = Object.assign({ _dur: (line.t1 || 0) - (line.t0 || 0), _run: runLt }, line.args || {});
+  const titleIdx = L.findIndex(l => l.scene === 'title'), offIdx = L.findIndex(l => l.scene === 'become' && l.args && l.args.off);
+  let lastRecap = -1; L.forEach((l, k) => { if (l.scene === 'recap') lastRecap = k; });
+  ROMAN = i >= titleIdx && (lastRecap < 0 || i <= lastRecap);
+  let scene = '', cam = [960, 540, 1];
+  const push = (z0, z1, cx = 960, cy = 540, cx1 = cx, cy1 = cy) => camLerp(runLt / 8, [cx, cy, z0], [cx1, cy1, z1]);
+  switch (line.scene) {
+    case 'bed': scene = bedScene(t, lt, a); cam = a.sleep ? push(1.05, 1.15, 960, 600) : (a.dark ? camLerp(lt / 4, [860, 620, 1.15], [820, 640, 1.42]) : push(1.12, 1.25, 860, 620)); break;
+    case 'phonebox': scene = phoneboxScene(t, lt, a); cam = push(1.0, 1.08, 1000, 540); break;
+    case 'withdraw': scene = withdrawScene(t, lt, a); cam = push(1.0, 1.1, 960, 540); break;
+    case 'phantom': scene = phantomScene(t, lt, a); cam = camLerp(lt / 3, [960, 560, 1.0], [940, 600, 1.16]); break;
+    case 'desk': scene = deskScene(t, lt, a); cam = push(1.0, 1.1, 960, 520); break;
+    case 'drain': scene = drainScene(t, lt, a); cam = push(1.0, 1.03, 960, 540); break;
+    case 'sleeplab': scene = sleeplabScene(t, lt, a); cam = push(1.0, 1.04); break;
+    case 'list4': scene = list4Scene(t, lt, a); cam = camLerp(lt / 9, [960, 540, 1.0], [960, 520, 1.04]); break;
+    case 'feed': scene = feedScene(t, lt, a); cam = a.happy ? push(1.0, 1.08) : push(1.0, 1.1, 960, 520); break;
+    case 'block': scene = blockScene(t, lt, a); cam = push(1.0, 1.06, 960, 520); break;
+    case 'friends': scene = park(t, lt, { friends: 1 }, runLt); cam = push(1.0, 1.06, 960, 560); break;
+    case 'lab': scene = careScene(t, lt, a); cam = push(1.0, 1.08, 960, 480); break;
+    case 'title': scene = titleScene(t, lt, a); cam = push(1.0, 1.06); break;
+    case 'chapter': scene = chapterScene(t, lt, a); cam = push(1.0, 1.04); break;
+    case 'stat': scene = statScene(t, lt, a); cam = camLerp(lt / 5, [960, 540, 1.0], [960, 520, 1.05]); break;
+    case 'recap': scene = recapScene(t, lt, a); cam = push(1.0, 1.04); break;
+    case 'outro': scene = outroScene(t, lt, a); cam = push(1.0, 1.06); break;
+    case 'hook': scene = hookScene(t, lt, a); cam = push(1.0, 1.08, 960, 540); break;
+    case 'trio': scene = trioScene(t, lt, a); cam = push(1.0, 1.05, 960, 520); break;
+    case 'myth': scene = mythScene(t, lt, a); cam = push(1.0, 1.05, 960, 540); break;
+    case 'sort': scene = sortScene(t, lt, a); cam = push(1.0, 1.05, 960, 520); break;
+    case 'worry': scene = worryScene(t, lt, a); cam = push(1.0, 1.08, 960, 540); break;
+    case 'morning': scene = morningScene(t, lt, a); cam = push(1.0, 1.08, 960, 540); break;
+    case 'office': scene = officeScene(t, lt, a); cam = push(1.0, 1.08, 940, 540); break;
+    case 'discomfort': scene = discomfortScene(t, lt, a); cam = push(1.0, 1.08, 960, 560); break;
+    case 'choco': scene = chocoScene(t, lt, a); cam = push(1.0, 1.03, 960, 520); break;
+    case 'above': scene = aboveScene(t, lt, a); cam = [960, 540, 1]; break;
+    case 'solomon': scene = solomonScene(t, lt, a); cam = push(1.0, 1.04, 960, 520); break;
+    case 'mug': scene = mugScene(t, lt, a); cam = push(1.0, 1.08, 960, 540); break;
+    case 'couple': scene = coupleScene(t, lt, a); cam = push(1.0, 1.06, 960, 540); break;
+    case 'memento': scene = mementoScene(t, lt, a); cam = push(1.0, 1.07, 960, 540); break;
+    case 'grat': scene = gratScene(t, lt, a); cam = push(1.0, 1.03, 960, 520); break;
+    case 'review': scene = reviewScene(t, lt, a); cam = push(1.0, 1.08, 960, 540); break;
+    case 'stoicweek': scene = stoicweekScene(t, lt, a); cam = push(1.0, 1.04, 960, 520); break;
+    case 'bridge': scene = bridgeScene(t, lt, a); cam = push(1.0, 1.05, 960, 540); break;
+    case 'surf': scene = surfScene(t, lt, a); cam = push(1.0, 1.06, 960, 540); break;
+    case 'calmroad': scene = calmroadScene(t, lt, a, runLt); cam = push(1.0, 1.05, 960, 540); break;
+    case 'cafe': scene = cafeScene(t, lt, a); cam = push(1.0, 1.1, 960, 540); break;
+    case 'cubes': scene = cubesScene(t, lt, a); cam = camLerp(lt / 6, [960, 540, 1.0], [960, 520, 1.04]); break;
+    case 'sugarbox': scene = sugarboxScene(t, lt, a); cam = push(1.0, 1.08, 1000, 540); break;
+    case 'craving': scene = cravingScene(t, lt, a); cam = push(1.0, 1.1, 960, 540); break;
+    case 'list': scene = listScene(t, lt, a); cam = camLerp(lt / 9, [960, 540, 1.0], [960, 520, 1.04]); break;
+    case 'coaster': scene = coasterScene(t, lt, a); cam = push(1.0, 1.05, 960, 520); break;
+    case 'kids': scene = kidsScene(t, lt, a); cam = push(1.0, 1.05, 960, 520); break;
+    case 'liver': scene = liverScene(t, lt, a); cam = push(1.0, 1.08, 960, 470); break;
+    case 'taste': scene = tasteScene(t, lt, a); cam = push(1.0, 1.1, 1000, 540); break;
+    case 'comfort': scene = comfortScene(t, lt, a); cam = push(1.0, 1.12, 900, 600); break;
+    case 'moments': scene = momentsScene(t, lt, a); cam = push(1.0, 1.03); break;
+    case 'tea': scene = teaScene(t, lt, a); cam = push(1.0, 1.08, 960, 560); break;
+    case 'thanks': scene = thanksScene(t, lt, a); cam = push(1.0, 1.05); break;
+  }
+  let over = '';
+  if (a.study) over += pop(t, line.t0, line.t1 + 0.3, f1(Math.max(250, a.study.length * 36 * 0.92 / 2 + 70)), 120, label(0, 0, a.study, { size: 36, bg: YEL }), { rot: -3, bob: 3 });
+  const recapIdx = L.findIndex(l => l.scene === 'recap');
+  const ch = (() => { let n = 0; for (let k = 0; k <= i; k++) if (L[k].scene === 'chapter') n = L[k].args.n; if (recapIdx >= 0 && i >= recapIdx) n = 0; return n; })();
+  if (ch && line.scene !== 'chapter') over += `<g transform="translate(1880 60)"><rect x="-250" y="-30" width="250" height="60" rx="30" fill="${NAVY}" opacity=".85" stroke="${MINT}" stroke-width="3"/><text x="-125" y="11" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="30" fill="${MINT}">${['월', '화', '수', '목', '금', '토', '일'][ch - 1]}요일 · ${ch} / 7</text></g>`;
+  const fade = Math.max(1 - prog(t, 0, 0.5), prog(t, TL.duration - 1.0, TL.duration));
+  const cut = prog(t, line.t0 - 0.15, line.t0 + 0.05);
+  const flash = i > 0 && L[i - 1].scene !== line.scene && cut < 1 ? (1 - cut) * 0.14 : 0;
+  document.getElementById('v').innerHTML = defs(t) +
+    `<g filter="url(#boil)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g>` +
+    `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
+    `<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +
+    over + subtitle(t) +
+    `<text x="1890" y="1062" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="22" fill="#fff" opacity=".5">만약에연구소</text>` +
+    (flash ? `<rect width="${W}" height="${H}" fill="#fff" opacity="${f1(flash * 100) / 100}"/>` : '') +
+    `<rect width="${W}" height="${H}" fill="#000" opacity="${f1(fade * 100) / 100}"/>`;
+}
+window.render = render;
+</script>
+<script src="../sugar/scenes5.js"></script>
+<script src="../nietzsche/scenes6.js"></script>
+<script src="earth_data.js"></script>
+<script src="scenes7.js"></script>
+</body>
+</html>

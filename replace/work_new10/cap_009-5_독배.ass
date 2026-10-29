@@ -1,0 +1,29 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Noto Sans CJK KR Black,70,&H00FFFFFF,&H00FFFFFF,&H000E0E0E,&H99000000,0,0,0,0,100,100,0,0,1,8,4,8,70,70,1185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.13,0:00:01.78,Cap,,0,0,0,,{\c&HFFFFFF&}일흔이 넘은 나이.
+Dialogue: 0,0:00:01.80,0:00:03.64,Cap,,0,0,0,,{\c&HFFFFFF&}젊은이들을 타락시키고,
+Dialogue: 0,0:00:03.66,0:00:08.16,Cap,,0,0,0,,{\c&HFFFFFF&}나라의 신을 믿지 않는다는 죄로 법정에 섭니다.
+Dialogue: 0,0:00:08.18,0:00:11.86,Cap,,0,0,0,,{\c&HFFFFFF&}배심원들 앞에서도, 그는 물러서지 않습니다.
+Dialogue: 0,0:00:11.88,0:00:15.25,Cap,,0,0,0,,{\c&H7AE2FF&}질문을 그만두는 조건으로 풀어 준다 해도,
+Dialogue: 0,0:00:15.27,0:00:17.81,Cap,,0,0,0,,{\c&H7AE2FF&}나는 멈추지 않을 것이오.
+Dialogue: 0,0:00:17.83,0:00:20.09,Cap,,0,0,0,,{\c&HFFFFFF&}판결은 유죄.
+Dialogue: 0,0:00:20.11,0:00:24.59,Cap,,0,0,0,,{\c&HFFFFFF&}{\c&H33E7F7&}30{\c&HFFFFFF&}표만 반대로 갔어도, 풀려났을 차이였습니다.
+Dialogue: 0,0:00:24.61,0:00:30.04,Cap,,0,0,0,,{\c&HFFFFFF&}조용히 입 다물고 살면 되지 않느냐는 말에, 그가 남긴 대답.
+Dialogue: 0,0:00:30.06,0:00:35.46,Cap,,0,0,0,,{\c&H7AE2FF&}성찰하지 않는 삶은, 살 가치가 없다.
+Dialogue: 0,0:00:35.48,0:00:41.19,Cap,,0,0,0,,{\c&HFFFFFF&}사형 선고. 새벽, 감옥으로 친구 크리톤이 찾아옵니다.
+Dialogue: 0,0:00:41.21,0:00:43.54,Cap,,0,0,0,,{\c&H7AE2FF&}탈출 준비는 다 해 뒀네.
+Dialogue: 0,0:00:43.56,0:00:46.21,Cap,,0,0,0,,{\c&HFFFFFF&}소크라테스는 거절합니다.
+Dialogue: 0,0:00:46.23,0:00:49.80,Cap,,0,0,0,,{\c&HFFFFFF&}잘못을 잘못으로 갚을 수는 없다면서.
+Dialogue: 0,0:00:49.82,0:00:55.16,Cap,,0,0,0,,{\c&HFFFFFF&}그리고 마지막 날까지, 친구들과 질문을 나누죠.
+Dialogue: 0,0:00:55.18,0:00:59.46,Cap,,0,0,0,,{\c&HFFFFFF&}해 질 무렵, 그는 담담히 독배를 듭니다.
