@@ -42,7 +42,7 @@ function hhaloScene(t, lt, a) {
   let h = labBg(t);
   if (k === 0) {
     h += P14(560, 880, 0.62, '#6B7A4E', { t, seed: 1690, pose: '허리', ex: exprAt([[0, '뿌듯']], t), look: [0.3, 0] });
-    h += `<ellipse cx="560" cy="${f1(880 - 400 * 0.62)}" rx="110" ry="26" fill="none" stroke="${YEL}" stroke-width="10" opacity="${f1((0.6 + 0.4 * Math.sin(t * 4)) * 100) / 100}" transform="translate(0 -170)"/>`;
+    h += `<ellipse cx="560" cy="${f1(880 + (36 - 560) * 0.62)}" rx="70" ry="16" fill="none" stroke="${YEL}" stroke-width="9" opacity="${f1((0.6 + 0.4 * Math.sin(t * 4)) * 100) / 100}"/>`;
     h += pop(t, T0 + 0.3, t + 99, 560, 240, label(0, 0, '체격 좋음 ✓', { size: 36, bg: MINT }), {});
     [['지능', 'A'], ['성실함', 'A'], ['리더십', 'A']].forEach(([nm, g], j) => { const at = at16(t, a, '다른 점수', 0) + j * 0.35;
       h += pop(t, T0 + at, t + 99, 1200 + j * 0, 330 + j * 150, card14(0, 0, 420, 110, T8(-110, 16, nm, { size: 40 }) + T8(130, 20, g, { size: 60, fill: '#2E9E5B' }), { bg: '#fff' }), { rot: (j - 1) * 2 }); });
