@@ -49,6 +49,7 @@
 | 013 행복 | LkDF-NVtk2w | 11/17 예약 | mom013/…_v1.mp4 |
 | 014 외로움(쇼펜하우어 고슴도치) | 미업로드 | 다음 순서(11/20 18:00 제안) | lonely014/…_v1.mp4 + 쇼츠 3개(replace/out_new6) |
 | 015 쇼펜하우어 2탄 | 대본 단계 | 014 다음 | claude.ai 문서 "실험015 쇼펜하우어 대본 v2" |
+| 016 맹자 호연지기 | 대본 완성(제작 전) | 015 다음 | `mencius016/script.py`, 제작 안내 `mencius016/PRODUCTION.md` |
 
 - 003(휴대폰)·004(설탕) 편과 그 쇼츠는 채널에서 비공개 상태입니다.
 - 옛 버전(삭제 예정): aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
