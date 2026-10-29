@@ -1,9 +1,3 @@
-*.mp4
-*.wav
-*.mp3
-*.png
-*.jpg
-*.tar*
 node_modules/
 __pycache__/
 sa.json
