@@ -177,6 +177,12 @@
    "item": "Gemini TTS outro line for ep.014 Shorts",
    "count": 1,
    "unit_usd": 0.01
+  },
+  {
+   "at": "2026-10-29",
+   "item": "Gemini 3.8 Flash TTS: ep.016 Mencius narration (77 lines + 10 retakes)",
+   "count": 1,
+   "unit_usd": 0.2
   }
  ]
 }
