@@ -13,3 +13,7 @@ timeline_fake.json
 r*.log
 render.log
 *.mp4
+_a*.jpg
+_b*.jpg
+_qa/
+_rng.txt
