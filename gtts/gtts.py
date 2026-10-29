@@ -1,4 +1,4 @@
-"""Google Cloud Text-to-Speech helper (key read from ~/.config/gtts/key, never printed).
+"""Google Cloud Text-to-Speech helper (key read from ~/.config/gtts/key or $GTTS_API_KEY, never printed).
 synth(text, voice, path, rate=None) -> path of a 24 kHz mono WAV (cached)."""
 import base64, json, os, subprocess
 
@@ -13,7 +13,7 @@ def synth(text, voice, path, rate=None, pitch=None, markup=False):
     if rate: cfg['speakingRate'] = rate
     if pitch is not None: cfg['pitch'] = pitch
     body = {'input': {('markup' if markup else 'text'): text}, 'voice': {'languageCode': voice[:5], 'name': voice}, 'audioConfig': cfg}
-    key = open(KEY_FILE).read().strip()
+    key = open(KEY_FILE).read().strip() if os.path.exists(KEY_FILE) else os.environ['GTTS_API_KEY'].strip()
     # curl goes through the workspace proxy with the right CA bundle; the key travels in a header, not the URL
     r = subprocess.run(['curl', '-sS', '-m', '90', '-H', 'Content-Type: application/json', '-H', 'X-Goog-Api-Key: ' + key,
                         '--data-binary', '@-', URL], input=json.dumps(body).encode(), capture_output=True)

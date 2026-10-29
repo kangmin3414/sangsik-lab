@@ -18,6 +18,7 @@
 4. 인증 키는 저장소에 없습니다. 운영자가 새 환경의 비밀값(secret)으로 넣어야 합니다.
    - `~/.config/gcp/sa.json` : GCP 서비스 계정 키 (프로젝트 `mangyak-tts`). Gemini TTS(목소리), Lyria(BGM), 이미지 생성에 씁니다. `gtts/vx.py`가 토큰을 만듭니다.
    - `~/.config/gtts/key` : Google TTS용 키.
+   - 클라우드 세션에서는 파일 대신 환경변수로 넣어도 됩니다: `GCP_SA_JSON`(서비스 계정 JSON 파일 내용 전체), `GTTS_API_KEY`(TTS 키). 파일이 없으면 `vx.py`·`gtts.py`가 이 값을 읽습니다.
    - 키 내용은 절대 출력하거나 공유하지 않습니다.
 5. 파이썬 패키지: numpy, scipy, soundfile, librosa, pillow, playwright(크로미움 포함), supertonic, google-auth, requests. 폰트: Noto Sans CJK KR Black, Jua(`thumb3/node_modules/@fontsource/jua`).
 

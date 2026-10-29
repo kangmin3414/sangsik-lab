@@ -1,5 +1,6 @@
 """Google Cloud (Gemini Enterprise Agent Platform, ex-Vertex AI) caller that bills the project's billing account.
-Credentials: service-account key at ~/.config/gcp/sa.json (never printed). Tokens are minted on the fly."""
+Credentials: service-account key at ~/.config/gcp/sa.json, or the key's JSON text in $GCP_SA_JSON (never printed).
+Tokens are minted on the fly."""
 import base64, json, os, time
 os.environ.setdefault('REQUESTS_CA_BUNDLE', '/root/.ccr/ca-bundle.crt')
 import requests
@@ -14,7 +15,11 @@ _creds = None
 def token():
     global _creds
     if _creds is None:
-        _creds = service_account.Credentials.from_service_account_file(SA, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+        scopes = ['https://www.googleapis.com/auth/cloud-platform']
+        if os.path.exists(SA):
+            _creds = service_account.Credentials.from_service_account_file(SA, scopes=scopes)
+        else:
+            _creds = service_account.Credentials.from_service_account_info(json.loads(os.environ['GCP_SA_JSON']), scopes=scopes)
     if not _creds.valid:
         _creds.refresh(Request())
     return _creds.token
