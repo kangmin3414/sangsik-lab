@@ -15,7 +15,7 @@ function cdateScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k === 1) {
     let h = cafe17(t);
-    h += DATEW17({ t, seed: 1701, x: PSEAT.x, y: PSEAT.y, s: PSEAT.s, pose: '앉아폰' in P ? '앉기' : '앉기', ex: exprAt([[0, '지친']], t), look: [0.6, 0.7] });
+    h += DATEW17({ t, seed: 1701, x: PSEAT.x, y: PSEAT.y, s: PSEAT.s, pose: '앉기', ex: exprAt([[0, '지친']], t), look: [0.6, 0.7] });
     h += pop(t, T0 + 0.4, t + 99, PSEAT.x + 120, 560, icon17('watch'), { bob: 2 });
     const zo = { t, seed: 1702, x: ZSEAT.x, y: ZSEAT.y, s: ZSEAT.s, pose: '앉아안기', ex: exprAt([[0, '신남']], t), look: [0.6, -0.1] };
     h += ZB17 ? HALO(char(Object.assign({}, ZB17, zo))) : '';
@@ -92,7 +92,7 @@ function ckongScene(t, lt, a) {
   const L = ancient17(t) + VIL17({ t, seed: 1712, x: 240, y: 880, s: 0.46, pose: '설명', ex: exprAt([[0, '신남']], t), look: [0.6, 0] }, '#C9A27A') + VIL17({ t, seed: 1713, x: 700, y: 880, s: 0.46, pose: '손인사', ex: exprAt([[0, '신남']], t), look: [-0.6, 0] }, '#A8B8A0')
     + KZ({ t, seed: 1714, x: 470, y: 880, s: 0.5, pose: '서기', ex: exprAt([[0, '미소']], t), look: [0, 0.3] }) + label(470, 300, '고향 마을: 말 못 하는 사람처럼', { size: 30, bg: '#fff' });
   const R = court17(t) + OFF17({ t, seed: 1715, x: 1700, y: 880, s: 0.46, pose: '서기', ex: exprAt([[0, '기본']], t), look: [-0.6, 0] }) + OFF17({ t, seed: 1716, x: 1500, y: 880, s: 0.46, pose: '서기', ex: exprAt([[0, '놀람']], t), look: [-0.6, 0] })
-    + KZ({ t, seed: 1717, x: 1180, y: 880, s: 0.5, pose: '설명', ex: exprAt([[0, '결심']], t), look: [0.6, 0] }) + label(1440, 300, '조정: 또렷하게, 신중하게', { size: 30, bg: YEL });
+    + KZ({ t, seed: 1717, x: 1180, y: 880, s: 0.5, pose: '설명', ex: exprAt([[0, '기본']], t), look: [0.6, 0] }) + label(1440, 300, '조정: 또렷하게, 신중하게', { size: 30, bg: YEL });
   let h = BG('#EFE2C4');
   const r = k === 1 ? prog(lt, 0.5 * D, D) * 0 : 1; // court half appears on k2
   h += k === 1 ? `<g clip-path="url(#leftHalf)">${L}</g><g clip-path="url(#rightHalf)">${dim17(1, '#2A1E1E')}${pop(t, T0 + 0.6 * D, t + 99, 1440, 560, T17(0, 0, '?', { size: 120, fill: '#5A3A3A' }), {})}</g>` : `<g clip-path="url(#leftHalf)">${L}${dim17(0.25)}</g><g clip-path="url(#rightHalf)">${R}</g>`;
@@ -105,14 +105,14 @@ function cmonScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k === 0) return expCard17(t, lt, a, 1, icon17('watch').replace('r="34"', 'r="54"'));
   let h = lunch17(t);
-  h += HR({ t, seed: 1721, x: 1220, y: 900, s: 0.56, pose: '앉기', ex: exprAt([[0, k === 2 ? '서운함' : '기본']], t), look: [-0.7, 0] });
-  const zo = { t, seed: 1722, x: 700, y: 900, s: 0.56, pose: k === 1 && lt < 0.4 * D ? '앉아설명' : '앉아폰', ex: exprAt(k === 1 ? [[0, '신남'], [at17(t, a, '결과는', 0), '놀람']] : [[0, '놀람']], lt), look: k === 1 && lt < 0.4 * D ? [0.7, 0] : [0.1, 0.7] };
+  h += HR({ t, seed: 1721, x: LH17.x, y: LH17.y, s: LH17.s, pose: '앉기', ex: exprAt([[0, k === 2 ? '서운함' : '기본']], t), look: [-0.7, 0] });
+  const zo = { t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: k === 1 && lt < 0.4 * D ? '앉아설명' : '앉아폰', ex: exprAt(k === 1 ? [[0, '신남'], [at17(t, a, '결과는', 0), '놀람']] : [[0, '놀람']], lt), look: k === 1 && lt < 0.4 * D ? [0.7, 0] : [0.1, 0.7] };
   h += ZK(zo) + lunchBowls17();
-  h += `<g transform="translate(860 676)"><rect x="-26" y="-14" width="52" height="28" rx="8" fill="#1F2D44" stroke="${INK}" stroke-width="4"/><circle cx="-8" cy="0" r="6" fill="${RED}" opacity="${f1((0.5 + 0.5 * Math.sin(t * 6)) * 100) / 100}"/></g>`;
+  h += `<g transform="translate(960 706)"><rect x="-26" y="-14" width="52" height="28" rx="8" fill="#1F2D44" stroke="${INK}" stroke-width="4"/><circle cx="-8" cy="0" r="6" fill="${RED}" opacity="${f1((0.5 + 0.5 * Math.sin(t * 6)) * 100) / 100}"/></g>`;
   if (k === 1) { const sk = prog(lt, at17(t, a, '82', -0.6), at17(t, a, '82', 0.4)); if (sk > 0) {
       const ang = 2 * Math.PI * 0.82 * easeOut(sk), x1 = 960 + 120 * Math.sin(ang), y1 = 330 - 120 * Math.cos(ang);
       h += `<g transform="translate(-320 0)"><circle cx="960" cy="330" r="120" fill="#BFE3C7" stroke="${INK}" stroke-width="6"/><path d="M960 330 L960 210 A120 120 0 ${ang > Math.PI ? 1 : 0} 1 ${f1(x1)} ${f1(y1)} Z" fill="#FF8A7A" stroke="${INK}" stroke-width="5"/></g>` + label(640, 500, '제로 82% · 나머지 18%', { size: 32, bg: '#fff' }); } }
-  else h += pop(t, T0 + 0.2, t + 99, 1220, 560, `<g opacity=".7">${label(0, 0, '(하린의 목소리 3분)', { size: 28, bg: '#fff' })}</g>`, {});
+  else h += pop(t, T0 + 0.2, t + 99, 1280, 600, `<g opacity=".85">${label(0, 0, '(하린의 목소리 3분)', { size: 28, bg: '#fff' })}</g>`, {});
   return h;
 }
 // 13-15 Tamir & Mitchell: people give up money to talk about themselves
@@ -147,8 +147,8 @@ function cpauseScene(t, lt, a) {
     return h;
   }
   let h = lunch17(t);
-  h += HR({ t, seed: 1721, x: 1220, y: 900, s: 0.56, pose: '앉기', ex: exprAt([[0, '기본']], t), look: [-0.7, 0] });
-  h += ZK({ t, seed: 1722, x: 700, y: 900, s: 0.56, pose: k === 1 ? '입막기' : '앉기', ex: exprAt([[0, k === 1 ? '결심' : '걱정']], t), look: [0.5, 0], sweat: k === 2 }) + lunchBowls17();
+  h += HR({ t, seed: 1721, x: LH17.x, y: LH17.y, s: LH17.s, pose: '앉기', ex: exprAt([[0, k === 1 ? '미소' : '걱정']], t), look: [-0.7, 0] });
+  h += ZK({ t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: k === 1 ? '입막기' : '앉기', ex: exprAt([[0, k === 1 ? '생각' : '걱정']], t), look: [0.5, 0], sweat: k === 2 }) + lunchBowls17();
   for (let i = 0; i < 3; i++) h += pop(t, T0 + 0.4 + i * 0.5, t + 99, 820 + i * 140, 420, T17(0, 0, '…', { size: 80, fill: '#9AA6B2' }), { bob: 3 });
   if (k === 2) h += pop(t, T0 + 0.3, t + 99, 960, 230, label(0, 0, '(어색한 정적)', { size: 40, bg: '#fff' }), { rot: -2 });
   return h;
@@ -178,22 +178,22 @@ function caskScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   let h = labBg(t);
   if (k === 0) {
-    const chat = (x, q, c, ap) => pop(t, T0 + ap, t + 99, x, 470, card17(0, 0, 520, 380, `<rect x="-230" y="-160" width="460" height="56" rx="12" fill="${c}"/>` + T17(0, -120, q, { size: 34 }) + [0, 1, 2, 3].map(i => `<rect x="${i % 2 ? -40 : -210}" y="${-80 + i * 56}" width="250" height="40" rx="18" fill="${i % 2 ? '#FFE36E' : '#fff'}" stroke="${INK}" stroke-width="3"/>`).join(''), { bg: '#EAF2F8' }), {});
-    h += chat(560, '질문 9개 이상', MINT, 0.3) + chat(1360, '질문 4개 이하', '#C3CDD8', 0.6);
+    const chat = (x, q, c, ap, qs) => pop(t, T0 + ap, t + 99, x, 470, card17(0, 0, 520, 380, `<rect x="-230" y="-160" width="460" height="56" rx="12" fill="${c}"/>` + T17(0, -120, q, { size: 34 }) + [0, 1, 2, 3].map(i => `<rect x="${i % 2 ? -40 : -210}" y="${-80 + i * 56}" width="250" height="40" rx="18" fill="${i % 2 ? '#FFE36E' : '#fff'}" stroke="${INK}" stroke-width="3"/>` + (qs[i] ? T17(i % 2 ? 85 : -85, -50 + i * 56, '?', { size: 32, fill: RED }) : '')).join(''), { bg: '#EAF2F8' }), {});
+    h += chat(560, '질문 9개 이상', MINT, 0.3, [1, 1, 1, 1]) + chat(1360, '질문 4개 이하', '#C3CDD8', 0.6, [0, 0, 1, 0]);
     h += pop(t, T0 + 0.1, t + 99, 960, 180, label(0, 0, '낯선 두 사람 · 15분 채팅', { size: 40, bg: '#fff' }), {});
     return h;
   }
   if (k === 1) {
     const bars = [['질문 많이', 5.79, MINT], ['질문 적게', 5.31, '#8C98A4']];
     h += `<line x1="560" y1="800" x2="1360" y2="800" stroke="#fff" stroke-width="6"/>`;
-    bars.forEach(([nm, v, c], j) => { const x = 760 + j * 400, kk = easeOut(prog(lt, 0.2 + j * 0.3, 1.0 + j * 0.3)), hh = (v - 4) * 230 * kk;
+    bars.forEach(([nm, v, c], j) => { const x = 760 + j * 400, kk = easeOut(prog(lt, 0.2 + j * 0.3, 1.0 + j * 0.3)), hh = v / 7 * 460 * kk;
       h += `<rect x="${x - 90}" y="${f1(800 - hh)}" width="180" height="${f1(hh)}" rx="12" fill="${c}" stroke="${INK}" stroke-width="6"/>` + T17(x, 860, nm, { size: 36, fill: '#fff' }) + (kk > 0.9 ? T17(x, 780 - hh, v.toFixed(2), { size: 40, fill: '#fff' }) : ''); });
     h += pop(t, T0 + 0.2, t + 99, 960, 190, label(0, 0, '상대가 느낀 호감 (7점 만점)', { size: 36, bg: '#fff' }), {});
     h += pop(t, T0 + at17(t, a, '이어서', 0), t + 99, 1500, 360, label(0, 0, '특히 이어서 묻는 질문!', { size: 34, bg: YEL }), { rot: 4 });
     return h;
   }
   if (k === 2) {
-    for (let j = 0; j < 3; j++) { const x = 480 + j * 480; h += `<rect x="${x - 10}" y="790" width="20" height="90" fill="#6A4428" stroke="${INK}" stroke-width="4"/><rect x="${x - 90}" y="780" width="180" height="18" rx="7" fill="#8A5A34" stroke="${INK}" stroke-width="5"/>` + P14(x - 110, 880, 0.36, '#7FA8D6', { t, seed: 1740 + j, pose: '앉기', ex: exprAt([[0, '미소']], t), look: [0.6, 0] }) + flip(x + 110, P14(x + 110, 880, 0.36, '#F2B9A2', { t, seed: 1750 + j, pose: '앉기', ex: exprAt([[0, j === 1 ? '신남' : '기본']], t), look: [0.6, 0] }));
+    for (let j = 0; j < 3; j++) { const x = 480 + j * 480; h += chair12(x - 110, 880, 0.36) + flip(x + 110, chair12(x + 110, 880, 0.36)) + `<rect x="${x - 10}" y="790" width="20" height="90" fill="#6A4428" stroke="${INK}" stroke-width="4"/><rect x="${x - 90}" y="780" width="180" height="18" rx="7" fill="#8A5A34" stroke="${INK}" stroke-width="5"/>` + P14(x - 110, 880, 0.36, '#7FA8D6', { t, seed: 1740 + j, pose: '앉기', ex: exprAt([[0, '미소']], t), look: [0.6, 0] }) + flip(x + 110, P14(x + 110, 880, 0.36, '#F2B9A2', { t, seed: 1750 + j, pose: '앉기', ex: exprAt([[0, j === 1 ? '신남' : '기본']], t), look: [0.6, 0] }));
       if (j === 1) h += pop(t, T0 + 0.8, t + 99, x, 470, `<path d="M0 20 c-30 -36 -70 -6 -36 26 l36 32 l36 -32 c34 -32 -6 -62 -36 -26 Z" fill="${PINK}" stroke="${INK}" stroke-width="5"/>`, { bob: 4 }); }
     h += pop(t, T0 + 0.2, t + 99, 960, 200, label(0, 0, '스피드 데이트 110명 · 4분씩', { size: 40, bg: '#fff' }), {});
     h += pop(t, T0 + at17(t, a, '경향', 0), t + 99, 1500, 340, label(0, 0, '경향 (상관관계)', { size: 30, bg: '#C3CDD8' }), { rot: 3 });
@@ -212,22 +212,22 @@ function cwedScene(t, lt, a) {
     let h = meeting17(t);
     h += TL17({ t, seed: 1760, x: 1380, y: 890, s: 0.6, pose: k === 1 ? '가드' : '팔짱', ex: exprAt([[0, k === 1 ? '놀람' : '찡그림']], t), look: [-0.7, 0], shiver: k === 1 });
     h += ZK({ t, seed: 1761, x: 660, y: 890, s: 0.58, pose: k === 1 ? '던지기' : '서기', ex: exprAt([[0, k === 1 ? '신남' : '미안']], t), look: [0.7, 0], shiver: k === 1 });
-    if (k === 1) for (let i = 0; i < 6; i++) { const ph = ((lt * 1.6) + i / 6) % 1, [x, y] = arc17(760, 560, 1320, 560 + (i % 3 - 1) * 60, ph, 60); h += ball17(x, y, 22); }
+    if (k === 1) for (let i = 0; i < 6; i++) { const ph = ((lt * 1.6) + i / 6) % 1, [x, y] = arc17(770, 700, 1300, 720 + (i % 3 - 1) * 50, ph, 80); h += ball17(x, y, 22); }
     else for (let i = 0; i < 6; i++) h += ball17(1180 + i * 70, 860 - (i % 2) * 18, 22);
     if (k === 1) ['취미는요?', '고향은요?', '혈액형은요?'].forEach((q, j) => h += pop(t, T0 + 0.6 + j * 0.6, t + 99, 760 + j * 200, 420 + (j % 2) * 50, label(0, 0, q, { size: 30, bg: '#fff' }), { rot: (j - 1) * 6 }));
     return h;
   }
   let h = lunch17(t);
   const s1 = seg17(t, lt, 1), s2 = seg17(t, lt, 2), s3 = seg17(t, lt, 3);
-  const zx = 770, zy = 760, hx = 1150, hy = 760;
+  const [zx, zy] = ballL17(Object.assign({ pose: '앉기' }, LZ17)), [hx, hy] = ballR17(Object.assign({ pose: '앉기' }, LH17));
   let bxy;
   if (k === 3) { if (lt < s1 + 0.3) bxy = [zx, zy]; else if (lt < s3) bxy = arc17(zx, zy, hx, hy, easeInOut(prog(lt, s1 + 0.3, s1 + 1.0)), 150); else bxy = arc17(hx, hy, zx, zy, easeIn(prog(lt, s3, s3 + 0.35)), 60); }
   else bxy = [zx - 20, zy + 10];
   const zPose = k === 3 ? (lt > s3 ? '앉아안기' : (lt > s1 ? '앉아던지기' : '앉기')) : '앉아안기';
-  h += ZK({ t, seed: 1722, x: 700, y: 900, s: 0.56, pose: zPose, ex: exprAt([[0, k === 4 ? '신남' : '미소']], t), look: [0.6, 0] });
-  h += HR({ t, seed: 1721, x: 1220, y: 900, s: 0.56, pose: k === 3 && lt > s2 && lt < s3 ? '앉아설명' : '앉기', ex: exprAt(k === 3 ? [[0, '기본'], [s2, '미소'], [s3 + 0.2, '놀람']] : [[0, '서운함']], lt), look: [-0.7, 0] });
+  h += ZK({ t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: zPose, ex: exprAt([[0, k === 4 ? '신남' : '미소']], t), look: [0.6, 0] });
+  h += HR({ t, seed: 1721, x: LH17.x, y: LH17.y, s: LH17.s, pose: k === 3 && lt > s2 && lt < s3 ? '앉아설명' : '앉기', ex: exprAt(k === 3 ? [[0, '기본'], [s2, '미소'], [s3 + 0.2, '놀람']] : [[0, '서운함']], lt), look: [-0.7, 0] });
   h += ball17(bxy[0], bxy[1], 26);
-  if (k === 3 && lt > s3) h += pop(t, T0 + s3, t + 99, 640, 360, label(0, 0, '저는요!', { size: 44, bg: '#FFB0A0' }), { rot: -5, wobble: 2 });
+  if (k === 3 && lt > s3) h += pop(t, T0 + s3, t + 99, 640, 540, label(0, 0, '저는요!', { size: 44, bg: '#FFB0A0' }), { rot: -5, wobble: 2 });
   if (k === 4) h += pop(t, T0 + at17(t, a, '던지는 척', 0), t + 99, 960, 200, label(0, 0, '던지는 척, 다시 낚아채기', { size: 44, bg: YEL }), {});
   return h;
 }
@@ -253,7 +253,7 @@ function cboomScene(t, lt, a) {
 function csanScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k <= 1) {
-    let h = ancient17(t) + KZ({ t, seed: 1780, x: 300, y: 880, s: 0.52, pose: '설명', ex: exprAt([[0, '결심']], t), look: [0.6, -0.2] });
+    let h = ancient17(t) + KZ({ t, seed: 1780, x: 300, y: 880, s: 0.52, pose: '설명', ex: exprAt([[0, '기본']], t), look: [0.6, -0.2] });
     const cards = [['조급함 躁', '말할 때가 아닌데 말하면', at17(t, a, '말할 때가 아닌데', 0)], ['숨김 隱', '말해야 할 때 안 하면', at17(t, a, '말해야 할', 0)], ['눈먼 것 瞽', '얼굴빛을 보지 않고 말하면', 0.2]];
     cards.forEach(([t1, t2, ap], j) => { if (k === 0 && j === 2) return;
       const hi = j === 2;
@@ -272,18 +272,21 @@ function cgrandScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k === 0 || k === 4) {
     let h = nightRoom12(t) + dim17(0.15);
-    h += HALO(char(Object.assign({}, ZB17, { t, seed: 1790, x: 820, y: 900, s: 0.58, pose: '앉기', ex: exprAt([[0, k === 4 ? '울먹' : '생각']], t), look: [0.5, 0.5] })));
-    h += `<g transform="translate(1020 640) rotate(-6)"><rect x="-120" y="-90" width="240" height="180" rx="6" fill="#F4E6C8" stroke="${INK}" stroke-width="6"/><rect x="-104" y="-74" width="208" height="130" fill="#B79A6A"/><rect x="-80" y="0" width="160" height="16" fill="#8A6A3A"/><circle cx="-30" cy="-20" r="16" fill="#E8D9B8"/><circle cx="34" cy="-26" r="18" fill="#D9C9A8"/></g>`;
+    const zo = { t, seed: 1790, x: 820, y: 880, s: 0.58, pose: '앉아내밀기', ex: exprAt([[0, k === 4 ? '울먹' : '생각']], t), look: [0.6, 0.2] }, [px, py] = handAt(zo, 'hR');
+    h += chair12(820, 880, 0.58) + HALO(char(Object.assign({}, ZB17, zo)));
+    h += `<g transform="translate(${f1(px + 40)} ${f1(py - 50)}) rotate(-6) scale(.7)"><rect x="-120" y="-90" width="240" height="180" rx="6" fill="#F4E6C8" stroke="${INK}" stroke-width="6"/><rect x="-104" y="-74" width="208" height="130" fill="#B79A6A"/><rect x="-80" y="0" width="160" height="16" fill="#8A6A3A"/><circle cx="-30" cy="-20" r="16" fill="#E8D9B8"/><circle cx="34" cy="-26" r="18" fill="#D9C9A8"/></g>`;
     if (k === 4) h += `<ellipse cx="820" cy="560" rx="380" ry="300" fill="url(#warm)" opacity="${f1(0.7 * prog(lt, 0.3, 2) * 100) / 100}"/>`;
-    if (k === 0) h += pop(t, T0 + at17(t, a, '평상', -0.2), t + 99, 1020, 440, label(0, 0, '할머니 댁 평상', { size: 34, bg: '#F4E6C8' }), { rot: -3 });
+    if (k === 0) h += pop(t, T0 + at17(t, a, '평상', -0.2), t + 99, 1100, 440, label(0, 0, '할머니 댁 평상', { size: 34, bg: '#F4E6C8' }), { rot: -3 });
     return h;
   }
   let h = porch17(t);
-  const kid = { t, seed: 1791, x: 760, y: 790, s: 0.4, pose: k === 2 ? '앉아받기' : '앉아설명', ex: exprAt([[0, '신남']], t), look: [0.6, -0.1] };
+  const kid = { t, seed: 1791, x: 760, y: 817, s: 0.4, pose: k === 2 ? '앉아받기' : '앉아설명', ex: exprAt([[0, '신남']], t), look: [0.6, -0.1] };
   h += HALO(char(Object.assign({}, ZB17, kid)));
-  h += GM({ t, seed: 1792, x: 1060, y: 790, s: 0.46, pose: k === 2 ? '앉아던지기' : '앉기', ex: exprAt([[0, '미소']], t), look: [-0.6, 0] });
-  if (k === 2) { const [x, y] = arc17(1100, 700, 812, 730, easeInOut(prog(lt, 0.4, 1.2)), 110); h += ball17(x, y, 22, 0.6); }
-  else h += ball17(812, 730, 22, 0.4);
+  const gmo = { t, seed: 1792, x: 1060, y: 822, s: 0.46, pose: k === 2 ? '앉아던지기' : '앉기', ex: exprAt([[0, '미소']], t), look: [-0.6, 0] };
+  h += GM(gmo);
+  const [kbx, kby] = ballL17(Object.assign({}, kid, { pose: '앉기' })), [gbx, gby] = ballR17(Object.assign({}, gmo, { pose: '앉기' }));
+  if (k === 2) { const [x, y] = arc17(gbx, gby, kbx, kby, easeInOut(prog(lt, 0.4, 1.2)), 110); h += ball17(x, y, 22, 0.6); }
+  else h += ball17(kbx, kby, 22, 0.4);
   h += `<rect x="-600" y="-600" width="3120" height="2280" fill="#C9A06A" opacity=".18"/>`;
   h += label(330, 150, '어린 시절', { size: 36, bg: '#F4E6C8' });
   return h;
@@ -293,7 +296,7 @@ function cruleScene(t, lt, a) {
   const D = D17(a), T0 = t - lt;
   let h = nightRoom12(t) + `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
   const x = prog(lt, 0.4, 1.2);
-  h += card17(1040, 450, 640, 300, T17(0, -60, '실험 3', { size: 36, fill: '#9A6A1E' }) + T17(0, 10, '질문을, 더 많이!', { size: 56 }) + (x > 0 ? `<line x1="-230" y1="-6" x2="${f1(-230 + 460 * x)}" y2="-6" stroke="${RED}" stroke-width="10" stroke-linecap="round"/>` : '') +
+  h += `<line x1="1040" y1="300" x2="1040" y2="330" stroke="${INK}" stroke-width="4"/>` + card17(1040, 450, 640, 300, `<circle cx="0" cy="-136" r="12" fill="${RED}" stroke="${INK}" stroke-width="4"/>` + T17(0, -60, '실험 3', { size: 36, fill: '#9A6A1E' }) + T17(0, 10, '질문을, 더 많이!', { size: 56 }) + (x > 0 ? `<line x1="-230" y1="-6" x2="${f1(-230 + 460 * x)}" y2="-6" stroke="${RED}" stroke-width="10" stroke-linecap="round"/>` : '') +
     (lt > at17(t, a, '얼굴을', 0) ? T17(0, 96, '얼굴 보고, 궁금한 것 하나', { size: 44, fill: '#2E9E5B' }) : ''), { bg: '#FFF7EC' });
   h += ZK({ t, seed: 1795, x: 560, y: 900, s: 0.56, pose: '설명', ex: exprAt([[0, '결심']], t), look: [0.7, -0.2] });
   return h;
@@ -309,6 +312,12 @@ function cthuScene(t, lt, a) {
   }
   let h = ancient17(t, { dusk: k >= 2 });
   h += `<rect x="1180" y="560" width="40" height="320" fill="#7A5235" stroke="${INK}" stroke-width="6"/><circle cx="1200" cy="520" r="150" fill="#6FA86A" stroke="${INK}" stroke-width="7"/>`;
+  const awake = k === 1 && lt < at17(t, a, '그런데', -0.1);  // first the eloquent disciple talking, then the nap
+  if (awake) {
+    h += JY({ t, seed: 1801, x: 1000, y: 880, s: 0.5, pose: '설명', ex: exprAt([[0, '신남']], t), look: [0.5, -0.1] });
+    for (let i = 0; i < 3; i++) h += pop(t, T0 + 0.3 + i * 0.35, t + 99, 1150 + i * 70, 520 - i * 50, `<path d="M0 -20 l6 14 l14 6 l-14 6 l-6 14 l-6 -14 l-14 -6 l14 -6 Z" fill="${YEL}" stroke="${INK}" stroke-width="3"/>`, { bob: 3 });
+    return h + pop(t, T0 + 0.3, t + 99, 1260, 300, label(0, 0, '말솜씨 1등 제자, 재여', { size: 36, bg: '#fff' }), { rot: 3 });
+  }
   h += JY({ t, seed: 1801, x: 1290, y: 846, s: 0.42, rot: 90, ex: { expr: '잠', prev: '잠', k: 1, blink: 0 }, noBlink: true });
   for (let i = 0; i < 3; i++) { const q = ((t * 0.5 + i / 3) % 1); h += `<text x="${f1(1400 + q * 100 + i * 10)}" y="${f1(700 - q * 180)}" font-family="${FONT}" font-weight="900" font-size="${f1(36 + q * 30)}" fill="#fff" stroke="${INK}" stroke-width="4" paint-order="stroke fill" opacity="${f1(Math.sin(q * Math.PI) * 100) / 100}">Z</text>`; }
   if (k === 1) h += pop(t, T0 + 0.3, t + 99, 1260, 300, label(0, 0, '말솜씨 1등 제자, 재여', { size: 36, bg: '#fff' }), { rot: 3 });
@@ -325,23 +334,23 @@ function cthuScene(t, lt, a) {
 function cmapScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k <= 1) {
-    let h = office17(t) + desk12(1180, 760, t, 0);
-    const map = `<g transform="translate(1180 740) rotate(-4)"><rect x="-90" y="-26" width="180" height="40" rx="4" fill="#EAF4E0" stroke="${INK}" stroke-width="5"/><path d="M-70 6 L-30 -16 L-6 0 L20 -14 L70 6" fill="none" stroke="#2E7A4A" stroke-width="4"/></g>`;
+    let h = office17(t) + desk12(1180, 760, t, 0) + `<rect x="1290" y="630" width="160" height="100" rx="8" fill="#2A3442" stroke="${INK}" stroke-width="6"/><rect x="1362" y="730" width="16" height="30" fill="#5A6470"/><path d="M1160 760 L1166 726 L1196 726 L1202 760 Z" fill="#7FC8A9" stroke="${INK}" stroke-width="5"/>` + T17(1370, 700, '하린', { size: 26, fill: '#9FD8B8' });
+    const map = `<g transform="translate(980 748) rotate(-4)"><rect x="-90" y="-26" width="180" height="40" rx="4" fill="#EAF4E0" stroke="${INK}" stroke-width="5"/><path d="M-70 6 L-30 -16 L-6 0 L20 -14 L70 6" fill="none" stroke="#2E7A4A" stroke-width="4"/></g>`;
     if (k === 0) {
       const put = prog(lt, 0.3 * D, 0.6 * D);
-      h += ZK({ t, seed: 1810, x: lerp(820, 980, put < 1 ? put : 1 - prog(lt, 0.75 * D, D)), y: 890, s: 0.56, pose: put > 0.2 && put < 1 ? '내밀기' : '서기', ex: exprAt([[0, '미소']], t), look: [0.7, 0.3] });
-      if (put >= 1) h += map + pop(t, T0 + at17(t, a, '도봉산', -0.3), t + 99, 1180, 560, label(0, 0, '도봉산 등산로', { size: 32, bg: '#EAF4E0' }), {});
+      h += ZK({ t, seed: 1810, x: lerp(700, 820, put < 1 ? put : 1 - prog(lt, 0.75 * D, D)), y: 890, s: 0.56, pose: put > 0.2 && put < 1 ? '내밀기' : '서기', ex: exprAt([[0, '미소']], t), look: [0.7, 0.3] });
+      if (put >= 1) h += map + pop(t, T0 + at17(t, a, '도봉산', -0.3), t + 99, 980, 620, label(0, 0, '도봉산 등산로', { size: 32, bg: '#EAF4E0' }), {});
       return h;
     }
-    const ho = { t, seed: 1811, x: 1300, y: 890, s: 0.58, pose: '내밀기', ex: exprAt([[0, '놀람'], [0.6, '신남']], lt), look: [0.4, -0.2] }, [mx, my] = handAt(ho, 'hR');
-    h += flip(1300, HR(ho)) + map.replace('translate(1180 740) rotate(-4)', `translate(${f1(2600 - mx)} ${f1(my - 10)}) rotate(8)`);
-    h += ZK({ t, seed: 1812, x: 560, y: 890, s: 0.56, pose: '서기', ex: exprAt([[0, '미소']], t), look: [0.7, 0] });
+    const ho = { t, seed: 1811, x: 1600, y: 890, s: 0.58, pose: '내밀기', ex: exprAt([[0, '놀람'], [0.6, '신남']], lt), look: [0.4, -0.2] }, [mx, my] = handAt(ho, 'hR');
+    h += flip(1600, HR(ho)) + map.replace('translate(980 748) rotate(-4)', `translate(${f1(3200 - mx)} ${f1(my - 10)}) rotate(8)`);
+    h += ZK({ t, seed: 1812, x: 700, y: 890, s: 0.56, pose: '서기', ex: exprAt([[0, '미소']], t), look: [0.7, 0] });
     return h;
   }
   let h = labBg(t);
   if (k === 2) {
     const items = [['👂', '들어 준다', 560], ['💛', '마음 써 준다', 1360]];
-    h += pop(t, T0 + 0.3, t + 99, 560, 480, card17(0, 0, 360, 260, `<path d="M-30 -60 Q40 -80 40 0 Q40 50 0 60" fill="none" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>` + T17(0, 100, '들어 준다', { size: 38 }), {}), {});
+    h += pop(t, T0 + 0.3, t + 99, 560, 480, card17(0, 0, 360, 260, `<path d="M-20 -70 C40 -80 60 -20 34 10 C20 26 26 50 -6 62 C-26 66 -34 50 -30 40" fill="#F6D9C4" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><path d="M-4 -40 C24 -44 30 -10 10 6" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>` + T17(0, 100, '들어 준다', { size: 38 }), {}), {});
     h += pop(t, T0 + 0.7, t + 99, 1360, 480, card17(0, 0, 360, 260, `<path d="M0 30 c-40 -50 -90 -6 -50 34 l50 44 l50 -44 c40 -40 -10 -84 -50 -34 Z" transform="translate(0 -60)" fill="${PINK}" stroke="${INK}" stroke-width="6"/>` + T17(0, 100, '마음 써 준다', { size: 38 }), {}), {});
     h += pop(t, T0 + 0.1, t + 99, 960, 200, label(0, 0, '호감의 이유: 반응성', { size: 44, bg: MINT }), {});
     return h;
@@ -356,7 +365,7 @@ function cfriScene(t, lt, a) {
   if (k === 0) return expCard17(t, lt, a, 5, `<g><rect x="-80" y="-60" width="160" height="120" rx="10" fill="#fff" stroke="${INK}" stroke-width="6"/>` + T17(0, 10, '점수?', { size: 44, fill: RED }) + `<line x1="-90" y1="-70" x2="90" y2="70" stroke="${RED}" stroke-width="10"/></g>`);
   let h = cafe17(t, { night: true });
   const zo = { t, seed: 1820, x: ZSEAT.x, y: ZSEAT.y, s: ZSEAT.s }, so = { t, seed: 1821, x: PSEAT.x, y: PSEAT.y, s: PSEAT.s };
-  const [zx, zy] = [ZSEAT.x + 70, 770], [sx, sy] = [PSEAT.x - 70, 770];
+  const [zx, zy] = ballL17(Object.assign({ pose: '앉기' }, ZSEAT)), [sx, sy] = ballR17(Object.assign({ pose: '앉기' }, PSEAT));
   let bxy = [sx, sy], zPose = '앉기', sPose = '앉기', sEx = '미소', zEx = '미소';
   if (k === 1) bxy = null;
   if (k === 2) { sPose = '앉아설명'; bxy = arc17(sx, sy, zx, zy, easeInOut(prog(lt, 0.8 * D, D)), 120); h += pop(t, T0 + 0.6, t + 99, PSEAT.x, 360, icon17('sea'), { bob: 3 }); }
@@ -375,7 +384,7 @@ function cscoreScene(t, lt, a) {
   const k = a.k || 0, T0 = t - lt;
   let h = nightRoom12(t) + `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
   h += card17(1040, 560, 420, 260, T17(0, -70, '오늘의 내 점수', { size: 34 }) + (k === 1 ? T17(0, 0, '말 없음 −30', { size: 34, fill: RED }) + T17(0, 50, '재미없음 −40', { size: 34, fill: RED }) : T17(0, 20, '?', { size: 90, fill: '#9AA6B2' })), { bg: '#fff' });
-  h += HALO(char(Object.assign({}, ZB17, { t, seed: 1830, x: 640, y: 900, s: 0.56, pose: '턱괴기', ex: exprAt([[0, k === 1 ? '서운함' : '생각']], t), look: [0.6, 0.3] })));
+  h += chair12(640, 880, 0.56) + HALO(char(Object.assign({}, ZB17, { t, seed: 1830, x: 640, y: 880, s: 0.56, pose: '앉아턱', ex: exprAt([[0, k === 1 ? '서운함' : '생각']], t), look: [0.6, 0.3] })));
   return h;
 }
 function cgapScene(t, lt, a) {
@@ -396,8 +405,13 @@ function cgapScene(t, lt, a) {
   }
   let h = nightRoom12(t) + dim17(0.15);
   if (k === 2) {
-    h += card17(1100, 560, 420, 260, T17(0, 0, '채점 그만!', { size: 50, fill: '#2E9E5B' }), { bg: '#fff' }).replace('translate(1100 560)', `translate(1100 560) rotate(${f1(-20 * prog(lt, 0, 0.6))})`);
-    h += HALO(char(Object.assign({}, ZB17, { t, seed: 1831, x: 640, y: 900, s: 0.56, pose: '폰보기', ex: exprAt([[0, '결심']], t), look: [0.4, 0.5] })));
+    // same desk as the scoring scene: the score sheet gets crossed out, then Zero types a message instead
+    h += `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
+    const xk = prog(lt, 0.2, 0.8);
+    h += card17(1040, 560, 420, 260, T17(0, -70, '오늘의 내 점수', { size: 34 }) + T17(0, 0, '말 없음 −30', { size: 34, fill: RED }) + T17(0, 50, '재미없음 −40', { size: 34, fill: RED }) +
+      (xk > 0 ? `<path d="M-170 -100 L${f1(-170 + 340 * xk)} ${f1(-100 + 200 * xk)}" stroke="${RED}" stroke-width="12" stroke-linecap="round"/>` : ''), { bg: '#fff' });
+    h += pop(t, T0 + 0.9, t + 99, 1340, 380, label(0, 0, '채점 그만!', { size: 40, bg: MINT }), { rot: -6 });
+    h += chair12(640, 880, 0.56) + HALO(char(Object.assign({}, ZB17, { t, seed: 1831, x: 640, y: 880, s: 0.56, pose: '앉아폰', ex: exprAt([[0, '생각'], [1.0, '미소']], lt), look: [0.4, 0.5] })));
     return h;
   }
   h += phone17(960, 520, 0.95, [['오늘 올레길 얘기, 정말 좋았어요. 다음엔 그 바다 사진도 보여 주세요.', true, 0]], 1);
@@ -408,7 +422,9 @@ function creplyScene(t, lt, a) {
   let h = nightRoom12(t) + dim17(0.15);
   const mine = ['오늘 올레길 얘기, 정말 좋았어요. 다음엔 그 바다 사진도 보여 주세요.', true, 0];
   if (k === 0) {
-    h += HALO(char(Object.assign({}, ZB17, { t, seed: 1832, x: 760, y: 900, s: 0.56, pose: '폰보기', ex: exprAt([[0, '걱정']], t), look: [0.5, 0.5] })));
+    h += `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
+    h += chair12(640, 880, 0.56) + HALO(char(Object.assign({}, ZB17, { t, seed: 1832, x: 640, y: 880, s: 0.56, pose: '앉아폰', ex: exprAt([[0, '걱정']], t), look: [0.4, 0.5] })));
+    for (let i = 0; i < 3; i++) h += `<circle cx="${760 + i * 40}" cy="560" r="10" fill="#C9D6E2" opacity="${f1((0.4 + 0.6 * ((Math.floor(t * 3) % 3) === i)) * 100) / 100}"/>`;
     return h;
   }
   if (k === 1) return h + phone17(960, 520, 0.95, [mine, ['저도요. 그 얘기를 그렇게 끝까지 들어 준 사람, 처음이었어요. 다음엔 제가 물어볼게요. 제로 씨 얘기.', false, 0]], 1);
@@ -423,12 +439,13 @@ function csatScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   let h = river17(t);
   const zo = Object.assign({ t, seed: 1840 }, BSEAT_Z), so = Object.assign({ t, seed: 1841 }, BSEAT_S);
-  const [zx, zy] = [BSEAT_Z.x + 50, 775], [sx, sy] = [BSEAT_S.x - 50, 775];
+  const [zx, zy] = ballL17(Object.assign({ pose: '앉기' }, BSEAT_Z)), [sx, sy] = ballR17(Object.assign({ pose: '앉기' }, BSEAT_S));
   let bxy = [sx, sy], zPose = '앉기', sPose = '앉기', zEx = '미소', sEx = '미소';
   if (k === 1) { sPose = '앉아던지기'; bxy = arc17(sx, sy, zx, zy, easeInOut(prog(lt, 0.6, 1.4)), 120); }
   if (k === 2) { zPose = '앉아설명'; zEx = '신남'; bxy = [zx, zy]; h += pop(t, T0 + 0.6, t + 99, 820, 360, `<g style="filter: sepia(.8)">${card17(0, 0, 300, 200, `<rect x="-120" y="20" width="240" height="14" fill="#B07A44"/>` + `<circle cx="-30" cy="-10" r="22" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="40" cy="-14" r="26" fill="#ddd" stroke="${INK}" stroke-width="4"/>`, { bg: '#F4E6C8' })}</g>`, { bob: 3 }); }
   if (k === 3) { sPose = '앉아던지기'; sEx = '미소'; bxy = arc17(sx, sy, zx, zy, easeInOut(prog(lt, 0.4, 1.6)), 120); zEx = '놀람';
-    h += `<g opacity="${f1(0.35 * prog(lt, 0.3, 1.5) * 100) / 100}" style="filter: sepia(.8)">${GM({ t, seed: 1792, x: 1360, y: 720, s: 0.42, pose: '앉아던지기', ex: exprAt([[0, '미소']], t), look: [-0.6, 0] })}</g>`; }
+    const mem = prog(lt, 0.3, 1.3);  // grandma's face comes back as a sepia memory bubble above Zero
+    if (mem > 0) h += `<g opacity="${f1(mem * 100) / 100}" style="filter: sepia(.75)"><circle cx="${BSEAT_Z.x - 40}" cy="560" r="12" fill="#F4E6C8" stroke="${INK}" stroke-width="4"/><circle cx="${BSEAT_Z.x - 70}" cy="510" r="18" fill="#F4E6C8" stroke="${INK}" stroke-width="4"/>` + card17(BSEAT_Z.x - 140, 360, 260, 230, `<g transform="translate(0 95)">${GM({ t, seed: 1792, x: 0, y: 0, s: 0.34, pose: '앉아던지기', ex: exprAt([[0, '미소']], t), look: [0.4, 0] })}</g>`, { bg: '#F4E6C8' }) + '</g>'; }
   if (k === 4) { zEx = '울먹'; bxy = [zx, zy]; }
   h += HALO(char(Object.assign({}, ZB17, zo, { pose: zPose, ex: exprAt([[0, zEx]], t), look: [0.6, 0] })));
   h += SA(Object.assign({}, so, { pose: sPose, ex: exprAt([[0, sEx]], t), look: [-0.6, 0] }));
@@ -441,7 +458,7 @@ function csatScene(t, lt, a) {
 function cendScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   let h = river17(t);
-  const [zx, zy] = [BSEAT_Z.x + 50, 775], [sx, sy] = [BSEAT_S.x - 50, 775];
+  const [zx, zy] = ballL17(Object.assign({ pose: '앉기' }, BSEAT_Z)), [sx, sy] = ballR17(Object.assign({ pose: '앉기' }, BSEAT_S));
   h += HALO(char(Object.assign({}, ZB17, { t, seed: 1840 }, BSEAT_Z, { pose: '앉기', ex: exprAt([[0, '미소']], t), look: [0.6, 0] })));
   h += SA(Object.assign({ t, seed: 1841 }, BSEAT_S, { pose: '앉기', ex: exprAt([[0, '신남']], t), look: [-0.6, 0] }));
   const ph = (lt * 0.5) % 1, dir = Math.floor(lt * 0.5) % 2, [x, y] = dir ? arc17(sx, sy, zx, zy, easeInOut(ph), 130) : arc17(zx, zy, sx, sy, easeInOut(ph), 130);

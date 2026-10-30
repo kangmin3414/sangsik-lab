@@ -16,8 +16,9 @@ with sync_playwright() as p:
         shots.append((f"{i}@{fr} {l['scene']}", Image.open(io.BytesIO(pg.screenshot(type='jpeg', quality=80))).resize((960, 540))))
     br.close()
 for e in errs[:10]: print('JS', e[:300])
-rows = (len(shots) + 1) // 2; sheet = Image.new('RGB', (1920, rows * 566), 'white'); d = ImageDraw.Draw(sheet)
+C = int(os.environ.get('COLS', '2')); W = 1920 // C; H = W * 9 // 16
+rows = (len(shots) + C - 1) // C; sheet = Image.new('RGB', (1920, rows * (H + 26)), 'white'); d = ImageDraw.Draw(sheet)
 f = ImageFont.truetype('/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc', 20)
 for n, (lab, im) in enumerate(shots):
-    x, y = (n % 2) * 960, (n // 2) * 566; sheet.paste(im, (x, y + 26)); d.text((x + 6, y + 1), lab, fill='black', font=f)
+    x, y = (n % C) * W, (n // C) * (H + 26); sheet.paste(im.resize((W, H)), (x, y + 26)); d.text((x + 6, y + 1), lab, fill='black', font=f)
 sheet.save(os.path.join(here, sys.argv[2]), quality=85); print('ok', len(shots))

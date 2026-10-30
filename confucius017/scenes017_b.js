@@ -38,7 +38,7 @@ function cafe17(t, o = {}) { // the café of the first and the last date; table 
   if (o.night) { for (let i = 0; i < 6; i++) h += `<circle cx="${620 + i * 130}" cy="${300 + (i % 3) * 50}" r="10" fill="#FFE29A" opacity=".8"/>`; }
   else h += `<rect x="600" y="380" width="320" height="160" fill="#C8D8C2"/><rect x="1000" y="340" width="320" height="200" fill="#C9CFDA"/>`;
   [700, 1220].forEach(x => h += `<line x1="${x}" y1="0" x2="${x}" y2="120" stroke="${INK}" stroke-width="4"/><path d="M${x - 50} 160 Q${x} 110 ${x + 50} 160 Z" fill="#F2B84B" stroke="${INK}" stroke-width="5"/><ellipse cx="${x}" cy="230" rx="140" ry="80" fill="url(#warm)" opacity=".5"/>`);
-  h += floor17(880, '#A88468');
+  h += floor17(880, '#A88468') + seatL17(ZSEAT) + seatR17(PSEAT);
   return h;
 }
 function cafeTable17(t, cups = true) {
@@ -46,7 +46,12 @@ function cafeTable17(t, cups = true) {
   if (cups) h += `<path d="M840 700 L846 662 L886 662 L892 700 Z" fill="#fff" stroke="${INK}" stroke-width="5"/><path d="M1030 700 L1036 662 L1076 662 L1082 700 Z" fill="#fff" stroke="${INK}" stroke-width="5"/>`;
   return h;
 }
-const ZSEAT = { x: 680, y: 900, s: 0.6 }, PSEAT = { x: 1240, y: 900, s: 0.6 };
+const ZSEAT = { x: 640, y: 880, s: 0.6 }, PSEAT = { x: 1280, y: 880, s: 0.6 };
+// seats: chair12 puts the seat under a seated character drawn at (x, y, s); the right-hand chair is mirrored
+const seatL17 = o => chair12(o.x, o.y, o.s), seatR17 = o => flip(o.x, chair12(o.x, o.y, o.s));
+// ball in a hand: left person uses the right hand (towards the partner), right person the left hand
+const ballL17 = o => { const [x, y] = handAt(o, 'hR'); return [x + 18 * o.s, y - 10 * o.s]; };
+const ballR17 = o => { const [x, y] = handAt(o, 'hL'); return [x - 18 * o.s, y - 10 * o.s]; };
 function office17(t, o = {}) {
   let h = BG('#E7ECF1') + BG('url(#hatch)').replace('/>', ' opacity=".12"/>');
   h += `<rect x="1160" y="110" width="620" height="420" rx="10" fill="${o.night ? '#0B1430' : '#BFE0F5'}" stroke="${INK}" stroke-width="9"/>`;
@@ -57,10 +62,11 @@ function office17(t, o = {}) {
   h += floor17(880, '#B9A88E');
   return h;
 }
-function lunch17(t) { // break-room table: Zero (left), 하린 (right), a coworker (middle, back)
-  return office17(t) + `<rect x="560" y="690" width="800" height="30" rx="10" fill="#E8E2D6" stroke="${INK}" stroke-width="7"/><rect x="600" y="720" width="22" height="160" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/><rect x="1298" y="720" width="22" height="160" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/>`;
+const LZ17 = { x: 640, y: 880, s: 0.56 }, LH17 = { x: 1280, y: 880, s: 0.56 };
+function lunch17(t) { // break-room table: Zero (left chair), 하린 (right chair)
+  return office17(t) + seatL17(LZ17) + seatR17(LH17) + `<rect x="740" y="720" width="440" height="28" rx="10" fill="#E8E2D6" stroke="${INK}" stroke-width="7"/><rect x="770" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/><rect x="1128" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/>`;
 }
-const lunchBowls17 = () => [800, 1120].map(x => `<path d="M${x - 50} 690 Q${x} 740 ${x + 50} 690 Z" fill="#fff" stroke="${INK}" stroke-width="5"/>`).join('');
+const lunchBowls17 = () => [840, 1080].map(x => `<path d="M${x - 46} 720 Q${x} 766 ${x + 46} 720 Z" fill="#fff" stroke="${INK}" stroke-width="5"/>`).join('');
 const CW17 = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7FA8D6', patch: false, tee: true, vshade: 'rgba(0,0,0,0.2)', hair: '#4A3A2A' }, o)));
 function meeting17(t) {
   let h = BG('#E9E4DA') + BG('url(#hatch)').replace('/>', ' opacity=".1"/>');
@@ -98,7 +104,7 @@ function river17(t) { // Saturday riverside bench at sunset
   h += `<rect x="560" y="740" width="800" height="26" rx="8" fill="#8A5A34" stroke="${INK}" stroke-width="6"/><rect x="560" y="680" width="800" height="20" rx="8" fill="#8A5A34" stroke="${INK}" stroke-width="6"/><rect x="600" y="766" width="20" height="110" fill="#5E3E28"/><rect x="1300" y="766" width="20" height="110" fill="#5E3E28"/>`;
   return h + `<rect x="-600" y="-600" width="3120" height="2280" fill="#FF9A5A" opacity=".08"/>`;
 }
-const BSEAT_Z = { x: 820, y: 870, s: 0.56 }, BSEAT_S = { x: 1100, y: 870, s: 0.56 };
+const BSEAT_Z = { x: 820, y: 792, s: 0.56 }, BSEAT_S = { x: 1100, y: 792, s: 0.56 };  // bench seat top 740 = y - 92s
 function phone17(x, y, s, msgs, k = 1, name = '수아') { // big phone with chat bubbles: msgs = [[text, mine, appearAt01]]
   let h = `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-220" y="-380" width="440" height="760" rx="50" fill="#1F2D44" stroke="${INK}" stroke-width="10"/><rect x="-196" y="-350" width="392" height="700" rx="30" fill="#EAF2F8"/>`;
   h += `<rect x="-196" y="-350" width="392" height="80" rx="30" fill="#C9D6E2"/>` + T17(0, -296, name, { size: 34 });
@@ -130,7 +136,7 @@ const EXP17 = i => (i >= 10 && i <= 18) ? 1 : (i >= 19 && i <= 28) ? 2 : (i >= 2
 const CARD17 = [10, 19, 29, 45, 54];
 const SHARE17 = i => i < 11 ? null : i <= 16 ? 82 : i <= 18 ? 70 : i <= 21 ? 62 : i <= 28 ? 52 : i <= 33 ? 30 : i <= 44 ? 30 : i <= 53 ? 45 : 40;
 function hud17(t) {
-  const i = lineIdx12(t), n = EXP17(i); if (!n || CARD17.includes(i)) return '';
+  const i = lineIdx12(t), n = EXP17(i); if (!n || CARD17.includes(i) || (i >= 40 && i <= 42)) return '';  // no HUD over the childhood flashback
   const l = TL.lines[i], lt = t - (l.t0 - 0.15), op = (CARD17.includes(i - 1) || EXP17(i - 1) !== n) ? prog(lt, 0, 0.4) : 1;
   let h = `<g transform="translate(1600 74) scale(.85)" opacity="${f1(op * 100) / 100}"><rect x="-370" y="-46" width="740" height="150" rx="34" fill="${NAVY}" opacity=".9" stroke="#F2B84B" stroke-width="4"/>`;
   [1, 2, 3, 4, 5].forEach(j => { const on = j === n, past = j < n; h += `<circle cx="${-330 + (j - 1) * 44}" cy="0" r="17" fill="${on ? '#F2B84B' : past ? '#5A4A30' : 'none'}" stroke="${on ? INK : '#6B6050'}" stroke-width="3"/>` + T17(-330 + (j - 1) * 44, 8, String(j), { size: 20, fill: on ? NAVY : '#C9C0B0' }); });
