@@ -58,6 +58,12 @@
 - 옛 버전(삭제 예정): aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
 - 메타데이터·ID 기록: `replace/lf_repl.json`, `replace/shorts_repl7.json`, `replace/shorts_repl8.json`, `replace/remix006_repl.json`, `abthumb/ab_plan.json`.
 
+## 3-1. 새 채널 기획 (2026-10-30)
+
+- 미소녀 캐릭터 철학 이야기 채널(가칭 「소피 선배의 철학 카페」). 상식실험실과 별도 채널로 운영하는 전제입니다.
+- 기획서 `sophia/PLAN.md`, 캐릭터 시트·표정 생성 스크립트 `sophia/charsheet.py`(나노바나나 2.1, 아직 실행 전).
+- GCP 무료 크레딧이 2026-12-21에 끝나므로, 그 전에 스프라이트와 배경을 미리 만들어 두는 일정입니다.
+
 ## 4. 썸네일 A/B 테스트 (진행 중)
 
 - 니체·스토아·소크라테스·붓다: 기존 / U(공감형) / T(궁금증형)
