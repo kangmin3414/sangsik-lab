@@ -35,6 +35,7 @@ script.py(빈 틀), anim/scenes/render/mix/srt/tts 스크립트, peek 도구, .g
 | 목소리(키 없을 때 초벌) | `python3 tts_st.py all > tts.log 2>&1` | supertonic 로컬·무료. 느림(77줄 ≈ 70분), 말이 빨라 Gemini보다 약 15% 짧다 |
 | 발음 확인 | `tts38_report.json`에서 cer > 0.1 인 줄 확인 | 대부분 Whisper 받아쓰기 차이. 진짜 오발음은 script.py 4번째 칸(spoken)에 발음 표기를 넣고 그 줄만 다시. 자막과 발음이 달라지면 자막도 맞춘다 |
 | 장면 점검 | `python3 peek3.py timeline.json _a1.jpg 0 12` … | **sangsik-scene-qa 스킬** 필수 |
+| 곡 검사 | `python3 tools/bgm_voice_check.py bgm/<곡>.mp3` | **새 곡은 쓰기 전에 반드시.** Lyria가 "no vocals"여도 희미한 영어 속삭임을 넣는다. `cand_1_piano_a`, `cand_4_celesta_a` 는 쓰지 않는다(017에서 운영자가 발견) |
 | 믹스 | `python3 mix<번호>.py` | 곡: `bgm/cand_*.mp3`(Lyria). 전환 줄 번호·효과음 위치를 편에 맞게. 결과 `mix.wav` |
 | 렌더 | `P=4 ./render_all.sh > render.log 2>&1` (백그라운드) | 24fps, 4개 병렬. 8분 영상 ≈ 65분 |
 | 합치기 | `./finalize.sh` | loudnorm -16 LUFS, x264 crf 19 |

@@ -1,5 +1,5 @@
-"""Ep.017 mix: playful celesta (BGM #4) through the week of experiments; it fades on the night Zero counts 47 questions
-(line 38) and the piano (BGM #1) comes in with the old photo of grandma's platform (line 39), carrying to the end.
+"""Ep.017 mix: playful celesta (BGM #4, take b) through the week of experiments; it fades on the night Zero counts 47 questions
+(line 38) and the piano (BGM #1, take b) comes in with the old photo of grandma's platform (line 39), carrying to the end.
 SFX: a falling tone on the rejection text (1), on 하린's face cooling (33) and on "얼굴은 한 번도 안 봤네요" (38); a chime on each
 experiment card; soft ticks when the ball is thrown back (22, 57, 69, 71); a whoosh when the ball flies in first (67) and toward the camera (77)."""
 import sys, os, json, numpy as np, soundfile as sf, librosa
@@ -10,7 +10,7 @@ voice, sr = sf.read('voice.wav'); assert sr == SR
 if voice.ndim > 1: voice = voice.mean(1)
 N = int(DUR * SR); voice = np.pad(voice, (0, max(0, N - len(voice))))[:N]; voice = voice / (np.abs(voice).max() + 1e-9) * 0.9
 load = lambda f: librosa.load(f, sr=SR, mono=False)[0].T
-A = load('../bgm/cand_4_celesta_a.mp3'); B = load('../bgm/cand_1_piano_a.mp3')
+A = load('../bgm/cand_4_celesta_b.mp3'); B = load('../bgm/cand_1_piano_b.mp3')  # take a of both carries faint English whispering (found 2026-10-30)
 
 def loop(song, n, body_end=None, xf=6.0):
     body_end = body_end or (len(song) / SR - 6.0)
