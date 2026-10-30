@@ -14,7 +14,11 @@ _creds = None
 def token():
     global _creds
     if _creds is None:
-        _creds = service_account.Credentials.from_service_account_file(SA, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+        scopes = ['https://www.googleapis.com/auth/cloud-platform']
+        if not os.path.exists(SA) and os.environ.get('GCP_SA_JSON'):  # cloud sessions: key comes in as an environment variable
+            _creds = service_account.Credentials.from_service_account_info(json.loads(os.environ['GCP_SA_JSON']), scopes=scopes)
+        else:
+            _creds = service_account.Credentials.from_service_account_file(SA, scopes=scopes)
     if not _creds.valid:
         _creds.refresh(Request())
     return _creds.token
