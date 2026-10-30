@@ -19,8 +19,11 @@ CHARS = {
            "thin round gold-rimmed glasses. Outfit: white blouse with a soft frilled round collar and a thin brown ribbon bow at the neck, "
            "oversized pale-cream cable-knit cardigan with sleeves slightly covering her hands, long flowy dark-olive midi skirt with a tiny floral print, "
            "short brown café apron with an owl embroidery, brown Mary Jane shoes with white ankle socks",
- 'haru':   "a 23-year-old woman, bright cheerful face, orange-brown hair in a high ponytail, large expressive green eyes, light-blue office blouse "
-           "with a company ID card on a lanyard, beige slacks, white sneakers, a canvas tote bag",
+ 'haru':   "a 23-year-old young adult woman, a first-year office worker, adult proportions. "
+           "Beautiful anime-heroine face: large bright green eyes with sparkling highlights, rosy cheeks, cheerful open smile, lively expressive look. "
+           "Glossy orange-brown hair in a high bouncy ponytail tied with a sky-blue scrunchie, soft side bangs. "
+           "Outfit: light-blue blouse with a soft bow-tie collar, sleeves rolled up once, a short cream knit vest over it, "
+           "company ID card on a navy lanyard, high-waisted beige wide-leg slacks, white sneakers, a canvas tote bag with a small cat keychain",
  'minerva': "a small round grey-brown owl mascot with big golden eyes and tiny round reading glasses, cute but slightly grumpy look",
 }
 EXPR = {  # sprite key -> expression
