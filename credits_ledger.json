@@ -183,6 +183,12 @@
    "item": "Gemini 3.8 Flash TTS: ep.016 Mencius narration (77 lines + 10 retakes)",
    "count": 1,
    "unit_usd": 0.2
+  },
+  {
+   "at": "2026-10-30",
+   "item": "Gemini 3.8 Flash TTS: ep.017 Confucius narration (80 lines / 83 segments + retakes)",
+   "count": 1,
+   "unit_usd": 0.2
   }
  ]
 }

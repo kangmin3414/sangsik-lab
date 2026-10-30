@@ -14,6 +14,7 @@ rd = lambda f: open(os.path.join(T, f), encoding='utf-8').read()
 wr = lambda f, s: open(os.path.join(D, f), 'w', encoding='utf-8').write(s)
 # html: same engine chain as 016 (helpers of 012~014 stay available), episode scenes instead of 016's
 h = rd('anim016.html').replace('<script src="scenes016.js"></script>\n<script src="scenes016_2.js"></script>', f'<script src="scenes{num}.js"></script>')
+h = h.replace('<g filter="url(#boil)">', '<g>')  # 운영자 요청(017): 화면이 이글거리는 boil 필터는 쓰지 않는다
 wr(f'anim{num}.html', h)
 wr(f'scenes{num}.js', f"""/* ---------- experiment {num}: <주제> ---------- */
 // One image all the way: <한 가지 비유>.
@@ -29,6 +30,8 @@ wr(f'srt{num}.py', rd('srt016.py').replace('실험016_자막_v1', f'실험{num}_
 wr(f'mix{num}.py', '# TEMPLATE copied from 016 — 곡 선택, 전환 줄 번호(st(44) 등), 효과음 위치를 이 편에 맞게 바꿀 것\n' + rd('mix016.py'))
 for f in ['tts38seg.py', 'tts_st.py', 'fake_tl.py', 'peek.py', 'peek3.py', '.gitignore']: shutil.copy(os.path.join(T, f), os.path.join(D, f))
 for f in ['peek.py', 'peek3.py']: wr(f, open(os.path.join(D, f), encoding='utf-8').read().replace('anim016.html', f'anim{num}.html'))
+wr('peekz.py', open(os.path.join(os.path.dirname(T), 'confucius017', 'peekz.py'), encoding='utf-8').read().replace('anim017.html', f'anim{num}.html'))
+for f in ['render_all.sh', 'finalize.sh']: os.chmod(os.path.join(D, f), 0o755)
 st = json.load(open(os.path.join(T, 'style38.json'), encoding='utf-8')); st['scene'] = {}; st['line'] = {}; st['seg'] = {}
 json.dump(st, open(os.path.join(D, 'style38.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 wr('script.py', f"""# 실험 {num} · <제목> — <철학자/연구> (대본 1차)

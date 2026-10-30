@@ -607,7 +607,7 @@ function render(t) {
   const cut = prog(t, line.t0 - 0.15, line.t0 + 0.05);
   const flash = i > 0 && L[i - 1].scene !== line.scene && cut < 1 ? (1 - cut) * 0.14 : 0;
   document.getElementById('v').innerHTML = defs(t) +
-    `<g filter="url(#boil)"><g transform="translate(960 100) scale(.88) translate(-960 -100)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g></g>` +
+    `<g><g transform="translate(960 100) scale(.88) translate(-960 -100)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g></g>` +
     `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
     `<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +
     over + subtitle(t) +
@@ -630,6 +630,8 @@ window.render = render;
 <script src="../mom013/scenes013.js"></script>
 <script src="../lonely014/scenes014.js"></script>
 <script src="scenes017.js"></script>
+<script src="scenes017_b.js"></script>
+<script src="scenes017_c.js"></script>
 
 </body>
 </html>
