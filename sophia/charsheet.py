@@ -1,5 +1,5 @@
 """Character sheets and expression sprites for the new channel (Nano Banana 2.1, billed to the project's free-trial credits).
-  python3 charsheet.py sheet            -> img/sheet_<char>_<n>.png, two candidates per character; save the chosen one as img/ref_<char>.png
+  python3 charsheet.py sheet [char [count]] -> img/sheet_<char>_<n>.png (next free n), two candidates per character by default; save the chosen one as img/ref_<char>.png
   python3 charsheet.py expr sophia      -> img/sophia/<expr>_closed.png, _open.png (+ _blink.png for neutral/smile), plus *_cut.png with alpha (magenta keyed out)
 Characters are adults in modest everyday clothes; never name an existing anime, artist or studio in a prompt (see PLAN.md §4)."""
 import base64, io, json, os, sys
@@ -13,8 +13,12 @@ STYLE = ("Original character design in a clean modern Korean-webtoon / anime ill
          "not resembling any existing character or franchise. Adult proportions. Modest everyday clothing, no school uniform, non-sexualized. "
          "Flat solid pure magenta (#FF00FF) background with no shadows on it. Do not write any text, letters or numbers in the image.")
 CHARS = {
- 'sophia': "a 19-year-old young adult woman, a university freshman, adult proportions (not childlike), calm and kind face, long dark navy hair in a loose low braid over one shoulder, thin round gold-rimmed glasses, "
-           "amber eyes, cream turtleneck under a long olive-green knit cardigan, a small owl-feather hair pin, long brown skirt, ankle boots",
+ 'sophia': "a 19-year-old young adult woman, a university freshman working the night shift at a cozy book café, adult proportions (not childlike). "
+           "Beautiful anime-heroine face: large sparkling amber eyes with bright highlights, soft rosy cheeks, gentle shy smile, fresh youthful look. "
+           "Long glossy dark navy hair with soft wispy bangs and a loose side braid tied with a small cream ribbon, a small owl-feather hair pin, "
+           "thin round gold-rimmed glasses. Outfit: white blouse with a soft frilled round collar and a thin brown ribbon bow at the neck, "
+           "oversized pale-cream cable-knit cardigan with sleeves slightly covering her hands, long flowy dark-olive midi skirt with a tiny floral print, "
+           "short brown café apron with an owl embroidery, brown Mary Jane shoes with white ankle socks",
  'haru':   "a 23-year-old woman, bright cheerful face, orange-brown hair in a high ponytail, large expressive green eyes, light-blue office blouse "
            "with a company ID card on a lanyard, beige slacks, white sneakers, a canvas tote bag",
  'minerva': "a small round grey-brown owl mascot with big golden eyes and tiny round reading glasses, cute but slightly grumpy look",
@@ -62,12 +66,14 @@ def save(im, path):
     im.save(path); cut(im).save(path.replace('.png', '_cut.png')); print(path, im.size)
 
 
-def sheet():
+def sheet(names=None, count=2):
     os.makedirs('img', exist_ok=True)
-    for name, look in CHARS.items():
-        what = ("Character reference sheet of " + look + ": full-body front view, three-quarter view and back view standing side by side, "
+    for name in names or CHARS:
+        what = ("Character reference sheet of " + CHARS[name] + ": full-body front view, three-quarter view and back view standing side by side, "
                 "plus one head close-up, same outfit in every view. ")
-        for n in (1, 2):
+        n = 1
+        for _ in range(count):
+            while os.path.exists(f'img/sheet_{name}_{n}.png'): n += 1
             im = gen(what + STYLE)
             if im: im.save(f'img/sheet_{name}_{n}.png'); print(name, n, im.size)
 
@@ -96,6 +102,6 @@ def expr(name):
 
 
 if __name__ == '__main__':
-    if sys.argv[1:2] == ['sheet']: sheet()
+    if sys.argv[1:2] == ['sheet']: sheet(sys.argv[2:3] or None, int(sys.argv[3]) if len(sys.argv) > 3 else 2)
     elif sys.argv[1:2] == ['expr'] and len(sys.argv) > 2: expr(sys.argv[2])
     else: print(__doc__)
