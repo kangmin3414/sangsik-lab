@@ -1,0 +1,25 @@
+==
+  spring_a.mp3
+  CLEAN
+==
+  spring_b.mp3
+  CLEAN
+==
+  summer_a.mp3
+  VOICE?
+  20s en 0.86 It went wild wherever you watched Peele's tints on
+==
+  summer_b.mp3
+  CLEAN
+==
+  autumn_a.mp3
+  CLEAN
+==
+  autumn_b.mp3
+  CLEAN
+==
+  winter_a.mp3
+  CLEAN
+==
+  winter_b.mp3
+  CLEAN
