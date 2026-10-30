@@ -3,10 +3,12 @@ then one comparison video per character (portrait card with the candidate number
   python3 vsample.py  ->  vsample/<char>_<voice>.wav, vsample/<char>_목소리_후보.mp4"""
 import json, os, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
+import numpy as np
 import requests
 from PIL import Image, ImageDraw, ImageFont
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'gtts'))
 import vx
+from charsheet import cut
 
 URL = f'https://aiplatform.googleapis.com/v1beta1/projects/{vx.PROJECT}/locations/global/publishers/google/models/gemini-3.8-flash-tts:generateContent'
 SETS = {
@@ -48,7 +50,18 @@ def card(who, n, v):
     W, H = 1280, 720
     im = Image.new('RGB', (W, H), (28, 24, 36))
     face = src.crop((int(src.width * 0.66), 0, src.width, src.height))  # the head close-up sits on the right of every sheet
-    face.thumbnail((W // 2, H)); im.paste(face, (W - face.width - 40, (H - face.height) // 2))
+    face = cut(face)
+    cols = (np.asarray(face)[..., 3] > 0).sum(0) > 20  # keep the widest figure (the close-up), not a sliver of the next view or edge noise
+    runs, x = [], 0
+    while x < len(cols):
+        if cols[x]:
+            x0 = x
+            while x < len(cols) and cols[x]: x += 1
+            runs.append((x - x0, x0, x))
+        x += 1
+    _, x0, x1 = max(runs)
+    face = face.crop((x0, 0, x1, face.height)); face = face.crop(face.getbbox())
+    face.thumbnail((W // 2 - 60, H - 80)); im.paste(face, (W - face.width - 60, (H - face.height) // 2), face)
     d = ImageDraw.Draw(im)
     d.text((70, 230), f'{SETS[who][4]} 목소리 후보', font=ImageFont.truetype(FONT, 44), fill=(240, 220, 190))
     d.text((70, 300), f'{n}번', font=ImageFont.truetype(FONT, 150), fill=(255, 255, 255))
