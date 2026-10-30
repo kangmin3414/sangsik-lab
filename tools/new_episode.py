@@ -8,8 +8,8 @@ import os, re, shutil, subprocess, sys, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); T = os.path.join(ROOT, 'mencius016')
 d, num, slug = sys.argv[1], sys.argv[2], sys.argv[3]
 D = os.path.join(ROOT, d)
-if os.path.exists(D): sys.exit(f'이미 있음: {D}')
-os.makedirs(os.path.join(D, 'thumb'))
+if os.path.exists(os.path.join(D, 'script.py')): sys.exit(f'이미 있음: {D}/script.py')  # 기획 문서만 있는 폴더는 이어서 쓴다
+os.makedirs(os.path.join(D, 'thumb'), exist_ok=True)
 rd = lambda f: open(os.path.join(T, f), encoding='utf-8').read()
 wr = lambda f, s: open(os.path.join(D, f), 'w', encoding='utf-8').write(s)
 # html: same engine chain as 016 (helpers of 012~014 stay available), episode scenes instead of 016's
