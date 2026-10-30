@@ -107,7 +107,7 @@ function cmonScene(t, lt, a) {
   let h = lunch17(t);
   h += HR({ t, seed: 1721, x: LH17.x, y: LH17.y, s: LH17.s, pose: '앉기', ex: exprAt([[0, k === 2 ? '서운함' : '기본']], t), look: [-0.7, 0] });
   const zo = { t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: k === 1 && lt < 0.4 * D ? '앉아설명' : '앉아폰', ex: exprAt(k === 1 ? [[0, '신남'], [at17(t, a, '결과는', 0), '놀람']] : [[0, '놀람']], lt), look: k === 1 && lt < 0.4 * D ? [0.7, 0] : [0.1, 0.7] };
-  h += ZK(zo) + lunchBowls17();
+  h += ZK(zo);
   h += `<g transform="translate(960 706)"><rect x="-26" y="-14" width="52" height="28" rx="8" fill="#1F2D44" stroke="${INK}" stroke-width="4"/><circle cx="-8" cy="0" r="6" fill="${RED}" opacity="${f1((0.5 + 0.5 * Math.sin(t * 6)) * 100) / 100}"/></g>`;
   if (k === 1) { const sk = prog(lt, at17(t, a, '82', -0.6), at17(t, a, '82', 0.4)); if (sk > 0) {
       const ang = 2 * Math.PI * 0.82 * easeOut(sk), x1 = 960 + 120 * Math.sin(ang), y1 = 330 - 120 * Math.cos(ang);
@@ -148,7 +148,7 @@ function cpauseScene(t, lt, a) {
   }
   let h = lunch17(t);
   h += HR({ t, seed: 1721, x: LH17.x, y: LH17.y, s: LH17.s, pose: '앉기', ex: exprAt([[0, k === 1 ? '미소' : '걱정']], t), look: [-0.7, 0] });
-  h += ZK({ t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: k === 1 ? '입막기' : '앉기', ex: exprAt([[0, k === 1 ? '생각' : '걱정']], t), look: [0.5, 0], sweat: k === 2 }) + lunchBowls17();
+  h += ZK({ t, seed: 1722, x: LZ17.x, y: LZ17.y, s: LZ17.s, pose: k === 1 ? '입막기' : '앉기', ex: exprAt([[0, k === 1 ? '생각' : '걱정']], t), look: [0.5, 0], sweat: k === 2 });
   for (let i = 0; i < 3; i++) h += pop(t, T0 + 0.4 + i * 0.5, t + 99, 820 + i * 140, 420, T17(0, 0, '…', { size: 80, fill: '#9AA6B2' }), { bob: 3 });
   if (k === 2) h += pop(t, T0 + 0.3, t + 99, 960, 230, label(0, 0, '(어색한 정적)', { size: 40, bg: '#fff' }), { rot: -2 });
   return h;

@@ -64,9 +64,10 @@ function office17(t, o = {}) {
 }
 const LZ17 = { x: 640, y: 880, s: 0.56 }, LH17 = { x: 1280, y: 880, s: 0.56 };
 function lunch17(t) { // break-room table: Zero (left chair), 하린 (right chair)
-  return office17(t) + seatL17(LZ17) + seatR17(LH17) + `<rect x="740" y="720" width="440" height="28" rx="10" fill="#E8E2D6" stroke="${INK}" stroke-width="7"/><rect x="770" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/><rect x="1128" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/>`;
+  return office17(t) + seatL17(LZ17) + seatR17(LH17) + `<rect x="740" y="720" width="440" height="28" rx="10" fill="#E8E2D6" stroke="${INK}" stroke-width="7"/><rect x="770" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/><rect x="1128" y="748" width="22" height="132" fill="#9AA6B2" stroke="${INK}" stroke-width="5"/>` + lunchBowls17();
 }
-const lunchBowls17 = () => [840, 1080].map(x => `<path d="M${x - 46} 720 Q${x} 766 ${x + 46} 720 Z" fill="#fff" stroke="${INK}" stroke-width="5"/>`).join('');
+// bowls sit ON the table top (y 720): rim at 686, base on the table
+const lunchBowls17 = () => [810, 1110].map(x => `<rect x="${x - 18}" y="712" width="36" height="8" rx="3" fill="#E9E4DA" stroke="${INK}" stroke-width="4"/><path d="M${x - 46} 688 Q${x - 40} 716 ${x - 14} 714 L${x + 14} 714 Q${x + 40} 716 ${x + 46} 688 Z" fill="#fff" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><ellipse cx="${x}" cy="688" rx="46" ry="9" fill="#F2C14E" stroke="${INK}" stroke-width="4"/>`).join('');
 const CW17 = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7FA8D6', patch: false, tee: true, vshade: 'rgba(0,0,0,0.2)', hair: '#4A3A2A' }, o)));
 function meeting17(t) {
   let h = BG('#E9E4DA') + BG('url(#hatch)').replace('/>', ' opacity=".1"/>');
