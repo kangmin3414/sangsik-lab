@@ -54,6 +54,7 @@ script.py(빈 틀), anim/scenes/render/mix/srt/tts 스크립트, peek 도구, .g
 - 오른쪽 위 HUD는 `render`를 감싸서 덧그린다(016 `hud16`).
 
 ## 4. 하지 말 것
+- 배경을 어둡고 칙칙하게 만들지 않는다(운영자 요청, 017부터). 연구실은 밝은 크림·민트(`shorts/bright.js`의 `labBg`), 밤 방은 연보라 남색에 따뜻한 스탠드 빛, 실험 카드·마무리 화면은 크림색. 비네트는 약하게(.18), 자막 띠는 그라데이션. new_episode.py가 자동으로 넣는다. 슬픈 장면도 화면 전체를 어둡게 덮지 말고(dim은 0.3 이하) 표정·음악으로.
 - 화면이 이글거리는 boil 필터(`anim*.html`의 `<g filter="url(#boil)">`)는 쓰지 않는다(운영자 요청, 017부터). new_episode.py가 자동으로 뺀다.
 - 광범위한 `pkill`/`killall` 금지(다른 작업의 ffmpeg·chromium도 죽는다). 내가 띄운 PID만.
 - 프레임 폴더·wav·mp4·node_modules·segs/tts38 은 커밋하지 않는다(.gitignore). 영상은 media 조각으로만.

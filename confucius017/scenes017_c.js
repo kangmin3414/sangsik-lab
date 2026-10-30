@@ -26,7 +26,7 @@ function cdateScene(t, lt, a) {
     h += pop(t, T0 + 0.3, t + 99, 680, 620, label(0, 0, '내 말 95%', { size: 32, bg: '#FFB0A0' }), { rot: 3 });
     return h;
   }
-  let h = nightRoom12(t) + dim17(0.2);
+  let h = nightRoom12(t);
   h += phone17(1150, 520, 0.95, [['오늘 감사했어요. 좋은 분 만나세요.', false, 0]], 1, '지난달 소개팅');
   h += HALO(char(Object.assign({}, ZB17, { t, seed: 1703, x: 560, y: 900, s: 0.56, pose: '폰보기', ex: exprAt([[0, '놀람']], t), look: [0.6, 0.2] })));
   return h;
@@ -35,7 +35,7 @@ function cdateScene(t, lt, a) {
 function chookScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k === 0) {
-    let h = cafe17(t) + dim17(0.5);
+    let h = cafe17(t) + dim17(0.3, '#3A4058');
     const zo = { t, seed: 1704, x: ZSEAT.x, y: ZSEAT.y, s: ZSEAT.s, pose: '앉아안기', ex: exprAt([[0, '서운함']], t), look: [0.7, 0.3] };
     h += HALO(char(Object.assign({}, ZB17, zo))); const [bx, by] = handAt(zo, 'hR'); h += ball17(bx - 30, by - 20, 30);
     h += cafeTable17(t);
@@ -185,9 +185,9 @@ function caskScene(t, lt, a) {
   }
   if (k === 1) {
     const bars = [['질문 많이', 5.79, MINT], ['질문 적게', 5.31, '#8C98A4']];
-    h += `<line x1="560" y1="800" x2="1360" y2="800" stroke="#fff" stroke-width="6"/>`;
+    h += `<line x1="560" y1="800" x2="1360" y2="800" stroke="${NAVY}" stroke-width="6"/>`;
     bars.forEach(([nm, v, c], j) => { const x = 760 + j * 400, kk = easeOut(prog(lt, 0.2 + j * 0.3, 1.0 + j * 0.3)), hh = v / 7 * 460 * kk;
-      h += `<rect x="${x - 90}" y="${f1(800 - hh)}" width="180" height="${f1(hh)}" rx="12" fill="${c}" stroke="${INK}" stroke-width="6"/>` + T17(x, 860, nm, { size: 36, fill: '#fff' }) + (kk > 0.9 ? T17(x, 780 - hh, v.toFixed(2), { size: 40, fill: '#fff' }) : ''); });
+      h += `<rect x="${x - 90}" y="${f1(800 - hh)}" width="180" height="${f1(hh)}" rx="12" fill="${c}" stroke="${INK}" stroke-width="6"/>` + T17(x, 860, nm, { size: 36, fill: NAVY }) + (kk > 0.9 ? T17(x, 780 - hh, v.toFixed(2), { size: 40, fill: NAVY }) : ''); });
     h += pop(t, T0 + 0.2, t + 99, 960, 190, label(0, 0, '상대가 느낀 호감 (7점 만점)', { size: 36, bg: '#fff' }), {});
     h += pop(t, T0 + at17(t, a, '이어서', 0), t + 99, 1500, 360, label(0, 0, '특히 이어서 묻는 질문!', { size: 34, bg: YEL }), { rot: 4 });
     return h;
@@ -243,7 +243,7 @@ function cboomScene(t, lt, a) {
     h += pop(t, T0 + 0.1, t + 99, 960, 290, label(0, 0, '부메랑 질문 (boomerasking)', { size: 42, bg: YEL }), {});
     return h;
   }
-  h += `<line x1="960" y1="300" x2="960" y2="840" stroke="#fff" stroke-width="5" stroke-dasharray="16 14" opacity=".5"/>`;
+  h += `<line x1="960" y1="300" x2="960" y2="840" stroke="${NAVY}" stroke-width="5" stroke-dasharray="16 14" opacity=".5"/>`;
   h += P14(560, 860, 0.5, '#FF9A55', { t, seed: 1770, pose: '손인사', ex: exprAt([[0, '신남']], t), look: [0.5, 0] }) + pop(t, T0 + 0.2, t + 99, 560, 360, label(0, 0, '묻는 사람: "인상 좋았겠지?"', { size: 32, bg: '#fff' }), {});
   h += P14(1360, 860, 0.5, '#7FA8D6', { t, seed: 1771, pose: '팔짱', ex: exprAt([[0, '찡그림']], t), look: [-0.5, 0] }) + pop(t, T0 + at17(t, a, '듣는 사람', 0), t + 99, 1360, 360, label(0, 0, '듣는 사람: "자기중심적·진심 없음"', { size: 30, bg: '#FFB0A0' }), {});
   h += pop(t, T0 + at17(t, a, '차라리', 0), t + 99, 960, 220, label(0, 0, '차라리 그냥 자기 얘기 > 부메랑', { size: 38, bg: YEL }), {});
@@ -262,7 +262,7 @@ function csanScene(t, lt, a) {
     if (k === 0) h += pop(t, T0 + 0.1, t + 99, 900, 230, label(0, 0, '윗사람 앞에서 말할 때의 세 가지 실수 · 『논어』 계씨', { size: 30, bg: '#fff' }), {});
     return h;
   }
-  let h = office17(t, { night: true }) + dim17(0.15);
+  let h = office17(t, { night: true });
   h += ZK({ t, seed: 1781, x: 820, y: 900, s: 0.58, pose: '서기', ex: exprAt([[0, '울먹']], t), look: [0.2, 0.5] });
   h += pop(t, T0 + 0.2, t + 99, 1300, 460, card17(0, 0, 380, 280, T17(0, -60, '오늘 한 질문', { size: 34 }) + T17(0, 20, '47개', { size: 80, fill: RED }) + T17(0, 100, '본 얼굴: 0', { size: 32, fill: '#6B6255' }), { bg: '#fff' }), { rot: 3 });
   return h;
@@ -271,7 +271,7 @@ function csanScene(t, lt, a) {
 function cgrandScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
   if (k === 0 || k === 4) {
-    let h = nightRoom12(t) + dim17(0.15);
+    let h = nightRoom12(t);
     const zo = { t, seed: 1790, x: 820, y: 880, s: 0.58, pose: '앉아내밀기', ex: exprAt([[0, k === 4 ? '울먹' : '생각']], t), look: [0.6, 0.2] }, [px, py] = handAt(zo, 'hR');
     h += chair12(820, 880, 0.58) + HALO(char(Object.assign({}, ZB17, zo)));
     h += `<g transform="translate(${f1(px + 40)} ${f1(py - 50)}) rotate(-6) scale(.7)"><rect x="-120" y="-90" width="240" height="180" rx="6" fill="#F4E6C8" stroke="${INK}" stroke-width="6"/><rect x="-104" y="-74" width="208" height="130" fill="#B79A6A"/><rect x="-80" y="0" width="160" height="16" fill="#8A6A3A"/><circle cx="-30" cy="-20" r="16" fill="#E8D9B8"/><circle cx="34" cy="-26" r="18" fill="#D9C9A8"/></g>`;
@@ -356,7 +356,7 @@ function cmapScene(t, lt, a) {
     return h;
   }
   const st = [['묻고', '?', 520], ['기억하고', '✎', 960], ['행동으로', '→', 1400]];
-  st.forEach(([nm, ic, x], j) => h += pop(t, T0 + 0.2 + j * 0.5, t + 99, x, 480, `<circle r="110" fill="${['#FFE36E', '#BFE3C7', '#F8D3C4'][j]}" stroke="${INK}" stroke-width="7"/>` + T17(0, 34, ic, { size: 100 }) + T17(0, 170, nm, { size: 42, fill: '#fff' }), {}));
+  st.forEach(([nm, ic, x], j) => h += pop(t, T0 + 0.2 + j * 0.5, t + 99, x, 480, `<circle r="110" fill="${['#FFE36E', '#BFE3C7', '#F8D3C4'][j]}" stroke="${INK}" stroke-width="7"/>` + T17(0, 34, ic, { size: 100 }) + T17(0, 170, nm, { size: 42, fill: NAVY }), {}));
   return h;
 }
 // 54-58 experiment 5: the same café; listening
@@ -393,9 +393,9 @@ function cgapScene(t, lt, a) {
     let h = labBg(t);
     if (k === 0) {
       const bars = [['상대가 실제로\n좋아한 정도', 0.8, MINT], ['내가 짐작한\n정도', 0.5, '#8C98A4']];
-      h += `<line x1="560" y1="800" x2="1360" y2="800" stroke="#fff" stroke-width="6"/>`;
-      bars.forEach(([nm, v, c], j) => { const x = 760 + j * 400, kk = easeOut(prog(lt, 0.3 + j * 0.4, 1.2 + j * 0.4)); h += `<rect x="${x - 90}" y="${f1(800 - 420 * v * kk)}" width="180" height="${f1(420 * v * kk)}" rx="12" fill="${c}" stroke="${INK}" stroke-width="6"/>`; nm.split('\n').forEach((s1, q) => h += T17(x, 850 + q * 40, s1, { size: 32, fill: '#fff' })); });
-      h += T17(1740, 900, '개념도', { anchor: 'end', size: 26, fill: '#9FB4D8', w: 700 });
+      h += `<line x1="560" y1="800" x2="1360" y2="800" stroke="${NAVY}" stroke-width="6"/>`;
+      bars.forEach(([nm, v, c], j) => { const x = 760 + j * 400, kk = easeOut(prog(lt, 0.3 + j * 0.4, 1.2 + j * 0.4)); h += `<rect x="${x - 90}" y="${f1(800 - 420 * v * kk)}" width="180" height="${f1(420 * v * kk)}" rx="12" fill="${c}" stroke="${INK}" stroke-width="6"/>`; nm.split('\n').forEach((s1, q) => h += T17(x, 850 + q * 40, s1, { size: 32, fill: NAVY })); });
+      h += T17(1740, 900, '개념도', { anchor: 'end', size: 26, fill: '#6B7A90', w: 700 });
       return h;
     }
     h += pop(t, T0 + 0.2, t + 99, 620, 480, card17(0, 0, 440, 260, T17(0, -20, '처음 만난 사이', { size: 40 }) + T17(0, 50, '"나 별로였겠지…"', { size: 30, fill: '#6B6255', w: 700 }), {}), { rot: -2 });
@@ -403,7 +403,7 @@ function cgapScene(t, lt, a) {
     h += pop(t, T0 + at17(t, a, '호감 격차', -0.2), t + 99, 960, 200, label(0, 0, '호감 격차 (liking gap)', { size: 46, bg: YEL }), {});
     return h;
   }
-  let h = nightRoom12(t) + dim17(0.15);
+  let h = nightRoom12(t);
   if (k === 2) {
     // same desk as the scoring scene: the score sheet gets crossed out, then Zero types a message instead
     h += `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
@@ -419,7 +419,7 @@ function cgapScene(t, lt, a) {
 }
 function creplyScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
-  let h = nightRoom12(t) + dim17(0.15);
+  let h = nightRoom12(t);
   const mine = ['오늘 올레길 얘기, 정말 좋았어요. 다음엔 그 바다 사진도 보여 주세요.', true, 0];
   if (k === 0) {
     h += `<rect x="760" y="700" width="560" height="30" rx="8" fill="#5A3E2C" stroke="${INK}" stroke-width="6"/><rect x="790" y="730" width="22" height="150" fill="#4A3020"/><rect x="1268" y="730" width="22" height="150" fill="#4A3020"/>`;
@@ -471,7 +471,7 @@ function cendScene(t, lt, a) {
 // 75-77 one sentence for the viewer
 function cmagicScene(t, lt, a) {
   const k = a.k || 0, D = D17(a), T0 = t - lt;
-  let h = BG('#14213A') + BG('url(#dots)') + `<ellipse cx="960" cy="560" rx="700" ry="460" fill="url(#amber)" opacity=".35"/>`;
+  let h = BG('#FFF1D6') + BG('url(#hatch)').replace('/>', ' opacity=".12"/>') + `<ellipse cx="960" cy="560" rx="760" ry="480" fill="url(#amber)" opacity=".45"/>`;
   if (k === 0) {
     const zo = { t, seed: 1850, x: 960, y: 900, s: 0.6, pose: '내밀기', ex: exprAt([[0, '미소']], t), look: [0, 0] };
     h += HALO(char(Object.assign({}, ZB17, zo))); const [hx, hy] = handAt(zo, 'hR'); h += ball17(hx, hy - 10, 30, 0.6);

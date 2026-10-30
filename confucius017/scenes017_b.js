@@ -33,12 +33,12 @@ function arc17(x0, y0, x1, y1, k, hgt = 160) { const x = lerp(x0, x1, k), y = le
 
 /* ---------- places ---------- */
 function cafe17(t, o = {}) { // the café of the first and the last date; table centre 960, Zero left, partner right
-  let h = BG(o.night ? '#3A2C2A' : '#EBDDC8') + BG('url(#hatch)').replace('/>', ' opacity=".12"/>');
-  h += `<rect x="560" y="120" width="800" height="420" rx="14" fill="${o.night ? '#1B2440' : '#BFE0F0'}" stroke="${INK}" stroke-width="9"/><line x1="960" y1="120" x2="960" y2="540" stroke="${INK}" stroke-width="7"/>`;
+  let h = BG(o.night ? '#8A6650' : '#EBDDC8') + BG('url(#hatch)').replace('/>', ' opacity=".12"/>');
+  h += `<rect x="560" y="120" width="800" height="420" rx="14" fill="${o.night ? '#34497E' : '#BFE0F0'}" stroke="${INK}" stroke-width="9"/><line x1="960" y1="120" x2="960" y2="540" stroke="${INK}" stroke-width="7"/>`;
   if (o.night) { for (let i = 0; i < 6; i++) h += `<circle cx="${620 + i * 130}" cy="${300 + (i % 3) * 50}" r="10" fill="#FFE29A" opacity=".8"/>`; }
   else h += `<rect x="600" y="380" width="320" height="160" fill="#C8D8C2"/><rect x="1000" y="340" width="320" height="200" fill="#C9CFDA"/>`;
   [700, 1220].forEach(x => h += `<line x1="${x}" y1="0" x2="${x}" y2="120" stroke="${INK}" stroke-width="4"/><path d="M${x - 50} 160 Q${x} 110 ${x + 50} 160 Z" fill="#F2B84B" stroke="${INK}" stroke-width="5"/><ellipse cx="${x}" cy="230" rx="140" ry="80" fill="url(#warm)" opacity=".5"/>`);
-  h += floor17(880, '#A88468') + seatL17(ZSEAT) + seatR17(PSEAT);
+  h += floor17(880, o.night ? '#B08A6C' : '#A88468') + seatL17(ZSEAT) + seatR17(PSEAT);
   return h;
 }
 function cafeTable17(t, cups = true) {
@@ -87,9 +87,9 @@ function court17(t) {
 const OFF17 = o => HALO(char(Object.assign({ goggles: 'none', vest: '#D9826B', patch: false, tee: true, vshade: 'rgba(0,0,0,0.18)', topknot: '#2B2B2B', robe: '#8A3A2A', guan: '#5A2A1E' }, o)));
 const VIL17 = (o, c) => HALO(char(Object.assign({ goggles: 'none', vest: c, patch: false, tee: true, vshade: 'rgba(0,0,0,0.15)', topknot: '#3A3A3A', robe: '#8A7A60' }, o)));
 function porch17(t) { // memory: grandma's wooden platform on a summer night (sepia)
-  let h = BG('#2E2438') + particles(t, 71, 26, [0, 0, 1920, 500], '#FFF4C8', { speed: 4, r: 3, op: 0.6 });
+  let h = BG('#5B4F7E') + `<circle cx="1560" cy="170" r="220" fill="url(#warm)" opacity=".55"/>` + particles(t, 71, 26, [0, 0, 1920, 500], '#FFF4C8', { speed: 4, r: 3, op: 0.6 });
   h += `<circle cx="1560" cy="170" r="56" fill="#FFF2C0"/>`;
-  h += `<path d="M-600 760 Q200 640 900 700 Q1500 650 2520 740 L2520 1480 L-600 1480 Z" fill="#3E3446" stroke="${INK}" stroke-width="6"/>`;
+  h += `<path d="M-600 760 Q200 640 900 700 Q1500 650 2520 740 L2520 1480 L-600 1480 Z" fill="#77688A" stroke="${INK}" stroke-width="6"/>`;
   h += `<rect x="1300" y="380" width="420" height="360" fill="#5A4636" stroke="${INK}" stroke-width="8"/><path d="M1260 400 L1510 260 L1760 400 Z" fill="#3A2C26" stroke="${INK}" stroke-width="8"/><rect x="1440" y="520" width="120" height="220" fill="#FFD98A" opacity=".85" stroke="${INK}" stroke-width="6"/>`;
   h += `<rect x="420" y="780" width="900" height="40" rx="6" fill="#B07A44" stroke="${INK}" stroke-width="7"/><rect x="450" y="820" width="30" height="80" fill="#8A5A30" stroke="${INK}" stroke-width="5"/><rect x="1260" y="820" width="30" height="80" fill="#8A5A30" stroke="${INK}" stroke-width="5"/>`;
   for (let i = 0; i < 9; i++) h += `<line x1="${470 + i * 96}" y1="782" x2="${470 + i * 96}" y2="818" stroke="#8A5A30" stroke-width="4"/>`;
@@ -124,12 +124,12 @@ const DAY17 = ['', '월요일', '화요일', '수요일', '목요일', '금요�
 const EXPT17 = ['', '내 말, 시간 재 보기', '상대 말에, 이어서 묻기', '질문을, 더 많이!', '말보다, 행동 먼저', '끝난 뒤, 혼자 채점하지 않기'];
 function expCard17(t, lt, a, n, icon, title) {
   const T0 = t - lt, tt = title || EXPT17[n];
-  let h = BG('#14213A') + BG('url(#dots)') + particles(t, 170 + n, 18, [0, 0, 1920, 1080], '#FFE29A', { speed: 12, r: 3, op: 0.35 });
+  let h = BG('#FFF1D6') + BG('url(#hatch)').replace('/>', ' opacity=".12"/>') + particles(t, 170 + n, 18, [0, 0, 1920, 1080], '#F2B84B', { speed: 12, r: 4, op: 0.45 });
   h += `<ellipse cx="960" cy="480" rx="780" ry="420" fill="url(#amber)" opacity=".35"/>`;
   const inner = `<circle cx="-500" cy="0" r="104" fill="#F2B84B" stroke="${INK}" stroke-width="8"/>` + T17(-500, 38, String(n), { size: 116, fill: NAVY }) +
     T17(-360, -44, `실험 ${n} · ${DAY17[n]}`, { anchor: 'start', size: 44, fill: '#9A6A1E' }) + T17(-360, 52, tt, { anchor: 'start', size: tt.length > 11 ? 54 : 66, fill: NAVY });
   h += pop(t, T0 + 0.1, t + 99, 960, 420, card17(0, 0, 1340, 300, inner, { bg: '#FFF7EC' }), { inDur: 0.4 });
-  for (let i = 1; i <= 5; i++) h += `<circle cx="${960 + (i - 3) * 64}" cy="640" r="${i === n ? 17 : 12}" fill="${i <= n ? '#F2B84B' : '#33405A'}" stroke="${INK}" stroke-width="4"/>`;
+  for (let i = 1; i <= 5; i++) h += `<circle cx="${960 + (i - 3) * 64}" cy="640" r="${i === n ? 17 : 12}" fill="${i <= n ? '#F2B84B' : '#E3D6BE'}" stroke="${INK}" stroke-width="4"/>`;
   if (icon) h += pop(t, T0 + 0.6, t + 99, 960, 800, icon, { bob: 4 });
   return h;
 }
@@ -152,3 +152,17 @@ function hud17(t) {
 }
 render = function (t) { _render12(t); const h = hud17(t); if (h) document.getElementById('v').insertAdjacentHTML('beforeend', h); };
 window.render = render;
+
+/* brighter look (operator 2026-10-30: backgrounds were too dark and gloomy) */
+labBg = function (t) {  // daylight lab: cream-to-mint wall, soft grid, light floor
+  let h = BG('#EEF5F0') + `<rect x="-600" y="-600" width="3120" height="1480" fill="#F7F3E8" opacity=".6"/>` + BG('url(#grid)').replace('/>', ' opacity="1"/>').replace('url(#grid)', 'url(#grid17)');
+  h += `<ellipse cx="960" cy="420" rx="900" ry="420" fill="url(#warm)" opacity=".45"/><rect x="-600" y="880" width="3120" height="600" fill="#CFE3DA"/><line x1="-600" y1="880" x2="2520" y2="880" stroke="${INK}" stroke-width="6"/>`;
+  return h;
+};
+nightRoom12 = function (t, o = {}) {  // evening room with a warm lamp: still night, never gloomy
+  let h = BG('url(#nightRoom)') + BG('url(#hatch)').replace('/>', ' opacity=".2"/>');
+  h += `<ellipse cx="560" cy="560" rx="620" ry="420" fill="url(#warm)" opacity=".5"/>`;
+  h += windowNight(o.wx || 1300, 150, 420, 330, t);
+  h += `<rect x="-600" y="880" width="3120" height="600" fill="#6F6A8E"/><line x1="-600" y1="880" x2="2520" y2="880" stroke="${INK}" stroke-width="7"/>`;
+  return h;
+};

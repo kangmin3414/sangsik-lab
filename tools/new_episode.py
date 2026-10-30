@@ -14,7 +14,14 @@ rd = lambda f: open(os.path.join(T, f), encoding='utf-8').read()
 wr = lambda f, s: open(os.path.join(D, f), 'w', encoding='utf-8').write(s)
 # html: same engine chain as 016 (helpers of 012~014 stay available), episode scenes instead of 016's
 h = rd('anim016.html').replace('<script src="scenes016.js"></script>\n<script src="scenes016_2.js"></script>', f'<script src="scenes{num}.js"></script>')
-h = h.replace('<g filter="url(#boil)">', '<g>')  # 운영자 요청(017): 화면이 이글거리는 boil 필터는 쓰지 않는다
+h = h.replace('<g filter="url(#boil)">', '<g>')
+# 밝은 배경(017부터, 운영자 요청): 밤 방 그라데이션·비네트·자막 띠를 밝게, 연구실·밤 방 함수는 shorts/bright.js로 교체
+h = h.replace('<stop offset="0" stop-color="#151B36"/><stop offset="1" stop-color="#232C52"/>', '<stop offset="0" stop-color="#3B4A80"/><stop offset="1" stop-color="#5A6AA0"/>')
+h = h.replace('<stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>', '<stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/>')
+h = h.replace('<radialGradient id="vig"', '<linearGradient id="subband" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A1F33" stop-opacity="0"/><stop offset=".45" stop-color="#1A1F33" stop-opacity=".22"/><stop offset="1" stop-color="#1A1F33" stop-opacity=".38"/></linearGradient><radialGradient id="vig"', 1)
+h = h.replace('<pattern id="grid" ', '<pattern id="grid17" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0 L0 0 0 60" fill="none" stroke="#7FB8A4" stroke-opacity=".18" stroke-width="2"/></pattern><pattern id="grid" ', 1)
+h = h.replace('`<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +', '`<rect x="0" y="840" width="${W}" height="240" fill="url(#subband)"/>` +')
+h = h.replace(f'<script src="scenes{num}.js"></script>', f'<script src="scenes{num}.js"></script>\n<script src="../shorts/bright.js"></script>')  # 운영자 요청(017): 화면이 이글거리는 boil 필터는 쓰지 않는다
 wr(f'anim{num}.html', h)
 wr(f'scenes{num}.js', f"""/* ---------- experiment {num}: <주제> ---------- */
 // One image all the way: <한 가지 비유>.
