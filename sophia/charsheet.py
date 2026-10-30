@@ -13,7 +13,7 @@ STYLE = ("Original character design in a clean modern Korean-webtoon / anime ill
          "not resembling any existing character or franchise. Adult proportions. Modest everyday clothing, no school uniform, non-sexualized. "
          "Flat solid pure magenta (#FF00FF) background with no shadows on it. Do not write any text, letters or numbers in the image.")
 CHARS = {
- 'sophia': "a 25-year-old woman, calm and kind face, long dark navy hair in a loose low braid over one shoulder, thin round gold-rimmed glasses, "
+ 'sophia': "a 19-year-old young adult woman, a university freshman, adult proportions (not childlike), calm and kind face, long dark navy hair in a loose low braid over one shoulder, thin round gold-rimmed glasses, "
            "amber eyes, cream turtleneck under a long olive-green knit cardigan, a small owl-feather hair pin, long brown skirt, ankle boots",
  'haru':   "a 23-year-old woman, bright cheerful face, orange-brown hair in a high ponytail, large expressive green eyes, light-blue office blouse "
            "with a company ID card on a lanyard, beige slacks, white sneakers, a canvas tote bag",
