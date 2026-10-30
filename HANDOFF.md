@@ -51,6 +51,7 @@
 | 015 쇼펜하우어 2탄 | 대본 단계 | 014 다음 | claude.ai 문서 "실험015 쇼펜하우어 대본 v2" |
 | 016 아리스토텔레스 습관 | 대본 완성(제작 전) | 015 다음 | `aristotle016/script.py`, 제작 안내 `aristotle016/PRODUCTION.md` |
 | 017 공자 · 나이 들어 배우기 | 대본 완성(제작 전) | 016 다음 | `learning017/script.py`, 제작 안내 `learning017/PRODUCTION.md` |
+| 018 키르케고르 · 결정 장애 | 대본 완성(제작 전) | 017 다음 | `choice018/script.py`, 제작 안내 `choice018/PRODUCTION.md` |
 | (보류) 맹자 호연지기 | 운영자 피드백: 이해가 어렵고 와닿지 않음 → 보류 | — | `_shelved/mencius_draft/` |
 
 - 003(휴대폰)·004(설탕) 편과 그 쇼츠는 채널에서 비공개 상태입니다.
