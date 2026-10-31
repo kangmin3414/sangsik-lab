@@ -3,7 +3,7 @@ import subprocess, os
 from PIL import Image, ImageDraw, ImageFont
 F = lambda s: ImageFont.truetype('/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc', s, index=1)
 SRC = '../leekunhee019/상식실험실_실험019_이건희_15만대_v1.mp4'
-T0, T1 = 334.0, 371.0
+T0, T1 = 301.2, 354.4
 W, H, VY = 1080, 1920, 560            # video zoomed to 1080x780 (centre crop) at y=560
 im = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
 def center(y, txt, font, fill, stroke=0, sc=None):
