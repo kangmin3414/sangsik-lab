@@ -73,25 +73,25 @@
         else h += tag(560, 230, '휴대폰 · 무선전화기 · 팩스 15만 대', o(0.4 * D, { size: 36 })); break;
       case 'H2': h += tag(960, 200, '자기 손으로 만든 걸, 자기 손으로', o(0.4 * D, { size: 40, bg: YEL })); break;
       case 'H3': if (lt > 0.1) h += pop(t, at(0.1), t + 99, 960, 180, outlined(0, 0, [[['도대체 ', '#fff'], ['왜', YEL], ['?', '#fff']]], { size: 96, sw: 18 }), { inDur: 0.3 }); break;
-      case '1-3': h += tag(1400, 230, '3년 · 영화 1,200편+ (알려진 이야기)', o(0.55 * D, { size: 34 })); break;
+      case '1-3': h += tag(1400, 300, '3년 · 영화 1,200편+ (알려진 이야기)', o(0.55 * D, { size: 34 })); break;
       case '1-4': if (i === 9) ['주인공의 눈', '조연의 눈'].forEach((s, j) => h += tag(560 + j * 800, 300, s, o(fracOf13(t, j ? '조연' : '주인공') * D - 0.1, { size: 36, bg: j ? '#CFE8F3' : '#FFE29A' }))); break;
-      case '2-1': h += tag(1400, 230, '망해 가던 작은 반도체 회사', o(0.3 * D, { size: 36 })); break;
-      case '2-3': h += tag(1420, 220, '1983 · 64K D램 (세계 세 번째)', o(0.65 * D, { size: 36, bg: MINT })); break;
-      case '2-4': h += pop(t, at(0.3 * D), t + 99, 960, 190, outlined(0, 0, [[['D램 세계 ', '#fff'], ['1위', YEL], [' · 18년 만에', '#fff']]], { size: 66, sw: 13 }), {}); break;
-      case '3-3': h += pop(t, at(0.35 * D), t + 99, 1320, 240, `<rect x="-330" y="-80" width="660" height="160" rx="24" fill="#FFFDF4" opacity=".96" stroke="${INK}" stroke-width="6"/>` + T8(0, -12, '"하루에 3~5시간밖에', { size: 40, fill: NAVY }) + T8(0, 44, '잠이 안 왔습니다"', { size: 40, fill: NAVY }), { rot: -1.5 }); break;
-      case '3-4': h += tag(1400, 230, '규격이 안 맞는 뚜껑 → 칼로 깎아 조립', o(0.5 * D, { size: 34, bg: '#FFB8A0' })); break;
+      case '2-1': h += tag(1400, 300, '망해 가던 작은 반도체 회사', o(0.3 * D, { size: 36 })); break;
+      case '2-3': h += tag(1420, 300, '1983 · 64K D램 (세계 세 번째)', o(0.65 * D, { size: 36, bg: MINT })); break;
+      case '2-4': h += pop(t, at(0.3 * D), t + 99, 820, 200, outlined(0, 0, [[['D램 세계 ', '#fff'], ['1위', YEL], [' · 18년 만에', '#fff']]], { size: 60, sw: 12 }), {}); break;
+      case '3-3': h += pop(t, at(0.35 * D), t + 99, 1320, 360, `<rect x="-330" y="-80" width="660" height="160" rx="24" fill="#FFFDF4" opacity=".96" stroke="${INK}" stroke-width="6"/>` + T8(0, -12, '"하루에 3~5시간밖에', { size: 40, fill: NAVY }) + T8(0, 44, '잠이 안 왔습니다"', { size: 40, fill: NAVY }), { rot: -1.5 }); break;
+      case '3-4': h += tag(1400, 300, '규격이 안 맞는 뚜껑 → 칼로 깎아 조립', o(0.5 * D, { size: 34, bg: '#FFB8A0' })); break;
       case '3-6': h += tag(560, 230, '1993.6.7 · 프랑크푸르트 · 임원 200여 명', o(0.3 * D, { size: 34 })); break;
       case '3-7': h += pop(t, at(0.15), t + 99, 960, 330, `<rect x="-640" y="-150" width="1280" height="300" rx="28" fill="#FFFDF4" opacity=".96" stroke="${INK}" stroke-width="7"/>` +
         T8(0, -40, '"변하지 않으면 영원히 2류다.', { size: 54, fill: NAVY }) + T8(0, 50, '마누라와 자식 빼고, 다 바꿔라."', { size: 60, fill: RED }) + T8(600, 124, '1993년 신경영 선언', { anchor: 'end', size: 26, fill: '#8A6A44', w: 700 }), { inDur: 0.35 }); break;
       case '3-8': if (i === 40) h += tag(960, 220, '7·4제 · 아침 7시 출근, 오후 4시 퇴근', o(0.2, { size: 40, bg: YEL })); break;
-      case '3-9': h += tag(1380, 230, '1990 · 지역전문가 제도', o(0.6 * D, { size: 38, bg: MINT })); break;
-      case '3-10': h += pop(t, at(0.45 * D), t + 99, 1420, 260, outlined(0, 0, [[['불량률 ', '#fff'], ['11.8%', '#FF8A7A']]], { size: 70, sw: 14 }), {}); break;
+      case '3-9': h += tag(1380, 300, '1990 · 지역전문가 제도', o(0.6 * D, { size: 38, bg: MINT })); break;
+      case '3-10': h += pop(t, at(0.45 * D), t + 99, 1420, 340, outlined(0, 0, [[['불량률 ', '#fff'], ['11.8%', '#FF8A7A']]], { size: 70, sw: 14 }), {}); break;
       case '4-4': if (lt > 0.6 * D) h += tag(960, 220, '결정 ⑥ · 아까워도 버리기', o(0.6 * D, { size: 44, bg: YEL })); break;
-      case '5-0': if (i === 55) h += pop(t, at(0.2), t + 99, 960, 230, `<rect x="-560" y="-90" width="1120" height="180" rx="22" fill="#F4EFE4" stroke="${INK}" stroke-width="5"/>` +
+      case '5-0': if (i === 55) h += pop(t, at(0.2), t + 99, 800, 330, `<rect x="-560" y="-90" width="1120" height="180" rx="22" fill="#F4EFE4" stroke="${INK}" stroke-width="5"/>` +
           T8(0, -26, '1996 비자금 사건 유죄(사면) · 2008 조세포탈·배임 유죄, 퇴진', { size: 32, fill: NAVY }) + T8(0, 34, '2009 특별사면 · 2010 복귀', { size: 32, fill: NAVY }), {}); break;
-      case '6-2': h += tag(1400, 230, '미술품 2만 3천여 점 · 조건 없는 기증', o(0.35 * D, { size: 36, bg: YEL })); break;
+      case '6-2': h += tag(1400, 300, '미술품 2만 3천여 점 · 조건 없는 기증', o(0.35 * D, { size: 36, bg: YEL })); break;
       case '6-4': if (lt > 0.5 * D) h += pop(t, at(0.5 * D), t + 99, 960, 200, outlined(0, 0, [[['모두가 ', '#fff'], ['함께 보는 것', YEL]]], { size: 72, sw: 14 }), {}); break;
-      case '7-2': h += tag(1380, 230, "오늘 하나: 내 삶의 '세탁기 뚜껑' 적기", o(0.3 * D, { size: 38, bg: YEL })); break;
+      case '7-2': h += tag(1380, 300, "오늘 하나: 내 삶의 '세탁기 뚜껑' 적기", o(0.3 * D, { size: 38, bg: YEL })); break;
       case '7-3': if (a.ask) h += tag(960, 220, '지금 여러분은 몇 번째 계단에?', o(0.2, { size: 46, bg: MINT }));
         if (a.end) { h += pop(t, at(0.1), t + 99, 960, 220, outlined(0, 0, [[['다음 실험에서', '#fff']], [['또 만나요', YEL]]], { size: 92, sw: 18 }), {}) + pop(t, at(0.5), t + 99, 960, 410, label(0, 0, '상식실험실', { size: 40, bg: MINT }), {}); }
         break;

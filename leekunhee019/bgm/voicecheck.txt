@@ -1,0 +1,25 @@
+==
+  boy_a.mp3
+  CLEAN
+==
+  boy_b.mp3
+  CLEAN
+==
+  fire_a.mp3
+  CLEAN
+==
+  fire_b.mp3
+  CLEAN
+==
+  legacy_a.mp3
+  CLEAN
+==
+  legacy_b.mp3
+  VOICE?
+  100s en 0.82 This team won't abuse or avoid it.
+==
+  rise_a.mp3
+  CLEAN
+==
+  rise_b.mp3
+  CLEAN
