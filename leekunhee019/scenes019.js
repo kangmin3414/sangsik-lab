@@ -33,8 +33,10 @@ function kstepScene(t, lt, a) {
     return h;
   }
   if (n === 6) {
-    h += stairs19(t, 6, 360, 860, 240, 92, { qs: true, small: true });
-    if (a.line) h += pop(t, T0 + 0.2, t + 99, 960, 150, card19(0, 0, 1500, 170, T19(0, -12, '인생을 바꾸는 건 거창한 선언이 아니라,', { size: 46 }) + T19(0, 54, '부끄러운 장면을 끝까지 보는 용기', { size: 52, fill: RED })), {});
+    h += stairs19(t, 6, 100, 880, 165, 80, { small: true });
+    for (let k = 1; k <= 5; k++) h += pop(t, T0 + 0.15 * k, t + 99, 1470, 300 + k * 100, `<rect x="-380" y="-36" width="760" height="72" rx="36" fill="#fff" stroke="${INK}" stroke-width="5"/>` +
+      T19(-350, 13, String(k), { anchor: 'start', size: 34, fill: '#9A6A1E' }) + T19(-300, 12, QS19[k], { anchor: 'start', size: 30 }), {});
+    if (a.line) h += pop(t, T0 + 0.2, t + 99, 960, 200, card19(0, 0, 1500, 170, T19(0, -12, '인생을 바꾸는 건 거창한 선언이 아니라,', { size: 46 }) + T19(0, 54, '부끄러운 장면을 끝까지 보는 용기', { size: 52, fill: RED })), {});
     return h;
   }
   h += stairs19(t, n, 410, 860, 220, 90);
@@ -65,9 +67,9 @@ function kdecScene(t, lt, a) {
       g += T19(0, 1010, lbl, { size: 40 }) + `</g>`;
       return g;
     };
-    h += house(560, false, '파 내려가기', false) + house(1360, true, '쌓아 올리기', true);
-    h += pop(t, T0 + at19(t, a, '파 내려가면', 0) || T0 + 0.5, t + 99, 560, 400, label(0, 0, '문제가 안 보인다', { size: 34, bg: '#E6E1D8' }), {});
-    if (lt > at19(t, a, '쌓으면', -0.1)) h += pop(t, T0 + at19(t, a, '쌓으면', -0.1), t + 99, 1360, 120, label(0, 0, '보이고, 고치기 쉽다', { size: 36, bg: MINT }), {});
+    h += `<g transform="translate(0 -170)">` + house(560, false, '파 내려가기', false) + house(1360, true, '쌓아 올리기', true) + '</g>';
+    h += pop(t, T0 + at19(t, a, '파 내려가면', 0) || T0 + 0.5, t + 99, 560, 300, label(0, 0, '문제가 안 보인다', { size: 34, bg: '#E6E1D8' }), {});
+    if (lt > at19(t, a, '쌓으면', -0.1)) h += pop(t, T0 + at19(t, a, '쌓으면', -0.1), t + 99, 1640, 300, label(0, 0, '보이고, 고치기 쉽다', { size: 36, bg: MINT }), {});
     if (lt > at19(t, a, '두 번째', -0.2)) h += decTag19(t, T0 + at19(t, a, '두 번째', -0.4), 2);
     return h;
   }
