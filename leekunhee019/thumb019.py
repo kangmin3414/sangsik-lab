@@ -1,0 +1,15 @@
+"""Ep.019 thumbnails = the hook picture (H1 bonfire). T1: '15만 대를 불태웠다' + '왜?'. T2: same fire, the quote."""
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+F = lambda s: ImageFont.truetype('/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc', s, index=1)
+INK, YEL, WHITE, RED = (20, 30, 50), (255, 226, 122), (255, 255, 255), (232, 74, 60)
+base = Image.open('ai/H1.png').convert('RGB'); base = ImageEnhance.Contrast(base).enhance(1.08)
+def txt(d, xy, s, size, fill, sw=16, anchor='mm'): d.text(xy, s, font=F(size), fill=fill, anchor=anchor, stroke_width=sw, stroke_fill=INK)
+im = base.copy(); d = ImageDraw.Draw(im)
+txt(d, (960, 150), '자기가 만든 휴대폰', 96, WHITE); txt(d, (960, 290), '15만 대를 불태웠다', 128, YEL, sw=20)
+d.rounded_rectangle((1530, 760, 1860, 960), 50, fill=RED, outline=INK, width=10); d.text((1695, 860), '왜?', font=F(120), fill=WHITE, anchor='mm')
+im.save('thumb/상식실험실_실험019_썸네일_T1.jpg', quality=92)
+im = base.copy(); d = ImageDraw.Draw(im)
+txt(d, (960, 150), '"마누라와 자식 빼고', 96, WHITE); txt(d, (960, 290), '다 바꿔라"', 128, YEL, sw=20)
+d.rounded_rectangle((1380, 780, 1880, 960), 46, fill=YEL, outline=INK, width=10); d.text((1630, 870), '15만 대의 불꽃', font=F(62), fill=INK, anchor='mm')
+im.save('thumb/상식실험실_실험019_썸네일_T2.jpg', quality=92)
+print('ok')
