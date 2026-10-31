@@ -491,13 +491,12 @@ function cmagicScene(t, lt, a) {
 }
 thanksScene = function (t, lt) {
   let h = labBg(t) + particles(t, 77, 30, [0, 0, 1920, 1080], YEL, { speed: 30, r: 5, op: 0.6 });
-  h += pop(t, t - lt + 0.2, t + 99, 960, 200, outlined(0, 0, [[['다음 실험에서', '#fff']], [['또 만나요', YEL]]], { size: 88, sw: 16 }), {});
+  h += pop(t, t - lt + 0.2, t + 99, 960, 200, outlined(0, 0, [[['다음 이야기에서', '#fff']], [['만나요', YEL]]], { size: 88, sw: 16 }), {});
   h += doctor(380, 960, 0.46, { t, expr: '미소', talk: env(t) });
   h += KZ({ t, seed: 1860, x: 640, y: 890, s: 0.44, pose: '손인사', ex: exprAt([[0, '미소']], t) });
   h += HR({ t, seed: 1861, x: 860, y: 890, s: 0.44, pose: '손인사', ex: exprAt([[0, '신남']], t) });
   h += HALO(char(Object.assign({}, ZB17, { t, seed: 1862, x: 1080, y: 890, s: 0.5, pose: '손인사', ex: exprAt([[0, '신남']], t) })));
   h += SA({ t, seed: 1863, x: 1300, y: 890, s: 0.44, pose: '손인사', ex: exprAt([[0, '미소']], t) });
   h += TL17({ t, seed: 1864, x: 1520, y: 890, s: 0.44, pose: '손인사', ex: exprAt([[0, '미소']], t) });
-  h += pop(t, t - lt + 0.6, t + 99, 960, 420, label(0, 0, '상식실험실', { size: 40, bg: MINT }), {});
   return h;
 };

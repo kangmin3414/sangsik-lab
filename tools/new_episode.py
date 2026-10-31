@@ -15,6 +15,10 @@ wr = lambda f, s: open(os.path.join(D, f), 'w', encoding='utf-8').write(s)
 # html: same engine chain as 016 (helpers of 012~014 stay available), episode scenes instead of 016's
 h = rd('anim016.html').replace('<script src="scenes016.js"></script>\n<script src="scenes016_2.js"></script>', f'<script src="scenes{num}.js"></script>')
 h = h.replace('<g filter="url(#boil)">', '<g>')
+# 영상 안에 채널명을 넣지 않는다(2026-11-01 운영자 규칙): 오른쪽 아래 워터마크와 엔딩 카드의 채널명 제거
+import re as _re
+h = _re.sub(r"\s*`<text x=\"1890\" y=\"1062\"[^`]*</text>` \+", "", h)
+h = h.replace("[['다음 실험 · ', MINT], ['상식실험실',", "[['다음 이야기에서 ', MINT], ['만나요',")
 # 밝은 배경(017부터, 운영자 요청): 밤 방 그라데이션·비네트·자막 띠를 밝게, 연구실·밤 방 함수는 shorts/bright.js로 교체
 h = h.replace('<stop offset="0" stop-color="#151B36"/><stop offset="1" stop-color="#232C52"/>', '<stop offset="0" stop-color="#3B4A80"/><stop offset="1" stop-color="#5A6AA0"/>')
 h = h.replace('<stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>', '<stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/>')

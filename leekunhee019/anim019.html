@@ -498,7 +498,7 @@ function outroScene(t, lt, a) {
     h += pop(t, t - lt + 0.3, t + 99, 1380, 360, `<path d="M-250 -90 L250 -90 Q280 -90 280 -60 L280 50 Q280 80 250 80 L-60 80 L-110 140 L-100 80 L-250 80 Q-280 80 -280 50 L-280 -60 Q-280 -90 -250 -90 Z" fill="#fff" stroke="${INK}" stroke-width="7"/><text x="0" y="10" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="44" fill="${NAVY}">내 스크린 타임은?</text>`, { rot: 3, bob: 5 });
   } else {
     h += `<rect x="-600" y="-600" width="3120" height="2280" fill="${NAVY}" opacity="${f1(easeOut(prog(lt, 0, 0.6)) * 0.82 * 100) / 100}"/>`;
-    h += pop(t, t - lt + 0.3, t + 99, 960, 300, outlined(0, 0, [[['다음 실험 · ', MINT], ['상식실험실', YEL]]], { size: 56, sw: 12 }), {});
+    h += pop(t, t - lt + 0.3, t + 99, 960, 300, outlined(0, 0, [[['다음 이야기에서 ', MINT], ['만나요', YEL]]], { size: 56, sw: 12 }), {});
     h += pop(t, t - lt + 0.7, t + 99, 960, 520, outlined(0, 0, ['만약에, 한 달 동안', '설탕을 끊는다면?'], { size: 96, sw: 18 }), {});
   }
   return h;
@@ -611,7 +611,6 @@ function render(t) {
     `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
     `<rect x="0" y="840" width="${W}" height="240" fill="url(#subband)"/>` +
     over + subtitle(t) +
-    `<text x="1890" y="1062" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="22" fill="#fff" opacity=".5">상식실험실</text>` +
     (flash ? `<rect width="${W}" height="${H}" fill="#fff" opacity="${f1(flash * 100) / 100}"/>` : '') +
     `<rect width="${W}" height="${H}" fill="#000" opacity="${f1(fade * 100) / 100}"/>`;
 }

@@ -96,8 +96,7 @@
         (lt > 0.5 * D ? pop(t, at(0.5 * D), t + 99, 1380, 220, label(0, 0, '폐를 끼쳐도 되는 사이', { size: 40, bg: '#FFE3D6' }), {}) : ''); break;
       case '5-2': if (lt > 0.8 * D) h += tag(1350, 260, '"밥은 먹었어요?"', o(0.8 * D, { size: 52, bg: YEL, rot: 4 })); break;
       case '5-3': if (a.end) {
-          h += pop(t, at(0.1), t + 99, 960, 230, outlined(0, 0, [[['다음 실험에서', '#fff']], [['또 만나요', YEL]]], { size: 92, sw: 18 }), {});
-          h += pop(t, at(0.5), t + 99, 960, 420, label(0, 0, '상식실험실', { size: 40, bg: MINT }), {});
+          h += pop(t, at(0.1), t + 99, 960, 230, outlined(0, 0, [[['다음 이야기에서', '#fff']], [['만나요', YEL]]], { size: 92, sw: 18 }), {});
         } else h += pop(t, at(0.3), t + 99, 960, 250, `<rect x="-500" y="-120" width="1000" height="230" rx="28" fill="#FFFDF4" opacity=".96" stroke="${INK}" stroke-width="6"/>` +
           T8(0, -40, '和而不同', { size: 64, fill: NAVY }) + T8(0, 30, '어울리되, 같아지지 않는다', { size: 44, fill: NAVY }) + T8(440, 92, '『논어』 자로', { anchor: 'end', size: 26, fill: '#8A6A44', w: 700 }), {}); break;
       case '5-4': if (lt > 0.6 * D) h += tag(960, 220, '가장 늦게 알게 된 건, 우리 자신', o(0.6 * D, { size: 46, bg: YEL })); break;

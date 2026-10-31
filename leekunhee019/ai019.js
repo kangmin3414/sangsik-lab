@@ -87,7 +87,7 @@
       case '6-4': if (lt > 0.5 * D) h += pop(t, at(0.5 * D), t + 99, 960, 200, outlined(0, 0, [[['모두가 ', '#fff'], ['함께 보는 것', YEL]]], { size: 72, sw: 14 }), {}); break;
       case '7-2': h += tag(1380, 300, "오늘 하나: 내 삶의 '세탁기 뚜껑' 적기", o(0.3 * D, { size: 38, bg: YEL })); break;
       case '7-3': if (a.ask) h += tag(960, 220, '지금 여러분은 몇 번째 계단에?', o(0.2, { size: 46, bg: MINT }));
-        if (a.end) { h += pop(t, at(0.1), t + 99, 960, 220, outlined(0, 0, [[['다음 실험에서', '#fff']], [['또 만나요', YEL]]], { size: 92, sw: 18 }), {}) + pop(t, at(0.5), t + 99, 960, 410, label(0, 0, '상식실험실', { size: 40, bg: MINT }), {}); }
+        if (a.end) { h += pop(t, at(0.1), t + 99, 960, 220, outlined(0, 0, [[['다음 이야기에서', '#fff']], [['만나요', YEL]]], { size: 92, sw: 18 }), {}); }
         break;
     }
     h += hud(i, t, lt);

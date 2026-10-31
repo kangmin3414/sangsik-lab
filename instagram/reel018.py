@@ -14,7 +14,7 @@ center(290, '한국이 신기해졌다', F(96), (232, 74, 60))
 center(430, '실험 018 · 일본에서 30년을 산다면', F(40), (110, 98, 85))
 d.rounded_rectangle((90, 1400, W - 90, 1630), 36, fill=(66, 211, 160, 240), outline=(20, 30, 50, 255), width=6)
 center(1435, '1년 차부터 30년 차까지', F(54), (20, 30, 50))
-center(1520, '전체 실험 ▶ 유튜브 「상식실험실」', F(46), (20, 30, 50))
+center(1520, '전체 영상 ▶ 프로필 링크', F(46), (20, 30, 50))
 im.save('018/_reel_overlay.png')
 vf = (f"[0:v]split[a][b];[a]scale=-2:{H},boxblur=30:2,crop={W}:{H},eq=brightness=0.06:saturation=0.9[bg];"
       f"[b]scale=-2:780,crop={W}:780[fg];[bg][fg]overlay=0:{VY}[v1];[v1][1:v]overlay=0:0,format=yuv420p[v]")

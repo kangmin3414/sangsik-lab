@@ -14,7 +14,7 @@ CARDS = [
  (37, 0.6, [('4계단 · 버리는 용기', NAVY), ('아까워서 못 버리는 마음', RED)], ['불량 15만 대, 약 500억 원어치를 태웠다.', '불량률 11.8% → 2%대, 그해 국내 1위.'], 'Arkes & Blumer (1985)'),
  (39, 0.5, [('삼성을 키운', NAVY), ('6가지 결정', RED)], ['먼저 들어가기 · 고치기 쉬운 길 · 먼저 크게', '양보다 질 · 사람에게 투자 · 아까워도 버리기'], ''),
  (47, 0.8, [('5계단', NAVY), ('나누는 마음', RED)], ['미술품 2만 3천여 점, 조건 없는 기증.', '혼자 보던 소년이 남긴, 모두가 함께 보는 것.'], ''),
- (49, 0.8, [('인생을 바꾸는 건', NAVY), ('부끄러운 장면을 보는 용기', RED)], ['내 삶의 세탁기 뚜껑은 무엇인가요?', '지금 나는 몇 번째 계단에?', '전체 이야기는 프로필 링크 · 유튜브 「상식실험실」'], ''),
+ (49, 0.8, [('인생을 바꾸는 건', NAVY), ('부끄러운 장면을 보는 용기', RED)], ['내 삶의 세탁기 뚜껑은 무엇인가요?', '지금 나는 몇 번째 계단에?', '전체 영상은 프로필 링크'], ''),
 ]
 def still(i, fr):
     t = L[i]['t0'] + fr * (L[i]['t1'] - L[i]['t0'])
@@ -24,7 +24,7 @@ def still(i, fr):
 for n, (i, fr, title, body, src) in enumerate(CARDS, 1):
     c = Image.new('RGB', (1080, 1350), (255, 244, 224)); d = ImageDraw.Draw(c)
     d.rounded_rectangle((40, 40, 170, 100), 30, fill=MINT, outline=INK, width=4); d.text((105, 70), f'{n}/{len(CARDS)}', font=F(34), fill=INK, anchor='mm')
-    d.text((1040, 70), '상식실험실 · 실험 019', font=FB(30), fill=SUB, anchor='rm')
+    d.text((1040, 70), '특별편 · 이건희 일대기', font=FB(30), fill=SUB, anchor='rm')
     y = 150
     for txt, col in title: d.text((60, y), txt, font=F(76 if n == 1 else 68), fill=col); y += 96 if n == 1 else 88
     im = still(i, fr); w = 960; h = int(w * im.height / im.width); im = im.resize((w, h), Image.LANCZOS)

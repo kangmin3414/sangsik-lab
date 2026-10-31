@@ -3,6 +3,8 @@ name: sangsik-upload
 description: 상식실험실 영상의 업로드 문구(제목 A/B·설명·타임라인·출처·태그·고정 댓글)를 쓰거나, YouTube Studio 업로드·예약·비공개 처리·A/B 썸네일·쇼츠 리컷을 할 때 먼저 읽는다. Studio 운영 규칙(삭제 금지 등)과 쇼츠 원칙 포함.
 ---
 
+> **2026-11-01부터: 새 편은 `FORMAT.md`(이야기로만 보여 주는 형식)를 먼저 따른다. 영상 안·설명란·태그에 채널명을 넣지 않는다(마지막 인사 "다음 이야기에서 만나요", 구독 링크는 채널 ID 주소 https://www.youtube.com/channel/UCSNT-TsvhptVyD63_3yn2yg?sub_confirmation=1). (11/1 규칙)**
+
 # 업로드 문구 · Studio · 쇼츠
 
 ## 1. 업로드 문구 파일

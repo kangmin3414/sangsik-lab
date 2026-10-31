@@ -14,7 +14,7 @@ CARDS = [  # (line, frac, title lines [(text, color)], body lines, source)
  (34, 0.8, [('10년 차', NAVY), ('완벽한 일본 사람 되기', RED)], ['엄마: "너… 왜 이렇게 남처럼 말하니?"', '두 문화를 함께 가진 쪽이 더 잘 적응하는 경향.'], 'Nguyen & Benet-Martínez (2013)'),
  (41, 0.6, [('30년 차', NAVY), ('처음 본 사람도 "이모"', RED)], ['일본 사람이 다 된 눈으로 보니,', '한국은 이모·삼촌·언니의 나라였다.'], ''),
  (51, 0.8, [('폐를 끼치지 않는 배려', NAVY), ('폐를 끼쳐도 되는 사이', RED)], ['둘 다 다정함이었습니다.', '방향이 달랐을 뿐.'], ''),
- (56, 0.9, [('가장 늦게 알게 된 건', NAVY), ('우리 자신', RED)], ['和而不同 — 어울리되, 같아지지 않는다.', '"밥은 먹었어요?"', '전체 실험은 프로필 링크 · 유튜브 「상식실험실」'], '『논어』 자로'),
+ (56, 0.9, [('가장 늦게 알게 된 건', NAVY), ('우리 자신', RED)], ['和而不同 — 어울리되, 같아지지 않는다.', '"밥은 먹었어요?"', '전체 영상은 프로필 링크'], '『논어』 자로'),
 ]
 def still(i, fr):
     t = L[i]['t0'] + fr * (L[i]['t1'] - L[i]['t0'])
@@ -24,7 +24,7 @@ def still(i, fr):
 for n, (i, fr, title, body, src) in enumerate(CARDS, 1):
     c = Image.new('RGB', (1080, 1350), (255, 244, 224)); d = ImageDraw.Draw(c)
     d.rounded_rectangle((40, 40, 170, 100), 30, fill=MINT, outline=INK, width=4); d.text((105, 70), f'{n}/{len(CARDS)}', font=F(34), fill=INK, anchor='mm')
-    d.text((1040, 70), '상식실험실 · 실험 018', font=FB(30), fill=SUB, anchor='rm')
+    d.text((1040, 70), '특별편 · 일본에서 30년', font=FB(30), fill=SUB, anchor='rm')
     y = 150
     for txt, col in title: d.text((60, y), txt, font=F(76 if n == 1 else 68), fill=col); y += 96 if n == 1 else 88
     im = still(i, fr); w = 960; h = int(w * im.height / im.width); im = im.resize((w, h), Image.LANCZOS)

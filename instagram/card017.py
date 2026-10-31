@@ -14,7 +14,7 @@ CARDS = [  # (line, frac, title lines [(text, color)], body lines, source)
  (32, 0.92, [('그런데 질문 폭격과', NAVY), ('부메랑 질문은 역효과', RED)], ['"주말에 뭐 했어요? …저는요!"', '물어 놓고 내 얘기로 가져오면 진심이 없어 보입니다.'], 'Yeomans & Brooks (2025)'),
  (37, 0.8, [('공자가 꼽은', NAVY), ('말할 때의 세 가지 실수', RED)], ['조급함 · 숨김 · 그리고', '상대의 얼굴빛을 보지 않고 말하는 것(눈먼 것).'], '『논어』 계씨'),
  (63, 0.8, [('대화가 끝나고', NAVY), ('혼자 채점하지 마세요', RED)], ['우리는 상대가 나를 좋아한 정도를', '실제보다 낮게 짐작합니다(호감 격차).'], 'Boothby 외 (2018) Psychological Science'),
- (77, 0.6, [('오늘 써 볼', NAVY), ('딱 한 문장', RED)], ['누군가 이야기를 꺼내면, 이렇게.', '"그래서요? 그다음엔요?"', '전체 실험은 프로필 링크 · 유튜브 「상식실험실」'], ''),
+ (77, 0.6, [('오늘 써 볼', NAVY), ('딱 한 문장', RED)], ['누군가 이야기를 꺼내면, 이렇게.', '"그래서요? 그다음엔요?"', '전체 영상은 프로필 링크'], ''),
 ]
 def still(i, fr):
     t = L[i]['t0'] + fr * (L[i]['t1'] - L[i]['t0'])
@@ -24,7 +24,7 @@ def still(i, fr):
 for n, (i, fr, title, body, src) in enumerate(CARDS, 1):
     c = Image.new('RGB', (1080, 1350), (255, 244, 224)); d = ImageDraw.Draw(c)
     d.rounded_rectangle((40, 40, 170, 100), 30, fill=MINT, outline=INK, width=4); d.text((105, 70), f'{n}/{len(CARDS)}', font=F(34), fill=INK, anchor='mm')
-    d.text((1040, 70), '상식실험실 · 실험 017', font=FB(30), fill=SUB, anchor='rm')
+    d.text((1040, 70), '특별편 · 공자의 대화법', font=FB(30), fill=SUB, anchor='rm')
     y = 150
     for txt, col in title: d.text((60, y), txt, font=F(76 if n == 1 else 68), fill=col); y += 96 if n == 1 else 88
     im = still(i, fr); w = 960; h = int(w * im.height / im.width); im = im.resize((w, h), Image.LANCZOS)
