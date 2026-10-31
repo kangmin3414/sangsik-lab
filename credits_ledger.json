@@ -213,6 +213,12 @@
    "item": "Gemini 3.8 Flash TTS: ep.018 narration (62 lines / 73 segments + retakes)",
    "count": 1,
    "unit_usd": 0.2
+  },
+  {
+   "at": "2026-10-31",
+   "item": "Gemini TTS tempo A/B samples for ep.019 (3 clips)",
+   "count": 3,
+   "unit_usd": 0.003
   }
  ]
 }
