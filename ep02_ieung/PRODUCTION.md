@@ -1,9 +1,9 @@
-# 시즌 1 · 새 첫 편 「팀장님 답장이 'ㅇㅇ' 두 글자였다」 (대본 3차, 2026-11-01)
+# 시즌 1 · 새 첫 편 「팀장님 답장이 'ㅇㅇ' 두 글자였다」 (대본 4차, 2026-11-01)
 
 상태: **대본만 있음. 운영자 승인 전에는 목소리·영상 작업을 하지 않습니다.** 형식은 `FORMAT.md` v2.
 
-- 대본 `script.py`, 읽기용 `script_read.md`, 점검 `python3 tools/script_tools.py ep02_ieung/script.py --read` (126줄, 추정 9:35).
-- 미드롤 광고 후보: 3막 시작 직전(`mcar`, 약 5:42).
+- 대본 `script.py`, 읽기용 `script_read.md`, 점검 `python3 tools/script_tools.py ep02_ieung/script.py --read` (124줄, 추정 9:50).
+- 미드롤 광고 후보: 3막 시작 직전(`mcar`, 약 5:54).
 
 ## 1편(회식 2차)에서 바꾼 점
 
