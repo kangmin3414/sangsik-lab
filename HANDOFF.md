@@ -2,6 +2,8 @@
 
 새 Claude 세션은 이 문서를 먼저 읽으세요. 이전 대화 내용은 이전되지 않습니다.
 
+**2026-11-01부터 새 편은 `FORMAT.md`(이야기로만 보여 주는 형식)를 따릅니다.**
+
 - 채널: 상식실험실 (UCSNT-TsvhptVyD63_3yn2yg), 운영자 Mingyu (kangmin3414@gmail.com)
 - 항상 한국어로 답합니다.
 - 캐릭터: 스틱맨 주인공 '제로', 해설 캐릭터 '박사님'. 편마다 철학자 소품(가발 등)을 붙였다 떼는 구성입니다.
@@ -33,6 +35,12 @@
 - 광범위한 `pkill`을 쓰지 않습니다.
 - 크레딧(GCP 무료 크레딧)은 추정하지 말고 운영자가 콘솔에서 확인한 실제 값으로만 보고합니다. 원장: `credits_ledger.json` (Free Trial, 2026-12-21까지).
 - 니체(005) 편은 줄이지 않기로 했습니다.
+- **영상 안에 채널명을 넣지 않습니다(2026-11-01 운영자 결정).** 채널명이 바뀌면 이미 올린 영상을 고치는 데 비용이 많이 들기 때문입니다.
+  - 대본 마지막 인사: "○○실험실이었습니다" 대신 "다음 이야기에서 만나요."
+  - 화면 워터마크와 엔딩 카드에서 채널명을 뺍니다(`lonely014/anim014.html` 수정 완료, 새 편은 이 파일을 복사).
+  - 쇼츠 태그는 "실험 N"만 씁니다(`replace/build_new12.py`, 쇼츠 표지 `thumbs22/build.py` 수정 완료).
+  - 설명란 구독 링크는 핸들(@채널명) 대신 채널 ID 주소를 씁니다: https://www.youtube.com/channel/UCSNT-TsvhptVyD63_3yn2yg?sub_confirmation=1 . 해시태그와 태그에도 채널명을 넣지 않습니다.
+  - 내부 파일 이름(`상식실험실_실험0NN_…`)은 시청자에게 보이지 않으므로 그대로 둬도 됩니다.
 
 ## 3. 롱폼 현황
 
@@ -43,20 +51,31 @@
 | 007 데카르트 | Hnv5DGK-6tQ | 10/30 18:00 예약 | descartes4/…_v9.mp4 (새 인트로) |
 | 008 장자 | LDiQlSjL7lE | 11/2 18:00 예약 | zhuangzi5/…_v9.mp4 (새 인트로) |
 | 009 소크라테스 | koloX4KIqsU | 11/5 18:00 예약 | socrates3/…_v6.mp4 |
-| 몰아보기 01 | aMiFhQmHr2k | 11/7 예약 | compile1/…철학실험4편.mp4 |
+| 몰아보기 01 | rb3sjnqgHmI | 11/5 08:30 예약 (10/31 최신본으로 재업로드, 옛 aMiFhQmHr2k는 비공개·삭제 예정) | compile1/…철학실험4편_v2.mp4 (006 v5·007 v9·008 v9·009 v6) |
 | 010 붓다 | Rw5mOgqfHVw | 11/8 18:00 예약 | buddha3/…_v6.mp4 |
 | 011 시간 | NlnVZppG1d8 | 11/11 예약 | time011/…_v2.mp4 |
 | 012 화 | wlCrcVEqozo | 11/14 예약 | anger012/…_v1.mp4 |
 | 013 행복 | LkDF-NVtk2w | 11/17 예약 | mom013/…_v1.mp4 |
 | 014 외로움(쇼펜하우어 고슴도치) | 미업로드 | 다음 순서(11/20 18:00 제안) | lonely014/…_v1.mp4 + 쇼츠 3개(replace/out_new6) |
 | 015 쇼펜하우어 2탄 | 대본 단계 | 014 다음 | claude.ai 문서 "실험015 쇼펜하우어 대본 v2" |
-| 016 맹자 (호연지기, 주눅) | 미업로드 | 제작 완료(8:25, Gemini TTS) · 공개 순서 운영자 결정 | mencius016/…_v1.mp4 (media/016 조각 2개) |
-| 017 공자 (호감 가는 대화법, 캐치볼) | 미업로드 | 제작 완료(8:37, Gemini TTS, boil 필터 없음) · 016 다음 공개 제안 | confucius017/…_v1.mp4 (media/017, 70MB 한 파일) |
-| 018 일본 30년 (문화 적응, 그림책 다큐) | 미업로드 | 제작 완료(8:42, 그림 44장 + Gemini TTS, 밝은 배경) · 017 다음 공개 제안 | japan018/…_v1.mp4 (media/018 조각 4개) · 인스타 릴스·카드 instagram/018 |
-| 019 이건희 (기업가 전기, 계단 5칸·결정 6가지) | 미업로드 | 제작 완료(v2 8:05 — 덜어내고 잇기, 차분한 템포, 그림 38장, 제목=썸네일=훅) · 018 다음 공개 제안 | leekunhee019/…_v1.mp4 (media/019 조각) · 인스타 instagram/019 |
+| 016 아리스토텔레스 습관 | 대본 완성(제작 전) | 015 다음 | `aristotle016/script.py`, 제작 안내 `aristotle016/PRODUCTION.md` |
+| 017 공자 · 나이 들어 배우기 | 대본 완성(제작 전) | 016 다음 | `learning017/script.py`, 제작 안내 `learning017/PRODUCTION.md` |
+| 018 키르케고르 · 결정 장애 | 대본 v4 완성(제작 전, 약 8:20) | 017 다음 | `choice018/script.py`, 제작 안내 `choice018/PRODUCTION.md` |
+| (보류) 맹자 호연지기 | 운영자 피드백: 이해가 어렵고 와닿지 않음 → 보류 | — | `_shelved/mencius_draft/` |
+
+### 특별편 (다른 세션, 제작 완료 · 번호 미정 · 2026-11-01 운영자: 버리지 않고 별도로 살림)
+번호는 위 정규 편(016~018)과 겹치지 않게 공개 때 정합니다. 영상 안 채널명은 11/1 규칙에 맞춰 제거 작업 중(워터마크·엔딩 카드·마지막 인사).
+| 특별편 | 상태 | 파일 |
+|---|---|---|
+| 맹자 (호연지기, 주눅) — 제작 완료본 | main에서 보류 결정 → 공개하지 않음(참고용) | mencius016/…_v1.mp4 (media/016) |
+| 공자 · 호감 가는 대화법(캐치볼) | 제작 완료(8:37) | confucius017/ (media/017) |
+| 만약에 한국 사람이 일본에서 30년을 산다면 (그림책 다큐) | 제작 완료(8:42) | japan018/ (media/018) · 인스타 instagram/018 |
+| 이건희 일대기 (기업가 전기, 계단 5칸) | 제작 완료(v2 8:05, 제목=썸네일=훅) | leekunhee019/ (media/019) · 인스타 instagram/019 |
+- 이 세션의 교훈(새 형식에도 적용): 제목·썸네일·훅은 같은 장면 / 장면마다 첫 문장이 앞 장면을 이어받기 / 너무 빠르지 않게(초당 7자 안팎, 줄 사이 0.7초) / 밝은 배경 / Lyria 곡은 쓰기 전 `tools/bgm_voice_check.py` 로 목소리 검사 / 탁자·의자·손 위치 등 장면 논리(`sangsik-scene-qa`).
+- 인스타그램 운영안: `instagram/인스타_운영안_v1.md`.
 
 - 003(휴대폰)·004(설탕) 편과 그 쇼츠는 채널에서 비공개 상태입니다.
-- 옛 버전(삭제 예정): aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
+- 옛 버전(삭제 예정): aMiFhQmHr2k(몰아보기 01 구버전), aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
 - 메타데이터·ID 기록: `replace/lf_repl.json`, `replace/shorts_repl7.json`, `replace/shorts_repl8.json`, `replace/remix006_repl.json`, `abthumb/ab_plan.json`.
 
 ## 4. 썸네일 A/B 테스트 (진행 중)

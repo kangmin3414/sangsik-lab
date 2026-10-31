@@ -114,16 +114,16 @@ def main():
         tp = br.new_page(viewport={'width': 1080, 'height': 1920})
         tp.goto('file://' + os.path.join(HERE, 'short_thumb.html')); tp.evaluate('document.fonts.ready'); tp.wait_for_timeout(400)
         for ep, e in P['eps'].items():
-            o = {'theme': e['theme'], 'accent': e['accent'], 'tag': f'상식실험실 · 실험 {LAB(ep)}', 'title': ['', ''], 'cta': e['cta'], 'mode': 'cta'}
+            o = {'theme': e['theme'], 'accent': e['accent'], 'tag': f'실험 {LAB(ep)}', 'title': ['', ''], 'cta': e['cta'], 'mode': 'cta'}
             pg.evaluate('o => setup(o)', o); pg.wait_for_timeout(150)
             pg.screenshot(path=os.path.join(WORK, f'cta_{ep}.png'), omit_background=True)
         for sh in shorts:
             e = P['eps'][sh['ep']]; L = TL[sh['ep']]
             if sh.get('next'):   # e.g. {"cta": ["다음 실험", "혈압엔 유산소가 최고?"], "say": "다음 실험. 혈압엔 유산소가 최고일까요? 내일 저녁 일곱 시에 확인하세요."}
-                oc = {'theme': e['theme'], 'accent': e['accent'], 'tag': f"상식실험실 · 실험 {LAB(sh['ep'])}", 'title': ['', ''], 'cta': sh['next']['cta'], 'mode': 'cta'}
+                oc = {'theme': e['theme'], 'accent': e['accent'], 'tag': f"실험 {LAB(sh['ep'])}", 'title': ['', ''], 'cta': sh['next']['cta'], 'mode': 'cta'}
                 pg.evaluate('o => setup(o)', oc); pg.wait_for_timeout(150)
                 pg.screenshot(path=os.path.join(WORK, f"cta_{sh['name']}.png"), omit_background=True)
-            o = {'theme': e['theme'], 'accent': e['accent'], 'tag': f"상식실험실 · 실험 {LAB(sh['ep'])}", 'title': sh['title'], 'cta': e['cta'], 'mode': 'bg'}
+            o = {'theme': e['theme'], 'accent': e['accent'], 'tag': f"실험 {LAB(sh['ep'])}", 'title': sh['title'], 'cta': e['cta'], 'mode': 'bg'}
             pg.evaluate('o => setup(o)', o); pg.wait_for_timeout(150)
             pg.screenshot(path=os.path.join(WORK, f"bg_{sh['name']}.png"))
             # thumbnail frame from the rendered frames (cut off the subtitle band, centre crop)

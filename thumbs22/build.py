@@ -87,7 +87,7 @@ svg{{position:absolute;left:0;top:0}}
 <div class="t" id="l1">{l1}</div><div class="t" id="l2">{l2}</div>
 <div id="box"><img src="file://{img}"></div>
 <div id="tag"><span>{label}</span></div>
-<div id="brand">상식실험실</div>
+<div id="brand"></div>
 </div>
 <script>
 for (const id of ['l1','l2']) {{ const el = document.getElementById(id); let fs = parseFloat(getComputedStyle(el).fontSize);
