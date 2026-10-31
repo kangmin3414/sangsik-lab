@@ -42,7 +42,7 @@
 | 007 데카르트 | Hnv5DGK-6tQ | 10/30 18:00 예약 | descartes4/…_v9.mp4 (새 인트로) |
 | 008 장자 | LDiQlSjL7lE | 11/2 18:00 예약 | zhuangzi5/…_v9.mp4 (새 인트로) |
 | 009 소크라테스 | koloX4KIqsU | 11/5 18:00 예약 | socrates3/…_v6.mp4 |
-| 몰아보기 01 | aMiFhQmHr2k | 11/7 예약 | compile1/…철학실험4편.mp4 |
+| 몰아보기 01 | rb3sjnqgHmI | 11/5 08:30 예약 (10/31 최신본으로 재업로드, 옛 aMiFhQmHr2k는 비공개·삭제 예정) | compile1/…철학실험4편_v2.mp4 (006 v5·007 v9·008 v9·009 v6) |
 | 010 붓다 | Rw5mOgqfHVw | 11/8 18:00 예약 | buddha3/…_v6.mp4 |
 | 011 시간 | NlnVZppG1d8 | 11/11 예약 | time011/…_v2.mp4 |
 | 012 화 | wlCrcVEqozo | 11/14 예약 | anger012/…_v1.mp4 |
@@ -55,7 +55,7 @@
 | (보류) 맹자 호연지기 | 운영자 피드백: 이해가 어렵고 와닿지 않음 → 보류 | — | `_shelved/mencius_draft/` |
 
 - 003(휴대폰)·004(설탕) 편과 그 쇼츠는 채널에서 비공개 상태입니다.
-- 옛 버전(삭제 예정): aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
+- 옛 버전(삭제 예정): aMiFhQmHr2k(몰아보기 01 구버전), aK6qUwZtAbM, Ux8ePpM0Skg, BdUjt0_eXbk, jUpuaUHNPR8 외 다수, DsFAsvtRaU0.
 - 메타데이터·ID 기록: `replace/lf_repl.json`, `replace/shorts_repl7.json`, `replace/shorts_repl8.json`, `replace/remix006_repl.json`, `abthumb/ab_plan.json`.
 
 ## 4. 썸네일 A/B 테스트 (진행 중)

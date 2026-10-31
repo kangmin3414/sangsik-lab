@@ -3,13 +3,13 @@ import os, subprocess, json
 HERE = os.path.dirname(os.path.abspath(__file__)); SP = os.path.dirname(HERE)
 EPS = [
  ('stoic3/상식실험실_실험006_스토아철학자처럼일주일_v5.mp4', 'stoic3/상식실험실_실험006_자막_v4.srt'),
- ('descartes3/상식실험실_실험007_데카르트처럼모든걸의심하기_v5.mp4', 'descartes3/상식실험실_실험007_자막_v5.srt'),
- ('zhuangzi4/상식실험실_실험008_장자처럼남의잣대내려놓기_v5.mp4', 'zhuangzi4/상식실험실_실험008_자막_v5.srt'),
- ('socrates2/상식실험실_실험009_소크라테스처럼질문하며살기_v3.mp4', 'socrates2/상식실험실_실험009_자막_v3.srt'),
+ ('descartes4/상식실험실_실험007_데카르트처럼모든걸의심하기_v9.mp4', 'descartes4/상식실험실_실험007_자막_v7.srt'),
+ ('zhuangzi5/상식실험실_실험008_장자처럼남의잣대내려놓기_v9.mp4', 'zhuangzi5/상식실험실_실험008_자막_v7.srt'),
+ ('socrates3/상식실험실_실험009_소크라테스처럼질문하며살기_v6.mp4', 'socrates3/상식실험실_실험009_자막_v4.srt'),
 ]
 INTRO, CARD = 6.0, 3.0
 BGM = f'{SP}/bgm/cand_1_piano_a.mp3'
-OUT = f'{HERE}/상식실험실_몰아보기01_흔들리는마음_철학실험4편.mp4'
+OUT = f'{HERE}/상식실험실_몰아보기01_흔들리는마음_철학실험4편_v2.mp4'
 
 
 def dur(f):
