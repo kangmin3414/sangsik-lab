@@ -1,5 +1,13 @@
 # 시즌 1 · 1편 제작 안내 (회식 2차, 아무도 가고 싶지 않았다)
 
+## v1 제작 완료 (2026-11-01)
+
+- 결과물(스크래치패드 `ep01_hoesik/`): `S1E01_회식2차_v1.mp4` (8:23, 1080p), 자막 `S1E01_회식2차_자막_v1.srt`, 썸네일 `S1E01_회식2차_썸네일_A.jpg`. mp4는 100MB가 넘어 저장소에 넣지 않았습니다.
+- 순서: `python3 make_style.py` → `python3 tts38seg.py all` (목소리 + timeline.json) → `python3 preview.py` (줄마다 한 장 미리보기) → `render_ep01.py 0 6040 seg_a.mp4` 와 `6040 12100 seg_b.mp4` 를 동시에 → `python3 mix_ep01.py` → ffmpeg concat + loudnorm(-16 LUFS) → `python3 srt_ep01.py`.
+- 목소리: N Schedar · Z Puck · D Sadaltager · T Charon · P Sulafat · H Fenrir · M Leda. 감정 지시(tone)는 `make_style.py`가 Gemini TTS 스타일 문구로 바꿉니다.
+- 음악: 도입 앰비언트 → 고깃집 기타 → 노래방 안은 합성 비트, 방 밖(화장실·편의점·계단)은 벽 너머처럼 먹먹하게 → 음악이 끊기는 순간 정적 → "사실 나도야"부터 피아노.
+- 화면: `scenes_ep01.js`(배경·인물·장면), `anim_ep01.html`(014 틀에서 채널명·HUD 제거, 무음 줄은 자막 대신 화면 카드). 인물 색: 제로 주황, 팀장 남색 정장, 박 과장 장미색, 한 주임 파랑, 민지 연두.
+
 새 형식(`FORMAT.md`)의 첫 시범작입니다. 대본은 `script.py`, 읽기용은 `script_read.md`, 점검·읽기용 생성은 `python3 tools/script_tools.py ep01_hoesik/script.py --read`.
 
 - **길이:** 추정 약 8:27. 미드롤 광고 후보는 2막 끝("…전혀 다르게 들렸습니다." 뒤, 약 5:15).
