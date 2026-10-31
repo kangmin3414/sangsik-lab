@@ -39,21 +39,15 @@
   function lineIdx19() { const L = TL.lines; let i = 0; while (i + 1 < L.length && window.__t >= L[i + 1].t0 - 0.15) i++; return i; }
   const YEAR = { 0: 1995, 5: 1953, 13: 1974, 17: 1983, 20: 1992, 29: 1987, 30: 1993, 35: 1993, 42: 1990, 45: 1995, 47: 1995, 55: 2008, 58: 2014, 59: 2021 };
   const DEC_AT = { 1: 16, 2: 19, 3: 22, 4: 38, 5: 44, 6: 50 };   // decision k appears at line index
-  const STEP_AT = [4, 12, 28, 46, 57];                          // step n starts at line index
+  const STEP_AT = [4, 10, 21, 33, 43];                          // step n starts at line index
   function hud(i, t, lt) {
-    const L = TL.lines; if (!L[i] || L[i].scene === 'kstep' || i < 4 || i >= 62) return '';
+    const L = TL.lines; if (!L[i] || L[i].scene === 'kstep' || i < 4 || i >= 48) return '';
     let n = 0; STEP_AT.forEach((s, k) => { if (i >= s) n = k + 1; });
     let h = `<g transform="translate(1590 70)"><rect x="-290" y="-50" width="580" height="150" rx="28" fill="${NAVY}" opacity=".88" stroke="#F2B84B" stroke-width="4"/>`;
     for (let k = 1; k <= 5; k++) { const x = -250 + (k - 1) * 70, y = 70 - (k - 1) * 18, on = n >= k, cur = n === k;
       h += `<rect x="${x}" y="${y - 22}" width="64" height="${22 + (k - 1) * 18 + 8}" fill="${cur ? '#F2B84B' : on ? '#8A7A50' : '#3A4660'}" stroke="#1A2235" stroke-width="2"/>`; }
     h += T8(110, 8, `${n}단계`, { size: 26, fill: '#F2B84B' }) + T8(110, 52, ['', '보는 눈', '믿는 힘', '부끄러움', '버리는 용기', '나누는 마음'][n] || '', { size: 32, fill: '#fff' });
-    let yr = null; for (const [k, v] of Object.entries(YEAR)) if (i >= +k) yr = v;
     h += '</g>';
-    if (yr) h += `<g transform="translate(1590 196)"><rect x="-90" y="-26" width="180" height="52" rx="26" fill="#FFFDF4" stroke="${INK}" stroke-width="4"/>` + T8(0, 12, String(yr), { size: 32, fill: NAVY }) + '</g>';
-    // decision cards stack (top left)
-    const got = Object.entries(DEC_AT).filter(([k, at]) => i >= at && i < 53).map(([k]) => +k);
-    got.forEach((k, j) => { const fresh = DEC_AT[k] === i ? Math.min(1, lt / 0.4) : 1;
-      h += `<g transform="translate(${70 + j * 64} 70) rotate(${-4 + j * 2})" opacity="${fresh.toFixed(2)}"><rect x="-28" y="-34" width="56" height="68" rx="8" fill="#FFE29A" stroke="${INK}" stroke-width="4"/>` + T8(0, 14, '①②③④⑤⑥'[k - 1], { size: 34, fill: NAVY }) + '</g>'; });
     return h;
   }
   const tag = (x, y, txt, o = {}) => pop(o.t, o.t0, o.t + 99, x, y, label(0, 0, txt, { size: o.size || 38, bg: o.bg || '#FFFDF4' }), { rot: o.rot || -2, bob: 3 });
@@ -73,8 +67,8 @@
         else h += tag(560, 230, '휴대폰 · 무선전화기 · 팩스 15만 대', o(0.4 * D, { size: 36 })); break;
       case 'H2': h += tag(960, 200, '자기 손으로 만든 걸, 자기 손으로', o(0.4 * D, { size: 40, bg: YEL })); break;
       case 'H3': if (lt > 0.1) h += pop(t, at(0.1), t + 99, 960, 180, outlined(0, 0, [[['도대체 ', '#fff'], ['왜', YEL], ['?', '#fff']]], { size: 96, sw: 18 }), { inDur: 0.3 }); break;
-      case '1-3': h += tag(1400, 300, '3년 · 영화 1,200편+ (알려진 이야기)', o(0.55 * D, { size: 34 })); break;
-      case '1-4': if (i === 9) ['주인공의 눈', '조연의 눈'].forEach((s, j) => h += tag(560 + j * 800, 300, s, o(fracOf13(t, j ? '조연' : '주인공') * D - 0.1, { size: 36, bg: j ? '#CFE8F3' : '#FFE29A' }))); break;
+      case '1-3': h += tag(1400, 300, '영화 1,200편+ (알려진 이야기)', o(0.55 * D, { size: 34 })); break;
+      case '1-4': if (i === 8) ['주인공의 눈', '조연의 눈'].forEach((s, j) => h += tag(560 + j * 800, 300, s, o(fracOf13(t, j ? '조연' : '주인공') * D - 0.1, { size: 36, bg: j ? '#CFE8F3' : '#FFE29A' }))); break;
       case '2-1': h += tag(1400, 300, '망해 가던 작은 반도체 회사', o(0.3 * D, { size: 36 })); break;
       case '2-3': h += tag(1420, 300, '1983 · 64K D램 (세계 세 번째)', o(0.65 * D, { size: 36, bg: MINT })); break;
       case '2-4': h += pop(t, at(0.3 * D), t + 99, 820, 200, outlined(0, 0, [[['D램 세계 ', '#fff'], ['1위', YEL], [' · 18년 만에', '#fff']]], { size: 60, sw: 12 }), {}); break;
@@ -83,11 +77,11 @@
       case '3-6': h += tag(560, 230, '1993.6.7 · 프랑크푸르트 · 임원 200여 명', o(0.3 * D, { size: 34 })); break;
       case '3-7': h += pop(t, at(0.15), t + 99, 960, 330, `<rect x="-640" y="-150" width="1280" height="300" rx="28" fill="#FFFDF4" opacity=".96" stroke="${INK}" stroke-width="7"/>` +
         T8(0, -40, '"변하지 않으면 영원히 2류다.', { size: 54, fill: NAVY }) + T8(0, 50, '마누라와 자식 빼고, 다 바꿔라."', { size: 60, fill: RED }) + T8(600, 124, '1993년 신경영 선언', { anchor: 'end', size: 26, fill: '#8A6A44', w: 700 }), { inDur: 0.35 }); break;
-      case '3-8': if (i === 40) h += tag(960, 220, '7·4제 · 아침 7시 출근, 오후 4시 퇴근', o(0.2, { size: 40, bg: YEL })); break;
-      case '3-9': h += tag(1380, 300, '1990 · 지역전문가 제도', o(0.6 * D, { size: 38, bg: MINT })); break;
+      case '3-8': if (i === 30) h += tag(960, 220, '7·4제 · 아침 7시 출근, 오후 4시 퇴근', o(0.2, { size: 40, bg: YEL })); break;
+      case '3-9': h += tag(1380, 300, '지역전문가 제도 (1990~)', o(0.6 * D, { size: 38, bg: MINT })); break;
       case '3-10': h += pop(t, at(0.45 * D), t + 99, 1420, 340, outlined(0, 0, [[['불량률 ', '#fff'], ['11.8%', '#FF8A7A']]], { size: 70, sw: 14 }), {}); break;
-      case '4-4': if (lt > 0.6 * D) h += tag(960, 220, '결정 ⑥ · 아까워도 버리기', o(0.6 * D, { size: 44, bg: YEL })); break;
-      case '5-0': if (i === 55) h += pop(t, at(0.2), t + 99, 800, 330, `<rect x="-560" y="-90" width="1120" height="180" rx="22" fill="#F4EFE4" stroke="${INK}" stroke-width="5"/>` +
+      case '4-4': if (lt > 0.6 * D) h += tag(960, 220, '아까워도 버리기', o(0.6 * D, { size: 44, bg: YEL })); break;
+      case '5-0': if (i === 42) h += pop(t, at(0.2), t + 99, 800, 330, `<rect x="-560" y="-90" width="1120" height="180" rx="22" fill="#F4EFE4" stroke="${INK}" stroke-width="5"/>` +
           T8(0, -26, '1996 비자금 사건 유죄(사면) · 2008 조세포탈·배임 유죄, 퇴진', { size: 32, fill: NAVY }) + T8(0, 34, '2009 특별사면 · 2010 복귀', { size: 32, fill: NAVY }), {}); break;
       case '6-2': h += tag(1400, 300, '미술품 2만 3천여 점 · 조건 없는 기증', o(0.35 * D, { size: 36, bg: YEL })); break;
       case '6-4': if (lt > 0.5 * D) h += pop(t, at(0.5 * D), t + 99, 960, 200, outlined(0, 0, [[['모두가 ', '#fff'], ['함께 보는 것', YEL]]], { size: 72, sw: 14 }), {}); break;

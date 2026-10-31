@@ -23,7 +23,7 @@ def loop(song, n, xf=4.0):
         e = min(n, s + len(seg)); out[s:e] += seg[:e - s]; s += len(seg) - x; k += 1
     return out
 rms = lambda m: np.sqrt(np.mean(m[np.abs(m).max(1) > 1e-4] ** 2))
-SEC = [('boy', 0, 12), ('rise', 12, 46), ('fire', 46, 54), (None, 54, 57), ('legacy', 57, None)]
+SEC = [('boy', 0, 10), ('rise', 10, 33), ('fire', 33, 41), (None, 41, 43), ('legacy', 43, None)]
 music = np.zeros((N, 2)); ref = None; XF = 1.6
 for name, a, b in SEC:
     t0 = 0 if a == 0 else st(a) - XF / 2; t1 = DUR if b is None else st(b) + XF / 2
@@ -59,9 +59,9 @@ def chime(at, f=1046.5, g=0.06):
     n = int(0.6 * SR); tt = np.arange(n) / SR; add(at, np.sin(2 * np.pi * f * tt) * np.exp(-tt * 8) + 0.6 * np.sin(2 * np.pi * 1.5 * f * tt) * np.exp(-tt * 10), g)
 def flip(at, g=0.05):
     n = int(0.18 * SR); x = rng.standard_normal(n) * np.exp(-np.arange(n) / (0.04 * SR)); add(at, np.convolve(x, np.ones(6) / 6, 'same'), g)
-crackle(st(0), st(2)); crackle(st(47), st(49))
-projector(st(2), st(3)); projector(st(8), st(12))
-for k, i in enumerate((4, 12, 28, 46, 57)): thud(st(i) + 0.1); chime(st(i) + 0.25, 523.25 * 2 ** (k / 6))
-for i in (16, 19, 22, 38, 44, 50): flip(st(i) + 0.3)
+crackle(st(0), st(2)); crackle(st(34), st(36))
+projector(st(2), st(3)); projector(st(7), st(10))
+for k, i in enumerate((4, 10, 21, 33, 43)): thud(st(i) + 0.1); chime(st(i) + 0.25, 523.25 * 2 ** (k / 6))
+for i in (15, 16, 29, 39,): flip(st(i) + 0.3)
 m = m / (np.abs(m).max() + 1e-9) * 0.92
 sf.write('mix.wav', m, SR); print('mix ok %.1fs' % DUR, PICK)

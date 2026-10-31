@@ -40,6 +40,8 @@ function kstepScene(t, lt, a) {
     return h;
   }
   h += stairs19(t, n, 410, 860, 220, 90);
+  if (n >= 2) h += pop(t, T0 + 0.5, t + 99, 1380, 260, `<rect x="-330" y="-90" width="660" height="${60 + (n - 1) * 46}" rx="22" fill="#fff" opacity=".95" stroke="${INK}" stroke-width="5"/>` +
+    T19(-300, -48, '지금까지', { anchor: 'start', size: 28, fill: '#9A6A1E' }) + Array.from({ length: n - 1 }, (_, j) => T19(-300, -4 + j * 46, `${j + 1}. ${STEPS19[j + 1]} — ${['혼자였던 시간이 만든 눈', '18년을 기다린 믿음', '부끄러운 진짜 모습을 보다', '아까워도 태우다'][j]}`, { anchor: 'start', size: 30 })).join(''), {});
   h += pop(t, T0 + 0.1, t + 99, 640, 230, card19(0, 0, 720, 190, T19(0, -14, `${['', '첫', '두', '세', '네', '다섯'][n]} 번째 계단`, { size: 40, fill: '#9A6A1E' }) + T19(0, 60, STEPS19[n], { size: 76 })), { rot: -2 });
   const climber = n;   // a small marker climbing onto the current step
   const x = 410 + (climber - 1) * 220 + 110, y = 860 - (climber - 1) * 90 - 30 - 30 * Math.abs(Math.sin(prog(lt, 0, 0.6) * Math.PI));
@@ -67,10 +69,10 @@ function kdecScene(t, lt, a) {
       g += T19(0, 1010, lbl, { size: 40 }) + `</g>`;
       return g;
     };
-    h += `<g transform="translate(0 -170)">` + house(560, false, '파 내려가기', false) + house(1360, true, '쌓아 올리기', true) + '</g>';
+    h += `<g transform="translate(0 -100)">` + house(560, false, '파 내려가기', false) + house(1360, true, '쌓아 올리기', true) + '</g>';
     h += pop(t, T0 + at19(t, a, '파 내려가면', 0) || T0 + 0.5, t + 99, 560, 300, label(0, 0, '문제가 안 보인다', { size: 34, bg: '#E6E1D8' }), {});
-    if (lt > at19(t, a, '쌓으면', -0.1)) h += pop(t, T0 + at19(t, a, '쌓으면', -0.1), t + 99, 1640, 300, label(0, 0, '보이고, 고치기 쉽다', { size: 36, bg: MINT }), {});
-    if (lt > at19(t, a, '두 번째', -0.2)) h += decTag19(t, T0 + at19(t, a, '두 번째', -0.4), 2);
+    if (lt > 0.6 * D) h += pop(t, T0 + 0.6 * D, t + 99, 1640, 300, label(0, 0, '보이고, 고치기 쉽다', { size: 36, bg: MINT }), {});
+    h += decTag19(t, T0, 2);
     return h;
   }
   if (k === 3) {
@@ -80,13 +82,13 @@ function kdecScene(t, lt, a) {
     h += wafer(600, 170, '6인치', 0) + wafer(1300, 228, '8인치 — 칩이 훨씬 많이', 0);
     if (a.risk) h += pop(t, T0 + 0.2, t + 99, 960, 200, label(0, 0, '불황 · 실패하면 큰 손실', { size: 40, bg: '#FFB8A0' }), { rot: -2 });
     else if (a.tag) h += decTag19(t, T0, 3);
-    else if (lt > at19(t, a, '이듬해', -0.2)) h += pop(t, T0 + at19(t, a, '이듬해', -0.2), t + 99, 1300, 200, label(0, 0, '1993 · 세계 첫 8인치 양산 라인', { size: 36, bg: MINT }), {});
+    else { h += decTag19(t, T0, 3); if (lt > 0.7 * D) h += pop(t, T0 + 0.7 * D, t + 99, 1300, 300, label(0, 0, '실패하면 큰 손실 · 그래도 크게', { size: 34, bg: '#FFB8A0' }), {}); }
     return h;
   }
   if (k === 4) {
     h += decTag19(t, T0, 4);
     h += `<rect x="260" y="560" width="1400" height="60" rx="30" fill="#C9D3DE" stroke="${INK}" stroke-width="6"/>`;
-    const stop = lt > at19(t, a, '멈추고', -0.1) && lt < at19(t, a, '다시', 0);
+    const stop = lt > 0.25 * D && lt < 0.6 * D;
     for (let i = 0; i < 7; i++) { const x = 300 + ((i * 210 + (stop ? 0 : lt * 160)) % 1400), bad = i === 3;
       h += `<rect x="${f1(x)}" y="490" width="110" height="70" rx="10" fill="${bad ? '#FFB8A0' : '#fff'}" stroke="${INK}" stroke-width="5"/>` + (bad ? T19(x + 55, 538, '!', { size: 44, fill: RED }) : ''); }
     h += pop(t, T0 + 0.6, t + 99, 560, 330, label(0, 0, '양보다 질', { size: 44, bg: '#fff' }), {});
