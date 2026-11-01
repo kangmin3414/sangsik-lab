@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.join(ROOT, 'gtts'))
 import vx
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE); os.makedirs('voice/takes', exist_ok=True)
 URL = f'https://aiplatform.googleapis.com/v1beta1/projects/{vx.PROJECT}/locations/global/publishers/google/models/gemini-3.8-flash-tts:generateContent'
-VOICES = ['Puck', 'Enceladus', 'Algieba']
+VOICES = sys.argv[1:] or ['Puck', 'Enceladus', 'Algieba']
 TALK = '삼십 대 남자가 늦은 밤 책상 앞에서 시청자에게 조용히 말을 거는 말투. 담담하고 낮게, 살짝 건조한 유머가 묻어나게. 과장하지 말 것.'
 LETTER = '편지를 소리 내어 읽어 주듯, 낮고 따뜻하고 담담하게. 평소보다 조금 느리게, 문장 끝을 부드럽게 내려놓듯. 슬프게 꾸미거나 울먹이지 말 것.'
 # (text, style, pause_after_sec)
@@ -16,7 +16,7 @@ LINES = [
  ('오늘 하루, 잘했다는 말을 누구한테 들었어요?', TALK, 0.6),
  ('3초 드릴게요.', TALK, 3.0),
  ('못 떠올리셨죠. 저도 오늘은 못 들었어요.', TALK, 0.5),
- ('제가 온 걸 알아준 건, 현관 센서등 하나였어요.', TALK, 0.4),
+ ('제가 온 걸 알아준 건, 현관 앞 센서등 하나였어요.', TALK, 0.4),
  ('그것도 가만히 서 있으니까, 꺼지더라고요.', TALK, 1.5),
  ('당신에게.', LETTER, 1.0),
  ('오늘 당신이 한 일들은, 아마 아무도 적어 두지 않았을 거예요.', LETTER, 0.8),
