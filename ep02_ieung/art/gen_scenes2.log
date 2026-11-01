@@ -1,4 +1,0 @@
-H3 ok
-C1 ok
-W1 ok
-W1b 429 {"error": {"code": 429, "message": "Resource has been exhausted (e.g. check quota).", "status": "RESOURCE_EXHAUSTED"}}

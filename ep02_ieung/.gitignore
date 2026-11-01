@@ -8,3 +8,4 @@ mix.wav
 seg_*.mp4
 qa/
 timeline_syn.json
+*.log
