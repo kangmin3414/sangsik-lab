@@ -1,0 +1,10 @@
+art/*.png
+takes/
+tempo/
+frames/
+fonts/package/
+fonts/*.tgz
+*.mp4
+mix.wav
+bed.wav
+*.log
