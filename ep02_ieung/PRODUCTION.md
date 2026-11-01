@@ -1,6 +1,12 @@
 # 시즌 1 · 새 첫 편 「팀장님 답장이 'ㅇㅇ' 두 글자였다」 (대본 4차, 2026-11-01)
 
-상태: **대본만 있음. 운영자 승인 전에는 목소리·영상 작업을 하지 않습니다.** 형식은 `FORMAT.md` v2.
+상태: **v1 영상 완성(2026-11-01), 운영자 검토 대기.** 형식은 `FORMAT.md` v2 + 총몇명식 짜임(운영자 지시).
+
+## v1 제작 (웹툰체 움직이는 그림)
+- 결과물(스크래치패드 `ep02/`): `S1E02_ㅇㅇ_v1.mp4` (9:31, 1080p, -16.3 LUFS). 저장소: 자막 `S1E02_ㅇㅇ_자막_v1.srt`, 썸네일 `S1E02_ㅇㅇ_썸네일_A.jpg`.
+- 그림: `art/gen.py`(Gemini 이미지 모델, 캐릭터 라인업·표정 시트 `art/ref/`를 참조로 얼굴 고정) → `art/scenes.json` 22장 → `art/tojpg.py`. 입 움직임: `art/patches.py gen|cut`(입 벌린 변형에서 입 부분만 잘라 `patches.json`). W1b·R1 엄마 입은 위치를 손으로 지정, R1 제로 입은 뺌(변형이 눈까지 바꿔서).
+- 순서: `make_style.py` → `tts38seg.py all`(목소리: 해설·제로 Puck, 오 팀장 Charon, 한 주임 Fenrir, 엄마 Gacrux) → `mix_ep02.py` → `shots.py`(줄마다 그림·카메라·휴대폰 화면, 초점 `focus.json`) → `preview_ep02.py` → `render_ep02.py 0 6853` / `6853 13706` 동시 → ffmpeg concat + loudnorm → `srt_ep02.py` → `thumb_ep02.py`.
+- 화면: `anim_ep02.html`(그림 줌·이동·교차 전환, 입 패치, 카톡식 휴대폰 화면, 생각 풍선·결재 카드·내비·전광판, 'ㅇㅇ' 빨간 강조 자막, 'ㅇㅇ 다시 열어 본 횟수' 카운터).
 
 - 대본 `script.py`, 읽기용 `script_read.md`, 점검 `python3 tools/script_tools.py ep02_ieung/script.py --read` (124줄, 추정 9:50).
 - 미드롤 광고 후보: 3막 시작 직전(`mcar`, 약 5:54).
