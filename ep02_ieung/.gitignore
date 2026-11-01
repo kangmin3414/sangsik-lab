@@ -1,0 +1,10 @@
+# large or regenerable media (pngs are converted to art/*.jpg; voice/mix are rebuilt from tts38 takes via tts38seg.py build + mix_ep02.py)
+art/*.png
+art/mouth/*.png
+tts38/
+voice.wav
+mix.wav
+*.mp4
+seg_*.mp4
+qa/
+timeline_syn.json

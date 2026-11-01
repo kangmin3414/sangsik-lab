@@ -1,0 +1,7 @@
+round 0 jobs 2
+synth 0 / 2
+round 1 jobs 2
+synth 0 / 2
+round 2 jobs 2
+synth 0 / 2
+total 571.1s (9:31), lines 124, segments 100, flagged [(67, 0, 'Z', 0.333)]

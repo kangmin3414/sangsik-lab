@@ -1,0 +1,156 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; background: #000; }
+  body { width: 1920px; height: 1080px; overflow: hidden; font-family: 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: #111; }
+  .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .layer img { position: absolute; display: block; }
+  .layer img.base { left: 0; top: 0; width: 1920px; height: 1080px; }
+  #ui { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+  #sub { position: absolute; left: 120px; right: 120px; bottom: 54px; text-align: center; font-size: 50px; line-height: 1.32; font-weight: 800;
+         color: #fff; letter-spacing: -0.5px; paint-order: stroke fill; -webkit-text-stroke: 9px rgba(0,0,0,0.92);
+         text-shadow: 0 3px 10px rgba(0,0,0,0.55); }
+  #sub .hl { color: #ff6a3d; }
+  #sub .who { font-size: 34px; font-weight: 700; color: #ffd27a; -webkit-text-stroke: 7px rgba(0,0,0,0.9); display: block; margin-bottom: 2px; }
+  #counter { position: absolute; top: 34px; right: 40px; padding: 12px 22px; border-radius: 16px; background: rgba(20,20,24,0.78);
+             color: #fff; font-size: 30px; font-weight: 700; letter-spacing: -0.5px; border: 2px solid rgba(255,255,255,0.18); }
+  #counter b { color: #ff6a3d; font-size: 40px; margin-left: 10px; font-weight: 900; }
+  #fade { position: absolute; inset: 0; background: #000; pointer-events: none; }
+  /* phone */
+  .phone { position: absolute; width: 520px; height: 960px; border-radius: 58px; background: #0d0d10; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+           padding: 18px; box-sizing: border-box; }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: #b2c7da; }
+  .sbar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 30px; font-size: 22px; font-weight: 700; color: #111; }
+  .chead { height: 70px; display: flex; align-items: center; padding: 0 24px; font-size: 30px; font-weight: 700; color: #111; gap: 14px; }
+  .chead .back { font-size: 34px; font-weight: 400; }
+  .clist { position: absolute; left: 0; right: 0; top: 114px; bottom: 96px; padding: 10px 18px; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; overflow: hidden; }
+  .divd { align-self: center; background: rgba(0,0,0,0.16); color: #fff; font-size: 22px; padding: 6px 16px; border-radius: 16px; margin: 4px 0; }
+  .row { display: flex; align-items: flex-end; gap: 8px; }
+  .row.me { justify-content: flex-end; }
+  .bub { max-width: 360px; padding: 14px 18px; border-radius: 20px; font-size: 30px; line-height: 1.42; color: #111; background: #fff; word-break: keep-all; white-space: pre-wrap; }
+  .me .bub { background: #fee500; }
+  .meta { display: flex; flex-direction: column; align-items: flex-end; font-size: 19px; color: #4a5560; gap: 2px; }
+  .them .meta { align-items: flex-start; }
+  .meta .un { color: #e8b800; font-weight: 800; font-size: 19px; }
+  .who2 { font-size: 24px; color: #333; margin: 0 0 4px 64px; }
+  .ava { width: 54px; height: 54px; border-radius: 20px; background: #9db4c8; flex: none; align-self: flex-start; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; font-weight: 700; }
+  .inbar { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; background: #fff; display: flex; align-items: center; padding: 0 18px; gap: 12px; }
+  .inbox { flex: 1; min-height: 56px; border-radius: 28px; background: #f2f2f2; font-size: 30px; color: #111; padding: 12px 20px; box-sizing: border-box; line-height: 1.35; white-space: pre-wrap; word-break: keep-all; }
+  .inbox.big { position: absolute; left: 18px; right: 18px; bottom: 16px; min-height: 0; border-radius: 22px; background: #fff; box-shadow: 0 -6px 18px rgba(0,0,0,0.08); }
+  .send { width: 56px; height: 56px; border-radius: 28px; background: #fee500; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .caret { display: inline-block; width: 3px; height: 1.1em; background: #333; vertical-align: -0.15em; margin-left: 2px; }
+  .big .bub { font-size: 37px; max-width: 400px; }
+  .big .chead { font-size: 36px; }
+  .big .divd { font-size: 24px; }
+  .hl { color: #e8432f; font-weight: 900; }
+  /* cards */
+  .card { position: absolute; background: #fff; border-radius: 24px; box-shadow: 0 18px 50px rgba(0,0,0,0.45); padding: 26px 32px; color: #111; font-size: 34px; font-weight: 700; line-height: 1.4; }
+  .tag { position: absolute; padding: 10px 22px; border-radius: 14px; background: #fff7c2; color: #222; font-size: 34px; font-weight: 800; box-shadow: 0 10px 30px rgba(0,0,0,0.35); transform: rotate(-3deg); }
+  .think { position: absolute; background: rgba(255,255,255,0.96); border-radius: 46px; padding: 22px 34px; font-size: 38px; font-weight: 800; color: #222; box-shadow: 0 12px 34px rgba(0,0,0,0.4); }
+  .board { position: absolute; background: #0f2f57; color: #fff; border-radius: 10px; padding: 18px 36px; font-size: 44px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 0 6px #2b4a73, 0 16px 40px rgba(0,0,0,0.5); }
+  .board .st { color: #7fe3a0; margin-right: 22px; }
+  .title { position: absolute; left: 1000px; top: 330px; width: 820px; color: #fff; font-size: 92px; font-weight: 900; line-height: 1.18; letter-spacing: -2px; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+  .title .q { color: #ff6a3d; }
+  .endcard { position: absolute; left: 0; right: 0; top: 380px; text-align: center; color: #fff; font-size: 64px; font-weight: 900; line-height: 1.35; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+  .label { position: absolute; font-size: 54px; color: #1b2a8a; font-weight: 900; transform: rotate(-4deg); font-family: 'Noto Sans CJK KR'; letter-spacing: 2px; opacity: 0.9; }
+</style></head>
+<body>
+<div id="stage">
+  <div class="layer" id="L0"></div>
+  <div class="layer" id="L1"></div>
+  <div id="ui"></div>
+  <div id="counter" style="display:none"></div>
+  <div id="sub"></div>
+  <div id="fade" style="opacity:0"></div>
+</div>
+<script>
+// window.TL (timeline.json), window.SHOTS (shots.json: per line), window.PATCH ({img: {voice: {src,x,y,w,h}}}), window.COUNT_LABEL
+const W = 1920, H = 1080, FPS = 24, XF = 0.28;
+let cache = {};
+function lineAt(t) {
+  const L = TL.lines; let i = 0;
+  for (let k = 0; k < L.length; k++) { if (L[k].t0 <= t + 1e-6) i = k; else break; }
+  return i;
+}
+function span(i) { const L = TL.lines; const a = L[i].t0; const b = i + 1 < L.length ? L[i + 1].t0 : TL.duration; return [a, b]; }
+function camCss(sh, p) {
+  const e = p < 0 ? 0 : (p > 1 ? 1 : p); const s = sh.z0 + (sh.z1 - sh.z0) * (e * e * (3 - 2 * e) * 0.5 + e * 0.5);
+  const fx = sh.fx0 + (sh.fx1 - sh.fx0) * e, fy = sh.fy0 + (sh.fy1 - sh.fy0) * e;
+  const tx = fx * W * (1 - s), ty = fy * H * (1 - s);
+  return `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})`;
+}
+function speaking(i, t) {
+  const l = TL.lines[i]; if (!l.segs) return null;
+  for (const s of l.segs) if (t >= s.t0 && t <= s.t1) return s.v;
+  return null;
+}
+function mouthOpen(t) {
+  const f = Math.floor(t * FPS); const e = TL.env[f] || 0; const e2 = TL.env[f - 1] || 0;
+  return (e + e2) / 2 > 0.22 && (Math.floor(t * 9) % 3 !== 2);
+}
+function layerHTML(sh, i, t) {
+  let filt = [];
+  if (sh.blur) filt.push(`blur(${sh.blur}px)`);
+  if (sh.dim) filt.push(`brightness(${1 - sh.dim})`);
+  if (sh.sepia) filt.push('sepia(0.55) saturate(0.7)');
+  let h = `<img class="base" src="${sh.img}" style="filter:${filt.join(' ') || 'none'}">`;
+  const v = speaking(i, t); const pt = (PATCH[sh.key] || {})[v];
+  if (pt && !sh.blur && mouthOpen(t)) h += `<img src="${pt.src}" style="left:${pt.x}px;top:${pt.y}px;width:${pt.w}px;height:${pt.h}px;filter:${filt.join(' ') || 'none'}">`;
+  return h;
+}
+function uiAt(sh, p) {
+  if (!sh.ui || !sh.ui.length) return '';
+  let cur = ''; for (const k of sh.ui) if (p >= k.f) cur = k.html;
+  return cur;
+}
+function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function chunks(s) {
+  const parts = s.split(/(?<=[,.?!…])\s+/); const out = []; let cur = '';
+  for (const p of parts) { const c = (cur + ' ' + p).trim(); if (c.length <= 32) cur = c; else { if (cur) out.push(cur); cur = p; } }
+  if (cur) out.push(cur); return out;
+}
+function subHTML(i, t) {
+  const l = TL.lines[i]; const sh = SHOTS[i];
+  if (l.args.silent || sh.nosub) return '';
+  let txt = l.sub, who = '', a = l.t0, b = l.t1;
+  if (l.segs && l.segs.length) {
+    let s = l.segs[0]; for (const x of l.segs) if (t >= x.t0 - 0.05) s = x;
+    txt = s.text; a = s.t0; b = s.t1; who = {T: '오 팀장', H: '한 주임', O: '엄마', Z: '제로'}[s.v] || '';
+  }
+  if (t > l.t1 + 0.6) return '';
+  const ch = chunks(txt); const tot = ch.reduce((n, c) => n + c.length, 0) || 1; let acc = a, cur = ch[ch.length - 1];
+  for (const c of ch) { const d = (b - a) * c.length / tot; if (t < acc + d) { cur = c; break; } acc += d; }
+  let h = esc(cur).replace(/ㅇㅇ/g, '<span class="hl">ㅇㅇ</span>');
+  return (who ? `<span class="who">${who}</span>` : '') + h;
+}
+function render(t) {
+  const i = lineAt(t); const [a, b] = span(i); const sh = SHOTS[i]; const p = (t - a) / Math.max(0.01, b - a);
+  const L0 = document.getElementById('L0'), L1 = document.getElementById('L1');
+  // previous shot cross-fade
+  let prev = i > 0 ? SHOTS[i - 1] : null;
+  const changed = prev && (prev.img !== sh.img || prev.blur !== sh.blur || prev.dim !== sh.dim || prev.sepia !== sh.sepia);
+  if (changed && t - a < XF && !sh.cut) {
+    const [pa, pb] = span(i - 1);
+    L0.innerHTML = layerHTML(prev, i - 1, t); L0.style.transform = camCss(prev, (t - pa) / Math.max(0.01, pb - pa)); L0.style.opacity = 1;
+    L1.innerHTML = layerHTML(sh, i, t); L1.style.transform = camCss(sh, p); L1.style.opacity = (t - a) / XF;
+  } else {
+    L0.innerHTML = layerHTML(sh, i, t); L0.style.transform = camCss(sh, p); L0.style.opacity = 1;
+    L1.innerHTML = ''; L1.style.opacity = 0;
+  }
+  // ui
+  const ui = document.getElementById('ui'); const uh = uiAt(sh, p);
+  if (ui._h !== uh) { ui.innerHTML = uh; ui._h = uh; }
+  const ua = sh.uiFade && t - a < 0.25 && (!prev || uiAt(prev, 1) !== uh) ? (t - a) / 0.25 : 1; ui.style.opacity = ua;
+  // counter
+  const c = document.getElementById('counter');
+  if (sh.counter != null) { c.style.display = 'block'; c.innerHTML = `${COUNT_LABEL}<b>${sh.counter}</b>`;
+    c.style.opacity = sh.counterOut ? Math.max(0, 1 - p * 1.6) : 1; } else c.style.display = 'none';
+  document.getElementById('sub').innerHTML = subHTML(i, t);
+  // global fades
+  const f = document.getElementById('fade');
+  let o = 0; if (t < 0.6) o = 1 - t / 0.6; if (t > TL.duration - 1.6) o = Math.min(1, (t - (TL.duration - 1.6)) / 1.4);
+  f.style.opacity = o;
+}
+</script>
+</body></html>

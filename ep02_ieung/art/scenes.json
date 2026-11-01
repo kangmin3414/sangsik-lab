@@ -1,0 +1,180 @@
+{
+ "D1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Morning in a Korean open-plan office: cubicles, monitors, a small potted plant, stacks of paper, cold pale November morning light from tall windows. Zero sits at his desk holding his phone in one hand and stares at its screen with a flat, quietly anxious face; the phone screen faces away from the viewer. Medium shot, Zero on the left third; on the right his desk with a monitor, keyboard and a steel tumbler.",
+  "ar": "16:9"
+ },
+ "B1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. A crowded Seoul subway car at 8:40 in the morning in early November. Commuters in dark padded winter coats, some holding straps, everyone looking at phones. Zero stands squeezed near the door, wearing a long black padded coat open over the burnt-orange sweater, holding his phone with both hands and typing with both thumbs, earnest and tense. Wide shot; the window behind shows a passing gray city.",
+  "ar": "16:9"
+ },
+ "B2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Close-up of Zero in a crowded subway car: black padded coat collar, head bowed to the phone held in both hands, biting his lower lip, brows knit as he overthinks a message, one small sweat drop; the phone screen faces away from the viewer; commuters softly blurred behind.",
+  "ar": "16:9"
+ },
+ "P1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. HAN is the fourth character in the lineup (round cheerful face, two-block haircut, light-blue striped shirt, one wireless earbud). A small Korean office pantry: coffee machine, water purifier, a basket of snacks, a small fridge, paper cups. On the right, Han leans in cheerfully with a big friendly grin, mouth closed, holding up his phone as if to show something; on the left, Zero holds a paper coffee cup and looks at Han with a flat deadpan face, mouth closed. Medium two-shot at eye level.",
+  "ar": "16:9"
+ },
+ "P2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Comic close-up: Zero's hand presses the pump of a syrup bottle over a paper coffee cup, a second pump in motion; behind it Zero's face is deadpan and absent-minded, eyes unfocused, clearly not paying attention.",
+  "ar": "16:9"
+ },
+ "L1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Noon in a busy small Korean restaurant: a bubbling kimchi stew in a black earthenware pot, small side dishes, stainless steel rice bowls and water cups. Three coworkers at the table chat and laugh (faces simple, slightly out of focus). Zero sits holding a spoon, not eating; his phone lies face-down beside his bowl and he glances at it sideways. Steam in the air.",
+  "ar": "16:9"
+ },
+ "O1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. TEAM LEADER OH is the third character in the lineup (navy suit, rectangular glasses, side-parted hair). 4:20 in the afternoon: low autumn sun floods the open-plan office in warm orange light through the windows. Zero sits at his desk typing stiffly, staring hard at his monitor, pretending to be busy. Behind him Team Leader Oh walks past, seen from behind in three-quarter back view so his face is NOT visible, holding a folder. Medium shot.",
+  "ar": "16:9"
+ },
+ "O2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Close-up of Zero at his desk in warm orange afternoon light, head turned over his shoulder toward someone behind him, startled wide eyes and a small sweat drop, mouth closed tight.",
+  "ar": "16:9"
+ },
+ "N1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. 9:40 at night in an empty dark office: rows of dark desks, only Zero's desk lamp and monitor glow. Zero stands pulling on his long black padded coat, glancing down at his phone one more time, exhausted.",
+  "ar": "16:9"
+ },
+ "H1": {
+  "refs": [],
+  "prompt": "Night, the corridor of a Korean apartment building in front of a gray metal front door with a digital door lock; warm ceiling light. On the floor beside the door sits a sealed cardboard box tied with string, with a large blank white paper label taped on the front of the box, clearly visible and empty; next to it an insulated cooler bag. No people.",
+  "ar": "16:9"
+ },
+ "H2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Night in a small Korean one-room apartment kitchen. Zero, black padded coat still on and lanyard around his neck, stands in front of the open fridge; the cold white fridge light falls on his tired, expressionless face. He holds his phone in one hand, thumb hovering over the screen (screen facing away from the viewer). Inside the fridge: stacked side-dish containers, a glass container of fresh kimchi.",
+  "ar": "16:9"
+ },
+ "H3": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Late at night in a dark small bedroom with blue moonlight from the window. Zero lies on his side in bed under a duvet, turned away from the nightstand where his phone lies face-down, a faint glow at its edge. Quiet and lonely mood, wide shot.",
+  "ar": "16:9"
+ },
+ "C1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png",
+   "ref/mom_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. MOM is the second character in the lineup and the woman in the second expression sheet: keep her face, short tight curly perm with gray roots, smile lines and lavender quilted vest over the floral blouse exactly the same. 7 in the morning inside a small old compact hatchback car, cold blue dawn outside the windows. Zero drives with both hands on the wheel, wearing his black padded coat; Mom sits in the passenger seat wearing a beige wool coat over her lavender vest, her small bag on her lap, turned toward him and chatting cheerfully with her mouth closed in a smile. The dashboard navigation screen is lit but blank. Two-shot seen from the front through the windshield.",
+  "ar": "16:9"
+ },
+ "W1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png",
+   "ref/mom_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. MOM is the second character in the lineup and the woman in the second expression sheet: keep her face, short tight curly perm with gray roots, smile lines and lavender quilted vest over the floral blouse exactly the same. 8 in the morning in a hospital endoscopy center waiting room: rows of pale chairs, clean walls, a water dispenser, a large status display monitor on the wall showing only a blank blue screen. Mom sits holding her phone very close to her eyes, squinting hard and typing slowly with one finger; Zero sits beside her in his coat holding her small bag, looking at her sideways with a puzzled face.",
+  "ar": "16:9"
+ },
+ "W1b": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png",
+   "ref/mom_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. MOM is the second character in the lineup and the woman in the second expression sheet: keep her face, short tight curly perm with gray roots, smile lines and lavender quilted vest over the floral blouse exactly the same. Hospital endoscopy waiting room. Mom, now wearing a light-blue examination gown with her curly hair, stands by the treatment room door and hands her phone to Zero with a warm smile, mouth closed; Zero, seated, reaches up to take it. A nurse in scrubs waits at the door, face simple.",
+  "ar": "16:9"
+ },
+ "W2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Hospital endoscopy waiting room. Zero sits alone, holding his mother's phone (in a floral flip cover) in both hands, her small bag on his lap; the chair beside him is empty except for her neatly folded lavender vest. He looks down at the phone screen (screen facing away from the viewer). Medium shot, quiet morning light.",
+  "ar": "16:9"
+ },
+ "W3": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Close-up of Zero in the hospital waiting room holding his mother's phone (floral flip cover) very close to his eyes, the way an older person without reading glasses would; the screen glow lights his face; his eyes glisten with tears he is holding back, lips pressed together.",
+  "ar": "16:9"
+ },
+ "R1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png",
+   "ref/mom_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. MOM is the second character in the lineup and the woman in the second expression sheet: keep her face, short tight curly perm with gray roots, smile lines and lavender quilted vest over the floral blouse exactly the same. A hospital recovery room with curtained beds. Mom lies in bed in a light-blue gown under a white blanket, half-awake with heavy eyelids and a dreamy little smile, head turned toward Zero; Zero sits on a stool right beside the bed leaning in, gentle face, mouth closed. Soft morning light.",
+  "ar": "16:9"
+ },
+ "R2": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png",
+   "ref/mom_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. MOM is the second character in the lineup and the woman in the second expression sheet: keep her face, short tight curly perm with gray roots, smile lines and lavender quilted vest over the floral blouse exactly the same. Late morning in a small warm Korean restaurant by a window. Mom (beige coat over her lavender vest) eats pale rice porridge with a spoon; across from her Zero has a big steaming bowl of clear beef short-rib soup (galbitang) with rice. Mom pushes a small side dish toward him; both smile softly. Warm cozy light.",
+  "ar": "16:9"
+ },
+ "O3": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. 1 in the afternoon in the open-plan office, ordinary daylight. Zero sits at his desk, relaxed, glancing at his phone with a calm neutral face and about to put it down on the desk.",
+  "ar": "16:9"
+ },
+ "H4": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Night at home in a small cozy apartment: Zero sits on the floor leaning against the sofa under a warm lamp, typing a long message on his phone with a small private smile; on the low table an open side-dish container of fresh kimchi and a pair of chopsticks.",
+  "ar": "16:9"
+ },
+ "T1": {
+  "refs": [
+   "ref/lineup.png",
+   "ref/zero_faces.png"
+  ],
+  "prompt": "ZERO is the first character in the lineup reference and the man in the expression sheet: keep his face, messy black hair with the cowlick, thick eyebrows, mole under the left eye and burnt-orange sweater with navy lanyard exactly the same. Dramatic thumbnail close-up: Zero's face in a dark room lit only by the cold glow of the phone he holds near his chin, eyes wide with anxiety, a sweat drop on his temple. Zero occupies the left half; the right half is a dark softly blurred background with empty space.",
+  "ar": "16:9"
+ }
+}
