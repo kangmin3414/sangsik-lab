@@ -8,15 +8,15 @@ px, py, pw, ph = 760, 70, 470, 600
 d.rounded_rectangle([px, py, px + pw, py + ph], 40, fill=(178, 199, 218, 255), outline=(20, 20, 24, 255), width=14)
 f1 = ImageFont.truetype(B, 30); f0 = ImageFont.truetype(B, 22)
 d.text((px + 40, py + 30), '‹ 오 팀장', font=f0, fill=(20, 20, 20))
-lines = ['팀장님, 아침부터 죄송합니다.', '내일 오전에 어머니 검진이', '있어서 반차를 쓰고 싶습니다.', '마감 주간인 건 알지만…', '바쁘신데 죄송합니다 🙏']
+lines = ['팀장님, 아침부터 죄송합니다.', '내일 오전에 어머니 검진이', '있어서 반차를 쓰고 싶습니다.', '마감 주간인 건 알지만…', '바쁘신데 죄송합니다']
 bx, by = px + 70, py + 80
 d.rounded_rectangle([bx, by, bx + 370, by + 30 + 38 * len(lines)], 22, fill=(254, 229, 0, 255))
 for n, t in enumerate(lines): d.text((bx + 18, by + 14 + 38 * n), t, font=ImageFont.truetype(B, 24), fill=(30, 30, 30))
 # the reply
 ry = by + 30 + 38 * len(lines) + 40
-d.rounded_rectangle([px + 40, ry, px + 300, ry + 190], 30, fill=(255, 255, 255, 255))
+d.rounded_rectangle([px + 40, ry, px + 370, ry + 190], 30, fill=(255, 255, 255, 255))
 fO = ImageFont.truetype(B, 150)
-d.text((px + 55, ry - 12), 'ㅇㅇ', font=fO, fill=(232, 52, 36))
+d.text((px + 62, ry - 6), 'ㅇㅇ', font=fO, fill=(232, 52, 36))
 # top caption
 cap = '열한 번 고쳐 썼는데'
 fc = ImageFont.truetype(B, 64)

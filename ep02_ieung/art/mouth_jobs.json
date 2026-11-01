@@ -1,0 +1,58 @@
+{
+ "mouth/P1_H": {
+  "refs": [
+   "P1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the cheerful man on the right in the light-blue striped shirt (Han): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/P1_Z": {
+  "refs": [
+   "P1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the man on the left in the burnt-orange sweater holding a paper cup (Zero): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/O2_Z": {
+  "refs": [
+   "O2.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the man (Zero): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/C1_O": {
+  "refs": [
+   "C1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the older woman with curly hair in the passenger seat on the left side of the image (Mom): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/C1_Z": {
+  "refs": [
+   "C1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the young man driving on the right side of the image (Zero): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/W1b_O": {
+  "refs": [
+   "W1b.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the older woman with curly hair in the light-blue gown (Mom): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/R1_O": {
+  "refs": [
+   "R1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the older woman lying in the hospital bed (Mom): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ },
+ "mouth/R1_Z": {
+  "refs": [
+   "R1.png"
+  ],
+  "ar": "16:9",
+  "prompt": "Edit the reference image. Reproduce it EXACTLY — identical composition, framing, characters, poses, colors, line art, lighting and background — and change ONLY the mouth of the young man sitting on the stool beside the bed (Zero): the mouth is now open mid-speech in a natural talking shape (lips parted, a little of the teeth or tongue visible). Every other pixel stays the same; do not move the head, eyes or hands."
+ }
+}
