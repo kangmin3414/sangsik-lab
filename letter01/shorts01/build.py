@@ -19,7 +19,7 @@ CAP = ['오늘 하루, 잘했다는 말, 누구에게서 들은 적 있나요?',
        '고맙다는 말 한마디 없이, 당연한 사람이 되어 버린 적 있나요?', '귀찮아할까 봐, 써 둔 안부를 지운 적 있나요?',
        '아마 다들, 바라는 건 비슷할 거예요.', '누가 한 번만, 알아봐 주는 거요.', '사실 이 편지, 처음엔 저한테 쓰던 거였어요.',
        '아무도 몰라줘도, 없던 일이 되지는 않아요.']
-SILENT = {8, 9}          # shown as captions only (keeps the Short near 50 s)
+SILENT = {1}             # '3초 드릴게요' dropped with the countdown (operator, 11/1: it breaks the mood); every other line is voiced
 
 # ---------------------------------------------------------------- voice
 os.makedirs('tempo', exist_ok=True)
@@ -173,8 +173,8 @@ T = {}; t = 0.15
 def say(i, gap_after):
     global t
     T[i] = (t, t + dur(i)); t += dur(i) + gap_after
-say(0, 0.2); say(1, 0.2)
-CD0 = t; OFF = CD0 + 2.45; t += 3.0 + 0.15
+say(0, 0.0)
+CD0 = t; OFF = CD0 + 1.1; CDL = 0.0; t = OFF + 1.0      # no countdown: a quiet beat after the question, the sensor light goes out on its own
 say(2, 0.25)
 ENV0 = t - 0.15; say(3, 0.35)
 B0 = t                                          # building appears (dark)
@@ -184,7 +184,7 @@ for j, i in enumerate([4, 5, 6, 7]):
     say(i, 0.3)
     WIN.append((lit, rin, T[i][1]))
 PB0 = t                                          # pull back: the whole building, others light, captions 8 & 9
-T[8] = (PB0 + 0.3, PB0 + 1.85); T[9] = (PB0 + 1.95, PB0 + 3.4); t = PB0 + 2.55
+t = PB0 + 0.35; say(8, 0.2); say(9, 0.0); PBE = T[9][1]; t = PBE - 0.9
 ZL = t                                          # Zero's window lights last
 ZIN = t + 0.9; t = ZIN + 0.35
 say(10, 0.35)
@@ -212,7 +212,7 @@ def lights(s):
     for j, (lit, rin, lend) in enumerate(WIN):
         if s >= lit: on[id(pick[j])] = ease((s - lit) / 0.35)
     for q, w in enumerate(others):
-        st = PB0 + 0.1 + 2.2 * q / max(1, len(others))
+        st = PB0 + 0.1 + (PBE - PB0 - 1.2) * q / max(1, len(others))
         if s >= st: on[id(w)] = ease((s - st) / 0.5)
     if s >= ZL + 0.3: on[id(zero)] = ease((s - ZL - 0.3) / 0.4)
     return on
@@ -237,7 +237,7 @@ def sh_corridor_end(s):
     a = view(ART['corridor_dark'], z); b = view(ART['corridor'], z)
     return Image.blend(a, b, ease((s - ON) / 0.15)) if s >= ON else a
 
-SHOTS = [(0, 0, sh_corridor_open), (CD0, 0.0, sh_corridor_cd), (CD0 + 3.0, 0.0, sh_corridor_dark), (ENV0, 0.45, sh_envelope), (B0, 0.6, sh_building)]
+SHOTS = [(0, 0, sh_corridor_open), (CD0, 0.0, sh_corridor_cd), (OFF + 0.3, 0.0, sh_corridor_dark), (ENV0, 0.45, sh_envelope), (B0, 0.6, sh_building)]
 for k, (lit, rin, lend) in enumerate(WIN):
     SHOTS.append((rin, 0.4, sh_room(k)))
     SHOTS.append((lend + 0.1, 0.35, sh_building))
@@ -250,7 +250,7 @@ def frame(s):
     if xf > 0 and s < st + xf and j > 0:
         fr = Image.blend(SHOTS[j - 1][2](s), fr, ease((s - st) / xf))
     # countdown
-    if CD0 <= s < CD0 + 3.0:
+    if CD0 <= s < CD0 + CDL:
         n = 3 - int(s - CD0); ph = (s - CD0) % 1
         ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov); BIG = f(NOTO_M, 260)
         tw = d.textlength(str(n), font=BIG); al = int(235 * (1 - ph) ** 0.6)
@@ -276,7 +276,7 @@ def frame(s):
 
 # ---------------------------------------------------------------- render video
 if PREVIEW:
-    for name, s in [('p_hook', 2.0), ('p_cd', CD0 + 1.3), ('p_env', T[3][0] + 1), ('p_b1', WIN[0][0] + 0.6), ('p_r1', T[4][0] + 1.5),
+    for name, s in [('p_hook', 2.0), ('p_cd', OFF + 0.5), ('p_env', T[3][0] + 1), ('p_b1', WIN[0][0] + 0.6), ('p_r1', T[4][0] + 1.5),
                     ('p_r2a', T[5][0] + 1.0), ('p_r2b', T[5][1] - 0.5), ('p_r3', T[6][0] + 2), ('p_r4', T[7][0] + 1.4), ('p_pb', T[9][0] + 0.8),
                     ('p_zero', T[10][0] + 0.5), ('p_let', T[10][1] - 0.3), ('p_end', END - 0.05), ('p_start', 0.0)]:
         frame(s).resize((360, 640)).save(f'{name}.jpg', quality=85)
@@ -303,7 +303,6 @@ tt = np.arange(int(0.04 * SR)) / SR
 tick = (np.sin(2 * np.pi * 2100 * tt) * np.exp(-tt / 0.003) + 0.6 * np.sin(2 * np.pi * 950 * tt) * np.exp(-tt / 0.006)).astype(np.float32)
 relay = (np.sin(2 * np.pi * 1700 * tt) * np.exp(-tt / 0.004) * 0.9 + np.sin(2 * np.pi * 180 * tt) * np.exp(-tt / 0.01) * 0.7).astype(np.float32)
 tok = (np.sin(2 * np.pi * 420 * tt) * np.exp(-tt / 0.012)).astype(np.float32)
-for q in range(3): put(CD0 + q, tick, 0.16)
 put(OFF, relay, 0.22); put(ON, relay, 0.22)
 for lit, _, _ in WIN: put(lit, tok, 0.10)
 put(ZL + 0.3, tok, 0.12)
