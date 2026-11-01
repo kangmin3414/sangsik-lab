@@ -25,6 +25,8 @@ LINES = [  # (text, spoken, style)
  ('누가 한 번만, 알아봐 주는 거요.', None, LET),
  ('사실 이 편지, 처음엔 저한테 쓰던 거였어요.', None, ASK),
  ('아무도 몰라줘도, 없던 일이 되지는 않아요.', None, END),
+ ('그래서 이 말은, 제가 먼저 할게요.', None, END),
+ ('오늘 하루, 잘했어요.', None, '아주 조용하고 따뜻하게, 한 사람의 눈을 보며 진심으로 건네듯 천천히. 끝을 부드럽게 내려놓듯. 꾸미거나 울먹이지 말 것.'),
 ]
 RETAKE = set(int(x) for x in os.environ.get('RETAKE', '').split(',') if x)
 
@@ -56,8 +58,9 @@ def cer(a, b):
 
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
-vx.token(); report = {}
+vx.token(); report = json.load(open('takes.json')) if os.path.exists('takes.json') else {}
 for i, (txt, sp, st) in enumerate(LINES):
+    if str(i) in report and i not in RETAKE: continue      # keep chosen takes (e.g. line 9 picked by hand)
     sp = sp or txt; best = None
     for k in range(4):
         path = f'takes/{i:02d}_{k}.wav'
@@ -69,6 +72,6 @@ for i, (txt, sp, st) in enumerate(LINES):
         hyp = ''.join(s.text for s in seg).strip(); c = min(cer(hyp, sp), cer(hyp, txt))
         if best is None or c < best[0]: best = (c, path, hyp)
         if c <= 0.08: break
-    report[i] = {'take': best[1], 'cer': round(best[0], 3), 'asr': best[2]}
+    report[str(i)] = {'take': best[1], 'cer': round(best[0], 3), 'asr': best[2]}
     print(i, best[1], round(best[0], 3), best[2], flush=True)
 json.dump(report, open('takes.json', 'w'), ensure_ascii=False, indent=1)

@@ -18,7 +18,7 @@ CAP = ['오늘 하루, 잘했다는 말, 누구에게서 들은 적 있나요?',
        '혼자 아픈 날, 혼자 약을 사 와서 먹은 적 있나요?', '“아쉽지만”을 또 읽고도, 다음 지원서를 열어 본 적 있나요?',
        '고맙다는 말 한마디 없이, 당연한 사람이 되어 버린 적 있나요?', '귀찮아할까 봐, 써 둔 안부를 지운 적 있나요?',
        '아마 다들, 바라는 건 비슷할 거예요.', '누가 한 번만, 알아봐 주는 거요.', '사실 이 편지, 처음엔 저한테 쓰던 거였어요.',
-       '아무도 몰라줘도, 없던 일이 되지는 않아요.']
+       '아무도 몰라줘도, 없던 일이 되지는 않아요.', '그래서 이 말은, 제가 먼저 할게요.', '오늘 하루, 잘했어요.']
 SILENT = {1}             # '3초 드릴게요' dropped with the countdown (operator, 11/1: it breaks the mood); every other line is voiced
 
 # ---------------------------------------------------------------- voice
@@ -32,7 +32,7 @@ def clip(i):
     w = w[max(0, idx[0] - 480): idx[-1] + 1440].copy(); fi, fo = 240, 960
     w[:fi] *= np.linspace(0, 1, fi); w[-fo:] *= np.linspace(1, 0, fo)
     return w
-VO = {i: clip(i) for i in range(12) if i not in SILENT}
+VO = {i: clip(i) for i in range(len(CAP)) if i not in SILENT}
 dur = lambda i: len(VO[i]) / SR
 
 # ---------------------------------------------------------------- art
@@ -140,7 +140,8 @@ def hello(txt, a, t):
     return fn
 
 # the letter close-up (handwriting)
-def letter_img():
+FINAL = '오늘 하루, 잘했어요.'; FX0, FY0, FY1 = 150, 1075, 1235      # last handwritten line (unscaled letter coords)
+def letter_img(final=False):
     rng = np.random.default_rng(3)
     paper = np.ones((H, W, 3), np.float32) * np.array([243, 234, 214], np.float32)
     paper += ndimage.gaussian_filter(rng.normal(0, 9, (H, W)), 2)[..., None]
@@ -152,7 +153,8 @@ def letter_img():
     tw = d.textlength('제로에게', font=pen2)
     for off, jit in [(522, 4), (540, -3)]:
         d.line((150, off + jit, 175 + tw, off - jit), fill=(70, 66, 72), width=7)
-    for yy in range(640, 1420, 92):                       # pencil scribbles = the letter body (unreadable)
+    if final: d.text((FX0, FY0), FINAL, font=ImageFont.truetype(PEN, 116), fill=(40, 36, 46))
+    for yy in range(640, 1060, 92):                       # pencil scribbles = the letter body (unreadable)
         x = 150; end = rng.integers(620, 900)
         pts = []
         while x < end:
@@ -166,7 +168,8 @@ def letter_img():
     vign = np.asarray(im).astype(np.float32); yy, xx = np.mgrid[0:H, 0:W]
     v = 1 - 0.35 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
     return Image.fromarray(np.clip(vign * v[..., None], 0, 255).astype(np.uint8)).resize((int(W * 1.15), int(H * 1.15)), Image.LANCZOS)
-ART['letter'] = letter_img()
+ART['letter'] = letter_img(); ART['letter_full'] = letter_img(True)
+FTW = ImageDraw.Draw(Image.new('RGB', (9, 9))).textlength(FINAL, font=ImageFont.truetype(PEN, 116))
 
 # ---------------------------------------------------------------- timeline
 T = {}; t = 0.15
@@ -187,12 +190,14 @@ PB0 = t                                          # pull back: the whole building
 t = PB0 + 0.35; say(8, 0.2); say(9, 0.0); PBE = T[9][1]; t = PBE - 0.9
 ZL = t                                          # Zero's window lights last
 ZIN = t + 0.9; t = ZIN + 0.35
-say(10, 0.35)
+say(10, 0.3)
 LET0 = T[10][0] + 1.1
-C0 = t                                          # back in the dark corridor
-ON = C0 + 0.9                                   # sensor light comes back on
-t = C0 + 0.3; say(11, 0.0)
-END = max(T[11][1] + 1.3, ON + 2.5)
+say(11, 0.3)                                    # on the letter
+WR0 = t; say(12, 0.25); WR1 = WR0 + 2.6         # the pencil writes the last line while line 12 is read
+C0 = max(t, WR1 + 0.3)                          # back in the dark corridor
+t = C0 + 0.55; say(13, 0.0)                      # '오늘 하루, 잘했어요.'
+ON = T[13][0] + 0.35                            # ...and the sensor light comes on with it
+END = T[13][1] + 1.9
 print('length %.1f s' % END)
 
 # camera on the building: wide -> each window -> wide
@@ -231,7 +236,15 @@ def sh_room(k):
         t0 = WIN[k][1]; return view(ART[f'room{k + 1}'], 1.08 + 0.08 * ease((s - t0) / 6), 0.5, 0.48)
     return r
 def sh_zero(s): return view(ART['zeroroom'], 1.07 + 0.06 * ease((s - ZIN) / 5), 0.5, 0.5)
-def sh_letter(s): return view(ART['letter'], 1.0 + 0.10 * ease((s - LET0) / 4), 0.40, 0.30)
+def sh_letter(s):
+    im = ART['letter']
+    if s >= WR0:                                 # pencil reveal, left to right
+        k = ease((s - WR0) / (WR1 - WR0)); sc = 1.15
+        x0, y0, y1 = int(FX0 * sc), int((FY0 - 10) * sc), int(FY1 * sc); xr = int((FX0 + 10 + FTW * k) * sc)
+        if xr > x0:
+            im = im.copy(); im.paste(ART['letter_full'].crop((x0, y0, xr, y1)), (x0, y0))
+    pan = ease((s - (WR0 - 0.8)) / 1.6)
+    return view(im, 1.0 + 0.10 * ease((s - LET0) / 4) + 0.06 * pan, 0.40, 0.30 + 0.20 * pan)
 def sh_corridor_end(s):
     z = 1.13 - 0.07 * ease((s - C0) / (END - C0))          # lands exactly on the opening frame (z = 1.06)
     a = view(ART['corridor_dark'], z); b = view(ART['corridor'], z)
@@ -278,7 +291,7 @@ def frame(s):
 if PREVIEW:
     for name, s in [('p_hook', 2.0), ('p_cd', OFF + 0.5), ('p_env', T[3][0] + 1), ('p_b1', WIN[0][0] + 0.6), ('p_r1', T[4][0] + 1.5),
                     ('p_r2a', T[5][0] + 1.0), ('p_r2b', T[5][1] - 0.5), ('p_r3', T[6][0] + 2), ('p_r4', T[7][0] + 1.4), ('p_pb', T[9][0] + 0.8),
-                    ('p_zero', T[10][0] + 0.5), ('p_let', T[10][1] - 0.3), ('p_end', END - 0.05), ('p_start', 0.0)]:
+                    ('p_zero', T[10][0] + 0.5), ('p_let', T[10][1] - 0.3), ('p_wr', WR0 + 1.5), ('p_wr2', WR1 + 0.2), ('p_on', ON + 0.5), ('p_end', END - 0.05), ('p_start', 0.0)]:
         frame(s).resize((360, 640)).save(f'{name}.jpg', quality=85)
     sys.exit()
 os.makedirs('frames', exist_ok=True)
@@ -312,9 +325,10 @@ tax = np.arange(n) / SR
 env = np.full(n, 0.20, np.float32)
 env *= np.clip(tax / 1.2, 0, 1)                                   # fade in
 env *= 1 - 0.35 * np.clip(np.convolve((np.abs(voice) > 0.02).astype(np.float32), np.ones(SR // 5) / (SR // 5), 'same'), 0, 1)   # duck under voice
-pause = (tax > T[10][0] - 0.3) & (tax < ON)                       # one beat of silence for the reveal
+pause = (tax > T[10][0] - 0.3) & (tax < WR0)                      # silence for the reveal
 env[pause] *= np.clip(1 - (tax[pause] - (T[10][0] - 0.3)) / 0.3, 0, 1)
-back = tax >= ON; env[back] *= np.clip((tax[back] - ON) / 1.0, 0, 1)
+back = (tax >= WR0) & (tax < ON); env[back] *= 0.55 * np.clip((tax[back] - WR0) / 2.0, 0, 1)   # comes back softly while the pencil writes
+last = tax >= ON; env[last] *= 0.55 + 0.45 * np.clip((tax[last] - ON) / 1.0, 0, 1)
 env *= np.clip((END - tax) / 0.8, 0, 1)                           # fade out into the loop
 mix = voice + sfx + bed * env
 mix = mix[:int(END * SR)]; mix = mix / (np.abs(mix).max() + 1e-9) * 0.9
