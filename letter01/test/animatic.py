@@ -15,9 +15,14 @@ GAPS = [0.6, 3.0, 0.5, 0.4, 1.5, 1.0, 0.8, 0.7, 0.7, 0.8]
 
 
 def load(path):
-    w = np.frombuffer(open(path, 'rb').read(), dtype='<i2').astype(np.float32) / 32768
+    """takes are WAV files (with a trailing metadata chunk): read with soundfile, trim edge silence, 10 ms fade-in / 40 ms fade-out."""
+    w, sr = sf.read(path, dtype='float32')
+    if w.ndim > 1: w = w.mean(1)
     a = np.abs(w); thr = max(a.max() * 0.02, 1e-4); idx = np.where(a > thr)[0]
-    return w[max(0, idx[0] - 1200): idx[-1] + 2400]
+    w = w[max(0, idx[0] - 1200): idx[-1] + 2400].copy()
+    fi, fo = int(0.01 * SR), int(0.04 * SR)
+    w[:fi] *= np.linspace(0, 1, fi); w[-fo:] *= np.linspace(1, 0, fo)
+    return w
 
 
 # timeline (same assembly as make_voice.py)
@@ -98,9 +103,10 @@ for f in range(int(END * FPS)):
 
 # audio: voice + soft piano bed + sensor-light click
 n = int(END * SR); mix = np.zeros(n, np.float32); mix[:len(voice)] += voice[:n]
-cl = int(OFF * SR); click = np.random.default_rng(1).normal(0, 1, 300).astype(np.float32) * np.exp(-np.arange(300) / 40) * 0.35
-mix[cl:cl + 300] += click
-subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', '../../bgm/cand_1_piano_a.mp3', '-ac', '1', '-ar', str(SR), '-t', str(END), 'bed.wav'], check=True)
+cl = int(OFF * SR); tt = np.arange(int(0.03 * SR)) / SR   # soft relay 'tick' for the sensor light (no noise burst)
+click = (np.sin(2 * np.pi * 1700 * tt) * np.exp(-tt / 0.004) * 0.18 + np.sin(2 * np.pi * 180 * tt) * np.exp(-tt / 0.01) * 0.12).astype(np.float32)
+mix[cl:cl + len(click)] += click
+subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'bgm/piano_b.mp3', '-ac', '1', '-ar', str(SR), '-t', str(END), 'bed.wav'], check=True)
 bed, _ = sf.read('bed.wav', dtype='float32'); bed = bed[:n]
 env = np.ones(n, np.float32) * 0.10; fade = int(1.5 * SR); env[:fade] *= np.linspace(0, 1, fade); env[-fade:] *= np.linspace(1, 0, fade)
 mix[:len(bed)] += bed * env[:len(bed)]

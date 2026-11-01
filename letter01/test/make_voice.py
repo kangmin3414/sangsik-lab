@@ -48,15 +48,13 @@ def synth(text, voice, style, path):
 
 
 def load(path):
-    """inline audio is raw 24 kHz 16-bit mono PCM (or a wav); return float32 trimmed of edge silence."""
-    raw = open(path, 'rb').read()
-    if raw[:4] == b'RIFF':
-        w, sr = sf.read(path, dtype='float32')
-        if w.ndim > 1: w = w.mean(1)
-    else:
-        w = np.frombuffer(raw, dtype='<i2').astype(np.float32) / 32768
+    """takes are WAV files (with a trailing metadata chunk): read with soundfile, trim edge silence, 10 ms fade-in / 40 ms fade-out."""
+    w, sr = sf.read(path, dtype='float32')
+    if w.ndim > 1: w = w.mean(1)
     a = np.abs(w); thr = max(a.max() * 0.02, 1e-4); idx = np.where(a > thr)[0]
-    if len(idx): w = w[max(0, idx[0] - 1200): idx[-1] + 2400]
+    w = w[max(0, idx[0] - 1200): idx[-1] + 2400].copy()
+    fi, fo = int(0.01 * SR), int(0.04 * SR)
+    w[:fi] *= np.linspace(0, 1, fi); w[-fo:] *= np.linspace(1, 0, fo)
     return w
 
 
