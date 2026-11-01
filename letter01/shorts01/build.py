@@ -325,10 +325,9 @@ tax = np.arange(n) / SR
 env = np.full(n, 0.20, np.float32)
 env *= np.clip(tax / 1.2, 0, 1)                                   # fade in
 env *= 1 - 0.35 * np.clip(np.convolve((np.abs(voice) > 0.02).astype(np.float32), np.ones(SR // 5) / (SR // 5), 'same'), 0, 1)   # duck under voice
-pause = (tax > T[10][0] - 0.3) & (tax < WR0)                      # silence for the reveal
-env[pause] *= np.clip(1 - (tax[pause] - (T[10][0] - 0.3)) / 0.3, 0, 1)
-back = (tax >= WR0) & (tax < ON); env[back] *= 0.55 * np.clip((tax[back] - WR0) / 2.0, 0, 1)   # comes back softly while the pencil writes
-last = tax >= ON; env[last] *= 0.55 + 0.45 * np.clip((tax[last] - ON) / 1.0, 0, 1)
+# music never stops (operator, 11/1): only a gentle, smooth dip under the reveal, back to full when the light comes on
+dip = np.interp(tax, [T[10][0] - 1.0, T[10][0], ON - 0.5, ON + 1.0], [1.0, 0.75, 0.75, 1.0])
+env *= dip.astype(np.float32)
 env *= np.clip((END - tax) / 0.8, 0, 1)                           # fade out into the loop
 mix = voice + sfx + bed * env
 mix = mix[:int(END * SR)]; mix = mix / (np.abs(mix).max() + 1e-9) * 0.9
