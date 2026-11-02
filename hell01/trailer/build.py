@@ -10,11 +10,11 @@ SERIF = '/usr/share/fonts/opentype/noto/NotoSerifCJK-Bold.ttc'
 F = lambda p, s: ImageFont.truetype(p, s, index=1)
 CAPF, KINGF, SMALL = F(SANS, 58), F(SERIF, 190), F(SANS, 30)
 takes = json.load(open('takes.json'))
-TEXT = {'r0': '제로 씨? 내리시죠. 시간 없습니다.', 'z0': '네? 여, 여기가 어디—', 'r1': '49일 안에, 일곱 분의 대왕을 다 뵈셔야 합니다.', 'z1': '49일이요?',
+TEXT = {'zi': '죽으면 49일 동안 저승 재판을 받는대요. 제가 먼저 받아 봤습니다.', 'r0': '제로 씨? 내리시죠. 시간 없습니다.', 'z0': '네? 여, 여기가 어디—', 'r1': '49일 안에, 일곱 분의 대왕을 다 뵈셔야 합니다.', 'z1': '49일이요?',
         'r2': '49재, 들어 보셨죠? 그게 이 일정입니다.', 'k1': '살생.', 'r3': '모기, 312마리.', 'z2': '정당방위예요!', 'k2': '도둑질.', 'r4': '회사 볼펜, 17자루.',
         'z3': '그건 제 가방이 알아서—', 'k3': '배신.', 'r5': '다이어트 결심, 142번.', 'z4': '그건 제가 저를—', 'k4': '거짓말.', 'r6': '…"괜찮아요." 41,200번.',
         'r7': '마지막 분입니다.', 'y1': '비춰 보아라.', 'r8': '살아온 모든 게, 그대로 비치는 거울입니다.', 'z5': '잠깐만요, 아직 마음의 준비가—'}
-TEMPO = {'r0': 1.08, 'r1': 1.1, 'r2': 1.1, 'r3': 1.08, 'r4': 1.08, 'r5': 1.08, 'z0': 1.05, 'z1': 1.05, 'z2': 1.05, 'z3': 1.05, 'z4': 1.05, 'z5': 1.05}
+TEMPO = {'zi': 1.04, 'r0': 1.08, 'r1': 1.1, 'r2': 1.1, 'r3': 1.08, 'r4': 1.08, 'r5': 1.08, 'z0': 1.05, 'z1': 1.05, 'z2': 1.05, 'z3': 1.05, 'z4': 1.05, 'z5': 1.05}
 CUT = {'z3': 0.8, 'z4': 0.8, 'z5': 0.9}           # cut off by the next door / the flash
 
 os.makedirs('tempo', exist_ok=True)
@@ -58,7 +58,10 @@ def say(k, gap):
     global t
     T[k] = (t, t + D(k)); t += D(k) + gap
 SH = []                                           # (start, image, z0, z1, cx, cy, transition)
-SH.append((0.0, 'bus', 1.04, 1.12, 0.5, 0.5, None))
+say('zi', 0.25)                                 # the promise: what this Short is about, over a fast hell montage
+INTRO = [(0.0 if i == 0 else T['zi'][0] + i * D('zi') / 3, hk) for i, hk in enumerate(['hell_sword', 'hell_cauldron', 'hell_ice'])]
+for st_, hk in INTRO: SH.append((st_, hk, 1.04, 1.16, 0.5, 0.5, 'cut'))
+BUS0 = t - 0.05; SH.append((BUS0, 'bus', 1.04, 1.12, 0.5, 0.5, 'cut'))
 say('r0', 0.05)
 BR = t - 0.1; SH.append((BR, 'bridge', 1.05, 1.22, 0.5, 0.55, 'whip'))
 say('z0', 0.1); say('r1', 0.08); say('z1', 0.06); say('r2', 0.12)
@@ -111,11 +114,18 @@ def frame(s):
         fr = can.filter(ImageFilter.BoxBlur(int(18 * np.sin(np.pi * e)) + 1))
     if j > 0 and tr == 'fade' and s < st + 0.6:
         fr = Image.blend(shot_img(SH[j - 1], s), fr, ease((s - st) / 0.6))
-    for hs, _ in HELLS:                            # blood-red flash as the hell cuts in (colour only, no gore)
+    for hs, _ in HELLS + INTRO[1:]:                 # blood-red flash as the hell cuts in (colour only, no gore)
         if hs <= s < hs + 0.2: fr = Image.blend(fr, Image.new('RGB', (W, H), (150, 10, 6)), 0.55 * (1 - (s - hs) / 0.2))
     for sl in SLAMS:                               # a 2-frame dark hit on every door slam
         if sl - 0.03 <= s < sl + 0.07: fr = Image.blend(fr, Image.new('RGB', (W, H)), 0.55)
     ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+    if s < BUS0:                                   # opening title over the montage
+        k_ = min(1, s / 0.25); f_ = F(SANS, 112); f2 = F(SANS, 70)
+        for txt, ff, y, col in [('49일', F(SERIF, 230), 330, (210, 30, 24)), ('저승 재판', f_, 580, (255, 245, 232))]:
+            tw = d.textlength(txt, font=ff); d.text(((W - tw) / 2, y), txt, font=ff, fill=col + (int(255 * k_),), stroke_width=12, stroke_fill=(10, 6, 6, int(235 * k_)))
+    elif s < FLASH:                                # topic line stays on top for sound-off viewers
+        k_ = min(1, (s - BUS0) / 0.3); f_ = F(SANS, 46); txt = '죽으면 받는 49일 저승 재판'
+        tw = d.textlength(txt, font=f_); d.text(((W - tw) / 2, 255), txt, font=f_, fill=(255, 236, 200, int(235 * k_)), stroke_width=7, stroke_fill=(0, 0, 0, int(220 * k_)))
     if s < 2.2:                                    # credit line instead of narration
         a = int(200 * min(1, (2.2 - s) / 0.4))
         d.text((60, 120), '한국 전통 시왕 이야기를 바탕으로 한 창작', font=SMALL, fill=(255, 245, 230, a), stroke_width=3, stroke_fill=(0, 0, 0, a))
@@ -191,9 +201,9 @@ def bell(f0=110, d=5.0):
     x = tt(d); y = sum(a * np.sin(2 * np.pi * f0 * r * x) * np.exp(-x / dc) for r, a, dc in [(1, 1, 3.5), (2.76, 0.5, 2.0), (5.4, 0.25, 1.0), (8.9, 0.12, 0.5)])
     return (y * 0.5).astype(np.float32)
 def hiss(d, k=12): x = tt(d); return (lp(rng.normal(0, 1, len(x)), k) * np.sin(np.pi * x / d) ** 0.7).astype(np.float32)
-put(0.0, hiss(0.45, 6), 0.35)                                   # bus door
-x = tt(BR); put(0.0, (np.sin(2 * np.pi * 42 * x) * 0.05 + np.sin(2 * np.pi * 84 * x) * 0.02).astype(np.float32))   # engine hum
-put(0.05, drum(1.0), 0.9)
+put(BUS0, hiss(0.45, 6), 0.35)                                  # bus door
+x = tt(BR - BUS0); put(BUS0, (np.sin(2 * np.pi * 42 * x) * 0.05 + np.sin(2 * np.pi * 84 * x) * 0.02).astype(np.float32))   # engine hum
+put(BUS0 + 0.05, drum(1.0), 0.9)
 for i, s in enumerate(DRUMS): put(s, drum(0.55 + 0.45 * i / max(1, len(DRUMS) - 1)), 0.75)
 for s in SLAMS: put(s - 0.02, slam(), 0.9)
 def hell_sfx(kind):
@@ -209,6 +219,7 @@ def hell_sfx(kind):
         y = sum(np.sin(2 * np.pi * f * x) * np.exp(-((x - c) % 0.16) * 40) for f, c in [(2200, 0.0), (3100, 0.05), (2700, 0.1)]) * 0.07
     return ((sub + y) * np.minimum(1, x / 0.01)).astype(np.float32)
 for hs, kind in HELLS: put(hs - 0.01, hell_sfx(kind), 0.85)
+for st_, hk in INTRO: put(st_, hell_sfx(hk), 0.6)
 x = tt(DSTOP - BR); put(BR, (hiss(DSTOP - BR, 120) * 0.12).astype(np.float32))            # wind under the walk
 put(T['r7'][0] - 0.25, bell(98, 6.0), 0.55)                     # low bell at "마지막 분입니다"
 x = tt(1.2); put(DOOR + 0.3, (np.sin(2 * np.pi * 36 * x) * np.sin(np.pi * x / 1.2) * 0.35).astype(np.float32))   # door rumble
