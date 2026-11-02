@@ -44,7 +44,7 @@ def autocrop(im):
     else: nh = int(w * 16 / 9); im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
     return im
 ART = {k: autocrop(Image.open(f'art/{k}.png').convert('RGB')).resize((int(W * 1.25), int(H * 1.25)), Image.LANCZOS)
-       for k in ['bus', 'bridge', 'court1', 'court2', 'court3', 'court4', 'door', 'mirror']}
+       for k in ['bus', 'bridge', 'court1', 'court2', 'court3', 'court4', 'door', 'mirror', 'hell_sword', 'hell_cauldron', 'hell_ice', 'hell_tongue']}
 
 def ease(x): x = min(max(x, 0.0), 1.0); return x * x * (3 - 2 * x)
 def view(im, z, cx=0.5, cy=0.5, dx=0, dy=0):
@@ -63,11 +63,18 @@ say('r0', 0.05)
 BR = t - 0.1; SH.append((BR, 'bridge', 1.05, 1.22, 0.5, 0.55, 'whip'))
 say('z0', 0.1); say('r1', 0.08); say('z1', 0.06); say('r2', 0.12)
 SLAMS = []; COURTS = []
-for n, (img, kk, rr, zz) in enumerate([('court1', 'k1', 'r3', 'z2'), ('court2', 'k2', 'r4', 'z3'), ('court3', 'k3', 'r5', 'z4')]):
+HELLS = []                                      # (start, image): the hell flashes on each charge
+for n, (img, kk, rr, zz, hl) in enumerate([('court1', 'k1', 'r3', 'z2', 'hell_sword'), ('court2', 'k2', 'r4', 'z3', 'hell_cauldron'), ('court3', 'k3', 'r5', 'z4', 'hell_ice')]):
     s0 = t; SLAMS.append(s0); COURTS.append(s0); SH.append((s0, img, 1.03, 1.14, 0.5, 0.55, 'whip'))
-    t = s0 + 0.25; say(kk, 0.05); say(rr, 0.04); say(zz, 0.0 if zz in CUT else 0.12)
+    t = s0 + 0.25; say(kk, 0.0)
+    hs = T[kk][0] + 0.4; HELLS.append((hs, hl)); SH.append((hs, hl, 1.0, 1.2, 0.5, 0.5, 'cut'))
+    back = max(t, hs + 1.15); SH.append((back, img, 1.08, 1.16, 0.5, 0.55, 'cut')); t = back + 0.05
+    say(rr, 0.04); say(zz, 0.0 if zz in CUT else 0.12)
 s4 = t; SLAMS.append(s4); COURTS.append(s4); SH.append((s4, 'court4', 1.02, 1.10, 0.5, 0.5, 'whip'))
-t = s4 + 0.35; DSTOP = t; say('k4', 0.35); say('r6', 1.6)          # silence after the 41,200 line
+t = s4 + 0.35; DSTOP = t; say('k4', 0.0)
+hs = T['k4'][0] + 0.4; HELLS.append((hs, 'hell_tongue')); SH.append((hs, 'hell_tongue', 1.0, 1.18, 0.5, 0.45, 'cut'))
+back = hs + 1.2; SH.append((back, 'court4', 1.04, 1.10, 0.5, 0.5, 'cut')); t = back + 0.5
+say('r6', 1.6)          # silence after the 41,200 line
 DOOR = t - 0.3; SH.append((DOOR, 'door', 1.0, 1.35, 0.5, 0.55, 'fade'))
 say('r7', 0.6)
 MIR = t - 0.1; SH.append((MIR, 'mirror', 1.02, 1.12, 0.5, 0.58, 'fade'))
@@ -92,6 +99,8 @@ def shot_img(sh, s):
     # small handheld sway while walking (bridge + courts 1-3), none in the hushed court and after
     amp = 6 if k in ('bridge', 'court1', 'court2', 'court3') else 0
     dx = amp * np.sin(s * 5.3); dy = amp * 0.6 * np.sin(s * 7.1 + 1)
+    if k.startswith('hell_'):                     # violent shake that settles
+        a = 22 * np.exp(-(s - st) * 3.0); dx = a * np.sin(s * 37); dy = a * np.cos(s * 31)
     return view(ART[k], z, cx, cy, dx, dy)
 def frame(s):
     j = max(i for i, sh in enumerate(SH) if sh[0] <= s); st = SH[j][0]; tr = SH[j][6]
@@ -102,6 +111,8 @@ def frame(s):
         fr = can.filter(ImageFilter.BoxBlur(int(18 * np.sin(np.pi * e)) + 1))
     if j > 0 and tr == 'fade' and s < st + 0.6:
         fr = Image.blend(shot_img(SH[j - 1], s), fr, ease((s - st) / 0.6))
+    for hs, _ in HELLS:                            # blood-red flash as the hell cuts in (colour only, no gore)
+        if hs <= s < hs + 0.2: fr = Image.blend(fr, Image.new('RGB', (W, H), (150, 10, 6)), 0.55 * (1 - (s - hs) / 0.2))
     for sl in SLAMS:                               # a 2-frame dark hit on every door slam
         if sl - 0.03 <= s < sl + 0.07: fr = Image.blend(fr, Image.new('RGB', (W, H)), 0.55)
     ov = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
@@ -147,7 +158,7 @@ def frame(s):
     return fr
 
 if PREVIEW:
-    pts = [('a', 0.8), ('b', T['r1'][0] + 0.6), ('c', COURTS[0] + 0.1), ('d', T['r3'][0] + 0.3), ('e', T['k2'][0] + 0.2), ('f', T['r5'][0]),
+    pts = [('a', 0.8), ('h1', HELLS[0][0] + 0.5), ('h2', HELLS[1][0] + 0.5), ('h3', HELLS[2][0] + 0.5), ('h4', HELLS[3][0] + 0.5), ('b', T['r1'][0] + 0.6), ('c', COURTS[0] + 0.1), ('d', T['r3'][0] + 0.3), ('e', T['k2'][0] + 0.2), ('f', T['r5'][0]),
            ('g', T['r6'][0] + 1.0), ('h', T['r7'][0] + 0.5), ('i', T['r8'][0] + 1.0), ('j', FLASH + 0.08), ('k', CARD + 1.0)]
     ims = [frame(s).resize((216, 384)) for _, s in pts]
     S = Image.new('RGB', (216 * len(ims), 384))
@@ -185,6 +196,19 @@ x = tt(BR); put(0.0, (np.sin(2 * np.pi * 42 * x) * 0.05 + np.sin(2 * np.pi * 84 
 put(0.05, drum(1.0), 0.9)
 for i, s in enumerate(DRUMS): put(s, drum(0.55 + 0.45 * i / max(1, len(DRUMS) - 1)), 0.75)
 for s in SLAMS: put(s - 0.02, slam(), 0.9)
+def hell_sfx(kind):
+    x = tt(1.3); env = np.exp(-x * 1.6)
+    sub = np.sin(2 * np.pi * (38 + 20 * np.exp(-x * 8)) * x) * np.exp(-x * 2.5) * 0.9
+    if kind == 'hell_sword':                     # metallic ring of blades
+        y = sum(np.sin(2 * np.pi * f * x) * np.exp(-x * dcy) for f, dcy in [(1320, 3), (1873, 4), (2610, 6), (3390, 8)]) * 0.12
+    elif kind == 'hell_cauldron':                # roaring fire + boiling
+        y = lp(rng.normal(0, 1, len(x)), 25) * 0.5 * env + lp(rng.normal(0, 1, len(x)), 4) * (rng.random(len(x)) < 0.002) * 2
+    elif kind == 'hell_ice':                     # howling wind
+        y = lp(rng.normal(0, 1, len(x)), 60) * (0.6 + 0.4 * np.sin(2 * np.pi * 1.7 * x)) * 0.7
+    else:                                        # dragging iron chain
+        y = sum(np.sin(2 * np.pi * f * x) * np.exp(-((x - c) % 0.16) * 40) for f, c in [(2200, 0.0), (3100, 0.05), (2700, 0.1)]) * 0.07
+    return ((sub + y) * np.minimum(1, x / 0.01)).astype(np.float32)
+for hs, kind in HELLS: put(hs - 0.01, hell_sfx(kind), 0.85)
 x = tt(DSTOP - BR); put(BR, (hiss(DSTOP - BR, 120) * 0.12).astype(np.float32))            # wind under the walk
 put(T['r7'][0] - 0.25, bell(98, 6.0), 0.55)                     # low bell at "마지막 분입니다"
 x = tt(1.2); put(DOOR + 0.3, (np.sin(2 * np.pi * 36 * x) * np.sin(np.pi * x / 1.2) * 0.35).astype(np.float32))   # door rumble
