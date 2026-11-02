@@ -44,9 +44,29 @@ def autocrop(im):
     else: nh = int(w * 16 / 9); im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
     return im
 ART = {k: autocrop(Image.open(f'art/{k}.png').convert('RGB')).resize((int(W * 1.25), int(H * 1.25)), Image.LANCZOS)
-       for k in ['bus', 'bridge', 'court1', 'court2', 'court3', 'court4', 'door', 'mirror', 'hell_sword', 'hell_cauldron', 'hell_ice', 'hell_tongue']}
+       for k in ['bus', 'bridge', 'court1', 'court2', 'court3', 'court4', 'door', 'mirror', 'hell_sword', 'hell_cauldron', 'hell_ice', 'hell_tongue',
+                 'x_swordtree', 'x_saw', 'x_hands', 'x_roar']}
+for k in ['mirror', 'demons', 'fire', 'punish']:   # real paintings: The Met, Ten Kings of Hell (Jin Chushi, before 1195), Public Domain
+    im = Image.open(f'../real/met/c_{k}.jpg').convert('RGB'); sc = H * 1.12 / im.height
+    ART['real_' + k] = im.resize((int(im.width * sc), int(im.height * sc)), Image.LANCZOS)
+REAL_CREDIT = '실제 그림 · 송나라 「시왕도」(1195년 이전) · The Met, Public Domain'
 
 def ease(x): x = min(max(x, 0.0), 1.0); return x * x * (3 - 2 * x)
+_BED = {}
+def fit_real(k, z, dx=0, dy=0):
+    im = ART[k]
+    if k not in _BED:
+        bed = view_real(im, 1.0, 0.5, 0.5).filter(ImageFilter.GaussianBlur(28))
+        _BED[k] = Image.eval(bed, lambda v: int(v * 0.45))
+    fw = int(W * 0.98 * z); fh = int(fw * im.height / im.width)
+    fg = im.resize((fw, fh), Image.BILINEAR)
+    can = _BED[k].copy(); can.paste(fg, (int((W - fw) / 2 + dx), int((H - fh) / 2 - 60 + dy)))
+    return can
+def view_real(im, z, cx, cy, dx=0, dy=0):
+    w, h = im.size; ch = h / z; cw = ch * 9 / 16
+    if cw > w: cw = w; ch = cw * 16 / 9
+    x0 = min(max(cx * w - cw / 2 + dx, 0), w - cw); y0 = min(max(cy * h - ch / 2 + dy, 0), h - ch)
+    return im.resize((W, H), Image.BILINEAR, box=(x0, y0, x0 + cw, y0 + ch))
 def view(im, z, cx=0.5, cy=0.5, dx=0, dy=0):
     w, h = im.size; cw, ch = w / z, h / z
     x0 = min(max(cx * w - cw / 2 + dx, 0), w - cw); y0 = min(max(cy * h - ch / 2 + dy, 0), h - ch)
@@ -59,29 +79,38 @@ def say(k, gap):
     T[k] = (t, t + D(k)); t += D(k) + gap
 SH = []                                           # (start, image, z0, z1, cx, cy, transition)
 say('zi', 0.25)                                 # the promise: what this Short is about, over a fast hell montage
-INTRO = [(0.0 if i == 0 else T['zi'][0] + i * D('zi') / 3, hk) for i, hk in enumerate(['hell_sword', 'hell_cauldron', 'hell_ice'])]
-for st_, hk in INTRO: SH.append((st_, hk, 1.04, 1.16, 0.5, 0.5, 'cut'))
+INTRO = [(0.0 if i == 0 else T['zi'][0] + i * D('zi') / 4, hk) for i, hk in enumerate(['real_demons', 'x_saw', 'real_fire', 'x_hands'])]
+for st_, hk in INTRO: SH.append((st_, hk, 1.0 if hk.startswith('real') else 1.04, 1.1 if hk.startswith('real') else 1.16, 0.5, 0.5, 'cut'))
 BUS0 = t - 0.05; SH.append((BUS0, 'bus', 1.04, 1.12, 0.5, 0.5, 'cut'))
 say('r0', 0.05)
 BR = t - 0.1; SH.append((BR, 'bridge', 1.05, 1.22, 0.5, 0.55, 'whip'))
 say('z0', 0.1); say('r1', 0.08); say('z1', 0.06); say('r2', 0.12)
 SLAMS = []; COURTS = []
 HELLS = []                                      # (start, image): the hell flashes on each charge
+SUBS = []                                       # every fast cut inside a flash
+SUBSEQ = {'hell_sword': [('hell_sword', 1.0, 1.25, 0.5, 0.5), ('x_swordtree', 1.1, 1.4, 0.5, 0.45), ('real_punish', 1.0, 1.12, 0.5, 0.5)],
+          'hell_cauldron': [('hell_cauldron', 1.0, 1.25, 0.5, 0.55), ('x_hands', 1.15, 1.45, 0.4, 0.45), ('real_fire', 1.0, 1.12, 0.5, 0.5)],
+          'hell_ice': [('hell_ice', 1.0, 1.2, 0.5, 0.5), ('hell_ice', 1.9, 2.3, 0.62, 0.55), ('real_demons', 1.0, 1.12, 0.5, 0.5)]}
 for n, (img, kk, rr, zz, hl) in enumerate([('court1', 'k1', 'r3', 'z2', 'hell_sword'), ('court2', 'k2', 'r4', 'z3', 'hell_cauldron'), ('court3', 'k3', 'r5', 'z4', 'hell_ice')]):
     s0 = t; SLAMS.append(s0); COURTS.append(s0); SH.append((s0, img, 1.03, 1.14, 0.5, 0.55, 'whip'))
     t = s0 + 0.25; say(kk, 0.0)
-    hs = T[kk][0] + 0.4; HELLS.append((hs, hl)); SH.append((hs, hl, 1.0, 1.2, 0.5, 0.5, 'cut'))
-    back = max(t, hs + 1.15); SH.append((back, img, 1.08, 1.16, 0.5, 0.55, 'cut')); t = back + 0.05
+    hs = T[kk][0] + 0.4; HELLS.append((hs, hl))
+    for q, (sk, zz0, zz1, ccx, ccy) in enumerate(SUBSEQ[hl]):
+        SH.append((hs + q * 0.39, sk, zz0, zz1, ccx, ccy, 'cut')); SUBS.append(hs + q * 0.39)
+    back = max(t, hs + 1.17); SH.append((back, img, 1.08, 1.16, 0.5, 0.55, 'cut')); t = back + 0.05
     say(rr, 0.04); say(zz, 0.0 if zz in CUT else 0.12)
 s4 = t; SLAMS.append(s4); COURTS.append(s4); SH.append((s4, 'court4', 1.02, 1.10, 0.5, 0.5, 'whip'))
 t = s4 + 0.35; DSTOP = t; say('k4', 0.0)
 hs = T['k4'][0] + 0.4; HELLS.append((hs, 'hell_tongue')); SH.append((hs, 'hell_tongue', 1.0, 1.18, 0.5, 0.45, 'cut'))
-back = hs + 1.2; SH.append((back, 'court4', 1.04, 1.10, 0.5, 0.5, 'cut')); t = back + 0.5
+JUMP = hs + 0.55; SH.append((JUMP, 'x_roar', 1.0, 1.7, 0.5, 0.42, 'cut')); SUBS.append(JUMP)
+back = JUMP + 0.5; SH.append((back, 'court4', 1.04, 1.10, 0.5, 0.5, 'cut')); t = back + 0.5
 say('r6', 1.6)          # silence after the 41,200 line
 DOOR = t - 0.3; SH.append((DOOR, 'door', 1.0, 1.35, 0.5, 0.55, 'fade'))
 say('r7', 0.6)
 MIR = t - 0.1; SH.append((MIR, 'mirror', 1.02, 1.12, 0.5, 0.58, 'fade'))
-say('y1', 0.2); say('r8', 0.15); say('z5', 0.0)
+say('y1', 0.2); say('r8', 0.15)
+RM = T['r8'][0] - 0.1; SH.append((RM, 'real_mirror', 1.0, 1.1, 0.5, 0.5, 'cut')); SH.append((RM + 2.0, 'mirror', 1.06, 1.12, 0.5, 0.58, 'fade'))
+say('z5', 0.0)
 FLASH = T['z5'][1] - 0.05
 CARD = FLASH + 0.55; END = CARD + 3.4
 print('length %.1f s' % END)
@@ -102,8 +131,11 @@ def shot_img(sh, s):
     # small handheld sway while walking (bridge + courts 1-3), none in the hushed court and after
     amp = 6 if k in ('bridge', 'court1', 'court2', 'court3') else 0
     dx = amp * np.sin(s * 5.3); dy = amp * 0.6 * np.sin(s * 7.1 + 1)
-    if k.startswith('hell_'):                     # violent shake that settles
+    if k.startswith(('hell_', 'x_', 'real_')) and k != 'real_mirror':   # violent shake that settles
         a = 22 * np.exp(-(s - st) * 3.0); dx = a * np.sin(s * 37); dy = a * np.cos(s * 31)
+    if k == 'x_roar': z = 1.0 + 0.7 * ease((s - st) / 0.35) ** 2      # the guard rushes the lens
+    if k.startswith('real_'):                     # show the whole painted detail, on a blurred bed of itself
+        return fit_real(k, z, dx, dy)
     return view(ART[k], z, cx, cy, dx, dy)
 def frame(s):
     j = max(i for i, sh in enumerate(SH) if sh[0] <= s); st = SH[j][0]; tr = SH[j][6]
@@ -114,6 +146,9 @@ def frame(s):
         fr = can.filter(ImageFilter.BoxBlur(int(18 * np.sin(np.pi * e)) + 1))
     if j > 0 and tr == 'fade' and s < st + 0.6:
         fr = Image.blend(shot_img(SH[j - 1], s), fr, ease((s - st) / 0.6))
+    for sc_ in SUBS:
+        if sc_ <= s < sc_ + 0.08: fr = Image.blend(fr, Image.new('RGB', (W, H), (120, 0, 0)), 0.35)
+    if JUMP <= s < JUMP + 0.12: fr = Image.blend(fr, Image.new('RGB', (W, H), (255, 220, 200)), 0.5 * (1 - (s - JUMP) / 0.12))
     for hs, _ in HELLS + INTRO[1:]:                 # blood-red flash as the hell cuts in (colour only, no gore)
         if hs <= s < hs + 0.2: fr = Image.blend(fr, Image.new('RGB', (W, H), (150, 10, 6)), 0.55 * (1 - (s - hs) / 0.2))
     for sl in SLAMS:                               # a 2-frame dark hit on every door slam
@@ -126,6 +161,10 @@ def frame(s):
     elif s < FLASH:                                # topic line stays on top for sound-off viewers
         k_ = min(1, (s - BUS0) / 0.3); f_ = F(SANS, 46); txt = '죽으면 받는 49일 저승 재판'
         tw = d.textlength(txt, font=f_); d.text(((W - tw) / 2, 255), txt, font=f_, fill=(255, 236, 200, int(235 * k_)), stroke_width=7, stroke_fill=(0, 0, 0, int(220 * k_)))
+    if SH[j][1].startswith('real_'):               # credit for the real painting on screen
+        lab = '800년 전 그림 속 업경대' if SH[j][1] == 'real_mirror' else '실제 옛 그림'
+        tw = d.textlength(lab, font=F(SANS, 44)); d.text(((W - tw) / 2, 1440), lab, font=F(SANS, 44), fill=(255, 226, 120, 240), stroke_width=6, stroke_fill=(0, 0, 0, 220))
+        tw = d.textlength(REAL_CREDIT, font=F(SANS, 26)); d.text(((W - tw) / 2, 1500), REAL_CREDIT, font=F(SANS, 26), fill=(255, 245, 230, 220), stroke_width=4, stroke_fill=(0, 0, 0, 200))
     if s < 2.2:                                    # credit line instead of narration
         a = int(200 * min(1, (2.2 - s) / 0.4))
         d.text((60, 120), '한국 전통 시왕 이야기를 바탕으로 한 창작', font=SMALL, fill=(255, 245, 230, a), stroke_width=3, stroke_fill=(0, 0, 0, a))
@@ -168,7 +207,7 @@ def frame(s):
     return fr
 
 if PREVIEW:
-    pts = [('a', 0.8), ('h1', HELLS[0][0] + 0.5), ('h2', HELLS[1][0] + 0.5), ('h3', HELLS[2][0] + 0.5), ('h4', HELLS[3][0] + 0.5), ('b', T['r1'][0] + 0.6), ('c', COURTS[0] + 0.1), ('d', T['r3'][0] + 0.3), ('e', T['k2'][0] + 0.2), ('f', T['r5'][0]),
+    pts = [('j0', JUMP + 0.2), ('rm', T['r8'][0] + 0.8), ('a', 0.8), ('h1', HELLS[0][0] + 0.5), ('h2', HELLS[1][0] + 0.5), ('h3', HELLS[2][0] + 0.5), ('h4', HELLS[3][0] + 0.5), ('b', T['r1'][0] + 0.6), ('c', COURTS[0] + 0.1), ('d', T['r3'][0] + 0.3), ('e', T['k2'][0] + 0.2), ('f', T['r5'][0]),
            ('g', T['r6'][0] + 1.0), ('h', T['r7'][0] + 0.5), ('i', T['r8'][0] + 1.0), ('j', FLASH + 0.08), ('k', CARD + 1.0)]
     ims = [frame(s).resize((216, 384)) for _, s in pts]
     S = Image.new('RGB', (216 * len(ims), 384))
@@ -219,7 +258,25 @@ def hell_sfx(kind):
         y = sum(np.sin(2 * np.pi * f * x) * np.exp(-((x - c) % 0.16) * 40) for f, c in [(2200, 0.0), (3100, 0.05), (2700, 0.1)]) * 0.07
     return ((sub + y) * np.minimum(1, x / 0.01)).astype(np.float32)
 for hs, kind in HELLS: put(hs - 0.01, hell_sfx(kind), 0.85)
-for st_, hk in INTRO: put(st_, hell_sfx(hk), 0.6)
+for st_, hk in INTRO: put(st_, hell_sfx('hell_sword' if hk.startswith('real') else 'hell_cauldron'), 0.5)
+def hit():
+    x = tt(0.35); return (np.sin(2 * np.pi * (60 + 60 * np.exp(-x * 30)) * x) * np.exp(-x * 9)).astype(np.float32)
+for sc_ in SUBS: put(sc_, hit(), 0.6)
+def roar():
+    x = tt(0.9); f = 140 * np.exp(-x * 1.5) + 55
+    y = np.tanh(3 * (np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.8 + lp(rng.normal(0, 1, len(x)), 5) * 0.7)) * np.exp(-x * 2.2)
+    return (y * np.minimum(1, x / 0.005)).astype(np.float32)
+put(JUMP, roar(), 1.3)
+subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'bgm_horror.mp3', '-ac', '1', '-ar', str(SR), 'bed_h.wav'], check=True)
+bed, _ = sf.read('bed_h.wav', dtype='float32'); bed = np.tile(bed, 3)[:n]
+tax = np.arange(n) / SR
+env = np.interp(tax, [0, BUS0 - 0.3, BUS0 + 0.3, DSTOP, T['k4'][0], JUMP + 0.6, JUMP + 1.4, T['r7'][0] - 0.3, FLASH - 0.05, FLASH, END],
+                     [0.55, 0.55, 0.16, 0.30, 0.45, 0.45, 0.0, 0.0, 0.5, 0.0, 0.0]).astype(np.float32)
+for hs, _ in HELLS: env = np.maximum(env, 0.6 * np.clip(1 - np.abs(tax - hs - 0.55) / 0.9, 0, 1))
+vo_env = np.zeros(n, np.float32)
+for k_, (a0, a1) in T.items(): vo_env[int(a0 * SR):int(a1 * SR)] = 1
+vo_env = np.convolve(vo_env, np.ones(SR // 5) / (SR // 5), 'same')
+mix += bed * env * (1 - 0.45 * vo_env)
 x = tt(DSTOP - BR); put(BR, (hiss(DSTOP - BR, 120) * 0.12).astype(np.float32))            # wind under the walk
 put(T['r7'][0] - 0.25, bell(98, 6.0), 0.55)                     # low bell at "마지막 분입니다"
 x = tt(1.2); put(DOOR + 0.3, (np.sin(2 * np.pi * 36 * x) * np.sin(np.pi * x / 1.2) * 0.35).astype(np.float32))   # door rumble
