@@ -113,15 +113,15 @@ def to_bar(b): return f"{b // 4 + 1}.{b % 4 + 1}"
 def mmss(b): s = b * BEAT; return f"{int(s // 60)}:{s % 60:04.1f}"
 for kind, a, b, o in S:
     if kind == 'SEC':
-        t_beat = math.ceil(t_beat / 16) * 16          # 4마디 프레이즈 경계
+        t_beat = math.ceil(t_beat / 4) * 4            # 마디 경계(16박 정렬은 빈 구간이 생겨 1마디로 바꿈)
         cur = dict(sec=a, music=b, start=t_beat); out.append(dict(type='sec', **cur)); continue
-    if kind == 'R': t_beat += o['beats']; continue
+    if kind == 'R': t_beat += o['beats']; out.append(dict(type='rest', beats=o['beats'], sec=cur['sec'])); continue
     if kind == 'S':
         t_beat = math.ceil(t_beat / 4) * 4            # 소리·장면 전환은 항상 다운비트에서
-        out.append(dict(type='sfx', sfx=b, vis=o['vis'], beat=t_beat, beats=o['beats'])); t_beat += o['beats']; continue
+        out.append(dict(type='sfx', sfx=b, vis=o['vis'], beat=t_beat, beats=o['beats'], sec=cur['sec'])); t_beat += o['beats']; continue
     if o['on'] == 'down': t_beat = math.ceil(t_beat / 4) * 4
     n = H(b); dur = math.ceil(n / CPB) + 1           # +1박 숨
-    out.append(dict(type='line', who=a, text=b, chars=n, beat=t_beat, beats=dur, sfx=o['sfx'], vis=o['vis']))
+    out.append(dict(type='line', who=a, text=b, chars=n, beat=t_beat, beats=dur, sfx=o['sfx'], vis=o['vis'], on=o['on'], sec=cur['sec']))
     t_beat += dur
 end = math.ceil(t_beat / 4) * 4
 json.dump(dict(bpm=BPM, total_beats=end, total_sec=round(end * BEAT, 1), events=out), open('timeline.json', 'w'), ensure_ascii=False, indent=1)
@@ -132,7 +132,7 @@ for e in out:
         md.append(f"\n### {e['sec']} · {to_bar(e['start'])}마디 ({mmss(e['start'])})\n\n음악: {e['music']}\n\n| 마디.박 | 시간 | 누가 | 대사 | 박자에 맞춘 소리 | 화면 |\n|---|---|---|---|---|---|")
     elif e['type'] == 'sfx':
         md.append(f"| {to_bar(e['beat'])} | {mmss(e['beat'])} | — | *(말 없음, {e['beats']}박)* | {e['sfx']} | {e['vis']} |")
-    else:
+    elif e['type'] == 'line':
         md.append(f"| {to_bar(e['beat'])} | {mmss(e['beat'])} | {e['who']} | {e['text']} | {e['sfx']} | {e['vis']} |")
 open('beats_table.md', 'w').write('\n'.join(md) + '\n')
 print(md[0])
