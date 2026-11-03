@@ -106,7 +106,7 @@ function rquestionScene(t, lt, a) {
   let h = rNavy();
   h += rz(t, lt, 640, 900, 1.0, '서기', [[0, '걱정'], [3, '기본']]);
   h += bubble(640, 250, 520, 190, rBook(-100, 0, 200, 120, []) + `<g opacity="${f1(1 - prog(lt, 1.5, 4) * 0.85)}">${rtext(120, 22, '눈으로 읽기', 40, NAVY)}</g>`, {});
-  h += rp(t, lt, 0.4, 330, 200, outlined(0, 0, ['?'], { size: 190, fill: YEL, sw: 34 }), { rot: -10, bob: 6 });
+  h += rp(t, lt, 0.4, 400, 330, outlined(0, 0, ['?'], { size: 190, fill: YEL, sw: 34 }), { rot: -10, bob: 6 });
   const k = prog(lt, 4.2, 5);
   if (lt > 4.2) h += rp(t, lt, 4.2, 1400, 480, rbox(0, 0, 520, 360, '#FFF', { inner: rtext(0, -70, '리처드 파인만', 58, INK) + rtext(0, 0, '노벨 물리학상', 46, '#456') + rtext(0, 78, '"학습법은?"', 56, RED) + rBulb(0, -170, 0.9, 0.9) }), { rot: 3, bob: 4 });
   return h;

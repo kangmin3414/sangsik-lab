@@ -23,12 +23,12 @@ function rreadScene(t, lt, a) {
   let h = rRoom();
   const sweepN = clamp(Math.floor(lt / 1.4) + 1, 1, 3), ph = (lt % 1.4) / 1.4;
   h += rBox0(960, 440, 760, 520);
+  h += `<rect x="650" y="${f1(262 + Math.floor(((lt * 1.5) % 4)) * 90)}" width="620" height="60" rx="10" fill="#FFE14D" opacity=".5"/>`;
   const lines = ['기억은 신경세포 사이의', '연결이 강해지면서', '만들어진다는 사실은', '여러 번 확인됐다'];
   lines.forEach((ln, i) => {
     const sharp = clamp((sweepN - 1 + ph * (i > 0 ? 1 : 1)) / 2.4, 0, 1);
     h += `<text x="960" y="${300 + i * 90}" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="58" fill="#34414F" opacity="${f1((0.35 + 0.65 * sharp) * 100) / 100}">${esc(ln)}</text>`;
   });
-  h += `<rect x="640" y="${f1(255 + ((lt * 1.5) % 4) * 90)}" width="640" height="26" fill="#FFE14D" opacity=".6"/>`;
   h += rp(t, lt, 0.1, 1560, 220, outlined(0, 0, [[['×' + sweepN, YEL]]], { size: 150, sw: 30 }), { rot: 4 });
   const ease = easeInOut(prog(lt, 0, 5));
   h += `<g transform="translate(300 480)"><rect x="-80" y="-250" width="160" height="500" rx="34" fill="#fff" stroke="${INK}" stroke-width="9"/><rect x="-62" y="${f1(232 - 464 * (0.15 + 0.8 * ease))}" width="124" height="${f1(464 * (0.15 + 0.8 * ease))}" rx="22" fill="${MINT}"/>${rtext(0, 320, '술술', 60, INK)}</g>`;
@@ -89,8 +89,8 @@ function rbarsScene(t, lt, a) {
   h += rBar(640, BASE, yv / 100 * MAX, rYV, Math.round(yv) + '%') + rBar(1280, BASE, wv / 100 * MAX, '#fff', Math.round(wv) + '%');
   h += rtg(t, lt, 0.1, 640, 870, '4번 읽기', YEL, { size: 44 }) + rtg(t, lt, 0.1, 1280, 870, '읽고 덮고 적기', '#fff', { size: 44 });
   h += rtext(960, 150, a.ph === 1 ? '5분 뒤 시험' : '일주일 뒤 시험', 90, INK).replace('<text', `<text stroke="#fff" stroke-width="14" paint-order="stroke"`);
-  if (a.ph === 1) { h += rp(t, lt, 2.1, 940, 230, outlined(0, 0, ['이김!'], { size: 90, fill: YEL, sw: 20 }), { rot: -6 }); h += rch(t, lt, 380, 960, 0.5, rYV, [[0, '서기'], [2.1, '만세']], [[0, '신남']]); }
-  else { h += rfx(t, lt, 2.4, 960, 330, '뒤집혔다!', RED, { size: 110, burst: 240, rot: -4, wobble: 3 }); h += rch(t, lt, 1540, 960, 0.5, '#fff', [[0, '서기'], [2.4, '만세']], [[0, '기본'], [2.4, '뿌듯']]); h += rch(t, lt, 380, 960, 0.5, rYV, [[0, '서기'], [2.4, '납작']], [[0, '신남'], [2.4, '지침']]); }
+  if (a.ph === 1) { h += rp(t, lt, 2.1, 330, 330, outlined(0, 0, ['이김!'], { size: 90, fill: YEL, sw: 20 }), { rot: -6 }); h += rch(t, lt, 380, 960, 0.5, rYV, [[0, '서기'], [2.1, '만세']], [[0, '신남']]); }
+  else { h += rfx(t, lt, 2.4, 960, 290, '뒤집혔다!', RED, { size: 96, burst: 210, rot: -4, wobble: 3 }); h += rch(t, lt, 1540, 960, 0.5, '#fff', [[0, '서기'], [2.4, '만세']], [[0, '기본'], [2.4, '뿌듯']]); h += rch(t, lt, 380, 960, 0.5, rYV, [[0, '서기'], [2.4, '납작']], [[0, '신남'], [2.4, '지침']]); }
   return h;
 }
 function rcalScene(t, lt, a) {
@@ -126,10 +126,9 @@ function rdiskScene(t, lt, a) {
 function rstruggleScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
   if (a.glow) h += `<circle cx="960" cy="470" r="${f1(420 + 30 * Math.sin(t * 3))}" fill="url(#glow)"/>`;
+  h += rz(t, lt, 960, 890, 0.95, [[0, '서기'], [1.2, '턱괴기']], a.glow ? [[0, '걱정'], [2.5, '신남']] : [[0, '걱정'], [1.2, '겁먹음']]);
   h += rDesk(960, 700, 900);
   h += rClosedBook(960, 660, 320, 70, '#4F86C6');
-  h += rz(t, lt, 960, 890, 0.95, [[0, '서기'], [1.2, '턱괴기']], a.glow ? [[0, '걱정'], [2.5, '신남']] : [[0, '걱정'], [1.2, '겁먹음']]);
-  h += rDesk(960, 700, 900).slice(0, 0);
   h += rSweat(1050, 330, t) + rSweat(870, 360, t + 0.5);
   if (!a.glow) {
     h += rp(t, lt, 0.6, 1480, 300, bubble(0, 0, 560, 190, rtext(0, 22, '그 공식이 뭐였더라?', 54, NAVY)), { rot: 2 });
@@ -160,9 +159,9 @@ function rnobelScene(t, lt, a) {
 }
 function rresearchScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += rp(t, lt, 0.2, 520, 420, rbox(0, 0, 640, 460, '#FFF', { inner: outlined(0, -90, ['어떻게 돕나?'], { size: 74, fill: INK, stroke: '#fff', sw: 0, shadow: false }) + outlined(0, 40, ['연구 중'], { size: 110, fill: '#E58A1F', stroke: '#fff', sw: 0, shadow: false }) + rtext(0, 150, '🔍', 80, INK) }), { rot: -2 });
-  h += rp(t, lt, 2.6, 1400, 420, rbox(0, 0, 640, 460, '#E8FFF4', { inner: outlined(0, -90, ['효과는?'], { size: 74, fill: INK, stroke: '#E8FFF4', sw: 0, shadow: false }) + outlined(0, 40, ['여러 번 확인'], { size: 92, fill: '#1E9E5A', stroke: '#E8FFF4', sw: 0, shadow: false }) }), { rot: 2 });
-  for (let i = 0; i < 3; i++) if (lt > 3.4 + i * 0.4) h += rp(t, lt, 3.4 + i * 0.4, 1230 + i * 170, 590, rCheck(0, 0, 1.2), { rot: 0 });
+  h += rp(t, lt, 0.2, 470, 420, rbox(0, 0, 600, 460, '#FFF', { inner: outlined(0, -90, ['어떻게 돕나?'], { size: 74, fill: INK, stroke: '#fff', sw: 0, shadow: false }) + outlined(0, 40, ['연구 중'], { size: 110, fill: '#E58A1F', stroke: '#fff', sw: 0, shadow: false }) + rtext(0, 150, '🔍', 80, INK) }), { rot: -2 });
+  h += rp(t, lt, 2.6, 1450, 420, rbox(0, 0, 600, 460, '#E8FFF4', { inner: outlined(0, -90, ['효과는?'], { size: 74, fill: INK, stroke: '#E8FFF4', sw: 0, shadow: false }) + outlined(0, 40, ['여러 번 확인'], { size: 92, fill: '#1E9E5A', stroke: '#E8FFF4', sw: 0, shadow: false }) }), { rot: 2 });
+  for (let i = 0; i < 3; i++) if (lt > 3.4 + i * 0.4) h += rp(t, lt, 3.4 + i * 0.4, 1290 + i * 160, 590, rCheck(0, 0, 1.2), { rot: 0 });
   h += rz(t, lt, 960, 900, 0.8, '서기', [[0, '기본'], [2.6, '뿌듯']]);
   return h;
 }
@@ -177,9 +176,9 @@ function rposeScene(t, lt, a) {
 }
 function rfeynmanScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += `<g transform="translate(1200 400)"><rect x="-470" y="-290" width="940" height="560" rx="20" fill="#2E5A44" stroke="#8C6638" stroke-width="24"/>${rtext(0, -90, '파인만 테크닉', 120, '#F4F7F2')}<path d="M-300 20 q60 -40 120 0 t120 0 t120 0 t120 0" fill="none" stroke="#F4F7F2" stroke-width="8" stroke-linecap="round"/>${rtext(0, 150, '쉽게 가르치면 보인다', 52, '#CFE6D6')}</g>`;
-  h += rp(t, lt, 0.3, 460, 450, rbox(0, 0, 500, 330, '#fff', { rot: -3, inner: rtext(0, -80, '리처드 파인만', 62, INK) + rtext(0, 0, '1918 – 1988', 44, '#456') + rtext(0, 80, '노벨 물리학상', 52, '#E58A1F') }), {});
-  h += rz(t, lt, 1790, 900, 0.8, '서기', [[0, '기본'], [2.5, '신남']]);
+  h += `<g transform="translate(1110 400)"><rect x="-470" y="-290" width="940" height="560" rx="20" fill="#2E5A44" stroke="#8C6638" stroke-width="24"/>${rtext(0, -90, '파인만 테크닉', 120, '#F4F7F2')}<path d="M-300 20 q60 -40 120 0 t120 0 t120 0 t120 0" fill="none" stroke="#F4F7F2" stroke-width="8" stroke-linecap="round"/>${rtext(0, 150, '쉽게 가르치면 보인다', 52, '#CFE6D6')}</g>`;
+  h += rp(t, lt, 0.3, 400, 450, rbox(0, 0, 500, 330, '#fff', { rot: -3, inner: rtext(0, -80, '리처드 파인만', 62, INK) + rtext(0, 0, '1918 – 1988', 44, '#456') + rtext(0, 80, '노벨 물리학상', 52, '#E58A1F') }), {});
+  h += rz(t, lt, 1780, 900, 0.8, '서기', [[0, '기본'], [2.5, '신남']]);
   return h;
 }
 function rstepsScene(t, lt, a) {
@@ -197,7 +196,7 @@ function rstepsScene(t, lt, a) {
 }
 function rteachScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += `<g transform="translate(960 380)"><rect x="-360" y="-210" width="720" height="360" rx="14" fill="#2E5A44" stroke="#8C6638" stroke-width="20"/>${rtext(0, 20, '인출 연습', 110, '#F4F7F2')}</g>`;
+  h += `<g transform="translate(960 250)"><rect x="-360" y="-210" width="720" height="300" rx="14" fill="#2E5A44" stroke="#8C6638" stroke-width="20"/>${rtext(0, -30, '인출 연습', 110, '#F4F7F2')}</g>`;
   h += rz(t, lt, 560, 900, 0.95, [[0, '서기'], [0.8, '손인사']], [[0, '신남']]);
   h += rBear(1360, 790, 0.8, { happy: 1 });
   h += rfx(t, lt, 1.6, 960, 680, '가장 강력!', RED, { size: 96, burst: 220, rot: -4, wobble: 3 });
@@ -230,8 +229,8 @@ function rprotegeScene(t, lt, a) {
 function rthreeScene(t, lt, a) {
   let h = rRoom() + rFloor(900, '#C9A576');
   const cards = [['Day 1', '백지 테스트', '#E8FFF4', () => rPaper(0, 70, 190, 130, 2.2, { rot: -4 })], ['Day 3', '곰 인형 기법', '#FFF3C4', () => rBear(0, 80, 0.5, { happy: 1 })], ['Day 5', '구멍 메우기', '#FFE8EF', () => `<g transform="translate(0 70) rotate(-35)"><rect x="-12" y="-60" width="24" height="100" rx="8" fill="#FFE14D" stroke="${INK}" stroke-width="6"/></g>`]];
-  cards.forEach((c, i) => h += rp(t, lt, 0.8 + i * 1.5, 420 + i * 540, 470, rbox(0, 0, 440, 600, c[2], { rot: (i - 1) * 3, inner: rtext(0, -210, c[0], 76, INK) + outlined(0, -130, [c[1]], { size: 50, fill: INK, stroke: c[2], sw: 0, shadow: false }) + c[3]() }), {}));
-  h += rz(t, lt, 960, 1000, 0.5, '서기', [[0, '기본'], [1, '신남']], { still: false });
+  cards.forEach((c, i) => h += rp(t, lt, 0.8 + i * 1.5, 420 + i * 540, 360, rbox(0, 0, 440, 500, c[2], { rot: (i - 1) * 3, inner: rtext(0, -170, c[0], 76, INK) + outlined(0, -100, [c[1]], { size: 50, fill: INK, stroke: c[2], sw: 0, shadow: false }) + c[3]() }), {}));
+  h += rz(t, lt, 960, 880, 0.5, '서기', [[0, '기본'], [1, '신남']], { still: false });
   return h;
 }
 function rblankScene(t, lt, a) {
@@ -254,7 +253,7 @@ function rmindmapScene(t, lt, a) {
   h += rp(t, lt, 1.0, 1420, 400, rbox(0, 0, 560, 420, '#fff', { inner: `<g transform="translate(-170 -10)">${[0, 1, 2].map(i => `<path d="M0 ${i * 80} q60 -16 120 0 t120 0 t100 0" fill="none" stroke="#2a58d6" stroke-width="8" stroke-linecap="round"/>`).join('')}</g>` + rtext(0, -150, '덮고 떠올리기', 50, INK) }), { rot: 2 });
   const k = easeOut(prog(lt, 2.8, 4.4));
   h += rBar(1180, 880, 100 * k, '#C9CED6', '', { size: 1 }) + rBar(1660, 880, 150 * k, GOLD, '', { size: 1 });
-  h += rp(t, lt, 4.4, 1420, 640, outlined(0, 0, ['일주일 뒤 약 50% ↑'], { size: 70, fill: RED, sw: 18 }), { rot: -3, wobble: 2 });
+  h += rp(t, lt, 4.4, 1420, 700, outlined(0, 0, ['일주일 뒤 약 50% ↑'], { size: 70, fill: RED, sw: 18 }), { rot: -3, wobble: 2 });
   h += rz(t, lt, 360, 920, 0.7, '서기', [[0, '기본'], [4.4, '뿌듯']]);
   return h;
 }
@@ -301,17 +300,17 @@ function reaseScene(t, lt, a) {
   h += rBrain(1450, 420, 1.2, { fill: '#D9C9EC' });
   h += `<path d="M1390 ${f1(420 - 6)} q22 18 44 0 M1470 ${f1(414)} q22 18 44 0" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
   h += rtext(1620, 280 - Math.sin(t * 2) * 8, 'Z', 70, '#6A4CC6') + rtext(1680, 220 - Math.sin(t * 2 + 1) * 8, 'z', 54, '#6A4CC6');
-  h += `<g transform="translate(1450 700)"><rect x="-190" y="-34" width="380" height="68" rx="34" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-176" y="-22" width="${f1(24 + 8 * Math.sin(t * 2))}" height="44" rx="22" fill="#FF8A8A"/>${rtext(0, -64, '뇌의 노력', 44, INK)}</g>`;
+  h += `<g transform="translate(1450 790)"><rect x="-190" y="-34" width="380" height="68" rx="34" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-176" y="-22" width="${f1(24 + 8 * Math.sin(t * 2))}" height="44" rx="22" fill="#FF8A8A"/>${rtext(0, -64, '뇌의 노력', 44, INK)}</g>`;
   h += rp(t, lt, 0.3, 760, 250, outlined(0, 0, ['쏙쏙 들어온다?'], { size: 90, fill: YEL, sw: 20 }), { rot: -3 });
   return h;
 }
 function rgymScene(t, lt, a) {
   let h = BG('#2A2F3E') + rFloor(880, '#454B5E');
   const lift = easeInOut(prog(lt % 2.4, 0, 1.2)) * (lt % 2.4 < 2.0 ? 1 : 0);
-  const by = lerp(520, 330, lift);
-  h += rz(t, lt, 760, 900, 1.0, [[0, '서기'], [0.6, '만세']], [[0, '결심'], [2, '지침']]);
+  const by = lerp(470, 330, lift);
   h += `<g transform="translate(760 ${f1(by - 40)})"><rect x="-300" y="-8" width="600" height="16" rx="8" fill="#9aa" stroke="${INK}" stroke-width="6"/><rect x="-330" y="-60" width="46" height="120" rx="10" fill="#555" stroke="${INK}" stroke-width="7"/><rect x="284" y="-60" width="46" height="120" rx="10" fill="#555" stroke="${INK}" stroke-width="7"/></g>`;
   h += rBrain(760, by - 140, 0.6) + rSparks(760, by - 140, t, 8, 130);
+  h += rz(t, lt, 760, 900, 1.0, [[0, '서기'], [0.6, '만세']], [[0, '결심'], [2, '지침']]);
   h += rSweat(840, 380, t);
   h += rp(t, lt, 0.3, 1480, 280, outlined(0, 0, ['꺼내려고 애쓰는 중'], { size: 84, fill: YEL, sw: 20 }), { rot: 2 });
   h += rp(t, lt, 2.0, 1480, 460, outlined(0, 0, ['단단해진다'], { size: 110, fill: GOLD, sw: 24 }), { rot: -3, bob: 4 });
@@ -331,7 +330,7 @@ function rdoScene(t, lt, a) {
   h += rDesk(960, 700, 900);
   h += lt < 2 ? rBook(960, 650, 340, 120, [[-100, -30, 80, 1]]) : rClosedBook(960, 664, 260, 60, '#4F86C6');
   const steps = [['1', '한 번 제대로 읽기'], ['2', '책 덮기'], ['3', '쉬운 말로 소리 내 설명']];
-  steps.forEach((s, i) => h += rp(t, lt, 0.2 + i * 1.8, 360 + i * 600, 250, rbox(0, 0, 520, 150, ['#E8FFF4', '#FFF3C4', '#FFE8EF'][i], { rot: (i - 1) * 2, inner: `<circle cx="-200" cy="0" r="40" fill="${GOLD}" stroke="${INK}" stroke-width="6"/>${rtext(-200, 18, s[0], 50, INK)}${rtext(30, 14, s[1], 42, INK)}` }), {}));
+  steps.forEach((s, i) => h += rp(t, lt, 0.2 + i * 1.8, 330 + i * 630, 250, rbox(0, 0, 580, 150, ['#E8FFF4', '#FFF3C4', '#FFE8EF'][i], { rot: (i - 1) * 2, inner: `<circle cx="-200" cy="0" r="40" fill="${GOLD}" stroke="${INK}" stroke-width="6"/>${rtext(-200, 18, s[0], 50, INK)}${rtext(50, 14, s[1], 38, INK)}` }), {}));
   if (lt > 4.2) h += rBear(1560, 790, 0.7, { happy: 1 }) + [0, 1].map(i => `<circle cx="1260" cy="560" r="${f1(30 + ((lt * 0.9 + i / 2) % 1) * 100)}" fill="none" stroke="${MINT}" stroke-width="8" opacity="${f1((1 - ((lt * 0.9 + i / 2) % 1)) * 100) / 100}"/>`).join('');
   return h;
 }
