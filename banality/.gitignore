@@ -1,0 +1,10 @@
+tts38/
+frames/
+voice.wav
+mix.wav
+*.mp4
+*.log
+_z*.jpg
+_p*.jpg
+node_modules/
+package-lock.json
