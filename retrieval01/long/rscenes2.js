@@ -78,7 +78,7 @@ function rgroupsScene(t, lt, a) {
   h += rch(t, lt, 1400, 880, 0.95, '#FFFFFF', '책상', [[0, '기본'], [3.4, '결심']]);
   h += closed ? rPaper(1400, 700, 300, 190, written) : rBook(1400, 700, 300, 170, [[-90, -45, 170, 1]]);
   h += rtg(t, lt, 0.1, 1400, 330, '1번 읽고 덮고 적기 (B)', '#fff', { size: 44 });
-  if (rep) { h += rp(t, lt, 0.2, 960, 400, outlined(0, 0, ['×3 반복'], { size: 130, fill: MINT, sw: 28 }), { rot: -4, bob: 5 }); h += `<g transform="translate(960 600)" opacity=".9"><path d="M-110 0 a110 110 0 1 1 40 85" fill="none" stroke="${MINT}" stroke-width="18" stroke-linecap="round"/><path d="M-96 100 l30 -32 l-40 -6 Z" fill="${MINT}" stroke="${MINT}" stroke-width="6"/></g>`; }
+  if (rep) { h += rp(t, lt, 0.2, 960, 190, outlined(0, 0, ['×3 반복'], { size: 130, fill: MINT, sw: 28 }), { rot: -4, bob: 5 }); h += `<g transform="translate(960 520)" opacity=".9"><path d="M-110 0 a110 110 0 1 1 40 85" fill="none" stroke="${MINT}" stroke-width="18" stroke-linecap="round"/><path d="M-96 100 l30 -32 l-40 -6 Z" fill="${MINT}" stroke="${MINT}" stroke-width="6"/></g>`; }
   return h;
 }
 function rbarsScene(t, lt, a) {
