@@ -105,12 +105,13 @@ function bhomeScene(t, lt, a) {   // late night, the child asleep; Zero (still w
   h += `<rect x="1180" y="160" width="360" height="300" fill="#2E3A5A" stroke="${INK}" stroke-width="7"/><circle cx="1450" cy="240" r="34" fill="#F4F0DA"/><path d="M1360 160 V460 M1180 310 H1540" stroke="${INK}" stroke-width="6"/>`;
   h += `<rect x="-700" y="${FLOORB}" width="3320" height="700" fill="#8A8F98"/><path d="M-700 ${FLOORB} H2620" stroke="${INK}" stroke-width="6"/>`;
   h += `<rect x="520" y="740" width="600" height="130" rx="10" fill="#8E7A5E" stroke="${INK}" stroke-width="6"/><rect x="530" y="700" width="580" height="50" rx="18" fill="#EDEDED" stroke="${INK}" stroke-width="6"/>`;
-  h += char({ t, seed: 97, x: 700, y: 742, s: 0.5, pose: '침대', ex: exprAt([[0, '졸림']], t), goggles: 'none', vest: '#9CB8D8', patch: false, tee: true, noBlink: true });
-  h += `<path d="M640 700 Q800 650 1100 690 L1100 760 L640 760 Z" fill="#A9B6C8" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+  h += `<rect x="560" y="660" width="130" height="50" rx="22" fill="#F6F4EE" stroke="${INK}" stroke-width="5"/>`;   // pillow
+  h += char({ t, seed: 97, x: 830, y: 700, s: 0.5, rot: -90, pose: '서기', ex: exprAt([[0, '졸림']], t), goggles: 'none', vest: '#9CB8D8', patch: false, tee: true, still: true, noBlink: true });   // the child lying down, head on the pillow
+  h += `<path d="M700 655 Q880 620 1090 660 L1100 745 L700 745 Z" fill="#A9B6C8" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;   // blanket up to the chin
   h += `<circle cx="1000" cy="560" r="160" fill="url(#warm)" opacity=".55"/></g>`;
   const pat = Math.sin(t * 2.4) * 6;
-  const pose = Object.assign({}, P['서기'], { armR: [[252, 285], [200, 330], [150 + pat, 350]], hR: [146 + pat, 352] });
-  h += ZB({ t, seed: 98, x: 840, y: FLOORB - 4, s: 0.95, pose, ex: exprAt([[0, '미소']], t), look: [-0.5, 0.6], tilt: 10 });
+  const pose = Object.assign({}, P['서기'], { armL: [[148, 285], [100, 330], [64 + pat, 352]], hL: [60 + pat, 354] });
+  h += ZB({ t, seed: 98, x: 790, y: FLOORB - 4, s: 0.95, pose, ex: exprAt([[0, '미소']], t), look: [-0.6, 0.6], tilt: -8 });
   return h;
 }
 Object.assign(CAMS, { bhome: [1.1, 1.2, 860, 600], bstep: 'fixed', boffice: [1.1, 1.18, 960, 560], bbelt: [1.0, 1.06, 960, 540], bstop: [1.08, 1.16, 960, 560], bq: 'fixed', bcourt: [1.1, 1.18, 900, 560] });
@@ -138,8 +139,8 @@ function bofficeScene(t, lt, a) {
   const press = k === 3 && lt > 0.55 * D;
   h += `<g filter="url(#dullb)"><rect x="560" y="720" width="760" height="26" fill="#8F8A82" stroke="${INK}" stroke-width="6"/><path d="M590 746 V${FLOORB} M1290 746 V${FLOORB}" stroke="${INK}" stroke-width="10"/>` +
     (k >= 1 ? mirrorB(1500, BOSSB({ t, seed: 100, x: 1500, y: FLOORB - 4, s: 0.95, pose: k === 2 ? '팔짱' : '서기', ex: exprAt([[0, k === 2 ? '찡그림' : '기본']], t), look: [-0.6, 0] })) : '') + '</g>';
-  h += monitorB(1080, 590, '안전성 검사: 생략', true, press);
-  if (press) h += `<circle cx="1080" cy="642" r="${f1(30 + 40 * prog(lt, 0.55 * D, 0.55 * D + 0.4))}" fill="none" stroke="#FF5A4A" stroke-width="6" opacity="${f1((1 - prog(lt, 0.55 * D, 0.55 * D + 0.5)) * 100) / 100}"/>`;
+  h += monitorB(1150, 590, '안전성 검사: 생략', true, press);
+  if (press) h += `<circle cx="1150" cy="642" r="${f1(30 + 40 * prog(lt, 0.55 * D, 0.55 * D + 0.4))}" fill="none" stroke="#FF5A4A" stroke-width="6" opacity="${f1((1 - prog(lt, 0.55 * D, 0.55 * D + 0.5)) * 100) / 100}"/>`;
   return h;
 }
 const mirrorB = (x, svg) => `<g transform="translate(${2 * x} 0) scale(-1 1)">${svg}</g>`;
@@ -161,7 +162,7 @@ function bbeltScene(t, lt, a) {
   // k2, k5: late night, alone at the desk, telling himself it's fine
   let h = `<defs>${nightB}</defs><g filter="url(#nightb)">` + officeB(t) + '</g>';
   h += chair12(940, FLOORB - 4, 0.95) + ZB({ t, seed: 103, x: 940, y: FLOORB - 4, s: 0.95, pose: '앉아턱' in P ? '앉아턱' : '앉기', ex: exprAt([[0, '지친']], t), look: [0, 0.4] });
-  h += `<g filter="url(#nightb)"><rect x="560" y="720" width="760" height="26" fill="#8F8A82" stroke="${INK}" stroke-width="6"/><path d="M590 746 V${FLOORB} M1290 746 V${FLOORB}" stroke="${INK}" stroke-width="10"/></g>` + monitorB(1150, 590, '승인 완료', false, false);
+  h += `<g filter="url(#nightb)"><rect x="560" y="720" width="760" height="26" fill="#8F8A82" stroke="${INK}" stroke-width="6"/><path d="M590 746 V${FLOORB} M1290 746 V${FLOORB}" stroke="${INK}" stroke-width="10"/></g>` + monitorB(1290, 590, '승인 완료', false, false);
   return h;
 }
 P['앉아턱'] = P['앉아턱'] || Object.assign({}, P['앉기'], { armR: [[252, 290], [288, 332], [246, 292]], hR: [238, 284] });
@@ -173,8 +174,8 @@ function bstopScene(t, lt, a) {
   if (warm > 0) h += `<rect x="-700" y="-400" width="3320" height="1900" fill="#FFD9A0" opacity="${f1(warm * 22) / 100}"/>`;
   if (k === 3) h += HALO(char({ t, seed: 104, x: 300, y: FLOORB - 4, s: 0.7, pose: '앉기', goggles: 'none', vest: '#7A6E8A', patch: false, tee: true, ex: exprAt([[0, '졸림']], t) })) + chair12(300, FLOORB - 4, 0.7) +
     `<path d="M240 ${FLOORB - 330} l-18 -40 l36 18 Z M360 ${FLOORB - 330} l18 -40 l-36 18 Z" fill="#9A3A3A" stroke="${INK}" stroke-width="4"/>` + T8(300, FLOORB - 400, 'Zzz', { size: 40, fill: NAVY });   // the lazy villain (horns!) dozing
-  if (k === 6) for (let n = 0; n < 4; n++) { const x = 180 + n * 140, sp = stampPose(t * 1.6 + n * 0.25); h += ZB({ t, seed: 110 + n, x, y: FLOORB - 4, s: 0.45, pose: sp, ex: exprAt([[0, '기본']], t), look: [0.3, 0.4], hat: true }); }
-  if (k >= 4) {   // standing in front of the team leader
+  if (k === 6) for (let n = 0; n < 4; n++) { const x = 100 + n * 115, sp = stampPose(t * 1.6 + n * 0.25); h += chair12(x, FLOORB - 4, 0.45) + ZB({ t, seed: 110 + n, x, y: FLOORB - 4, s: 0.45, pose: sp, ex: exprAt([[0, '기본']], t), look: [0.3, 0.4], hat: true }); }
+  if (k === 4 || k === 5) {   // standing in front of the team leader
     h += mirrorB(1450, BOSSB({ t, seed: 105, x: 1450, y: FLOORB - 4, s: 0.95, pose: '서기', ex: exprAt([[0, k === 5 ? '놀람' : '기본']], t), look: [-0.6, 0] }));
     h += ZB({ t, seed: 106, x: 1150, y: FLOORB - 4, s: 0.95, pose: '내밀기' in P ? '내밀기' : '서기', ex: exprAt([[0, '결심']], t), look: [0.6, 0], hat: false });
     h += `<rect x="1240" y="${FLOORB - 300}" width="70" height="90" fill="#F4F4F0" stroke="${INK}" stroke-width="4"/>`;
