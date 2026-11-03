@@ -237,6 +237,18 @@
    "item": "Gemini TTS ep.019 narration (2 full passes: tempo retune)",
    "count": 2,
    "unit_usd": 0.2
+  },
+  {
+   "at": "2026-11-03",
+   "item": "Nano Banana 2.1 wishroom sample pictures (2K)",
+   "count": 10,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-11-03",
+   "item": "Gemini TTS wishroom sample (first 27 lines)",
+   "count": 1,
+   "unit_usd": 0.07
   }
  ]
 }

@@ -1,0 +1,8 @@
+tts38/
+voice.wav
+mix.wav
+frames/
+*.mp4
+sample/clips/
+*.log
+ai/*_old.png
