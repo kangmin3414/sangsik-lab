@@ -50,7 +50,7 @@ for n in range(N):
     # darken top and bottom for text
     ov = Image.new('L', (W, H), 0); dd = ImageDraw.Draw(ov)
     for y in range(0, 520): dd.line((0, y, W, y), fill=int(150 * (1 - y / 520)))
-    for y in range(1300, H): dd.line((0, y, W, y), fill=int(190 * (y - 1300) / (H - 1300)))
+    for y in range(1150, H): dd.line((0, y, W, y), fill=int(190 * (y - 1150) / (H - 1150)))
     frame = Image.composite(Image.new('RGB', (W, H), (8, 10, 18)), frame, ov)
     d = ImageDraw.Draw(frame)
     lt = t - (l['t0'] - 0.12)
@@ -61,7 +61,7 @@ for n in range(N):
             v0 = L[i - 1]['args']['volt']; v = v0 + (a['volt'] - v0) * min(1, lt / 0.6)
         meter(d, round(v / 15) * 15, v >= 300)
     if a.get('card'):
-        f = font(96 if len(a['card']) <= 8 else 76); y = 560 if 'volt' in a else 330
+        f = font(104 if len(a['card']) <= 10 else 78); y = 560 if 'volt' in a else 330
         for m, line in enumerate(wrap(d, a['card'], f, W - 140)): stroke_text(d, (W // 2, y + m * 112), line, f, (255, 226, 122), 12)
     # subtitles (per segment, speaker colour)
     segs = l['segs'] or [{'v': 'N', 'text': l['sub'], 't0': l['t0'], 't1': l['t1']}]
@@ -69,9 +69,9 @@ for n in range(N):
     for sg in segs:
         if t >= sg['t0'] - 0.08 and t <= sg['t1'] + 0.35: cur = sg
     if cur:
-        f = font(66); lines = wrap(d, cur['text'], f, W - 160)
-        y0 = 1560 - (len(lines) - 1) * 44
-        for m, line in enumerate(lines): stroke_text(d, (W // 2, y0 + m * 88), line, f, COL.get(cur['v'], (255, 255, 255)), 10)
+        f = font(66); lines = wrap(d, cur['text'], f, W - 260)   # keep clear of the Shorts buttons (right) and caption area (bottom)
+        y0 = 1390 - (len(lines) - 1) * 44
+        for m, line in enumerate(lines): stroke_text(d, (W // 2 - 40, y0 + m * 88), line, f, COL.get(cur['v'], (255, 255, 255)), 10)
     frame.save(f'frames/f{n:05d}.jpg', quality=90)
 print('frames', N)
 # ---- sound: drone + tick + heartbeat + sfx under the voice ----
