@@ -26,8 +26,8 @@ plan = []; t = 0.8; first = True; title_at = crash_at = warm_at = silence_from =
 for i, (k, x, mode) in enumerate(ITEMS):
     if k == 'SEC':
         if not first: t += SECGAP
-        if x.startswith('0:35'): title_at = t; t += TITLE + 0.4
-        if x.startswith('3:20'): warm_at = t - 0.6
+        if x.startswith('두 번 살아남은'): title_at = t; t += TITLE + 0.4
+        if x.startswith('반전'): warm_at = t - 0.6
         first = False; plan.append(dict(kind='sec', t=t, text=x)); continue
     if k == 'PAUSE': mute.append((t - 0.1, t + x, 0.5)); t += x; continue
     w = load(takes[x]['take'])
@@ -77,6 +77,8 @@ mix = voxc + sfx * 0.6 + mus * 0.35 * duck * gate
 sf.write('mix5_raw.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix5_raw.wav', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=9,alimiter=limit=0.8,volume=-1dB', '-ar', '48000', 'mix5.wav'], check=True)
 
+json.dump({'title_at': title_at, 'warm_at': warm_at, 'silence_from': silence_from, 'crash_at': crash_at, 'end_at': end_at, 'END': END, 'plan': [{k: v for k, v in p.items() if k != 'wav'} for p in plan]}, open('plan6.json', 'w'), ensure_ascii=False, indent=1)
+if os.environ.get('NOVIDEO'): print('mix only; plan6.json written'); raise SystemExit
 F = '/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc'; FR = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
 fT = ImageFont.truetype(F, 64, index=1); fL = ImageFont.truetype(F, 40, index=1); fS = ImageFont.truetype(FR, 22, index=1); fE = ImageFont.truetype(F, 34, index=1)
 def wrap(s, n=24):
