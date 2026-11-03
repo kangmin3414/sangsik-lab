@@ -42,7 +42,7 @@ JOBS = {
               f'staring into space and murmuring to himself with a wistful face. Cosy, quiet, softly lit.'),
  'A7': ([ZR], f'{ZH} {ROOM} at night: on the patterned wallpaper wall, the outline of a tall door that was never there slowly rises out of the wallpaper pattern, its edges '
               f'glowing with a soft warm white light; Zero has stepped back, holding a crumpled ramen packet, eyes wide in astonishment. Magical, mysterious, wondrous, not scary.'),
- 'A8': ([ZR], f'{ZH} He wears simple slippers. The magical door in the wallpaper wall now stands open: beyond it is a vast, endless, softly glowing pure white space with a '
+ 'A8': ([ZR, 'ai/A7.png'], f'{ZH} He wears simple slippers. The SAME semi-basement room and the SAME glowing door as in the second reference picture (high street-level window, patterned wallpaper, single bed, small low table). The magical door now stands open: beyond it is a vast, endless, softly glowing pure white space with a '
               f'gentle pearly haze, no walls and no horizon; seen from behind, Zero stands at the threshold and lifts one slippered foot to step in, a long soft shadow behind him '
               f'in the small room. Awe, wonder, calm.'),
  'A9': ([ZR], f'{ZH} In an endless, softly glowing white space with a pearly haze, an impossibly long banquet table stretches to the horizon, covered with every kind of food — '
