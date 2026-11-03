@@ -102,7 +102,7 @@ function wbaseScene(t, lt, a) {
   return h;
 }
 function ctitleScene(t, lt, a) {
-  let h = `<g filter="url(#dull)">` + roomWR(t, { lamp: true }) + `</g><rect width="1920" height="1080" fill="#1A1F33" opacity=".55"/>`;
+  let h = `<g filter="url(#dull)">` + roomWR(t, { lamp: true }) + `</g><rect x="-900" y="-600" width="3720" height="2300" fill="#1A1F33" opacity=".55"/>`;
   const L = TL.lines.find(l => l.scene === 'ctitle'), txt = (L && L.sub) || '';
   const [l1, l2] = txt.split(', ');
   h += pop(t, t - lt + 0.1, t + 99, 960, 470, outlined(0, 0, [[[l1 + ',', '#fff']], [[l2 || '', YEL]]], { size: 82, sw: 16, lh: 112 }), { noPop: true, inDur: 0.45 });
