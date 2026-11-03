@@ -300,7 +300,7 @@ function hudWR(t) {
   const c = L[i] && L[i].args && L[i].args.count; if (!c) return '';
   let j = i; while (j > 0 && L[j - 1].args && L[j - 1].args.count === c) j--;
   const t0 = L[j].t0 - 0.15, k = clamp((t - t0) / 0.5, 0, 1), big = clamp(1 - (t - t0 - 1.6) / 0.6, 0, 1);   // each new count lands big in the middle, then settles top-right
-  const x = lerp(1690, 960, big), y = lerp(80, 300, big), sc = lerp(1, 2.1, big);
+  const x = lerp(1690, 960, big), y = lerp(80, 150, big), sc = lerp(1, 1.7, big);
   return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${f1(sc)})" opacity="${f1(k * 100) / 100}"><rect x="-210" y="-36" width="420" height="72" rx="36" fill="${NAVY}" opacity=".82"/>` + T8(0, 13, '방에 들어온 지  ' + c, { size: 34, fill: '#fff' }) + '</g>';
 }
 render = function (t) { _render12(t); const h = hudWR(t); if (h) document.getElementById('v').insertAdjacentHTML('beforeend', h); };
