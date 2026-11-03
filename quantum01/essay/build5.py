@@ -29,7 +29,7 @@ for i, (k, x, mode) in enumerate(ITEMS):
         if x.startswith('0:35'): title_at = t; t += TITLE + 0.4
         if x.startswith('3:20'): warm_at = t - 0.6
         first = False; plan.append(dict(kind='sec', t=t, text=x)); continue
-    if k == 'PAUSE': mute.append((t - 0.1, t + x)); t += x; continue
+    if k == 'PAUSE': mute.append((t - 0.1, t + x, 0.5)); t += x; continue
     w = load(takes[x]['take'])
     if mode == 'whisper': t += 0.8
     plan.append(dict(kind='line', t=t, dur=len(w) / SR, text=x, wav=w))
@@ -55,7 +55,7 @@ def beep():   # 기계 불빛의 작은 삐 소리(정적 구간)
     x = tt(0.12); return (np.sin(2 * np.pi * 1000 * x) * np.minimum(1, (0.12 - x) / 0.02) * 0.12).astype(np.float32)
 def put(buf, t0, x, g=1.0):
     a = int(t0 * SR); x = x[:max(0, len(buf) - a)]; buf[a:a + len(x)] += x * g
-put(sfx, crash_at, crash()); mute.append((crash_at + 0.05, crash_at + 1.6))
+put(sfx, crash_at, crash()); mute.append((crash_at + 0.05, crash_at + 1.6, 0.0))
 put(sfx, title_at, boom(), 0.9)
 for k in range(int((warm_at - silence_from) / 1.2)): put(sfx, silence_from + 0.4 + k * 1.2, beep())
 
@@ -65,10 +65,10 @@ def bed(path, skip, length, fin=2.0, fout=3.0):
     y = y[:length].copy(); y[:int(fin * SR)] *= np.linspace(0, 1, int(fin * SR)); y[-int(fout * SR):] *= np.linspace(1, 0, int(fout * SR)); return y
 mus = np.zeros(N, np.float32)
 a = bed('bgm/piano_bed.mp3', 4.0, int(silence_from * SR), fout=2.5); mus[:len(a)] += a
-b = bed('bgm/warm_bed.mp3', 0.0, N - int(warm_at * SR), fin=3.0, fout=4.0); mus[int(warm_at * SR):] += b
+b = bed('bgm/warm_bed.mp3', 0.0, min(N - int(warm_at * SR), int(143.0 * SR)), fin=3.0, fout=9.0); mus[int(warm_at * SR):int(warm_at * SR) + len(b)] += b   # 트랙 길이(143.7초)를 넘기지 않음: 반복 이음매 없이 길게 페이드아웃
 gate = np.ones(N, np.float32)
-for a0, a1 in mute: gate[int(a0 * SR):int(a1 * SR)] = 0
-gate = np.convolve(gate, np.ones(4800) / 4800, 'same')
+for a0, a1, fl in mute: gate[int(a0 * SR):int(a1 * SR)] = np.minimum(gate[int(a0 * SR):int(a1 * SR)], fl)   # 정적 구간은 음악을 끊지 않고 낮춤(부드럽게)
+gate = np.convolve(gate, np.ones(19200) / 19200, 'same')
 env = np.convolve(np.abs(vox), np.ones(2400) / 2400, 'same'); duck = np.convolve(1 - 0.5 * np.clip(env / 0.04, 0, 1), np.ones(9600) / 9600, 'same')
 sf.write('vox5_raw.wav', vox, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'vox5_raw.wav', '-af', 'highpass=f=80,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=120:makeup=2', 'vox5_c.wav'], check=True)
