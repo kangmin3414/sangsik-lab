@@ -42,13 +42,13 @@ function roomWR(t, o = {}) {
   // wall details: shelf above the bed, calendar, small round mirror, a sticky note by the window
   h += `<rect x="120" y="520" width="300" height="16" rx="4" fill="#9C8466" stroke="${INK}" stroke-width="5"/><rect x="150" y="452" width="40" height="68" fill="#7C9AB0" stroke="${INK}" stroke-width="4"/><rect x="196" y="466" width="34" height="54" fill="#C98A5A" stroke="${INK}" stroke-width="4"/><path d="M300 520 Q300 478 330 470 Q360 478 360 520 Z" fill="#8FB08A" stroke="${INK}" stroke-width="4"/>`;
   h += `<rect x="470" y="330" width="130" height="160" rx="6" fill="#F7F3EA" stroke="${INK}" stroke-width="5"/><rect x="470" y="330" width="130" height="38" fill="#C9523F" stroke="${INK}" stroke-width="5"/>` + [0, 1, 2, 3].map(r => [0, 1, 2, 3].map(c => `<rect x="${484 + c * 28}" y="${384 + r * 24}" width="16" height="12" fill="#D8D0C0"/>`).join('')).join('');
-  h += `<circle cx="1400" cy="430" r="58" fill="#DCE8EE" stroke="${INK}" stroke-width="6"/><path d="M1370 410 L1392 388" stroke="#fff" stroke-width="8" stroke-linecap="round"/>`;
+  h += `<circle cx="1330" cy="440" r="54" fill="#DCE8EE" stroke="${INK}" stroke-width="6"/><path d="M1302 420 L1322 400" stroke="#fff" stroke-width="8" stroke-linecap="round"/>`;
   h += `<rect x="1290" y="150" width="56" height="56" fill="#F6E27A" stroke="${INK}" stroke-width="3" transform="rotate(6 1318 178)"/>`;
   // low bed (left)
-  h += `<rect x="70" y="790" width="560" height="80" rx="8" fill="#8E7A5E" stroke="${INK}" stroke-width="6"/>`;
-  h += `<rect x="80" y="752" width="540" height="46" rx="18" fill="#EDEDED" stroke="${INK}" stroke-width="6"/>`;
-  h += `<path d="M90 760 Q200 720 330 748 Q440 772 520 742 L560 760 L560 800 L90 800 Z" fill="#8F96A0" stroke="${INK}" stroke-width="5"/>`;
-  h += `<rect x="96" y="712" width="150" height="56" rx="24" fill="#F6F4EE" stroke="${INK}" stroke-width="5"/>`;
+  h += `<rect x="60" y="800" width="590" height="70" rx="6" fill="#8E7A5E" stroke="${INK}" stroke-width="6"/>`;
+  h += `<path d="M60 742 L650 742 L650 800 L60 800 Z" fill="#F1EFEA" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M60 742 L84 716 L626 716 L650 742" fill="#E4E1DA" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
+  h += `<path d="M84 716 Q190 690 300 712 L330 742 L64 742 Z" fill="#8F96A0" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M64 742 L330 742 L320 790 Q190 800 64 788 Z" fill="#8F96A0" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
+  h += `<rect x="100" y="680" width="140" height="48" rx="22" fill="#F6F4EE" stroke="${INK}" stroke-width="5"/>`;
   // lamp cabinet, rice cooker
   h += `<rect x="660" y="740" width="150" height="130" rx="6" fill="#9C8466" stroke="${INK}" stroke-width="6"/>`;
   h += `<path d="M735 740 V690" stroke="${INK}" stroke-width="6"/><path d="M700 690 L770 690 L752 640 L718 640 Z" fill="#F3D9A0" stroke="${INK}" stroke-width="5"/>`;
@@ -91,8 +91,10 @@ function wbaseScene(t, lt, a) {
   const k = a.k || 0, D = a._dur || 3;
   let h = `<g filter="url(#dull)">` + roomWR(t, { lamp: true });
   const ex = k === 1 ? '지침' : k === 4 ? '지친' : k === 3 ? '기본' : '지침';
-  h += ZW({ t, seed: 41, x: 470, y: FLOOR - 4, s: 0.95, pose: '앉아폰', ex: exprAt([[0, ex]], t), look: k === 3 ? [0.4, 0.2] : [0.1, 0.35] });
-  h += `<circle cx="470" cy="740" r="70" fill="url(#screenGlow)" opacity=".6"/>`;
+  h += ZW({ t, seed: 41, x: 470, y: 742 + 108 * 0.95 - 6, s: 0.95, pose: '앉아폰', ex: exprAt([[0, ex]], t), look: k === 3 ? [0.4, 0.2] : [0.1, 0.35] });
+  { const py = 742 + 108 * 0.95 - 6 + (362 - 560) * 0.95;
+    h += `<circle cx="470" cy="${f1(py)}" r="80" fill="url(#screenGlow)" opacity=".7"/><rect x="452" y="${f1(py - 30)}" width="36" height="58" rx="7" fill="#2A2F3A" stroke="${INK}" stroke-width="4"/><rect x="457" y="${f1(py - 24)}" width="26" height="44" rx="3" fill="#BFE4FF"/>`;
+    if (k === 2) h += pop(t, t - lt + fracOf13(t, '카드값') * D, t - lt + D * 0.45, 820, f1(py - 120), `<rect x="-150" y="-44" width="300" height="88" rx="16" fill="#fff" stroke="${INK}" stroke-width="4"/>` + T8(0, -8, '[카드] 결제 예정 안내', { size: 24, fill: NAVY }) + T8(0, 24, '잔액이 부족합니다', { size: 22, fill: RED }), { rot: -2 }); }
   h += '</g>';
   if (k === 3) {   // the corner of the note — the one thing in colour, softly twinkling
     const tw = 0.5 + 0.5 * Math.sin(t * 5);
@@ -134,8 +136,8 @@ function wdoorScene(t, lt, a) {
     h += ZW({ t, seed: 43, x: 1130, y: FLOOR - 4, s: 0.95, pose: '서기', ex: exprAt([[0, ex]], t), look: [0.7, -0.1] });
   } else {   // walks into the light, getting smaller, then the whole screen turns white
     const p = prog(lt, 0.3, D - 0.2), x = lerp(1130, 1612, easeInOut(p)), s = lerp(0.95, 0.7, p), y = lerp(FLOOR - 4, 860, p);
-    h += `<g opacity="${f1((1 - prog(p, 0.75, 1)) * 100) / 100}">` + ZW({ t, seed: 43, x, y, s, pose: walkPose(lt * 7, 0.8), ex: exprAt([[0, '결심']], t), look: [0.8, 0] }) + '</g>';
-    h += `<rect width="1920" height="1080" fill="#FFFDF6" opacity="${f1(prog(lt, D - 1.6, D + 0.2) * 100) / 100}"/>`;
+    h += `<g opacity="${f1((1 - prog(p, 0.75, 1)) * 100) / 100}">` + ZW({ t, seed: 43, x, y, s, pose: walkPose(lt * 7, 0.8), ex: exprAt([[0, '미소']], t), look: [0.8, 0] }) + '</g>';
+    h += `<rect x="-900" y="-600" width="3720" height="2300" fill="#FFFDF6" opacity="${f1(prog(lt, D - 1.6, D + 0.2) * 100) / 100}"/>`;
   }
   return h;
 }

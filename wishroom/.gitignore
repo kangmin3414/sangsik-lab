@@ -6,3 +6,10 @@ frames/
 sample/clips/
 *.log
 ai/*_old.png
+node_modules/
+package-lock.json
+_p*.jpg
+_z*.jpg
+r*.log
+frames/
+mix.wav
