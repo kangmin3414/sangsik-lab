@@ -22,8 +22,7 @@ function gear(x, y, r, teeth, rot, fill) {
 }
 const gearHat = (o, t) => local17(o, `<g transform="translate(200 50) rotate(${f1(tickStep(t) * 12)})"><path d="${gearPath(30, 10, 9)}" fill="#C9A24A" stroke="${INK}" stroke-width="5"/><circle r="9" fill="#8A6A2A" stroke="${INK}" stroke-width="4"/></g>`);
 // Zero: orange hoodie (the only colour) + gear hat
-const ZB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#F28C38', patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)' }, o)) +
-  local17(Object.assign({ pose: '서기' }, o), `<path d="M150 262 Q200 300 250 262" fill="none" stroke="${INK}" stroke-width="5"/><path d="M186 280 L186 318 M214 280 L214 318" stroke="#FFE0C0" stroke-width="5" stroke-linecap="round"/>`)) + (o.hat === false ? '' : gearHat(o, o.t));
+const ZB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#F28C38', patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)', hoodie: 'rgba(120,40,0,0.18)' }, o))) + (o.hat === false ? '' : gearHat(o, o.t));
 const BOSSB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#6E737C', patch: false, tee: true, collar: true, tie: '#3A3F48', hair: '#9A9A9A', vshade: 'rgba(0,0,0,0.25)' }, o)));
 const COATB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#D9DCDF', patch: false, tee: true, collar: true, hair: '#4A4A4A', vshade: 'rgba(0,0,0,0.18)' }, o)));
 // stamping arm, synced to whole seconds: slam at t%1 ≈ 0, lifts after

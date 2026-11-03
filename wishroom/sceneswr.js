@@ -6,8 +6,7 @@ function local17(o, inner) {
   const s = o.s || 1, p = typeof o.pose === 'string' ? P[o.pose] : (o.pose || P['서기']);
   return `<g transform="translate(${f1(o.x)} ${f1(o.y)}) rotate(${f1(o.rot || 0)}) scale(${s}) translate(-200 -560) translate(0 ${f1((p && p.dy) || 0)})">${inner}</g>`;
 }
-const ZW = o => HALO(char(Object.assign({ goggles: 'none', vest: '#9A9EA6', patch: false, tee: true, vshade: 'rgba(0,0,0,0.18)' }, o)) +
-  local17(Object.assign({ pose: '서기' }, o), `<path d="M150 262 Q200 300 250 262" fill="none" stroke="${INK}" stroke-width="5"/><path d="M186 280 L186 318 M214 280 L214 318" stroke="#E8E8E8" stroke-width="5" stroke-linecap="round"/>`));
+const ZW = o => HALO(char(Object.assign({ goggles: 'none', vest: '#9A9EA6', patch: false, tee: true, vshade: 'rgba(0,0,0,0.18)', hoodie: 'rgba(0,0,0,0.12)' }, o)));
 const FLOOR = 870;
 if (!P['문고리']) P['문고리'] = Object.assign({}, P['서기'], { armR: [[252, 285], [318, 318], [372, 336]], hR: [380, 338] });
 P['앉아턱'] = Object.assign({}, P['앉기'], { armR: [[252, 290], [288, 332], [246, 292]], hR: [238, 284] });

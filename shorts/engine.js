@@ -143,6 +143,12 @@ function char(o) {
   if (o.bandCollar) h += `<path d="M146 262 Q200 248 254 262 L262 302 Q230 314 200 300 Q170 314 138 302 Z" fill="#FBFAF6" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M200 262 L200 300" stroke="${INK}" stroke-width="3" opacity=".4"/>`; // flat white falling-band collar (17th c.)
   if (o.collar) h += `<path d="M172 256 L200 300 L228 256 L200 268 Z" fill="#F4F1EA" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
   if (o.tie) h += `<path d="M200 262 L190 290 L200 360 L210 290 Z" fill="${o.tie}" stroke="${INK}" stroke-width="4"/>`;
+  if (o.hoodie) { // 2026-11-03: hoodie drawn as part of the body (moves with breathing; the head is drawn over the hood)
+    const hc = o.hoodie === true ? 'rgba(0,0,0,0.14)' : o.hoodie, cord = o.cord || '#FFF1E0';
+    h += `<path d="M136 266 Q150 236 200 236 Q250 236 264 266 Q246 300 200 298 Q154 300 136 266 Z" fill="${vest}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M136 266 Q150 236 200 236 Q250 236 264 266 Q246 300 200 298 Q154 300 136 266 Z" fill="${hc}"/>`;   // the hood, folded behind the neck
+    for (const [x0, x1] of [[188, 184], [212, 216]]) h += `<path d="M${x0} 292 Q${(x0 + x1) / 2 + (x0 < 200 ? -3 : 3)} 316 ${x1} 338" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><path d="M${x0} 292 Q${(x0 + x1) / 2 + (x0 < 200 ? -3 : 3)} 316 ${x1} 338" fill="none" stroke="${cord}" stroke-width="4" stroke-linecap="round"/><rect x="${x1 - 4}" y="336" width="8" height="12" rx="3" fill="${cord}" stroke="${INK}" stroke-width="3"/>`;   // drawstrings with tips
+    h += `<path d="M162 366 Q200 358 238 366 L234 398 L166 398 Z" fill="${hc}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;   // front pocket
+  }
   if (o.patch !== false) {
     h += `<line x1="200" y1="256" x2="200" y2="416" stroke="${INK}" stroke-width="4"/>`;
     h += `<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"/><text x="168" y="318" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="18" fill="${MINT}">00</text>`;
