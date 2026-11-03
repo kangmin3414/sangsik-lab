@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 from voice5 import ITEMS
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 SR = 48000; FPS = 30; W, Hh = 1280, 720
-SPEED, GAP, SECGAP, TITLE, ENDCARD = 1.15, 0.35, 1.0, 3.6, 6.0
+SPEED, GAP, SECGAP, TITLE, ENDCARD = float(os.environ.get('SPEED', 1.0)), 0.40, 1.1, 3.6, 6.0
 takes = json.load(open('takes5.json'))
 
 def load(path):
@@ -15,9 +15,10 @@ def load(path):
     e = np.convolve(np.abs(w), np.ones(480) / 480, 'same'); idx = np.where(e > 0.008)[0]
     w = w[max(0, idx[0] - 480):min(len(w), idx[-1] + 2400)]
     with tempfile.TemporaryDirectory() as d:
-        sf.write(f'{d}/i.wav', w, SR)
-        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f'{d}/i.wav', '-af', f'rubberband=tempo={SPEED}', f'{d}/o.wav'], check=True)
-        w = sf.read(f'{d}/o.wav', dtype='float32')[0]
+        if SPEED == 1.0: pass
+        else: sf.write(f'{d}/i.wav', w, SR)
+        if SPEED != 1.0: subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f'{d}/i.wav', '-af', f'rubberband=tempo={SPEED}', f'{d}/o.wav'], check=True)
+        if SPEED != 1.0: w = sf.read(f'{d}/o.wav', dtype='float32')[0]
     f1, f2 = 480, 1920; w[:f1] *= np.linspace(0, 1, f1); w[-f2:] *= np.linspace(1, 0, f2)
     return w
 
