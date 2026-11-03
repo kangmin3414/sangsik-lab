@@ -8,7 +8,7 @@ SHOT = {0: 'A1', 3: 'A2', 6: 'A3', 11: 'A4', 12: 'A5', 13: 'A6', 15: 'A7', 16: '
 XF = 0.7; FPS = 24
 starts = [(0.0 if i == 0 else L[i]['t0'] - 0.35, k) for i, k in sorted(SHOT.items())]
 shots = [(k, s, (starts[n + 1][0] if n + 1 < len(starts) else DUR)) for n, (s, k) in enumerate(starts)]
-MOVES = ['in', 'right', 'out', 'left', 'in', 'up', 'in', 'out', 'right', 'in']
+MOVES = ['in', 'in', 'out', 'left', 'in', 'up', 'in', 'out', 'right', 'in']
 
 
 def clip(n, k, d):
@@ -76,12 +76,12 @@ def main():
     fc.append(f"[{prev}]ass=sample/sample.ass,fade=t=in:st=0:d=0.8,fade=t=out:st={DUR - 1.5:.2f}:d=1.5[vout]")
     door = L[15]['t0'] - 1.0
     na = len(clips)
-    fc.append(f"[{na}:a]aresample=48000,pan=stereo|c0=c0|c1=c0,volume=1.0[vo]")
+    fc.append(f"[{na}:a]aresample=48000,pan=stereo|c0=c0|c1=c0,volume=1.0,asplit[vo][vo2]")
     fc.append(f"[{na + 1}:a]aresample=48000,atrim=0:{door + 2:.2f},afade=t=out:st={door:.2f}:d=2,volume=0.20[b1]")
     fc.append(f"[{na + 2}:a]aresample=48000,atrim=0:{DUR - door + 1:.2f},afade=t=in:st=0:d=2.5,afade=t=out:st={DUR - door - 2.5:.2f}:d=2.5,volume=0.22,adelay={int(door * 1000)}|{int(door * 1000)}[b2]")
     fc.append("[b1][b2]amix=inputs=2:normalize=0[bg]")
     fc.append("[bg][vo]sidechaincompress=threshold=0.04:ratio=4:attack=60:release=500[bgd]")
-    fc.append("[bgd][vo]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-16:TP=-1.5:LRA=11[aout]")
+    fc.append("[bgd][vo2]amix=inputs=2:normalize=0,alimiter=limit=0.95,loudnorm=I=-16:TP=-1.5:LRA=11[aout]")
     cmd = ['ffmpeg', '-y', '-v', 'error'] + ins + ['-i', 'voice.wav', '-i', '../bgm/cand_1_piano_b.mp3', '-i', '../bgm/cand_4_celesta_b.mp3',
            '-filter_complex', ';'.join(fc), '-map', '[vout]', '-map', '[aout]', '-t', f'{DUR:.2f}',
            '-c:v', 'libx264', '-crf', '20', '-preset', 'medium', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2',
