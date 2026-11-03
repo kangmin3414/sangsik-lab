@@ -49,7 +49,7 @@ put(L['l6'] + 2.0, ding(1568), 0.4)
 # l7 stamps
 for i in range(4): put(L['l7'] + 0.35 + i * 0.75, thud(0.25, 85), 0.9); put(L['l7'] + 0.35 + i * 0.75, noisehit(0.1), 0.4)
 # l8
-put(L['l8'] + 0.0, whoosh(0.4, 300, 2000), 0.4); put(L['l8'] + 1.3, thud(0.45, 55), 1.0); put(L['l8'] + 1.3, whoosh(0.3, 800, 4000), 0.6); put(L['l8'] + 1.55, ding(1568), 0.5)
+put(L['l8'] + 0.0, whoosh(0.4, 300, 2000), 0.4); put(L['l8'] + 5.6, thud(0.45, 55), 1.0); put(L['l8'] + 5.6, whoosh(0.3, 800, 4000), 0.6); put(L['l8'] + 5.85, ding(1568), 0.5)
 sf.write('sfx.wav', sfx, SR)
 # reuse v1 mix pieces: build voice+bed through build_s logic then add sfx
 src = open('build_s.py').read().replace("mix = voice * 1.0 + b * 0.55", "S = sf.read('sfx.wav', dtype='float32')[0]; mix = voice * 1.0 + b * 0.5 + S[:N] * 0.55").replace("'mix_s.wav'", "'mix_s2.wav'")

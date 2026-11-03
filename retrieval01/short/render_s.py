@@ -10,7 +10,7 @@ def run(a, b):
         for i in range(a, b):
             f = f'fr2/f{i:05d}.jpg'
             if os.path.exists(f) and os.path.getsize(f) > 5000: continue
-            pg.evaluate(f'render({i / FPS})'); pg.screenshot(path=f, type='jpeg', quality=90)
+            pg.evaluate(f'render({i / FPS})'); pg.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'); pg.screenshot(path=f, type='jpeg', quality=90)
         br.close()
 for a in range(0, N, 400): run(a, min(N, a + 400))
 print('frames', N)

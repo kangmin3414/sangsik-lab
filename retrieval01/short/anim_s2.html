@@ -253,7 +253,7 @@ function subtitle(t, L) {
   let s = c.text.replace(/[.,?]$/, ''); let lines = [s];
   if (s.length > 12) { const mid = Math.floor(s.length / 2); let best = -1, bd = 99; for (let i = 0; i < s.length; i++) if (s[i] === ' ' && Math.abs(i - mid) < bd) { bd = Math.abs(i - mid); best = i; } if (best > 0) lines = [s.slice(0, best), s.slice(best + 1)]; }
   lines = lines.map(l => l.split(/(\d+[퍼센트%대]*|[0-9]+)/).filter(Boolean).map(tx => [tx, /\d/.test(tx) ? YEL : WHITE]));
-  const kk = prog(t - (L.t0 + c.a * dur), 0, 0.14), sc = lerp(1.18, 1, easeOut(kk)); return `<g transform="translate(540 1470) scale(${f1(sc*1000)/1000}) translate(-540 -1470)">` + outlined(540, 1470 - (lines.length - 1) * 36, lines, { size: 70, sw: 16, lh: 84 }) + `</g>`;
+  const kk = prog(t - (L.t0 + c.a * dur), 0, 0.14), sc = lerp(1.18, 1, easeOut(kk)); return `<g transform="translate(540 1560) scale(${f1(sc*1000)/1000}) translate(-540 -1560)">` + outlined(540, 1560 - (lines.length - 1) * 36, lines, { size: 70, sw: 16, lh: 84 }) + `</g>`;
 }
 
 const flash = (lt, a, d, col = '#fff', mx = 0.9) => (lt < a || lt > a + d) ? '' : `<rect x="-200" y="-200" width="1480" height="2320" fill="${col}" opacity="${f1((1 - (lt - a) / d) * mx * 100) / 100}"/>`;
@@ -267,26 +267,26 @@ SC.l1 = (t, lt) => {
   h += speedLines(540, 820, 280, 900, 28, lt, '#fff', lt < 0.7 ? 0.7 * (1 - lt / 0.7) : 0);
   h += yel(t, 290, 1230, 1.15, { pose: poseAt([[0, '서기'], [0.45, '웅크림']], lt, 0.25), ex: exprAt([[0, '놀람'], [0.45, '걱정']], lt) });
   h += wht(t, 790, 1230 - bounce(lt, 0.6, 38, 2.2), 1.15, { pose: poseAt([[0, '서기'], [0.5, '만세']], lt, 0.25), ex: exprAt([[0, '기본'], [0.5, '뿌듯']], lt) });
-  h += confetti(t, 0.5, 790, 640, 28);
-  h += nameTag(t, 0.3, 99, 290, 1285, '노란 반', YEL) + nameTag(t, 0.3, 99, 790, 1285, '백지 반', '#fff');
-  h += pop(t, 0.0, 99, 540, 470, outlined(0, 0, [[['4번 읽은 반', YEL]], [['졌다', WHITE]]], { size: 150, sw: 30, lh: 170 }), { rot: -3, bob: 5, inDur: 0.22 });
-  h += fx(t, 0.9, 99, 330, 900, '헉', RED, { size: 96, rot: -12, wobble: 4 });
+  h += confetti(lt, 0.5, 790, 640, 28);
+  h += nameTag(lt, 0.3, 99, 290, 1285, '노란 반', YEL) + nameTag(lt, 0.3, 99, 790, 1285, '백지 반', '#fff');
+  h += pop(lt, 0.0, 99, 540, 470, outlined(0, 0, [[['4번 읽은 반', YEL]], [['졌다', WHITE]]], { size: 150, sw: 30, lh: 170 }), { rot: -3, bob: 5, inDur: 0.22 });
+  h += fx(lt, 0.9, 99, 120, 690, '헉', RED, { size: 96, rot: -12, wobble: 4 });
   return h + flash(lt, 0.0, 0.25);
 };
 // ---------- l2
-CAM.l2 = (t, lt) => [540, 900 - 20 * lt / 4.8, 1.0 + 0.1 * prog(lt, 0, 4.8)];
+CAM.l2 = (t, lt) => [540, 920, 1.0 + 0.04 * prog(lt, 0, 4.8)];
 SC.l2 = (t, lt) => {
   let h = '';
   h += yel(t, 290, 1230, 1.15, { pose: '서기', ex: exprAt([[0, '기본']], lt) }) + wht(t, 790, 1230, 1.15, { pose: '서기', ex: exprAt([[0, '기본']], lt) });
-  h += nameTag(t, 0, 99, 290, 1285, '노란 반', YEL) + nameTag(t, 0, 99, 790, 1285, '백지 반', '#fff');
-  h += pop(t, 0.1, 99, 540, 470, outlined(0, 0, [[['미국 대학생 실험', WHITE]]], { size: 92, sw: 20 }), { rot: -2, inDur: 0.25 });
-  h += pop(t, 1.1, 99, 540, 690, outlined(0, 0, [[['같은 글', YEL], [' = ', WHITE], ['같은 시간', YEL]]], { size: 100, sw: 22 }), { rot: 2, bob: 4, inDur: 0.25 });
+  h += nameTag(lt, 0, 99, 290, 1285, '노란 반', YEL) + nameTag(lt, 0, 99, 790, 1285, '백지 반', '#fff');
+  h += pop(lt, 0.1, 99, 540, 470, outlined(0, 0, [[['미국 대학생 실험', WHITE]]], { size: 92, sw: 20 }), { rot: -2, inDur: 0.25 });
+  h += pop(lt, 1.1, 99, 540, 690, outlined(0, 0, [[['같은 글', YEL], [' = ', WHITE], ['같은 시간', YEL]]], { size: 100, sw: 22 }), { rot: 2, bob: 4, inDur: 0.25 });
   h += book(290, 1000, 230, 170, 0, []) + book(790, 1000, 230, 170, 0, []);
   const eq = prog(lt, 1.3, 2.4); h += `<g transform="translate(540 1000) scale(${f1(easeOutBack(eq)*100)/100})" opacity="${eq}">` + outlined(0, 40, ['='], { size: 150, fill: MINT, sw: 30 }) + `</g>`;
   return h;
 };
 // ---------- l3: pan between the two
-CAM.l3 = (t, lt) => lt < 3.4 ? [330 + 40 * prog(lt, 0, 3.4), 960, 1.22] : camLerp(lt, 3.4, 4.0, [370, 960, 1.22], [740, 960, 1.22]);
+CAM.l3 = (t, lt) => [540, 920, 1.0 + 0.03 * prog(lt, 0, 7)];
 SC.l3 = (t, lt) => {
   const n = clamp(Math.floor(lt / 0.8) + 1, 1, 4); let h = '';
   const stripes = []; for (let i = 0; i < 5; i++) stripes.push([-70 + (i % 2) * 20, -54 + i * 26, 130, clamp(((lt % 0.8) / 0.55) - i * 0.12 + (n > 1 ? 0.0 : 0), 0, 1) * (n >= 4 && lt > 3.2 ? 1 : 1)]);
@@ -299,72 +299,72 @@ SC.l3 = (t, lt) => {
   if (lt < 3.4) h += `<g transform="translate(${f1(290 - 60 + ((lt % 0.8) / 0.55) * 120)} ${f1(950 + (lt % 0.8) * 30)}) rotate(-35)"><rect x="-8" y="-40" width="16" height="64" rx="5" fill="#FFE14D" stroke="${INK}" stroke-width="5"/></g>`;
   const pulse = 1 + 0.45 * Math.max(0, 1 - ((lt % 0.8)) / 0.2);
   h += `<g transform="translate(290 590) scale(${f1(pulse * 100) / 100})">` + outlined(0, 0, [[['×' + n, YEL]]], { size: 130, sw: 26 }) + `</g>`;
-  if (lt > 3.4) h += pop(t, 3.4, 99, 290, 760, outlined(0, 0, [['똑같이 읽기만…', WHITE]], { size: 56, sw: 14 }), { rot: -3 });
+  if (lt > 3.4) h += pop(lt, 3.4, 99, 290, 760, outlined(0, 0, [['똑같이 읽기만…', WHITE]], { size: 56, sw: 14 }), { rot: -3 });
   // white: read once, slam shut, write
   if (!closed) h += book(790, 1000, 230, 170, 0, []); else h += paper(790, 1010, 240, 180, wrote);
   if (lt > 4.9 && lt < 5.3) h += `<g transform="translate(790 1000)">` + puff(0, 0, lt, 4.9, 1.2) + `</g>`;
-  h += pop(t, 4.9, 99, 790, 590, outlined(0, 0, [[['덮고 적기', WHITE]]], { size: 82, sw: 20 }), { rot: 3 });
-  h += nameTag(t, 0, 99, 290, 1285, '노란 반', YEL) + nameTag(t, 0, 99, 790, 1285, '백지 반', '#fff');
+  h += pop(lt, 4.9, 99, 790, 590, outlined(0, 0, [[['덮고 적기', WHITE]]], { size: 82, sw: 20 }), { rot: 3 });
+  h += nameTag(lt, 0, 99, 290, 1285, '노란 반', YEL) + nameTag(lt, 0, 99, 790, 1285, '백지 반', '#fff');
   return h + flash(lt, 4.9, 0.15, '#fff', 0.5);
 };
 // ---------- l4
 const BASE = 1130, MAXH = 520;
-CAM.l4 = (t, lt) => { const [x, y] = sh(lt, 1.3, 0.3, 8); return [540 + x, 880 + y, 1.0 + 0.1 * prog(lt, 0, 4)]; };
+CAM.l4 = (t, lt) => { const [x, y] = sh(lt, 1.3, 0.3, 8); return [540 + x, 880 + y, 1.0 + 0.04 * prog(lt, 0, 4)]; };
 SC.l4 = (t, lt) => {
   let h = ''; const k = easeOut(prog(lt, 0.2, 1.2));
-  h += pop(t, 0.0, 99, 540, 330, outlined(0, 0, [[['5분 뒤 시험', WHITE]]], { size: 124, sw: 26 }), { rot: -2, inDur: 0.22 });
+  h += pop(lt, 0.0, 99, 540, 330, outlined(0, 0, [[['5분 뒤 시험', WHITE]]], { size: 124, sw: 26 }), { rot: -2, inDur: 0.22 });
   h += bar(310, BASE, 520 * k, YV, Math.round(83 * k) + '', t, 0) + bar(770, BASE, 71 / 83 * 520 * k, '#fff', Math.round(71 * k) + '', t, 0);
-  h += yel(t, 110, 1330 - (lt > 1.3 ? bounce(lt, 1.3, 40, 2.4) : 0), 0.62, { pose: poseAt([[0, '서기'], [1.3, '만세']], lt, 0.2), ex: exprAt([[0, '신남']], lt) });
-  h += wht(t, 970, 1330, 0.62, { pose: poseAt([[0, '서기'], [1.3, '웅크림']], lt, 0.25), ex: exprAt([[0, '걱정']], lt) });
-  if (lt > 1.3) h += confetti(t, 1.3, 310, 640, 18);
-  h += pop(t, 1.3, 99, 310, 1235, outlined(0, 0, [[['이김!', YEL]]], { size: 78, sw: 18 }), { rot: -6, inDur: 0.18 });
-  return h + nameTag(t, 0, 99, 310, 1190, '노란 반', YEL) + nameTag(t, 0, 99, 770, 1190, '백지 반', '#fff');
+  h += yel(t, 150, 1330 - (lt > 1.3 ? bounce(lt, 1.3, 40, 2.4) : 0), 0.62, { pose: poseAt([[0, '서기'], [1.3, '만세']], lt, 0.2), ex: exprAt([[0, '신남']], lt) });
+  h += wht(t, 930, 1330, 0.62, { pose: poseAt([[0, '서기'], [1.3, '웅크림']], lt, 0.25), ex: exprAt([[0, '걱정']], lt) });
+  if (lt > 1.3) h += confetti(lt, 1.3, 310, 640, 18);
+  h += pop(lt, 1.3, 99, 310, 1235, outlined(0, 0, [[['이김!', YEL]]], { size: 78, sw: 18 }), { rot: -6, inDur: 0.18 });
+  return h + nameTag(lt, 0, 99, 310, 1190, '노란 반', YEL) + nameTag(lt, 0, 99, 770, 1190, '백지 반', '#fff');
 };
 // ---------- l5: calendar whip
-CAM.l5 = (t, lt) => { const z = 1.0 + 0.55 * easeIn(prog(lt, 0, 1.6)); return [540, 900, z]; };
+CAM.l5 = (t, lt) => { const z = 1.0 + 0.18 * easeIn(prog(lt, 0, 1.6)); return [540, 900, z]; };
 SC.l5 = (t, lt) => {
   const d = clamp(Math.floor(lt / 0.2) + 1, 1, 7); let h = '';
   h += `<rect x="-200" y="-200" width="1480" height="2320" fill="#0B1626" opacity="${f1(prog(lt, 0, 0.3) * 90) / 100}"/>`;
   const fl = prog(lt % 0.2, 0, 0.12);
   h += `<g transform="translate(540 900) rotate(${f1((lt % 0.2 < 0.12 ? -4 : 0))})"><rect x="-230" y="-250" width="460" height="500" rx="30" fill="#fff" stroke="${INK}" stroke-width="12"/><rect x="-230" y="-250" width="460" height="120" rx="30" fill="#E94B4B" stroke="${INK}" stroke-width="12"/>` + `<g transform="scale(1 ${f1(1 - 0.3 * (1 - fl) * (lt < 1.4 ? 1 : 0)) })">` + outlined(0, 55, [String(d)], { size: 260, fill: INK, stroke: '#fff', sw: 10, shadow: false }) + `</g></g>`;
-  h += pop(t, 0.0, 99, 540, 450, outlined(0, 0, [[['일주일 뒤', WHITE]]], { size: 150, sw: 30 }), { rot: -2, bob: 4 });
+  h += pop(lt, 0.0, 99, 540, 450, outlined(0, 0, [[['일주일 뒤', WHITE]]], { size: 150, sw: 30 }), { rot: -2, bob: 4 });
   return h;
 };
 // ---------- l6: the flip
-CAM.l6 = (t, lt) => { const [x, y] = sh(lt, 0.3, 0.9, 16); const z = lt < 0.3 ? 1.0 : lt < 1.5 ? 1.0 + 0.12 * prog(lt, 0.3, 1.4) : 1.12 - 0.12 * prog(lt, 1.5, 2.2); return [540 + x, 880 + y, z]; };
+CAM.l6 = (t, lt) => { const [x, y] = sh(lt, 0.3, 0.9, 16); const z = lt < 0.3 ? 1.0 : lt < 1.5 ? 1.0 + 0.05 * prog(lt, 0.3, 1.4) : 1.05 - 0.05 * prog(lt, 1.5, 2.2); return [540 + x, 880 + y, z]; };
 SC.l6 = (t, lt) => {
   let h = ''; const k = easeInOut(prog(lt, 0.3, 1.4));
   const yv = lerp(83, 40, k), wv = lerp(71, 61, k);
-  h += pop(t, 0.0, 99, 540, 330, outlined(0, 0, [[['일주일 뒤 시험', WHITE]]], { size: 118, sw: 26 }), { rot: -2, inDur: 0.22 });
+  h += pop(lt, 0.0, 99, 540, 330, outlined(0, 0, [[['일주일 뒤 시험', WHITE]]], { size: 118, sw: 26 }), { rot: -2, inDur: 0.22 });
   h += bar(310, BASE, yv / 83 * 520, YV, Math.round(yv) + '%', t, 0, { size: 100 }) + bar(770, BASE, wv / 83 * 520, '#fff', Math.round(wv) + '%', t, 0, { size: 100 });
-  h += yel(t, 120, 1330, 0.62, { pose: poseAt([[0, '서기'], [1.4, '납작']], lt, 0.3), ex: exprAt([[0, '신남'], [1.4, '지침']], lt) });
-  h += wht(t, 960, 1330 - (lt > 1.6 ? bounce(lt, 1.6, 40, 2.4) : 0), 0.62, { pose: poseAt([[0, '서기'], [1.6, '만세']], lt, 0.25), ex: exprAt([[0, '걱정'], [1.6, '뿌듯']], lt) });
-  h += confetti(t, 1.6, 770, 700, 24);
-  h += fx(t, 1.45, 99, 540, 560, '뒤집혔다!', RED, { size: 120, rot: -4, wobble: 3, burst: 260, burstColor: YEL });
-  h += nameTag(t, 0, 99, 310, 1190, '노란 반', YEL) + nameTag(t, 0, 99, 770, 1190, '백지 반', '#fff');
+  h += yel(t, 150, 1330, 0.62, { pose: poseAt([[0, '서기'], [1.4, '납작']], lt, 0.3), ex: exprAt([[0, '신남'], [1.4, '지침']], lt) });
+  h += wht(t, 930, 1330 - (lt > 1.6 ? bounce(lt, 1.6, 40, 2.4) : 0), 0.62, { pose: poseAt([[0, '서기'], [1.6, '만세']], lt, 0.25), ex: exprAt([[0, '걱정'], [1.6, '뿌듯']], lt) });
+  h += confetti(lt, 1.6, 770, 700, 24);
+  h += fx(lt, 1.45, 99, 540, 540, '뒤집혔다!', RED, { size: 90, rot: -4, wobble: 3, burst: 260, burstColor: YEL });
+  h += nameTag(lt, 0, 99, 310, 1190, '노란 반', YEL) + nameTag(lt, 0, 99, 770, 1190, '백지 반', '#fff');
   return h + flash(lt, 0.3, 0.2, RED, 0.45) + flash(lt, 1.45, 0.25, '#fff', 0.7);
 };
 // ---------- l7: the lazy brain stamps
-CAM.l7 = (t, lt) => { let sx = 0, sy = 0; for (let i = 0; i < 4; i++) { const [x, y] = sh(lt, 0.35 + i * 0.75, 0.2, 14); sx += x; sy += y; } return [540 + sx, 950 + sy, 1.0 + 0.12 * prog(lt, 0, 4.2)]; };
+CAM.l7 = (t, lt) => { let sx = 0, sy = 0; for (let i = 0; i < 4; i++) { const [x, y] = sh(lt, 0.35 + i * 0.75, 0.2, 14); sx += x; sy += y; } return [540 + sx, 950 + sy, 1.0 + 0.04 * prog(lt, 0, 4.2)]; };
 SC.l7 = (t, lt) => {
   let h = '';
   h += brain(540, 1000 + Math.sin(lt * 7) * 6, 1.25, t, 0);
-  for (let i = 0; i < 4; i++) h += stamp(t, 0.35 + i * 0.75, 200 + (i % 2) * 560, 520 + i * 150, 74 + i * 14, (i % 2 ? 7 : -8));
-  h += pop(t, 0.2, 99, 540, 330, outlined(0, 0, [[['눈에 익음', YEL], [' ≠ ', WHITE], ['앎', YEL]]], { size: 110, sw: 24 }), { rot: -2, bob: 4 });
+  for (let i = 0; i < 4; i++) h += stamp(lt, 0.35 + i * 0.75, 200 + (i % 2) * 560, 520 + i * 150, 74 + i * 14, (i % 2 ? 7 : -8));
+  h += pop(lt, 0.2, 99, 540, 330, outlined(0, 0, [[['눈에 익음', YEL], [' ≠ ', WHITE], ['앎', YEL]]], { size: 110, sw: 24 }), { rot: -2, bob: 4 });
   h += yel(t, 150, 1340, 0.55, { pose: '서기', ex: exprAt([[0, '지침'], [2.5, '놀람']], lt) });
   let f = ''; for (let i = 0; i < 4; i++) f += flash(lt, 0.35 + i * 0.75, 0.12, '#fff', 0.35);
   return h + f;
 };
 // ---------- l8: push-in + slam
-CAM.l8 = (t, lt) => { const z = 1.0 + 0.32 * easeInOut(prog(lt, 0.2, 2.6)); const [x, y] = sh(lt, 1.3, 0.35, 16); return [540 + x, lerp(940, 820, easeInOut(prog(lt, 0.2, 2.6))) + y, z]; };
+CAM.l8 = (t, lt) => { const z = 1.0 + 0.1 * easeInOut(prog(lt, 0.2, 2.6)); const [x, y] = sh(lt, 5.6, 0.35, 16); return [540 + x, lerp(940, 900, easeInOut(prog(lt, 0.2, 2.6))) + y, z]; };
 SC.l8 = (t, lt) => {
   let h = '';
   h += yel(t, 540, 1230, 1.2, { pose: poseAt([[0, '서기'], [1.0, '턱괴기']], lt, 0.3), ex: exprAt([[0, '기본'], [0.9, '결심'], [2.8, '신남']], lt) });
-  h += pop(t, 0.0, 99, 540, 400, outlined(0, 0, [[['책을 덮고, ', WHITE]], [['딱 ', YEL], ['_____', YEL]]], { size: 130, sw: 28, lh: 160 }), { rot: -2, bob: 5 });
+  h += pop(lt, 0.0, 99, 540, 400, outlined(0, 0, [[['책을 덮고, ', WHITE]], [['딱 ', YEL], ['_____', YEL]]], { size: 130, sw: 28, lh: 160 }), { rot: -2, bob: 5 });
   h += paper(310, 1040, 230, 170, clamp((lt - 0.6) / 1.2, 0, 3));
   h += book(780, 1050, 230, 170, 0, []);
-  h += fx(t, 1.3, 99, 540, 1300, '본편에서', MINT, { size: 120, rot: 3 });
-  return h + flash(lt, 1.3, 0.2, '#fff', 0.7);
+  h += fx(lt, 5.6, 99, 540, 1330, '본편에서', MINT, { size: 120, rot: 3 });
+  return h + flash(lt, 5.6, 0.2, '#fff', 0.7);
 };
 function render(t) {
   const L = TL.lines; let i = 0;
