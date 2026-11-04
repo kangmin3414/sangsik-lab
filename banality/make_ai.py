@@ -26,6 +26,17 @@ JOBS = {
  'H13': ([], 'A quiet triptych-like still life in one wide picture, three objects side by side in soft grey light, no people: on the left, a small humidifier standing silent next to an empty child\'s bed with a teddy bear; in the middle, a construction site with a crane and an unfinished concrete apartment building whose corner has collapsed, seen from far away; on the right, an empty open wallet and a bank passbook on a table (blank pages). Solemn, respectful, not graphic.'),
  'H14': ([], 'A Seoul subway car at dusk, warm orange sunset light through the window: a young office worker with a round white head in the simple cartoon style, wearing a bright orange hoodie and NO hat, leans against the window, tired but with calm, clear eyes; his faint reflection in the glass; the city and river passing outside. The only vivid colours are his hoodie and the sunset; the rest is soft grey. Quiet, hopeful.'),
 }
+ZR = 'ref/zero_ages.png'
+ZO = ('Zero is drawn exactly like the 1st (leftmost) character in the reference: a round white head with no hair, a simple face, stick-like legs and round white hands, '
+      'wearing a bright orange hoodie and a small brass gear-shaped hat on top of his head.')
+JOBS.update({
+ 'T1': ([ZR], f'{ZO} THUMBNAIL, big and simple: a close-up of Zero from the chest up, slightly left of centre, giving a polite, perfectly obedient office smile while holding up a red rubber stamp; '
+              f'behind him on a plain grey office wall, his own black shadow is cast by a hard light from the left — but the shadow has sharp devil horns and a long pointed tail. '
+              f'High contrast, cold grey background, the orange hoodie and the red stamp are the only colours. The right third of the frame is plain empty grey wall (text goes there). Uncanny, clever, eye-catching.'),
+ 'T2': ([ZR], f'{ZO} THUMBNAIL, big and simple: an extreme close-up of Zero\'s face filling the left half of the frame, sweating, eyes wide with fear and guilt, lit from below by a harsh red light; '
+              f'in the lower right corner his round white hand is pushing down a heavy black lever switch on a grey metal panel with a glowing red lamp. Dark background. '
+              f'The upper right area is dark and empty (text goes there). Intense, dramatic, high contrast.'),
+})
 only = sys.argv[1:]; vx.token(); first = True
 for k, (refs, prompt) in JOBS.items():
     if only and k not in only: continue
