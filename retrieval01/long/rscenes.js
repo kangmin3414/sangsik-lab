@@ -30,7 +30,22 @@ const rPaper = (x, y, w, h, k, o = {}) => {
   for (let i = 0; i < 4; i++) { const aa = clamp(k - i, 0, 1); if (aa > 0) g += `<path d="M${-w / 2 + 28} ${-h / 2 + 50 + i * h * 0.2} q${(w - 56) * aa * 0.25} -16 ${(w - 56) * aa * 0.5} 0 t${(w - 56) * aa * 0.5} 0" fill="none" stroke="#2a58d6" stroke-width="7" stroke-linecap="round"/>`; }
   return g + `</g>`;
 };
-const rDesk = (cx, y, w = 900) => `<rect x="${cx - w / 2}" y="${y}" width="${w}" height="36" rx="10" fill="#9A6F3E" stroke="${INK}" stroke-width="8"/><rect x="${cx - w / 2 + 40}" y="${y + 36}" width="${w - 80}" height="360" fill="#7A5A32" stroke="${INK}" stroke-width="8"/>`;
+const rDesk = (cx, y, w = 900) => `<rect x="${cx - w / 2 + 40}" y="${y + 20}" width="${w - 80}" height="380" fill="#7A5A32" stroke="${INK}" stroke-width="8"/><path d="M${cx - w / 2 + 34} ${y - 76} L${cx + w / 2 - 34} ${y - 76} L${cx + w / 2} ${y + 4} L${cx - w / 2} ${y + 4} Z" fill="#CDA06A" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M${cx - w / 2 + 120} ${y - 40} L${cx + w / 2 - 120} ${y - 40} M${cx - w / 2 + 70} ${y - 8} L${cx + w / 2 - 70} ${y - 8}" stroke="#B88A55" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="${cx - w / 2}" y="${y}" width="${w}" height="36" rx="10" fill="#9A6F3E" stroke="${INK}" stroke-width="8"/>`;
+// objects lying FLAT on the desk top (desk y = front lip; top plane runs y-76 .. y)
+const rBookF = (x, y, w, stripes = [], o = {}) => {
+  const h = 56; let g = `<g transform="translate(${x} ${y})${o.rot ? ` rotate(${o.rot})` : ''}"><ellipse cx="4" cy="${h / 2 + 8}" rx="${w / 2 + 6}" ry="9" fill="#000" opacity=".22"/><rect x="${-w / 2 + 4}" y="${h / 2 - 6}" width="${w - 8}" height="14" rx="5" fill="#E8D9B8" stroke="${INK}" stroke-width="6"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="8" fill="#FFFDF5" stroke="${INK}" stroke-width="7"/><line x1="0" y1="${-h / 2 + 2}" x2="0" y2="${h / 2 - 2}" stroke="${INK}" stroke-width="5"/>`;
+  for (let i = 0; i < 4; i++) { const yy = -h / 2 + 12 + i * 11; g += `<line x1="${-w / 2 + 18}" y1="${yy}" x2="-12" y2="${yy}" stroke="#a9b" stroke-width="4"/><line x1="12" y1="${yy}" x2="${w / 2 - 18}" y2="${yy}" stroke="#a9b" stroke-width="4"/>`; }
+  stripes.forEach(([sx, sy, sw, k]) => { g += `<rect x="${sx}" y="${f1(sy * 0.42 - 4)}" width="${f1(sw * k)}" height="9" rx="3" fill="#FFE14D" opacity=".95"/>`; });
+  return g + `</g>`;
+};
+const rPaperF = (x, y, w, k, o = {}) => {
+  const h = 58; let g = `<g transform="translate(${x} ${y}) rotate(${o.rot === undefined ? -2 : o.rot})"><ellipse cx="4" cy="${h / 2 + 4}" rx="${w / 2 + 4}" ry="8" fill="#000" opacity=".2"/><rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" rx="6" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+  for (let i = 0; i < 3; i++) { const aa = clamp(k - i, 0, 1); if (aa > 0) g += `<path d="M${-w / 2 + 22} ${-h / 2 + 14 + i * 14} q${(w - 44) * aa * 0.25} -8 ${(w - 44) * aa * 0.5} 0 t${(w - 44) * aa * 0.5} 0" fill="none" stroke="#2a58d6" stroke-width="5" stroke-linecap="round"/>`; }
+  return g + `</g>`;
+};
+// forearm coming from the shoulder + round hand; (sx,sy) shoulder, (hx,hy) hand
+const rArm = (sx, sy, hx, hy) => `<line x1="${f1(sx)}" y1="${f1(sy)}" x2="${f1(hx)}" y2="${f1(hy)}" stroke="${INK}" stroke-width="40" stroke-linecap="round"/><line x1="${f1(sx)}" y1="${f1(sy)}" x2="${f1(hx)}" y2="${f1(hy)}" stroke="${TEE}" stroke-width="27" stroke-linecap="round"/><circle cx="${f1(hx)}" cy="${f1(hy)}" r="17" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+const rPen = (tx, ty) => `<g transform="translate(${f1(tx - 15)} ${f1(ty - 21)}) rotate(-35)"><rect x="-9" y="-44" width="18" height="70" rx="6" fill="#FFE14D" stroke="${INK}" stroke-width="5"/></g>`;
 const rBrain = (cx, cy, s, o = {}) => `<g transform="translate(${cx} ${cy}) scale(${s})"><path d="M-170 20 C-190 -90 -110 -150 -20 -150 C70 -165 180 -110 185 -10 C190 60 150 95 90 100 L70 150 L30 150 L25 105 C-40 115 -160 105 -170 20 Z" fill="${o.fill || '#FFD6DC'}" stroke="${INK}" stroke-width="8"/><path d="M-90 -70 q20 -26 40 0 t40 0 M-120 -10 q30 -22 50 8 M20 -20 q30 -30 60 0 M-60 40 q30 -22 60 0" fill="none" stroke="${o.line || '#E58AA5'}" stroke-width="7" stroke-linecap="round"/></g>`;
 const rBear = (x, y, s, o = {}) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="80" rx="95" ry="105" fill="#B77A45" stroke="${INK}" stroke-width="8"/><ellipse cx="0" cy="100" rx="55" ry="68" fill="#E2B27A"/><circle cx="-82" cy="-48" r="34" fill="#B77A45" stroke="${INK}" stroke-width="8"/><circle cx="82" cy="-48" r="34" fill="#B77A45" stroke="${INK}" stroke-width="8"/><circle cx="0" cy="-10" r="92" fill="#C98B52" stroke="${INK}" stroke-width="8"/><ellipse cx="0" cy="18" rx="44" ry="34" fill="#E8C597" stroke="${INK}" stroke-width="6"/><ellipse cx="0" cy="6" rx="14" ry="10" fill="${INK}"/>` + (o.happy ? `<path d="M-42 -26 q14 -16 28 0 M14 -26 q14 -16 28 0" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M-18 30 q18 20 36 0" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>` : `<circle cx="-30" cy="-26" r="9" fill="${INK}"/><circle cx="30" cy="-26" r="9" fill="${INK}"/><path d="M-14 34 q14 8 28 0" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>`) + `<circle cx="-62" cy="22" r="14" fill="#FF8FA8" opacity=".6"/><circle cx="62" cy="22" r="14" fill="#FF8FA8" opacity=".6"/></g>`;
 const rBulb = (x, y, s, k = 1) => `<g transform="translate(${x} ${y}) scale(${s})" opacity="${f1(k * 100) / 100}"><circle cx="0" cy="0" r="120" fill="url(#glow)"/><path d="M-34 24 C-62 -6 -56 -62 0 -66 C56 -62 62 -6 34 24 L34 48 L-34 48 Z" fill="#FFE27A" stroke="${INK}" stroke-width="7"/><rect x="-28" y="48" width="56" height="18" rx="6" fill="#ccc" stroke="${INK}" stroke-width="6"/></g>`;
@@ -47,13 +62,14 @@ function qStarsLite() { let h = ''; for (let i = 0; i < 30; i++) h += `<circle c
 function rdeskScene(t, lt, a) {
   let h = rRoom() + rFloor(860, '#C9A576');
   h += `<rect x="1340" y="180" width="360" height="420" rx="14" fill="#E9F4FF" stroke="${INK}" stroke-width="8"/><line x1="1520" y1="180" x2="1520" y2="600" stroke="${INK}" stroke-width="6"/><line x1="1340" y1="390" x2="1700" y2="390" stroke="${INK}" stroke-width="6"/>`;
-  h += rClosedBook(420, 640, 180, 50, '#C45A3A') + rClosedBook(424, 596, 170, 46, '#4F86C6') + rClosedBook(416, 554, 176, 44, '#6BAA6B');
+  h += rClosedBook(290, 845, 180, 50, '#C45A3A') + rClosedBook(294, 801, 170, 46, '#4F86C6') + rClosedBook(286, 759, 176, 44, '#6BAA6B');
   const k = a.think ? 1 : easeInOut(prog(lt, 0.3, 5));
-  h += rz(t, lt, 960, 880, 0.95, '책상', a.think ? [[0, '기본'], [1.2, '뿌듯'], [3.5, '신남']] : [[0, '기본'], [2, '결심']]);
+  h += rz(t, lt, 960, 830, 0.95, '책상', a.think ? [[0, '기본'], [1.2, '뿌듯'], [3.5, '신남']] : [[0, '기본'], [2, '결심']]);
   h += rDesk(960, 700, 1000);
   const st = [[-100, -62, 200, a.think ? 1 : clamp(k * 3, 0, 1)], [-100, -30, 200, a.think ? 1 : clamp(k * 3 - 1, 0, 1)], [-100, 2, 200, a.think ? 1 : clamp(k * 3 - 2, 0, 1)], [14, -46, 190, a.think ? 1 : clamp(k * 3 - 0.5, 0, 1)], [14, -14, 190, a.think ? 1 : clamp(k * 3 - 1.5, 0, 1)]];
-  h += rBook(960, 650, 420, 120, st.map(s => [s[0] - 20, s[1] + 10, s[2] + 20, s[3]]));
-  if (!a.think) { const sx = 880 + 220 * ((lt * 0.7) % 1); h += `<g transform="translate(${f1(sx)} ${f1(640 + Math.sin(lt * 9) * 6)}) rotate(-35)"><rect x="-9" y="-44" width="18" height="70" rx="6" fill="#FFE14D" stroke="${INK}" stroke-width="5"/></g>`; }
+  h += rBookF(960, 664, 420, st.map(s => [s[0] - 20, s[1] + 10, s[2] + 20, s[3]]));
+  if (!a.think) { const sx = 880 + 220 * ((lt * 0.7) % 1), py = 664 + Math.sin(lt * 9) * 2; h += rPen(sx, py) + rArm(1008, 590, sx - 36, py - 38) + rArm(912, 590, 880, 640); }
+  else h += rArm(1008, 590, 1040, 646) + rArm(912, 590, 880, 646);
   h += rtg(t, lt, 0.2, 400, 330, '형광펜 ✎', YEL, { size: 44, rot: -4 });
   if (a.think) {
     h += bubble(960, 250, 760, 170, rtext(0, 22, '이제 다 이해했다. 완벽하게 외웠네.', 44, NAVY), {});
@@ -66,10 +82,11 @@ function rexamScene(t, lt, a) {
   let h = BG('#CFD8E3') + `<rect x="-600" y="860" width="3120" height="600" fill="#A9B4C3" stroke="${INK}" stroke-width="6"/>`;
   h += `<g transform="translate(1500 230)"><circle r="96" fill="#fff" stroke="${INK}" stroke-width="9"/>${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => `<line x1="0" y1="-78" x2="0" y2="-90" stroke="${INK}" stroke-width="5" transform="rotate(${i * 30})"/>`).join('')}<line x1="0" y1="0" x2="0" y2="-62" stroke="${INK}" stroke-width="9" stroke-linecap="round" transform="rotate(${f1(lt * 40)})"/><line x1="0" y1="0" x2="40" y2="0" stroke="${INK}" stroke-width="9" stroke-linecap="round"/></g>`;
   const blank = prog(lt, 2.8, 3.6);
-  h += rz(t, lt, 760, 890, 0.95, '책상', [[0, '뿌듯'], [2.6, '놀람'], [3.8, '걱정']]);
+  h += rz(t, lt, 760, 830, 0.95, '책상', [[0, '뿌듯'], [2.6, '놀람'], [3.8, '걱정']]);
   h += rDesk(760, 700, 760);
-  h += rPaper(760, 668, 340, 190, 0, { rot: 0 });
-  h += rtext(760, 690, '1. ?   2. ?   3. ?', 40, '#9aa');
+  h += rPaperF(760, 664, 340, 0, { rot: 0 });
+  h += rtext(760, 676, '1. ?   2. ?   3. ?', 30, '#9aa');
+  h += rArm(808, 590, 840 + (lt > 2.6 ? Math.sin(lt * 40) * 3 : 0), 650) + rArm(712, 590, 690, 650);
   if (lt > 2.5) h += `<g opacity="${f1(blank * 0.95 * 100) / 100}"><circle cx="760" cy="${f1(390 - 20 * blank)}" r="${f1(40 + 150 * blank)}" fill="#fff"/><circle cx="760" cy="${f1(390 - 20 * blank)}" r="${f1(40 + 150 * blank)}" fill="url(#glow)" opacity=".3"/></g>`;
   if (lt > 3.1) { h += rp(t, lt, 3.1, 760, 160, outlined(0, 0, ['새하얘졌다…'], { size: 96, sw: 20 }), { rot: -3, bob: 4 }); h += rSweat(840, 330, t); }
   h += rtg(t, lt, 0.2, 1100, 560, '시험지', '#fff', { size: 44, rot: 5 });

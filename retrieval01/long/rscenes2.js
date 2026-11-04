@@ -68,15 +68,19 @@ function rgroupsScene(t, lt, a) {
   const rep = a.repeat;
   // A group: reads four times
   const cnt = rep ? 4 : clamp(Math.floor(lt / 1.2) + 1, 1, 4);
-  h += rch(t, lt, 520, 880, 0.95, rYV, '책상', [[0, '기본'], [2.5, '지침']]);
-  h += rBook(520, 700, 300, 170, [[-90, -45, 170, 1], [-90, -15, 170, clamp(cnt / 2, 0, 1)], [20, -45, 130, 1]]);
+  h += rch(t, lt, 520, 830, 0.95, rYV, '책상', [[0, '기본'], [2.5, '지침']]);
+  h += rDesk(520, 700, 560);
+  h += rBookF(520, 664, 330, [[-100, -45, 170, 1], [-100, -15, 170, clamp(cnt / 2, 0, 1)], [20, -45, 130, 1]]);
+  h += rArm(568, 590, 590, 650) + rArm(472, 590, 450, 650);
   h += rp(t, lt, 0.1, 520, 190, outlined(0, 0, [[['×' + cnt, YEL]]], { size: 130, sw: 26 }), { rot: -3 });
   h += rtg(t, lt, 0.1, 520, 330, '4번 읽기 (A)', YEL, { size: 46 });
   // B group: reads once, closes, writes
   const written = clamp((lt - (rep ? 0.5 : 4.2)) / 2, 0, 3);
   const closed = rep ? 1 : (lt > 3.4 ? 1 : 0);
-  h += rch(t, lt, 1400, 880, 0.95, '#FFFFFF', '책상', [[0, '기본'], [3.4, '결심']]);
-  h += closed ? rPaper(1400, 700, 300, 190, written) : rBook(1400, 700, 300, 170, [[-90, -45, 170, 1]]);
+  h += rch(t, lt, 1400, 830, 0.95, '#FFFFFF', '책상', [[0, '기본'], [3.4, '결심']]);
+  h += rDesk(1400, 700, 560);
+  h += closed ? rPaperF(1400, 664, 300, written) : rBookF(1400, 664, 330, [[-100, -45, 170, 1]]);
+  h += closed ? rPen(1380 + clamp(written % 1, 0, 1) * 60, 664) + rArm(1448, 590, 1344 + clamp(written % 1, 0, 1) * 60, 626) + rArm(1352, 590, 1330, 650) : rArm(1448, 590, 1470, 650) + rArm(1352, 590, 1330, 650);
   h += rtg(t, lt, 0.1, 1400, 330, '1번 읽고 덮고 적기 (B)', '#fff', { size: 44 });
   if (rep) { h += rp(t, lt, 0.2, 960, 190, outlined(0, 0, ['×3 반복'], { size: 130, fill: MINT, sw: 28 }), { rot: -4, bob: 5 }); h += `<g transform="translate(960 520)" opacity=".9"><path d="M-110 0 a110 110 0 1 1 40 85" fill="none" stroke="${MINT}" stroke-width="18" stroke-linecap="round"/><path d="M-96 100 l30 -32 l-40 -6 Z" fill="${MINT}" stroke="${MINT}" stroke-width="6"/></g>`; }
   return h;
@@ -126,10 +130,11 @@ function rdiskScene(t, lt, a) {
 function rstruggleScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
   if (a.glow) h += `<circle cx="960" cy="470" r="${f1(420 + 30 * Math.sin(t * 3))}" fill="url(#glow)"/>`;
-  h += rz(t, lt, 960, 890, 0.95, [[0, '서기'], [1.2, '턱괴기']], a.glow ? [[0, '걱정'], [2.5, '신남']] : [[0, '걱정'], [1.2, '겁먹음']]);
+  h += rz(t, lt, 960, 830, 0.95, '책상', a.glow ? [[0, '걱정'], [2.5, '신남']] : [[0, '걱정'], [1.2, '겁먹음']]);
   h += rDesk(960, 700, 900);
-  h += rClosedBook(960, 660, 320, 70, '#4F86C6');
-  h += rSweat(1050, 330, t) + rSweat(870, 360, t + 0.5);
+  h += rClosedBook(960, 650, 320, 56, '#4F86C6');
+  h += rArm(1008, 590, 1080, 654) + rArm(912, 590, 840, 654);
+  h += rSweat(1050, 300, t) + rSweat(870, 330, t + 0.5);
   if (!a.glow) {
     h += rp(t, lt, 0.6, 1480, 300, bubble(0, 0, 560, 190, rtext(0, 22, '그 공식이 뭐였더라?', 54, NAVY)), { rot: 2 });
     h += rp(t, lt, 1.4, 560, 250, outlined(0, 0, ['끙…'], { size: 110, fill: '#fff', sw: 22 }), { rot: -6, wobble: 3 });
@@ -235,12 +240,13 @@ function rthreeScene(t, lt, a) {
 }
 function rblankScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += rz(t, lt, 760, 890, 0.95, '책상', [[0, '기본'], [2.2, '결심']]);
+  h += rz(t, lt, 760, 830, 0.95, '책상', [[0, '기본'], [2.2, '결심']]);
   h += rDesk(760, 700, 800);
   const close = easeInOut(prog(lt, 0.8, 1.6));
-  h += close < 1 ? `<g transform="translate(560 650) scale(${f1(1 - close * 0.0)} 1)">${rBook(0, 0, 300 * (1 - close * 0.4), 150, [[-100, -30, 100, 1]])}</g>` : rClosedBook(500, 664, 220, 60, '#4F86C6', { rot: -4 });
+  h += close < 1 ? rBookF(600, 664, 300 * (1 - close * 0.4), [[-100, -30, 100, 1]]) : rClosedBook(560, 654, 220, 52, '#4F86C6', { rot: -3 });
   const wr = clamp((lt - 2.2) / 2.8, 0, 3);
-  h += rPaper(980, 650, 300, 180, wr, { rot: -3 });
+  h += rPaperF(930, 664, 280, wr, { rot: -2 });
+  h += lt > 2.2 && wr < 3 ? rPen(830 + (wr % 1) * 90, 664) + rArm(808, 590, 794 + (wr % 1) * 90, 626) + rArm(712, 590, 680, 650) : rArm(808, 590, 840, 650) + rArm(712, 590, 680, 650);
   h += rp(t, lt, 0.2, 1500, 260, outlined(0, 0, ['30분 읽기'], { size: 90, fill: YEL, sw: 20 }), { rot: -3 });
   if (lt > 1.6) h += rp(t, lt, 1.6, 1500, 400, outlined(0, 0, ['덮고 적기'], { size: 100, fill: MINT, sw: 22 }), { rot: 3 });
   [0, 1, 2].forEach(i => { if (lt > 2.6 + i * 0.8) h += rp(t, lt, 2.6 + i * 0.8, 1500, 530 + i * 90, label(0, 0, (i + 1) + '. 핵심', { size: 46, bg: '#fff' }), { rot: i - 1 }); });
@@ -271,8 +277,8 @@ function rbeardayScene(t, lt, a) {
 function rduckScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
   h += rDesk(1100, 700, 1100);
-  h += `<rect x="820" y="360" width="540" height="300" rx="16" fill="#1B2438" stroke="${INK}" stroke-width="9"/>` + [0, 1, 2, 3].map(i => `<rect x="${860}" y="${400 + i * 54}" width="${[260, 340, 200, 300][i]}" height="16" rx="8" fill="${[MINT, '#9CC9EA', PINK, '#FFE27A'][i]}" opacity=".85"/>`).join('');
-  h += `<g transform="translate(1470 640)"><ellipse cx="0" cy="40" rx="90" ry="64" fill="#FFD83A" stroke="${INK}" stroke-width="8"/><circle cx="52" cy="-40" r="52" fill="#FFD83A" stroke="${INK}" stroke-width="8"/><path d="M96 -34 l56 10 l-56 18 Z" fill="#FF8A3D" stroke="${INK}" stroke-width="7"/><circle cx="64" cy="-52" r="9" fill="${INK}"/></g>`;
+  h += `<rect x="1060" y="648" width="60" height="22" fill="#59647A" stroke="${INK}" stroke-width="7"/><ellipse cx="1090" cy="670" rx="110" ry="14" fill="#59647A" stroke="${INK}" stroke-width="7"/>` + `<rect x="820" y="360" width="540" height="300" rx="16" fill="#1B2438" stroke="${INK}" stroke-width="9"/>` + [0, 1, 2, 3].map(i => `<rect x="${860}" y="${400 + i * 54}" width="${[260, 340, 200, 300][i]}" height="16" rx="8" fill="${[MINT, '#9CC9EA', PINK, '#FFE27A'][i]}" opacity=".85"/>`).join('');
+  h += `<g transform="translate(1480 584)"><ellipse cx="0" cy="40" rx="90" ry="64" fill="#FFD83A" stroke="${INK}" stroke-width="8"/><circle cx="52" cy="-40" r="52" fill="#FFD83A" stroke="${INK}" stroke-width="8"/><path d="M96 -34 l56 10 l-56 18 Z" fill="#FF8A3D" stroke="${INK}" stroke-width="7"/><circle cx="64" cy="-52" r="9" fill="${INK}"/></g>`;
   h += rz(t, lt, 420, 900, 0.95, [[0, '서기'], [1, '손인사']], [[0, '기본'], [2.4, '놀람']]);
   h += rp(t, lt, 0.3, 700, 250, outlined(0, 0, ['고무오리 디버깅'], { size: 80, fill: YEL, sw: 20 }), { rot: -3 });
   if (lt > 3.0) { h += rfx(t, lt, 3.0, 1000, 700, '막힘!', RED, { size: 100, burst: 190, rot: -5, wobble: 3 }); h += rp(t, lt, 3.2, 1100, 330, label(0, 0, '놓친 곳 발견', { size: 52, bg: MINT }), { rot: 3 }); }
@@ -280,23 +286,24 @@ function rduckScene(t, lt, a) {
 }
 function rgapScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += rz(t, lt, 960, 890, 0.95, '책상', [[0, '기본'], [2, '결심'], [4, '뿌듯']]);
+  h += rz(t, lt, 960, 830, 0.95, '책상', [[0, '기본'], [2, '결심'], [4, '뿌듯']]);
   h += rDesk(960, 700, 900);
   const hl = (i) => clamp((lt - 2.2 - i * 0.9) / 0.7, 0, 1);
-  h += rBook(960, 650, 420, 130, [[-110, -30, 70, hl(0)], [10, 0, 80, hl(1)]]);
+  h += rBookF(960, 664, 420, [[-110, -30, 70, hl(0)], [10, 0, 80, hl(1)]]);
   h += rp(t, lt, 0.3, 560, 270, outlined(0, 0, ['설명 못 한 곳만'], { size: 84, fill: YEL, sw: 20 }), { rot: -3 });
   h += rp(t, lt, 4.2, 1450, 320, outlined(0, 0, ['밑줄은 그때'], { size: 90, fill: MINT, sw: 20 }), { rot: 3 });
-  h += `<g transform="translate(${f1(840 + 130 * ((lt * 0.5) % 1))} ${f1(610)}) rotate(-35)"><rect x="-9" y="-44" width="18" height="70" rx="6" fill="#FFE14D" stroke="${INK}" stroke-width="5"/></g>`.replace(/^/, lt > 2 ? '' : '');
+  { const px = 840 + 130 * ((lt * 0.5) % 1); h += rPen(px, 666) + rArm(1008, 590, px - 36, 628) + rArm(912, 590, 880, 650); }
   return h;
 }
 
 /* ---------- OUTRO ---------- */
 function reaseScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += rz(t, lt, 760, 890, 0.95, '책상', [[0, '기본'], [2, '졸림']]);
+  h += rz(t, lt, 760, 830, 0.95, '책상', [[0, '기본'], [2, '졸림']]);
   h += rDesk(760, 700, 800);
-  h += rBook(760, 650, 340, 120, [[-100, -30, 80, 1]]);
-  const pg = (lt * 0.7) % 1; h += `<g transform="translate(760 650) scale(${f1(Math.cos(pg * Math.PI) * 100) / 100} 1)"><rect x="0" y="-60" width="170" height="120" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`;
+  h += rBookF(760, 664, 340, [[-100, -30, 80, 1]]);
+  const pg = (lt * 0.7) % 1; h += `<g transform="translate(760 664) scale(${f1(Math.cos(pg * Math.PI) * 100) / 100} 1)"><rect x="0" y="-26" width="170" height="52" fill="#fff" stroke="${INK}" stroke-width="5"/></g>`;
+  h += rArm(808, 590, 860, 650) + rArm(712, 590, 660, 650);
   h += rBrain(1450, 420, 1.2, { fill: '#D9C9EC' });
   h += `<path d="M1390 ${f1(420 - 6)} q22 18 44 0 M1470 ${f1(414)} q22 18 44 0" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
   h += rtext(1620, 280 - Math.sin(t * 2) * 8, 'Z', 70, '#6A4CC6') + rtext(1680, 220 - Math.sin(t * 2 + 1) * 8, 'z', 54, '#6A4CC6');
@@ -319,16 +326,17 @@ function rgymScene(t, lt, a) {
 function rno10Scene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
   h += rz(t, lt, 520, 900, 1.0, [[0, '서기'], [0.8, '손인사']], [[0, '결심']]);
-  h += `<g transform="translate(1250 440)">${[0, 1, 2, 3, 4].map(i => rClosedBook(0, 200 - i * 64, 340, 56, ['#C45A3A', '#4F86C6', '#6BAA6B', '#E0A83A', '#9B6BC6'][i], { rot: (i % 2 ? 2 : -3) })).join('')}${outlined(0, -80, ['×10'], { size: 200, fill: '#fff', sw: 36 })}</g>`;
+  h += `<g transform="translate(1250 640)">${[0, 1, 2, 3, 4].map(i => rClosedBook(0, 200 - i * 64, 340, 56, ['#C45A3A', '#4F86C6', '#6BAA6B', '#E0A83A', '#9B6BC6'][i], { rot: (i % 2 ? 2 : -3) })).join('')}${outlined(0, -150, ['×10'], { size: 200, fill: '#fff', sw: 36 })}</g>`;
   const k = prog(lt, 0.8, 1.2);
-  h += `<g transform="translate(1250 440)"><circle r="${f1(300 * k)}" fill="none" stroke="${RED}" stroke-width="30" opacity="${f1(k)}"/><line x1="${f1(-210 * k)}" y1="${f1(210 * k)}" x2="${f1(210 * k)}" y2="${f1(-210 * k)}" stroke="${RED}" stroke-width="30" stroke-linecap="round"/></g>`;
+  h += `<g transform="translate(1250 620)"><circle r="${f1(300 * k)}" fill="none" stroke="${RED}" stroke-width="30" opacity="${f1(k)}"/><line x1="${f1(-210 * k)}" y1="${f1(210 * k)}" x2="${f1(210 * k)}" y2="${f1(-210 * k)}" stroke="${RED}" stroke-width="30" stroke-linecap="round"/></g>`;
   return h;
 }
 function rdoScene(t, lt, a) {
   let h = rRoom() + rFloor(880, '#C9A576');
-  h += rz(t, lt, 960, 900, 0.95, '책상', [[0, '기본'], [2.2, '신남']]);
+  h += rz(t, lt, 960, 830, 0.95, '책상', [[0, '기본'], [2.2, '신남']]);
   h += rDesk(960, 700, 900);
-  h += lt < 2 ? rBook(960, 650, 340, 120, [[-100, -30, 80, 1]]) : rClosedBook(960, 664, 260, 60, '#4F86C6');
+  h += lt < 2 ? rBookF(960, 664, 340, [[-100, -30, 80, 1]]) : rClosedBook(960, 654, 260, 52, '#4F86C6');
+  h += rArm(1008, 590, 1060, 650) + rArm(912, 590, 860, 650);
   const steps = [['1', '한 번 제대로 읽기'], ['2', '책 덮기'], ['3', '쉬운 말로 소리 내 설명']];
   steps.forEach((s, i) => h += rp(t, lt, 0.2 + i * 1.8, 330 + i * 630, 250, rbox(0, 0, 580, 150, ['#E8FFF4', '#FFF3C4', '#FFE8EF'][i], { rot: (i - 1) * 2, inner: `<circle cx="-200" cy="0" r="40" fill="${GOLD}" stroke="${INK}" stroke-width="6"/>${rtext(-200, 18, s[0], 50, INK)}${rtext(50, 14, s[1], 38, INK)}` }), {}));
   if (lt > 4.2) h += rBear(1560, 790, 0.7, { happy: 1 }) + [0, 1].map(i => `<circle cx="1260" cy="560" r="${f1(30 + ((lt * 0.9 + i / 2) % 1) * 100)}" fill="none" stroke="${MINT}" stroke-width="8" opacity="${f1((1 - ((lt * 0.9 + i / 2) % 1)) * 100) / 100}"/>`).join('');

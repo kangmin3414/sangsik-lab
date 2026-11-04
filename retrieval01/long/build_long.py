@@ -13,10 +13,10 @@ for L in TL['lines']:
 # bed: piano a + b + a ... with crossfades
 def load(p):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', p, '-ar', str(SR), '-ac', '1', 'tmp_bed.wav'], check=True); return sf.read('tmp_bed.wav', dtype='float32')[0]
-parts = [load('../../bgm/cand_1_piano_a.mp3'), load('../../bgm/cand_1_piano_b.mp3')]
+parts = [load('../../bgm/cand_1_piano_b.mp3')]  # piano_a has ghost vocals (30-37/90-96/120-125s) -> unused
 bed = np.zeros(0); xf = int(4 * SR); k = 0
 while len(bed) < N + xf:
-    p = parts[k % 2].copy(); k += 1
+    p = parts[k % len(parts)].copy(); k += 1
     if len(bed) == 0: bed = p
     else:
         fo = np.linspace(1, 0, xf); fi = np.linspace(0, 1, xf)
@@ -65,6 +65,6 @@ for l in TL['lines']:
     if s == 'rend': put(t0 + 0.3, ding(1318), 0.5); put(t0 + 0.3, ding(1976), 0.3)
 sf.write('sfx_r.wav', sfx, SR)
 mix = voice + bed * 0.55 + sfx * 0.5
-sf.write('mix_raw_r.wav', mix, SR)
+sf.write('mix_raw_r.wav', mix, SR); sf.write('bed_only.wav', bed * 0.55, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_r.wav', '-af', 'loudnorm=I=-14:TP=-1.0:LRA=9,alimiter=limit=0.89', '-ar', str(SR), 'mix_r.wav'], check=True)
 print('audio ok', round(DUR, 1))
