@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, '/home/claude/sangsik-lab/thumbN'); import mk as M
 os.chdir(HERE); os.makedirs('out', exist_ok=True)
-COPY = {'A': ('"네, 괜찮아요"', '착해서가 아니다', M.YEL), 'B': ('웃고 있지만', '속은 지옥', M.RED), 'C': ('너는 착한 게', '아니다', M.YEL)}
+COPY = {'A': ('착해서가 아니라', '겁나서다', M.YEL), 'B': ('웃고 있지만', '속은 지옥', M.RED), 'C': ('너는 착한 게', '아니다', M.YEL)}
 def make(key, cp):
     l1, l2, bar = COPY[cp]
     o = Image.open(f'ai/{key}.png').convert('RGB').resize((1280, 720), Image.LANCZOS)
