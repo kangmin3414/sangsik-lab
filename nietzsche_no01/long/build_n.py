@@ -86,7 +86,7 @@ for l in TL['lines']:
     if s_ == 'nstages': [put(t0 + d * D, tone(660 + 220 * k, 0.2, 0.5), 0.45) for k, d in enumerate([0.15, 0.4, 0.65])]
     if s_ == 'nload' and not a_.get('many'): [put(t0 + k * D / 5 + 0.05, thud(0.3, 75), 0.7) for k in range(1, 5)]
     if s_ == 'ndry': put(t0 + 0.5 * D, thud(0.4, 55), 0.7)
-    if s_ == 'nlion': put(t0, whoosh(0.8, 200, 3000), 0.8); put(t0 + 0.4, thud(0.8, 45), 1.0); put(t0 + 0.5, roar(1.6), 0.7)
+    if s_ == 'nlion': put(t0 - 0.5, whoosh(0.8, 200, 3000), 0.8); put(t0 - 0.1, thud(0.8, 45), 1.0); put(l['t1'] + 0.1, roar(1.2), 0.45)
     if s_ == 'ndragon': put(t0, rumble(2.5), 0.7)
     if s_ == 'nroar': put(t0, roar(1.6), 1.0); put(t0 + 0.05, thud(0.6, 50), 1.0); [put(t0 + 0.4 + 0.12 * k, noisehit(0.1), 0.4) for k in range(6)]
     if s_ == 'ngate': put(t0 + 0.7 * D, thud(0.6, 50), 0.9)
