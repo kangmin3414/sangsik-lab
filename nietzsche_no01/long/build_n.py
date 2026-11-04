@@ -19,7 +19,7 @@ def loop(p, n):
         fo = np.linspace(1, 0, xf); fi = np.linspace(0, 1, xf); out = np.concatenate([out[:-xf], out[-xf:] * fo + p[:xf] * fi, p[xf:]])
     return out[:n]
 TT = {l['id']: l for l in TL['lines']}
-B = [(0.0, 'bgm/dark_b.mp3'), (TT['c7a']['t0'] - 1.2, 'bgm/epic_a.mp3'), (TT['c3']['t0'] - 0.4, 'bgm/warm_a.mp3')]  # Lyria 3 Pro, ASR-checked
+B = [(0.0, 'bgm/dark_b.mp3'), (TT['c7a']['t0'] - 1.2, 'bgm/epic_a.mp3'), (TT['c3']['t0'] - 0.4, 'bgm/warm_b.mp3')]  # Lyria 3 Pro, ASR-checked
 bed = np.zeros(N); XF = int(2.5 * SR)
 for k, (b0, f) in enumerate(B):
     i0 = int(b0 * SR); i1 = int(B[k + 1][0] * SR) + XF if k + 1 < len(B) else N; i1 = min(i1, N)
