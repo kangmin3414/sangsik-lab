@@ -21,7 +21,7 @@ JOBS = {
            'Around him papers fly through the air, several phones buzz with glowing red notification dots, a lightning flash lights the rain-streaked window. A warm lamp light falls only on Zero, the rest is in violent blue and purple.'),
  'desc': ('A packed subway car, cool blue light. Zero holds a glowing phone in one hand and looks through a huge magnifying glass held in the other, one eyebrow cocked, eyes narrowed in clever suspicion, a tiny knowing smirk. '
           'The phone screen glows an alarming orange-red (blank). Grey passengers behind him stare at their own phones with shocked open mouths.'),
- 'zhuang': ('A sunlit hillside meadow at golden hour. Zero lies back relaxed against the trunk of a gigantic gnarled ancient tree on the right, hands behind his head, eyes closed, a deeply peaceful smile. '
+ 'zhuang': ('Close-up portrait framing, Zero is very large in the frame (head 45% of frame height, upper body only, cropped at the waist). A sunlit hillside meadow at golden hour. Zero leans back relaxed against the trunk of a gigantic gnarled ancient tree on the right, hands behind his head, eyes closed, a deeply peaceful smile. '
             'A long wooden measuring ruler lies snapped in two pieces on the grass in front of him. Far away in the hazy distance, tiny people in suits hurry toward a grey city. Rich warm greens and gold.'),
  'socra': ('A dim corporate meeting room. Zero, big on the right, thrusts one hand high in the air with a brave, bright, determined look and mouth open about to speak. A bright spotlight beam falls on him. '
            'Around the table grey colleagues slump with blank glazed sleepy faces. Dark teal room with a glowing blank projector screen.'),
