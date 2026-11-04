@@ -64,10 +64,14 @@ put(L5['t0'] - 0.4, thud(0.6, 45), 0.8)                                    # spo
 put(L5['t0'] - 0.15 + 0.74 * D5, thud(0.4, 60), 1.0); put(L5['t0'] - 0.15 + 0.74 * D5, noisehit(0.15), 0.5)
 put(T['n6']['t0'] - 0.6, thud(0.9, 38), 1.0); put(T['n6']['t0'] - 0.6, whoosh(0.8, 200, 900), 0.6)  # into the night field
 
-def metal(): return tone(2400, 0.5, 0.35) + tone(3150, 0.45, 0.25) + np.pad(noisehit(0.08), (0, int(0.42 * SR)))[:int(0.5 * SR)] * 0.6
+def metal():
+    o = np.zeros(int(0.5 * SR))
+    for w in (tone(2400, 0.5, 0.35), tone(3150, 0.45, 0.25), noisehit(0.08) * 0.6): o[:len(w)] += w[:len(o)]
+    return o
 def rumble(d=1.5): n = rng.standard_normal(int(d * SR)); bb, aa = butter(2, 120 / (SR / 2)); x = lfilter(bb, aa, n); return x / (np.abs(x).max() + 1e-9) * np.sin(np.linspace(0, np.pi, len(x))) * 0.9
 def roar(d=1.4): n = rng.standard_normal(int(d * SR)); bb, aa = butter(2, [90 / (SR / 2), 700 / (SR / 2)], 'band'); x = lfilter(bb, aa, n); x = x / (np.abs(x).max() + 1e-9); tt = np.arange(len(x)) / SR; return x * (1 + 0.5 * np.sin(2 * np.pi * 28 * tt)) * np.minimum(tt / 0.08, 1) * np.exp(-tt * 1.6) * 0.9
-def chirp(): return tone(2600, 0.08, 0.4) + np.pad(tone(3100, 0.08, 0.4), (int(0.1 * SR), 0))[:int(0.08 * SR)]
+def chirp():
+    o = np.zeros(int(0.2 * SR)); a = tone(2600, 0.08, 0.4); b = tone(3100, 0.08, 0.4); o[:len(a)] += a; o[int(0.1 * SR):int(0.1 * SR) + len(b)] += b; return o
 for l in TL['lines']:
     s_, a_ = l['scene'], l['args']; t0 = l['t0'] - 0.15; D = l['t1'] - l['t0'] + 0.15
     if s_ == 'nchapter': put(t0, whoosh(0.5, 300, 2400), 0.5); put(t0 + 0.3, ding(1175), 0.45)
