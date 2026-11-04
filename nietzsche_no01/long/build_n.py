@@ -13,15 +13,20 @@ for L in TL['lines']:
 # bed: piano a + b + a ... with crossfades
 def load(p):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', p, '-ar', str(SR), '-ac', '1', 'tmp_bed.wav'], check=True); return sf.read('tmp_bed.wav', dtype='float32')[0]
-parts = [load('bgm/dark_b.mp3')]  # Lyria 3 Pro, ASR-checked: no vocals
-bed = np.zeros(0); xf = int(4 * SR); k = 0
-while len(bed) < N + xf:
-    p = parts[k % len(parts)].copy(); k += 1
-    if len(bed) == 0: bed = p
-    else:
-        fo = np.linspace(1, 0, xf); fi = np.linspace(0, 1, xf)
-        bed = np.concatenate([bed[:-xf], bed[-xf:] * fo + p[:xf] * fi, p[xf:]])
-bed = bed[:N]
+def loop(p, n):
+    xf = int(4 * SR); out = p.copy()
+    while len(out) < n + xf:
+        fo = np.linspace(1, 0, xf); fi = np.linspace(0, 1, xf); out = np.concatenate([out[:-xf], out[-xf:] * fo + p[:xf] * fi, p[xf:]])
+    return out[:n]
+TT = {l['id']: l for l in TL['lines']}
+B = [(0.0, 'bgm/dark_b.mp3'), (TT['c7a']['t0'] - 1.2, 'bgm/epic_a.mp3'), (TT['c3']['t0'] - 0.4, 'bgm/warm_a.mp3')]  # Lyria 3 Pro, ASR-checked
+bed = np.zeros(N); XF = int(2.5 * SR)
+for k, (b0, f) in enumerate(B):
+    i0 = int(b0 * SR); i1 = int(B[k + 1][0] * SR) + XF if k + 1 < len(B) else N; i1 = min(i1, N)
+    seg = loop(load(f), i1 - i0)
+    if k: seg[:XF] *= np.linspace(0, 1, XF)
+    if k + 1 < len(B): seg[-XF:] *= np.linspace(1, 0, XF)
+    bed[i0:i1] += seg
 env = (np.abs(voice) > 0.01).astype(np.float32); sm = np.ones(int(0.3 * SR)) / int(0.3 * SR); env = np.convolve(env, sm, 'same')
 gain = 0.30 - 0.15 * np.clip(env * 2.2, 0, 1)
 fo = int(3 * SR); bed = bed * gain; bed[-fo:] *= np.linspace(1, 0, fo); bed[:int(1.0 * SR)] *= np.linspace(0, 1, int(1.0 * SR))
@@ -58,6 +63,38 @@ L5 = T['n5']; D5 = L5['t1'] - L5['t0'] + 0.15
 put(L5['t0'] - 0.4, thud(0.6, 45), 0.8)                                    # spotlight on
 put(L5['t0'] - 0.15 + 0.74 * D5, thud(0.4, 60), 1.0); put(L5['t0'] - 0.15 + 0.74 * D5, noisehit(0.15), 0.5)
 put(T['n6']['t0'] - 0.6, thud(0.9, 38), 1.0); put(T['n6']['t0'] - 0.6, whoosh(0.8, 200, 900), 0.6)  # into the night field
+
+def metal(): return tone(2400, 0.5, 0.35) + tone(3150, 0.45, 0.25) + np.pad(noisehit(0.08), (0, int(0.42 * SR)))[:int(0.5 * SR)] * 0.6
+def rumble(d=1.5): n = rng.standard_normal(int(d * SR)); bb, aa = butter(2, 120 / (SR / 2)); x = lfilter(bb, aa, n); return x / (np.abs(x).max() + 1e-9) * np.sin(np.linspace(0, np.pi, len(x))) * 0.9
+def roar(d=1.4): n = rng.standard_normal(int(d * SR)); bb, aa = butter(2, [90 / (SR / 2), 700 / (SR / 2)], 'band'); x = lfilter(bb, aa, n); x = x / (np.abs(x).max() + 1e-9); tt = np.arange(len(x)) / SR; return x * (1 + 0.5 * np.sin(2 * np.pi * 28 * tt)) * np.minimum(tt / 0.08, 1) * np.exp(-tt * 1.6) * 0.9
+def chirp(): return tone(2600, 0.08, 0.4) + np.pad(tone(3100, 0.08, 0.4), (int(0.1 * SR), 0))[:int(0.08 * SR)]
+for l in TL['lines']:
+    s_, a_ = l['scene'], l['args']; t0 = l['t0'] - 0.15; D = l['t1'] - l['t0'] + 0.15
+    if s_ == 'nchapter': put(t0, whoosh(0.5, 300, 2400), 0.5); put(t0 + 0.3, ding(1175), 0.45)
+    if s_ == 'nmoral': [put(t0 + (0.4 + 0.07 * k) * D, noisehit(0.1), 0.5) for k in range(5)]; put(t0 + 0.78 * D, thud(0.6, 50), 1.0); put(t0 + 0.78 * D, noisehit(0.4), 0.6)
+    if s_ == 'nlamb': put(t0 + 0.42 * D, ding(1568), 0.4)
+    if s_ == 'nhalo': put(t0 + 0.42 * D, metal(), 0.9); put(t0 + 0.42 * D, noisehit(0.3), 0.6); put(t0 + 0.76 * D, thud(0.4, 70), 1.0)
+    if s_ == 'nwrap': [put(t0 + (0.05 + 0.17 * k) * D + 0.5, tick(), 0.8) for k in range(3)]; put(t0 + 0.64 * D, whoosh(0.5, 400, 2000), 0.6); put(t0 + 0.84 * D, ding(1568), 0.45)
+    if s_ == 'nreason':
+        if a_.get('fear'): [put(t0 + (0.05 + 0.1 * k) * D, thud(0.3, 60), 0.6) for k in range(5)]
+        else: put(t0 + 0.6 * D, whoosh(0.3, 800, 4000), 0.7)
+    if s_ == 'ndog': put(t0 + 0.6 * D, thud(0.4, 60), 0.9)
+    if s_ == 'nstages': [put(t0 + d * D, tone(660 + 220 * k, 0.2, 0.5), 0.45) for k, d in enumerate([0.15, 0.4, 0.65])]
+    if s_ == 'nload' and not a_.get('many'): [put(t0 + k * D / 5 + 0.05, thud(0.3, 75), 0.7) for k in range(1, 5)]
+    if s_ == 'ndry': put(t0 + 0.5 * D, thud(0.4, 55), 0.7)
+    if s_ == 'nlion': put(t0, whoosh(0.8, 200, 3000), 0.8); put(t0 + 0.4, thud(0.8, 45), 1.0); put(t0 + 0.5, roar(1.6), 0.7)
+    if s_ == 'ndragon': put(t0, rumble(2.5), 0.7)
+    if s_ == 'nroar': put(t0, roar(1.6), 1.0); put(t0 + 0.05, thud(0.6, 50), 1.0); [put(t0 + 0.4 + 0.12 * k, noisehit(0.1), 0.4) for k in range(6)]
+    if s_ == 'ngate': put(t0 + 0.7 * D, thud(0.6, 50), 0.9)
+    if s_ == 'nclaw': put(t0 + 0.08 * D, whoosh(0.3, 2000, 9000), 0.8); put(t0 + 0.55 * D, whoosh(0.3, 6000, 1500), 0.6); put(t0 + 0.78 * D, ding(1568), 0.5)
+    if s_ == 'nchain': [put(t0 + tb, metal(), 0.9) for tb in (1.6, 2.1, 2.6, 3.0)]
+    if s_ == 'nrefuse' and a_.get('ok'): put(t0 + D + 1.4, ding(1318), 0.45)
+    if s_ == 'nlist': [put(t0 + (0.05 + 0.07 * k) * D, tick(), 0.6) for k in range(6)]
+    if s_ == 'nslice' and a_.get('cut'): [put(t0 + (0.15 + 0.7 * k / 6) * D, whoosh(0.25, 1500, 5000), 0.5) for k in range(6)]
+    if s_ == 'nworld': put(t0 + 0.15 * D, thud(0.4, 70), 0.9); put(t0 + 0.35 * D, rumble(0.25 * D), 0.6); [put(t0 + 0.9 * D + k * 0.25, chirp(), 0.5) for k in range(2)]
+    if s_ == 'ntwo': put(t0 + 0.8 * D, thud(0.4, 60), 0.8)
+    if s_ == 'nmirror': put(t0 + 0.55 * D, ding(1047), 0.4)
+    if s_ == 'nend': put(l['t1'] + 0.8, ding(1175), 0.4); put(l['t1'] + 0.8, ding(1760), 0.25)
 sf.write('sfx_n.wav', sfx, SR)
 mix = voice + bed * 0.55 + sfx * 0.5
 sf.write('mix_raw_n.wav', mix, SR); sf.write('bed_only.wav', bed * 0.55, SR)

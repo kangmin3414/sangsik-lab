@@ -1,0 +1,10 @@
+mercy ok
+dog ok
+camel ok
+lion 429 {"error": {"code": 429, "message": "Resource has been exhausted (e.g. check quota).", "status": "RESOURCE_EXHAUSTED"}}
+lion ok
+dragon ok
+roar ok
+proud 429 {"error": {"code": 429, "message": "Resource has been exhausted (e.g. check quota).", "status": "RESOURCE_EXHAUSTED"}}
+proud ok
+window ok
