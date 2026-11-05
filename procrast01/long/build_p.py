@@ -18,7 +18,7 @@ def loop(p, n):
     while len(out) < n + xf:
         fo = np.linspace(1, 0, xf); fi = np.linspace(0, 1, xf); out = np.concatenate([out[:-xf], out[-xf:] * fo + p[:xf] * fi, p[xf:]])
     return out[:n]
-bed = loop(load('bgm/BGMFILE'), N)
+bed = loop(load('bgm/comic_a.mp3'), N)
 env = (np.abs(voice) > 0.01).astype(np.float32); sm = np.ones(int(0.3 * SR)) / int(0.3 * SR); env = np.convolve(env, sm, 'same')
 gain = 0.30 - 0.15 * np.clip(env * 2.2, 0, 1)
 fo = int(3 * SR); bed = bed * gain; bed[-fo:] *= np.linspace(1, 0, fo); bed[:int(1.0 * SR)] *= np.linspace(0, 1, int(1.0 * SR))
