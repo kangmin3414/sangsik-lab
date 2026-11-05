@@ -4,3 +4,6 @@ voice.wav
 mix.wav
 *.mp4
 qa*/
+r*.log
+rr*.log
+*.log
