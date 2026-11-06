@@ -40,7 +40,7 @@ def thud(d=0.35, f=70): t = np.arange(int(d * SR)) / SR; return np.sin(2 * np.pi
 def tone(f, d, dec=0.4, h=(1, 0.4, 0.2)): t = np.arange(int(d * SR)) / SR; return sum(a * np.sin(2 * np.pi * f * (i + 1) * t) for i, a in enumerate(h)) * env(len(t), 0.004, dec)
 def whoosh(d=0.4): n = noise(d); return bp(n, 600, 4000) * np.sin(np.linspace(0, np.pi, len(n))) ** 2 * 0.5
 def pop_(f=900): t = np.arange(int(0.08 * SR)) / SR; return np.sin(2 * np.pi * f * t * (1 + 3 * t)) * env(len(t), 0.001, 0.025)
-def crackle(d=0.5): n = noise(d) * (rng.random(int(d * SR)) > 0.985); return bp(n, 1500, 8000) * 3
+def crackle(d=0.5): n = noise(d) * (rng.random(int(d * SR)) > 0.985); return bp(n, 1500, 8000) * 0.8
 def glass():
     s = np.zeros(int(1.2 * SR)); s[:int(0.15 * SR)] += bp(noise(0.15), 2500, 9000) * env(int(0.15 * SR), 0.001, 0.05) * 1.2
     for k in range(9):
@@ -66,13 +66,13 @@ s0 = L['s0']['t0']; put(s0 + 0.5, crackle(0.9), 0.5)
 for i in range(4): put(L['i1']['t0'] - 0.15 + 0.15 + i * 0.28, crackle(0.25), 0.6); put(L['i1']['t0'] + i * 0.28 + 0.1, tone(120, 0.3, 0.2, (1, 0.5)) * 0.15)
 put(W('i2', '유사', 2.0) - 0.02, thud(0.4, 80), 1.0)
 put(W('i4', '이리', 0.9), thud(0.3, 110), 0.6); put(W('i4', '저리', 1.7), thud(0.3, 110), 0.6); put(W('i4', '산산', 3.1), glass(), 0.9)
-put(W('i8', '질러', 0.5), whoosh(0.5), 0.9); put(W('i8', '찢는', 1.9), rip(), 1.0)
+put(W('i8', '질러', 0.5), whoosh(0.5), 0.9); put(W('i8', '찢는', 1.9) + 0.4, rip(), 0.6)
 put(W('i9', '쓰러', 1.7) + 0.35, thud(0.4, 60), 1.0)
 put(W('i10', '도망', 1.5), whoosh(0.6), 0.6)
 put(W('i11', '가면', 1.5), pop_(700), 0.8)
 tP = W('i11', '대문호', 5.0)
-for i in range(4): put(tP + i * 0.32, whoosh(0.5), 0.5)
-put(W('i11', '소환', 6.3), chime(), 0.8)
+for i in range(4): put(tP + 0.45 + i * 0.32, whoosh(0.4), 0.25)
+put(L['i11']['t1'] + 0.05, chime(), 0.6)
 put(W('i12', '뼈', 1.1), mx(thud(0.25, 140), pop_(500)), 0.8); put(W('i12', '처방전', 2.5), whoosh(0.35), 0.5)
 t1 = L['t1']['t0']; put(t1 + 0.05, tone(988, 0.6, 0.35, (1, 0.3)) * 0.5); put(t1 + 0.45, tone(784, 0.9, 0.5, (1, 0.3)) * 0.5)
 put(L['a0']['t0'] + 0.05, creak(1.0), 1.0)
@@ -104,5 +104,5 @@ put(W('m11', '연고', 4.5), chime(), 0.5)
 put(L['a9']['t0'] + 1.85, bell(), 0.9)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_b.wav', mix, SR)
-subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_b.wav', '-af', 'loudnorm=I=-14:TP=-1.0:LRA=9', '-ar', str(SR), 'mix_b.wav'], check=True)
+subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_b.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_b.wav'], check=True)
 print('dur', round(DUR, 2), 'peak raw', round(float(np.abs(mix).max()), 2))
