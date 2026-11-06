@@ -5,7 +5,7 @@
 **2026-11-06 운영자 결정: 화면 연출은 `nietzsche_no01/test_q3/` 방식으로 갑니다.** 사람 없는 AI 배경 판 위에 스틱맨, 3~5초마다 컷(전체·어깨 너머·클로즈업·인서트), 숨 들이쉬기·탄력·출렁임 같은 애니메이션 기본기, 목소리에 맞춘 입 모양, 단어 시각에 맞춘 동작. 비교 영상: `test_q3/비교_기존vs기본기강화.mp4`(저장소 밖).
 
 **지금 진행 중 (2026-11-06 기준, 새 대화는 여기서 이어서):**
-- **혈액형 × 철학자 편** `bloodtype01/`: 운영자 대본 원문 `SCRIPT_asis.md`, 운영자 결정 반영본 `SCRIPT_v2.md`(영상 속 이름 [제로의 혈액형 세계], 길이 9~11분 그대로 OK, 진단·처방은 내레이터 Schedar, 비속어 7곳 순화). 샘플(인트로+A형, 3:38) `long/혈액형편_샘플_인트로_A형_v1.mp4` 전달함. **운영자 답 대기**: A형 목소리(Enceladus) OK인지, B·O·AB형 이어서 만들지. 다음 손님 장면은 `long/bscenes.js`에 b 접두사로 추가, 대사는 `lines_b.py`에 이어 붙이고 `voice_b.py → gen_tl.py → shot_b.py → render_loop.sh 0..2 → build_b.py` 순서. 손님 목소리 후보: B Fenrir, O Achird/Umbriel, AB 차가운 여성 목소리(Kore 계열 제외 검토).
+- **혈액형 × 철학자 편** `bloodtype01/`: 운영자 대본 원문 `SCRIPT_asis.md`, 운영자 결정 반영본 `SCRIPT_v2.md`(영상 속 이름 [제로의 세계] — 11/06 "혈액형" 빼기로 변경, 길이 9~11분 그대로 OK, 진단·처방은 내레이터 Schedar, 비속어 7곳 순화). 샘플(인트로+A형, 3:38) `long/혈액형편_샘플_인트로_A형_v1.mp4` 전달함. **운영자 답 대기**: A형 목소리(Enceladus) OK인지, B·O·AB형 이어서 만들지. 다음 손님 장면은 `long/bscenes.js`에 b 접두사로 추가, 대사는 `lines_b.py`에 이어 붙이고 `voice_b.py → gen_tl.py → shot_b.py → render_loop.sh 0..2 → build_b.py` 순서. 손님 목소리 후보: B Fenrir, O Achird/Umbriel, AB 차가운 여성 목소리(Kore 계열 제외 검토).
 - **니체 2탄(르상티망)** `nietzsche_ep2/SCRIPT_v1.md`: 대본 초안, 운영자 승인 전. van de Ven 2011 원문 미확인.
 - **운영자 쪽 남은 일**: 니체 거절 편 v2 업로드(`nietzsche_no01/유튜브_업로드_니체_거절편.txt`), 화 편 012 v1(11/14 예약) → v2 교체, 고정 댓글은 승인 후에만.
 - **컨테이너 디스크**: 거의 꽉 참(약 3GB 남음). 렌더가 멈추면 `df -h /` 먼저 확인. 끝난 편의 `fr/`(프레임)은 지워도 됨.

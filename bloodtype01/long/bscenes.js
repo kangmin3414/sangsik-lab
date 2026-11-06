@@ -156,14 +156,14 @@ function balleyScene(t, lt, a) {
   let w = bLineup(t, -1, lt);
   w += bNeonText(SIGN[0], SIGN[1] + 22, '제로의 심야 멘탈 수리점', 58, '#FF4FA6', bFlicker(lt, 0.5));
   w += `<rect x="372" y="388" width="62" height="60" fill="#FFD27A" opacity="${f1(0.1 + 0.08 * Math.sin(t * 3) * 100) / 100}"/>`;
-  return bNeonDefs() + bPlate('alley', cam, 0.6) + qCam(cam, w) + bRain(t) + bFull('#1A0F2E', 0.18) + bTitleCard(t, lt, 1.1, 99, '[제로의 혈액형 세계]');
+  return bNeonDefs() + bPlate('alley', cam, 0.6) + qCam(cam, w) + bRain(t) + bFull('#1A0F2E', 0.18) + bTitleCard(t, lt, 1.1, 99, '[제로의 세계]');
 }
 function bneonScene(t, lt, a) { // A B O AB flicker on, one by one, on the brick wall
   const cam = qLerpCam(lt / 2.2, [1480, 420, 1.55], [1470, 430, 1.62]);
   const cols = ['#5DB8FF', '#FF5A5A', '#6CFF8E', '#FFE04A'], L = ['A', 'B', 'O', 'AB'];
   let w = '';
   L.forEach((s, i) => { w += bNeonText(1180 + i * 200 + (i === 3 ? 20 : 0), 470, s, 150, cols[i], bFlicker(lt, 0.15 + i * 0.28)); });
-  return bNeonDefs() + bPlate('alley', cam, 0.75) + bFull('#120A22', 0.35) + qCam(cam, w) + bRain(t, 50, 0.3) + bTitleCard(t, lt, -1, 0.5, '[제로의 혈액형 세계]');
+  return bNeonDefs() + bPlate('alley', cam, 0.75) + bFull('#120A22', 0.35) + qCam(cam, w) + bRain(t, 50, 0.3) + bTitleCard(t, lt, -1, 0.5, '[제로의 세계]');
 }
 /* shop interior: Zero behind the counter, stirring cold coffee with chopsticks */
 const ZC = [960, 930], CTOP = 790;
