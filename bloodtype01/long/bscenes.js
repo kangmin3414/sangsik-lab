@@ -6,7 +6,7 @@ Object.assign(QBG, { alley: 'ai/alley.png', shop: 'ai/shop.png', shopc: 'ai/shop
  'bMA', 'bMAdream', 'bMAwar', 'bMAtent', 'bctl', 'bAplug', 'bAwarm', 'bAhug', 'bAhalf', 'bAbye'].forEach(k => CAMS[k] = 'fixed');
 
 /* ---------- shared ---------- */
-const bAt = (a, key, fb) => { const w = (a._words || []).find(x => x.w.replace(/\s/g, '').includes(key)); return w ? w.t + 0.15 : fb; };
+const bAt = (a, key, fb) => { key = (a.km && a.km[key]) || key; const w = (a._words || []).find(x => x.w.replace(/\s/g, '').includes(key)); return w ? w.t + 0.15 : fb; };
 const bFull = (c, op = 1) => `<rect x="-300" y="-200" width="2600" height="1500" fill="${c}" opacity="${op}"/>`;
 const bTr = (o) => `translate(${f1(o.x)} ${f1(o.y)}) rotate(${f1(o.rot || 0)}) scale(${f1((o.s || 1) * (o.sx || 1) * 1000) / 1000} ${f1((o.s || 1) * (o.sy || 1) * 1000) / 1000}) translate(-200 -560)`;
 const bTxt = (x, y, s, size, fill, o = {}) => `<text x="${f1(x)}" y="${f1(y)}" text-anchor="${o.anchor || 'middle'}" font-family="${FONT}" font-weight="900" font-size="${size}" fill="${fill}"${o.stroke ? ` stroke="${o.stroke}" stroke-width="${o.sw || 6}" paint-order="stroke" stroke-linejoin="round"` : ''}>${esc(s)}</text>`;
@@ -193,7 +193,7 @@ function blookScene(t, lt, a) { // stops stirring, eyes to the camera
 }
 function bbumpScene(t, lt, a) { // bumped this way and that, then the glass heart shatters
   const cam = qLerpCam(lt / 5, [960, 600, 1.12], [960, 590, 1.2]);
-  const t1 = bAt(a, '이리', 1.0), t2 = bAt(a, '저리', 1.8), t3 = bAt(a, '산산', 3.2);
+  const t1 = bAt(a, '이리', 0.2), t2 = bAt(a, '저리', 0.6), t3 = bAt(a, '산산', 1.2);
   const hit = (tt) => lt > tt ? Math.exp(-(lt - tt) * 5) * Math.sin((lt - tt) * 14) : 0;
   const dx = -60 * hit(t1) * (lt < t2 ? 1 : 0) + 70 * hit(t2), x = 960 + dx;
   let w = '';
@@ -238,7 +238,7 @@ function blineScene(t, lt, a) { // pan along the queue, one guest per line
 function bsummonScene(t, lt, a) { // mask on, four philosophers rise from the smoke
   const tM = bAt(a, '가면', 1.6), tS = bAt(a, '소환', 6.4), tP = bAt(a, '대문호', tS - 1.4);
   const cam = qLerpCam(prog(lt, tP - 0.6, tS), [960, 640, 1.45], [960, 560, 1.05]);
-  const mk = clamp((lt - tM + 0.3) / 0.35, 0, 1);
+  const mk = a.nomask ? 0 : clamp((lt - tM + 0.3) / 0.35, 0, 1);
   let extra = '';
   const ph = [['MA', 560], ['NZ', 745], ['ZH', 1175], ['SH', 1360]];
   ph.forEach(([who, x], i) => {
@@ -247,7 +247,7 @@ function bsummonScene(t, lt, a) { // mask on, four philosophers rise from the sm
     const body = who === 'MA' ? MA(o) : who === 'NZ' ? NZ(o) : who === 'ZH' ? ZH(o) : bSH(o);
     extra += `<g opacity="${f1(g * 100) / 100}"><ellipse cx="${x}" cy="${y - 280}" rx="200" ry="240" fill="url(#amber)" opacity=".7"/>${body}</g>` + puff(x, y - 260, t, t - lt + t0, 1.3, '#E9DFF5');
   });
-  const zo = { pose: lt < tM + 0.3 && lt > tM - 0.4 ? bPose('서기', { armL: [[148, 285], [120, 250], [150, 196]], hL: [150, 190], armR: [[252, 285], [280, 250], [250, 196]], hR: [250, 190] }) : '카운터', mask: mk, ex: { expr: '결심', prev: '결심', k: 1, blink: 0 }, look: [0, 0] };
+  const zo = { pose: !a.nomask && lt < tM + 0.3 && lt > tM - 0.4 ? bPose('서기', { armL: [[148, 285], [120, 250], [150, 196]], hL: [150, 190], armR: [[252, 285], [280, 250], [250, 196]], hR: [250, 190] }) : '카운터', mask: mk, ex: { expr: '결심', prev: '결심', k: 1, blink: 0 }, look: [0, 0] };
   const back = extra; // philosophers stand behind the counter, beside Zero
   let w = qShadow(ZC[0], ZC[1], 70) + back + bZero(t, Object.assign({ x: ZC[0], y: ZC[1], s: 1 }, zo)) + bCounter(520, 1400, CTOP);
   if (lt > tS) w += `<ellipse cx="960" cy="${CTOP - 30}" rx="${f1(460 * easeOut(clamp((lt - tS) / 0.4, 0, 1)))}" ry="40" fill="none" stroke="#FFD27A" stroke-width="8" opacity=".8"/>`;
@@ -301,7 +301,7 @@ function bAthinkScene(t, lt, a) { // a panorama of worst-case thoughts + a puddl
   const cam = qLerpCam(lt / 5.4, [AX - 60, 560, 1.32], [AX - 20, 520, 1.42]);
   let w = qShadow(AX, AY, 66) + `<ellipse cx="${AX}" cy="${AY + 10}" rx="${f1(40 + lt * 34)}" ry="${f1(10 + lt * 6)}" fill="#9ED8FF" opacity=".75" stroke="#5BA8D8" stroke-width="4"/>`;
   w += bGuest('A', t, { x: AX, y: AY, s: 1, pose: '가슴', shiver: true, ex: { expr: '겁먹음', prev: '겁먹음', k: 1, blink: 0 }, look: [0, -0.8] });
-  const B = [['오늘 점심 메뉴 건의', '잘못했나?', 1120, 330, 0.3], ['엘리베이터 목례가', '45도 아니고 30도였나?', 1460, 230, 1.8], ['나 내일', '권고사직인가?', 1800, 340, 3.3]];
+  const B = [['점심 메뉴 건의', '때문인가?', 1120, 330, 0.3], ['아까 목례가', '30도였나?', 1460, 230, 1.6], ['나 혹시', '권고사직?', 1800, 340, 2.9]];
   B.forEach(([l1, l2, x, y, t0], i) => { w += pop(t, t - lt + t0, t + 9, x, y, bubble(0, 0, 400, 150, bTxt(0, -6, l1, 32, INK) + bTxt(0, 36, l2, 32, i === 2 ? '#D63A3A' : INK), { right: i === 2 }), { bob: 4 }); });
   for (let i = 0; i < 4; i++) { const ph = (lt * 1.6 + i * 0.25) % 1; w += `<path d="M${f1(AX - 120 + i * 80)} ${f1(AY - 520 + ph * 200)} q-10 18 0 26 q10 -8 0 -26 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="3" opacity="${f1((1 - ph) * 100) / 100}"/>`; }
   return bPlate('shop', cam, 0.5) + qCam(cam, w);
@@ -517,6 +517,3 @@ function bAbyeScene(t, lt, a) { // prescription in hand, a bow, the door bell
   if (go < 0.8) { const h = ptOf(x, AY, 0.95, 200, 360); w += `<g transform="translate(${f1(h[0])} ${f1(h[1])}) rotate(-8)"><rect x="-40" y="-52" width="80" height="104" rx="6" fill="#FBF7EE" stroke="${INK}" stroke-width="5"/><rect x="-40" y="-52" width="80" height="22" rx="6" fill="#3DBA8A" stroke="${INK}" stroke-width="5"/></g>`; }
   return bPlate('shop', cam, 0.5) + qCam(cam, w) + (lt > 2.0 ? fx(t, t - lt + 2.0, t + 9, 1700, 260, '딸랑~', '#FFE9A8', { size: 56 }) : '');
 }
-// every scene gets the shared filters/gradients (blur, warm light, neon)
-['balley', 'bneon', 'bstamp', 'blook', 'bbump', 'bloupe', 'bwheel', 'bline', 'bsummon', 'brx', 'bticket', 'bAenter', 'bAphone', 'bAthink', 'bAtalk', 'bAots', 'bAfav', 'bAchat', 'bAdx',
- 'bMA', 'bMAdream', 'bMAwar', 'bMAtent', 'bctl', 'bAplug', 'bAwarm', 'bAhug', 'bAhalf', 'bAbye'].forEach(k => { const f = window[k + 'Scene']; window[k + 'Scene'] = (...a) => qDefs() + bNeonDefs() + f(...a); });

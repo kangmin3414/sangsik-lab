@@ -537,7 +537,7 @@ function render(t) {
   const line = L[i] || { scene: 'title', args: {}, t0: 0, t1: 1 };
   let rs = i; while (rs > 0 && L[rs - 1].scene === line.scene && L[rs - 1].scene !== 'chapter' && line.scene !== 'stat') rs--;
   const runT0 = (L[rs] || line).t0, lt = t - (line.t0 - 0.15), runLt = t - (runT0 - 0.15);
-  const a = Object.assign({ _dur: (line.t1 || 0) - (line.t0 || 0), _run: runLt, _words: line.words }, line.args || {});
+  const a = Object.assign({ _dur: (line.t1 || 0) - (line.t0 || 0), _run: runLt, _words: line.words, _dur: line.t1 - line.t0 + 0.15 }, line.args || {});
   const titleIdx = L.findIndex(l => l.scene === 'title'), offIdx = L.findIndex(l => l.scene === 'become' && l.args && l.args.off);
   let lastRecap = -1; L.forEach((l, k) => { if (l.scene === 'recap') lastRecap = k; });
   let scene = '', cam = [960, 540, 1];
@@ -619,6 +619,7 @@ window.render = render;
 <script src="../../nietzsche_no01/long/nscenes2.js"></script>
 <script src="../../nietzsche_no01/test_q3/qscenes.js"></script>
 <script src="bscenes.js"></script>
+<script src="bscenes2.js"></script>
 <script>window.AI_READY = Promise.all(Object.values(QBG).map(s => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = s; })));</script>
 </body>
 </html>

@@ -4,14 +4,14 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_b import LINES
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s0': 0, 'i1': 0.25, 'i3': 0.55, 'i4': 0.6, 'i7': 0.6, 'i11': 0.8, 'i12': 0.5, 't1': 1.0, 'a0': 0.1, 'a1': 0.1, 'a2': 0.1, 'A1': 0.3, 'd1': 0.7,
-       'm1': 0.9, 'm2': 0.5, 'm3': 0.35, 'm4': 0.7, 'm5': 0.8, 'm6': 0.6, 'm7': 0.7, 'm8': 0.7, 'm9': 1.1, 'm10': 0.6, 'm11': 0.6, 'a9': 0.5}
+GAP = {'s0': 0, 'i1': 0.2, 'tA': 0.6, 'tB': 0.6, 'tO': 0.6, 'tX': 0.6, 'e0': 0.8, 'a0': 0.05, 'a1': 0.05, 'a2': 0.05, 'b0': 0.05, 'b1': 0.05, 'o0': 0.05, 'o1': 0.1, 'x0': 0.05,
+       'm9': 0.7, 'n6': 0.4, 'z6': 0.5, 'h6': 0.6, 'e1': 0.3}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
 words = json.load(open('words.json')) if os.path.exists('words.json') else {}
 t = 0.4; out = []; prev = None; clips = []
 for lid, scene, v, txt, sp, args in LINES:
-    t += GAP.get(lid, 0.32 if scene == prev else 0.55)
+    t += GAP.get(lid, 0.25 if scene == prev else 0.42)
     if txt is None:
         d = args.get('dur', 2.4); out.append({'id': lid, 'scene': scene, 'v': None, 'args': args, 'sub': '', 't0': round(t, 3), 't1': round(t + d, 3)}); t += d; prev = scene; continue
     w, sr = sf.read(takes[lid]['take'], dtype='float32'); w = w.mean(1) if w.ndim > 1 else w
