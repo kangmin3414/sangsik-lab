@@ -25,7 +25,13 @@ T0 = lambda k: L[k]['t0']
 A = lambda k: L[k]['t0'] - 0.15
 place('bgm/quirky.mp3', 0, T0('s1') - 0.1, 0.30, fin=0.3, fout=0.5, off=3.5)
 place('bgm/mystery.mp3', T0('s1') - 0.2, T0('t0') + 0.1, 0.34, fin=0.4, fout=0.4, off=0)
-place('bgm/flute.mp3', T0('n7') - 0.3, DUR, 0.34, fin=0.6, fout=1.5, off=3.5)
+place('bgm/flute.mp3', T0('n7') - 0.3, T0('a1') - 0.2, 0.34, fin=0.6, fout=0.6, off=3.5)
+place('bgm/tick.mp3', T0('a1') - 0.4, T0('b1') - 0.2, 0.34, fin=0.8, fout=0.6, off=3.5)          # 1막: 시계추
+place('bgm/quirky.mp3', T0('b1') - 0.3, T0('b4') - 0.1, 0.28, fin=0.4, fout=0.5, off=30)        # 2막: 장바구니·바닷물
+place('bgm/tick.mp3', T0('b4') - 0.2, T0('c1') - 0.3, 0.26, fin=0.8, fout=0.8, off=48)          # 권태·쳇바퀴·시계추
+place('bgm/flute.mp3', T0('c1') - 0.4, T0('h1') - 0.3, 0.32, fin=0.6, fout=1.0, off=20)         # 쇼펜하우어의 일상
+place('bgm/sunset.mp3', T0('h1') - 0.4, T0('e1') - 0.3, 0.32, fin=2.0, fout=1.2, off=3.5)       # 힌트
+place('bgm/musicbox.mp3', T0('e1') - 0.3, DUR, 0.26, fin=1.5, fout=2.0, off=3.5)                # 열린 결말
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -104,6 +110,65 @@ put(T0('t0') + 0.2, crackle(0.8), 0.5); put(T0('t0') + 0.4, tone(140, 1.2, 0.8, 
 put(W('n7', '아르투어', 0.9) - 0.3, mx(pop_(700), thud(0.25, 110)), 0.5)
 tP = W('n7', '시계추', 5.2)
 for k in range(4): put(tP + 0.1 + k * 0.56, tone(1800 if k % 2 else 1500, 0.06, 0.03, (1,)) * 0.35)
+
+# ================= 1막: 시계추 =================
+def tick_(f=1500, g=1.0): return tone(f, 0.05, 0.02, (1,)) * 0.3 * g
+for lid in ['a1', 'a2', 'a3', 'a4', 'a5']:
+    for k in range(int((L[lid]['t1'] - A(lid)) / 0.53)): put(A(lid) + k * 0.53, tick_(1500 if k % 2 else 1200, 0.5))
+for k in range(int((L['a5']['t1'] - A('a1')) / 1.6)):
+    tt = A('a1') + k * 1.6
+    if not (A('a2') - 0.2 < tt < L['a3']['t1']): put(tt, whoosh(0.7) * 0.5, 0.35)
+put(W('a1', '고통', 2.6) - 0.3, pop_(700), 0.4); put(W('a1', '권태', 3.4) - 0.3, pop_(600), 0.4)
+put(A('a2') + 0.3, gurgle(0.9), 0.7); put(A('a2') + 1.2, tone(2200, 0.15, 0.08, (1,)) * 0.3)
+put(A('a3') + 0.05, whoosh(0.7), 0.6); put(A('a3') + 2.0, slide_down(0.8), 0.4)
+for k in range(int((L['a4']['t1'] - A('a4')) / 1.6)): put(A('a4') + 0.8 + k * 1.6, tone(2093, 0.4, 0.2, (1, 0.3)) * 0.18)
+put(W('a4', '멈춘', 4.8) - 0.2, mx(pop_(700), chime()), 0.4)
+put(A('a5') + 0.2, tape_stop(0.9)[::-1] * 0.6, 0.5); put(A('a5') + 1.4, whoosh(0.5), 0.8)
+tW_ = W('a6', '평일', 2.4)
+for i in range(6): put(tW_ + i * 0.22, thud(0.18, 150), 0.45)
+put(W('a6', '일요일', 4.6), thud(0.25, 110), 0.6)
+for k in range(int((L['a7']['t1'] - A('a7')) / 0.25)): put(A('a7') + k * 0.25, tick_(1700, 0.35))
+# ================= 2막 =================
+D1 = L['b1']['t1'] - L['b1']['t0'] + 0.15
+for i in range(9): put(A('b1') + (i + 1) * D1 / 10, thud(0.2, 130), 0.5)
+for k in range(int(D1 / 0.14)):
+    if k % 2: put(A('b1') + k * 0.14, bp(noise(0.02), 2500, 7000) * env(int(0.02 * SR), 0.001, 0.005), 0.25)
+def slurp(): t = np.arange(int(0.45 * SR)) / SR; return bp(noise(0.45), 300, 2500) * (0.5 + 0.5 * np.sin(2 * np.pi * 14 * t)) * env(len(t), 0.02, 0.25) * 0.5
+for s0 in [0.6, 2.6, 5.0]:
+    if A('b2') + s0 < L['b2']['t1']: put(A('b2') + s0, slurp(), 0.5); put(A('b2') + s0 + 0.7, gurgle(0.4), 0.35)
+put(W('b2', '부는', 3.2), pop_(700), 0.4)
+for i in range(4): put(A('b3') + 0.2 + i * 0.3, pop_(1000 + 150 * i), 0.3)
+put(A('b4'), tone(130, 2.0, 1.2, (1, 0.5, 0.2)) * 0.2); put(W('b4', '권태', 2.8), tone(880, 0.6, 0.4, (1, 0.3)) * 0.25)
+tN_ = W('b5', '새로운', 1.6)
+for k in range(int((L['b5']['t1'] - A('b5')) / 0.4)): put(A('b5') + k * 0.4, whoosh(0.15) * 0.4, 0.3)
+put(tN_ - 0.2, mx(pop_(1400), snap()), 0.5); put(tN_, gurgle(0.6), 0.5)
+put(A('b6'), creak(L['b6']['t1'] - A('b6')) * 0.8, 0.5)
+for k in range(int((L['b6']['t1'] - A('b6')) / 0.16)): put(A('b6') + k * 0.16, bp(noise(0.04), 300, 1500) * env(int(0.04 * SR), 0.001, 0.01), 0.18)
+put(W('b6', '쳇바퀴', 1.6), pop_(800), 0.4)
+for k in range(int((L['b7']['t1'] - A('b7')) / 1.0)): put(A('b7') + k * 1.0, tick_(900, 0.5))
+# ================= 3막 앞 =================
+put(A('c1'), lp(noise(L['c1']['t1'] - A('c1')), 400) * 0.12)
+put(W('c1', '끝나', 6.4), mx(thud(0.35, 90), snap()), 0.7)
+for k in range(int(2.2 / 0.45)): put(A('c2') + k * 0.45, bp(noise(0.05), 200, 1200) * env(int(0.05 * SR), 0.001, 0.015), 0.3)
+tM_ = W('c2', '말썽', 2.8); put(tM_, mx(glass(), thud(0.3, 100)), 0.5)
+put(A('S1'), mx(thud(0.3, 80), whoosh(0.3)), 0.5)
+put(W('c3', '플루트', 3.8), chime(), 0.25)
+# ================= 3막: 힌트 =================
+put(W('h1', '힌트', 0.6), mx(pop_(700), chime()), 0.4)
+put(A('h2'), crackle(L['h2']['t1'] - A('h2') - 1.0), 0.12)
+for k in range(8): put(A('h2') + k * 0.5 * (1 + k * 0.15), whoosh(0.3) * 0.5, 0.12)
+put(W('h2', '멈춰', (L['h2']['t1'] - L['h2']['t0']) - 1.6), thud(0.4, 70), 0.5)
+put(A('h3') + 0.3, mx(pop_(700), chime()), 0.4)
+for key, fb in [('어떤', 3.4), ('가진', 5.0), ('보이는', 7.2)]: put(W('h4', key, fb) - 0.2, pop_(900), 0.4)
+put(L['h4']['t1'] - 1.2, chime(), 0.5)
+D5 = L['h5']['t1'] - L['h5']['t0'] + 0.15
+for k in range(int(D5 / 0.33)): put(A('h5') + k * 0.33, bp(noise(0.05), 200, 1200) * env(int(0.05 * SR), 0.001, 0.015), 0.22)
+for i in range(3): put(A('h5') + 0.6 + i * (D5 - 1.4) / 3 + 0.5, pop_(1200 + 200 * i), 0.35)
+# ================= 열린 결말 =================
+put(A('e1') + 0.2, mx(lp(noise(0.3), 120) * 0.8, ding()), 0.4); put(A('e1') + 1.0, gurgle(0.6), 0.35)
+for k in range(int((L['e2']['t1'] - A('e2')) / 1.0)): put(A('e2') + k * 1.0, tick_(1200, 0.4))
+put(L['e2']['t1'] + 0.05, thud(0.35, 55), 0.4)
+for k in range(int((DUR - A('e3')) / 1.6)): put(A('e3') + 0.5 + k * 1.6, tick_(800, 0.35))
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_s.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_s.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_s.wav'], check=True)
