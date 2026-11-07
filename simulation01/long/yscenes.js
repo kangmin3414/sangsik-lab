@@ -216,7 +216,7 @@ function ynightScene(t, lt, a) {
 }
 
 /* ================= p1~p11: temptation ================= */
-const yBun = (t, cam, ch, o = {}) => smDefs() + smPlate('bunsik', cam, o.blur ? 0.4 : 0.55, o.blur ? { blur: true } : {}) + qCam(cam, ch) + xFront(cam) + (o.pan ? qCam(cam, smPan(960, 960, 1.0, t)) : '') + warm(0.45);
+const yBun = (t, cam, ch, o = {}) => smDefs() + smPlate('bunsik', cam, 0.55, o.blur ? { blur: true } : {}) + qCam(cam, ch) + (o.blur ? smPlateFront('bunsik', cam, 0.55, SMBEDGE, { filter: 'qblur' }) : xFront(cam)) + (o.pan ? qCam(cam, smPan(960, 960, 1.0, t)) : '') + warm(0.45);
 function ytemptScene(t, lt, a) {
   const id = a._id || '', D = a._dur || 2, typ = Math.sin(t * 26) * 4;
   if (id === 'p1') {   // MCU: typing, a sly little smile

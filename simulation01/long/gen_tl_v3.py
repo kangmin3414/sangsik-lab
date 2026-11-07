@@ -6,7 +6,7 @@ from lines_v3 import LINES, SAMPLE, SAME
 takes = json.load(open('takes_v3.json'))
 for a_, b_ in SAME.items():
     if b_ in takes: takes[a_] = takes[b_]; SR = 44100
-GAP = {'c1': 0.4, 'c2': 0.15, 'c3': 0.1, 'm1': 0.6, 'm2': 0.05, 't0': 0.3, 'u1': 0.5, 'u2': 0.2, 'u3': 0.3, 'u5': 0.05, 'b1': 0.7, 'p1': 0.6, 'p2': 0.1, 'p4': 0.15, 'p5': 0.3, 'p8': 0.3, 'p9': 0.05, 'p11': 0.2}
+GAP = {'c1': 0.4, 'c2': 0.15, 'c3': 0.1, 'm1': 0.45, 'm2': 0.05, 't0': 0.3, 'u1': 0.5, 'u2': 0.2, 'u3': 0.3, 'u5': 0.05, 'b1': 0.7, 'p1': 0.6, 'p2': 0.1, 'p4': 0.15, 'p5': 0.3, 'p8': 0.3, 'p9': 0.05, 'p11': 0.2}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
 words = json.load(open('words_v3.json')) if os.path.exists('words_v3.json') else {}
@@ -23,6 +23,9 @@ for lid, scene, v, txt, sp, args in [l for l in LINES if not os.environ.get('SAM
         s16 = resample_poly(seg, 2, 3).astype(np.float32) if sr == 24000 else seg
         sg, _ = asr.transcribe(s16, language='ko', beam_size=5, word_timestamps=True, condition_on_previous_text=False)
         words[lid] = {'take': key, 'words': [{'w': x.word.strip(), 't': round(x.start, 3)} for s in sg for x in s.words]}
+    fr = int(0.02 * sr); nfr_ = max(1, len(seg) // fr); rmsf = np.sqrt(np.mean(seg[:nfr_ * fr].reshape(nfr_, fr) ** 2, axis=1)); p90 = np.percentile(rmsf[rmsf > rmsf.max() * 0.05], 90) if (rmsf > 0).any() else 1
+    gain = float(np.clip((0.138 if v == 'S' else 0.11) / (p90 + 1e-9), 0.3, 2.0)); seg = seg * gain   # dialogue leveling: lines sit within ~2 dB (Sora's shouts +2 dB)
+    if v == 'S' and gain < 0.8: seg = np.tanh(seg * 2.0) / 2.0                      # soften the shouted lines' peaks a little
     clips.append((t, resample_poly(seg, 441, 240) if sr == 24000 else seg, v))
     out.append({'id': lid, 'scene': scene, 'v': v, 'args': args, 'sub': txt, 't0': round(t, 3), 't1': round(t + d, 3), 'words': words[lid]['words'],
                 'segs': [{'v': v, 'text': txt, 't0': round(t, 3), 't1': round(t + d, 3)}]})

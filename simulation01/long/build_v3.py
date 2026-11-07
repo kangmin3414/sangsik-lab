@@ -1,4 +1,4 @@
-"""v2 샘플 믹스: 목소리 + 배경음(장면별, 덕킹) + 합성 효과음 → mix_v2.wav (loudnorm -14).
+"""v3 샘플 믹스(2판: 대사 평준화는 gen_tl_v3.py, p3 아래 음악·소리 추가 감쇠): 목소리 + 배경음(장면별, 덕킹) + 합성 효과음 → mix_v2.wav (loudnorm -14).
 연출 기준 v3: 효과음은 1초에 하나까지, 대사와 겹치면 0.3초씩 뒤로(최대 0.9초) 미룬다. 효과음은 모두 직접 합성."""
 import json, os, subprocess, numpy as np, soundfile as sf
 from scipy.signal import butter, lfilter
@@ -93,6 +93,9 @@ place('bgm/cosmic_a.mp3', T0('b1') - 0.5, T1('b2') + 0.8, 0.38, fin=1.2, fout=1.
 place('bgm/myst_a.mp3', T0('p1') - 0.3, LT('p8', 0.0), 0.30, fin=0.6, fout=0.15, off=40)            # stops for the second laugh
 place('bgm/hollow_a.mp3', T0('p9') - 0.1, DUR, 0.40, fin=1.5, fout=1.5)
 bed *= (1.0 - 0.78 * np.clip(act * 2.0, 0, 1))
+def dip(buf, t0, t1, g, r=0.25):   # extra dip under one line (p3: the joke must sit on top)
+    i0, i1 = int(t0 * SR), int(t1 * SR); e = np.ones(N); e[i0:i1] = g; k_ = int(r * SR); e[max(0, i0 - k_):i0] = np.linspace(1, g, i0 - max(0, i0 - k_)); e[i1:i1 + k_] = np.linspace(g, 1, len(e[i1:i1 + k_])); buf *= e
+dip(bed, T0('p3') - 0.1, T1('p3') + 0.1, 0.55)
 
 # ---------------- ambience ----------------
 put(0, lp(noise(T0('m1')), 300) * 0.025, 1, amb, dodge=False, free=True)
@@ -107,33 +110,47 @@ put(T0('p11') - 0.2, lp(noise(T1('p11') - T0('p11') + 1.0), 300) * 0.025, 1, amb
 
 # ---------------- sfx ----------------
 for i in range(18): put(LT('c1', 0.05 + i * 0.13), keyclick(), 0.14, free=True, dodge=False)
-put(LT('c1', 2.75), buzz(0.4), 0.5, dodge=False); put(LT('c1', 2.6 + 1.95), thud(0.12, 220), 0.5, dodge=False)   # the phone flipped face-down
+put(LT('c1', 0.92), buzz(0.65), 0.45, dodge=False)                       # the phone on the desk: 999+
+tTap = W('c1', '소라', 3.5) + 0.45; put(tTap, pop_(1100), 0.35, dodge=False, free=True); put(tTap + 0.62, blip(1300, 1800, 0.07), 0.4, dodge=False, free=True)   # opens her room, sends 'ㅇㅋ'
+put(LT('c2', 1.6), thud(0.12, 220), 0.45, dodge=False, free=True)        # lays the phone face down
 for i in range(22): put(LT('c3', 0.1 + i * 0.075), keyclick(), 0.35, free=True, dodge=False)
 put(LT('c3', 1.85), blip(1400, 1900, 0.08), 0.5, dodge=False)
 for k in range(6): put(T0('m1') - 0.1 + k * 0.15, step(), 0.45, free=True, dodge=False)
 put(LT('m1', 1.0 + 0.9), glitch(0.14), 0.4, dodge=False)
 put(LT('m2', 0.1), thud(0.4, 52), 0.6, dodge=False); put(LT('m2', 0.95), mx(tone(900, 0.12, 0.04, (1,)) * 0.3, lp(noise(0.08), 2000) * env(int(0.08 * SR), 0.001, 0.02)), 0.5, dodge=False)   # the coffee drop
-put(T0('m3') - 0.55, whoosh(0.35), 0.35, dodge=False)
+put(T0('m3') - 0.55, whoosh(0.35), 0.35, dodge=False); put(LT('m3', 1.95), glitch(0.12), 0.3, dodge=False, free=True)
 put(T0('t0') - 0.15, glitch(0.35), 0.9, dodge=False); put(T0('t0') - 0.1, boom(1.6, 44), 0.7, dodge=False)
 TXT1 = len('내일 소라는 노란 우산을 쓰고 온다.')
 tT = W('u1', '시험', 3.0) - 0.1
 for i in range(TXT1): put(tT + i * 2.2 / TXT1, keyclick(), 0.35, free=True)
 put(LT('u2', 0.55), pop_(1200), 0.4, dodge=False); put(LT('u2', 1.45), chime(1568), 0.3, dodge=False)
-for k in range(8): put(T0('u3') + 0.1 + k * 0.3, step() * 0.6, 0.35, free=True, dodge=False)
+for k in range(9): put(LT('u3', 1.0 + k * 0.27), step() * 0.6, 0.08 + 0.3 * k / 8, free=True, dodge=False)   # far away → closer
 put(LT('u5', 0.1 + 4 / 24), boing(), 0.55, dodge=False); put(LT('u5', 0.1 + 13 / 24), plop(), 0.6, dodge=False)
 put(LT('u5', 0.1 + 0.95), mx(thud(0.3, 70), clink() * 0.5), 0.7, dodge=False); put(LT('u5', 1.05), glitch(0.18), 0.6, dodge=False)
 put(T0('u6') - 0.1, heartbeat(), 0.6, dodge=False)
 for i in range(8): put(LT('b1', 0.2 + i * 0.16), keyclick(), 0.3, free=True)
-put(W('b1', '논증', 3.0) - 0.2, whoosh(0.4), 0.35); put(W('b1', '없이', 7.0), sweep(1.6, 1800, 300) * 0.6, 0.4, dodge=False)
+put(LT('b1', 1.7), pop_(1000), 0.35, dodge=False, free=True); put(LT('b1', 3.7) - 0.1, whoosh(0.35), 0.3);
+for i in range(3): put(W('b1', '컴퓨터', 8.2) + i * 0.16, pop_(700 + 150 * i), 0.25, dodge=False, free=True)
+put(W('b1', '없이', 7.0), sweep(1.6, 1800, 300) * 0.6, 0.4, dodge=False)
+per = (D_('p1') - 1.4) / 3
+for n_, txt in enumerate(('소라는 지각하지 않는다.', '소라는 내 이모티콘에 답한다.', '소라는 오늘 기분이 좋다.')):
+    put(LT('p1', 1.4 + n_ * per), scrape(0.12) * 0.6, 0.35, dodge=False, free=True)   # the date chip flips
+    for i in range(len(txt)): put(LT('p1', 1.4 + n_ * per + i * per * 0.75 / len(txt)), keyclick(), 0.3, free=True, dodge=False)
 for lid, txt in (('p2', '소라는 제로의 농담에 크게 웃는다.'), ('p5', '소라는 오늘 떡볶이를 산다.')):
     n = len(txt); d = D_(lid) - 0.4
     for i in range(n): put(LT(lid, i * d / n), keyclick(), 0.35, free=True, dodge=False)
+put(W('p3', '왕이', 1.0) - 0.1, pop_(800), 0.3, dodge=False, free=True)   # the thought bubble
+put(W('p3', '넘어', 1.7) + 0.6, plop() * 0.8, 0.45)                         # the pixel king falls (in the pause)
 tK = W('p3', '킹콩', 2.0) + 0.55   # ba-dum-tss after the punchline
 put(tK, thud(0.15, 120), 0.5); put(tK + 0.16, thud(0.15, 90), 0.5, free=True); put(tK + 0.34, bp(noise(0.5), 5000, 12000) * env(int(0.5 * SR), 0.002, 0.18) * 0.6, 0.6, free=True)
+def tableslap(): return mx(thud(0.1, 140) * 0.8, bp(noise(0.05), 800, 5000) * env(int(0.05 * SR), 0.0005, 0.012) * 0.7)
+for lid in ('p4', 'p8'):   # the same four slaps both times
+    for s0 in (0.45, 0.8, 1.15, 1.5): put(LT(lid, s0), tableslap(), 0.32, dodge=False, free=True)
+rw = sweep(0.14, 2600, 500); put(LT('p8', 0.0), rw * 0.8, 0.45, dodge=False, free=True)   # the 2-frame rewind tear
 put(LT('p6', 0.25), mx(thud(0.12, 160), bp(noise(0.06), 1500, 6000) * env(int(0.06 * SR), 0.0005, 0.015)), 0.7, dodge=False)   # card slap
 put(T0('p9'), tone(2200, 0.25, 0.08, (1,)) * 0.3, 0.5, dodge=False)
-put(LT('p11', 0.5), whoosh(0.25), 0.5, dodge=False); put(LT('p11', 0.55), glitch(0.4), 0.8, dodge=False); put(LT('p11', 1.45), thud(0.3, 90), 0.8, dodge=False)
-amb *= (1.0 - 0.7 * np.clip(act * 2.0, 0, 1))
+put(LT('p11', 0.5), whoosh(0.25), 0.5, dodge=False); put(LT('p11', 0.55), glitch(0.4), 0.8, dodge=False); put(LT('p11', 1.68), thud(0.3, 90), 0.8, dodge=False)
+amb *= (1.0 - 0.7 * np.clip(act * 2.0, 0, 1)); dip(amb, T0('p3') - 0.1, T1('p3') + 0.1, 0.4)
 mix = voice * 1.0 + bed + sfx * 0.5 + amb * 0.6
 k = int(1.2 * SR); mix[-k:] *= np.linspace(1, 0, k)
 sf.write('mix_raw_v3.wav', mix, SR)
