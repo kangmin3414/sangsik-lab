@@ -56,7 +56,7 @@ function soKko(t, o) { const s = o.s || 1, pf = o.puff || 1, sq = o.sq || 1, loo
   return HALO(h + `</g>`); }
 // 새 운동화를 신은 발: 서 있는/걷는 자세의 발 위치에 작은 운동화를 겹친다
 function soFeet(x, y, s, pose, o = {}) { const p = typeof pose === 'string' ? P[pose] : pose, dy = p.dy || 0, sy = o.sy || 1, sx = o.sx || 1;
-  return [[p.fL, true], [p.fR, false]].map(([f, left]) => soShoe(x + (f[0] - 200) * s * sx, y + (f[1] + dy + 14 - 560) * s * sy, 0.5 * s, { flip: left, rot: (left ? -1 : 1) * (f[2] || 0) * 0.5, shine: o.shine })).join(''); }
+  return [[p.fL, true], [p.fR, false]].map(([f, left]) => soShoe(x + (f[0] - 200) * s * sx, y + (f[1] + dy + 14 - 560) * s * sy, 0.5 * s, { flip: left, rot: (left ? -1 : 1) * (f[2] || 0) * 0.5, shine: o.shine, dust: o.dust })).join(''); }
 const soTag = (t, lt, s0) => tag(t, t - lt + 0.1, t + 9, 260, 120, s0, '#FFE9A8', { size: 42 });
 
 /* ---------- 1. 응모 23번 탈락 → 24번째 당첨 ---------- */

@@ -6,7 +6,7 @@ from lines_s import LINES
 takes = json.load(open('takes.json')); SR = 44100
 GAP = {'n1': 0.3, 'n2': 0.35, 'n3': 0.25, 'n4': 0.3, 'n5': 0.45, 's1': 0.2, 'k1': 0.1, 'n6': 0.35, 't0': 0.35, 'n7': 0.2,
        'a1': 0.7, 'a2': 0.35, 'a3': 0.5, 'a4': 0.45, 'a5': 0.2, 'a6': 0.5, 'a7': 0.4, 'b1': 0.7, 'b2': 0.5, 'b3': 0.3, 'b4': 0.5, 'b5': 0.4, 'b6': 0.45, 'b7': 0.5,
-       'd0': 0.7, 'd1': 0.6, 'd2': 0.35, 'd3': 0.6, 'd4': 0.5, 'h1': 0.8, 'h2': 0.45, 'h3': 0.6, 'h4': 0.3, 'h5': 0.5, 'e1': 0.8, 'e2': 0.6, 'e3': 1.0}
+       'd0': 0.7, 'd1': 0.6, 'd2': 0.35, 'd3': 0.6, 'd4': 0.5, 'h1': 0.8, 'h2': 0.45, 'h3': 0.6, 'h4': 0.3, 'h5': 0.5, 'f1': 0.8, 'k2': 0.15, 'f2': 0.3, 'f3': 0.4, 'f4': 0.4, 'f5': 0.7}
 PITCH = {'C': 'asetrate=24000*1.3,aresample=24000,atempo=0.86', 'K': 'asetrate=24000*1.22,aresample=24000,atempo=0.9', 'S': 'asetrate=24000*0.84,aresample=24000,atempo=1.19'}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)

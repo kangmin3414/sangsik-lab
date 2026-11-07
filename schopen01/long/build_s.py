@@ -30,8 +30,9 @@ place('bgm/tick.mp3', T0('a1') - 0.4, T0('b1') - 0.2, 0.34, fin=0.8, fout=0.6, o
 place('bgm/quirky.mp3', T0('b1') - 0.3, T0('b4') - 0.1, 0.28, fin=0.4, fout=0.5, off=30)        # 2막: 장바구니·바닷물
 place('bgm/tick.mp3', T0('b4') - 0.2, T0('d1') - 0.3, 0.26, fin=0.8, fout=0.8, off=48)          # 권태·쳇바퀴·시계추
 place('bgm/flute.mp3', T0('d1') - 0.4, T0('h1') - 0.3, 0.32, fin=0.6, fout=1.0, off=20)         # 쇼펜하우어의 일상
-place('bgm/sunset.mp3', T0('h1') - 0.4, T0('e1') - 0.3, 0.32, fin=2.0, fout=1.2, off=3.5)       # 힌트
-place('bgm/musicbox.mp3', T0('e1') - 0.3, DUR, 0.26, fin=1.5, fout=2.0, off=3.5)                # 열린 결말
+place('bgm/sunset.mp3', T0('h1') - 0.4, T0('f1') - 0.3, 0.32, fin=2.0, fout=1.2, off=3.5)       # 힌트
+place('bgm/musicbox.mp3', T0('f1') - 0.3, T0('f3') + 1.2, 0.24, fin=1.5, fout=1.0, off=3.5)    # 결말: 밤, 알림
+place('bgm/sunset.mp3', T0('f3') + 0.6, DUR, 0.28, fin=1.8, fout=2.5, off=40)                    # 헤드셋을 쓰면 노래가 흐른다
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -170,11 +171,16 @@ put(L['h4']['t1'] - 1.2, chime(), 0.5)
 D5 = L['h5']['t1'] - L['h5']['t0'] + 0.15
 for k in range(int(D5 / 0.33)): put(A('h5') + k * 0.33, bp(noise(0.05), 200, 1200) * env(int(0.05 * SR), 0.001, 0.015), 0.22)
 for i in range(3): put(A('h5') + 0.6 + i * (D5 - 1.4) / 3 + 0.5, pop_(1200 + 200 * i), 0.35)
-# ================= 열린 결말 =================
-put(A('e1') + 0.2, mx(lp(noise(0.3), 120) * 0.8, ding()), 0.4); put(A('e1') + 1.0, gurgle(0.6), 0.35)
-for k in range(int((L['e2']['t1'] - A('e2')) / 1.0)): put(A('e2') + k * 1.0, tick_(1200, 0.4))
-put(L['e2']['t1'] + 0.05, thud(0.35, 55), 0.4)
-for k in range(int((DUR - A('e3')) / 1.6)): put(A('e3') + 0.5 + k * 1.6, tick_(800, 0.35))
+# ================= 결말 =================
+put(W('f1', '알림', 1.0) - 0.1, mx(lp(noise(0.3), 120) * 0.8, ding()), 0.45)
+put(A('k2') - 0.6, gurgle(0.5), 0.6); put(A('k2') - 0.05, pop_(1500), 0.4); put(L['k2']['t1'] + 0.05, thud(0.2, 160), 0.35)
+put(W('f2', '쇼펜', 2.4) - 0.2, mx(whoosh(0.3), thud(0.15, 200)), 0.35)
+tA2 = W('f2', '알아차', 5.4); put(tA2 - 0.1, mx(pop_(1100), chime()), 0.45)
+for k in range(int((L['f2']['t1'] - tA2) / 0.6)): put(tA2 + 0.6 + k * 0.6, tick_(1300 if k % 2 else 1000, 0.6))
+put(W('f3', '버튼', 0.6) + 0.3, thud(0.15, 220), 0.4)
+put(W('f3', '헤드셋', 1.9) + 0.2, mx(whoosh(0.3), pop_(700)), 0.45)
+for k in range(int((L['f4']['t1'] - A('f4')) / 1.2)): put(A('f4') + 0.6 + k * 1.2, tick_(800, 0.25))
+put(A('f4') + 0.4, mx(pop_(900), thud(0.15, 180)), 0.35)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_s.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_s.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_s.wav'], check=True)
