@@ -19,6 +19,14 @@ P = {
           'Quiet, scholarly, a little mysterious. The wooden floor fills the bottom 22% of the frame.',
  'space': 'Deep outer space: a vast dark navy-to-black starfield with a soft glowing spiral galaxy on the right and faint colorful nebula clouds, tiny distant stars, calm and awe-inspiring, painted in a clean cartoon style with soft glow. Leave the center fairly empty.',
 }
+P.update({
+ 'bunsik': 'Inside a small cozy Korean street-food snack restaurant (bunsik) in the evening, seen at eye level: in the background a steaming food counter with big shallow pans, a menu board on the wall that is completely blank (plain colored panels, no writing), a few small tables with red plastic stools along the back wall, warm yellow pendant lights, tiled walls, lively and cozy. '
+           'IMPORTANT: the center foreground is open floor with NO table and NO stools, because characters and a table will be drawn there later. The floor fills the bottom 22% of the frame.',
+ 'room': 'A small cozy Korean one-room studio apartment on a bright morning, seen at eye level: on the left an EMPTY plain wooden desk with nothing on it and a desk chair, in the center a large window with a wide empty windowsill (nothing on the sill) and soft blue morning sky with clouds outside, '
+         'on the right a single bed with a blanket and a pillow, a wooden door at the far right edge, a small rug, a few books on a shelf above the bed. Light wood floor fills the bottom 22% of the frame; open floor space in the middle in front of the window.',
+ 'village': 'A tiny cute cartoon village for a simple 2D video game, side view: a sandy town square fills the whole lower third of the frame, behind it a row of small colorful houses with round red and blue roofs, round green trees, a little stone well, a tiny fence, bright blue sky with puffy white clouds. '
+            'Simple, flat, cheerful, toy-like game art with thick outlines.',
+})
 vx.token()
 for k in sys.argv[1:] or list(P):
     if not sys.argv[1:] and os.path.exists(f'ai/{k}.png'): continue

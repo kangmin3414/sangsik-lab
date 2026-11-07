@@ -71,8 +71,14 @@ def shimmer(d): t = np.arange(int(d * SR)) / SR; return sum(np.sin(2 * np.pi * f
 tB = T0('b1') - 0.4; tBut = W('b6', '그런데', 3.0)
 place('bgm/myst_a.mp3', LT('h0', 1.55 + 0.4), tB + 0.8, 0.34, fin=0.6, fout=1.4)
 place('bgm/cosmic_a.mp3', tB - 0.6, tBut - 0.05, 0.42, fin=1.6, fout=0.25, off=4)
+if 'd1' in L:
+    place('bgm/myst_a.mp3', T0('d1') - 0.3, T1('d3') + 0.5, 0.30, fin=0.4, fout=0.8, off=30)
+    place('bgm/hollow_a.mp3', T0('d4') - 0.6, T1('d8') + 1.2, 0.40, fin=1.5, fout=1.2)
+    place('bgm/tiny_a.mp3', T0('g1') - 0.4, T1('g7') + 0.6, 0.38, fin=1.5, fout=1.0)
+    place('bgm/cosmic_a.mp3', T0('c1') - 0.5, T1('c3') + 0.6, 0.36, fin=1.0, fout=1.0, off=62)
+    place('bgm/warm_a.mp3', T0('m1') - 0.7, DUR, 0.40, fin=1.0, fout=2.5)
 act = np.convolve((np.abs(voice) > 0.012).astype(float), np.ones(int(0.35 * SR)) / int(0.35 * SR), 'same')
-bed *= (1.0 - 0.68 * np.clip(act * 2.0, 0, 1))
+bed *= (1.0 - 0.78 * np.clip(act * 2.0, 0, 1))
 
 # ---------- ambience: morning street (h*, e1, e2, b6 tail), park, kitchen hum ----------
 def street(t0, t1, g=1.0):
@@ -82,7 +88,17 @@ def street(t0, t1, g=1.0):
 street(0, T1('e2') + 0.3, 1.0)
 street(T1('e2') + 0.3, T1('e4') + 0.3, 1.3)
 put(T0('e5') - 0.2, hum(T1('e6') - T0('e5') + 0.6), 0.6, amb)
-street(tBut - 0.05, DUR, 1.0)
+street(tBut - 0.05, T0('d1') - 0.3 if 'd1' in L else DUR, 1.0)
+def sizzle(d): n = noise(d); return bp(n, 2500, 9000) * (0.6 + 0.4 * np.abs(np.sin(np.linspace(0, d * 37, len(n))))) * 0.12
+def buzz(d=0.5): t = np.arange(int(d * SR)) / SR; return np.sin(2 * np.pi * 160 * t) * (np.sin(2 * np.pi * 9 * t) > 0) * 0.35 * np.minimum(1, t * 40)
+def keyclick(): return mx(bp(noise(0.03), 1500, 6000) * env(int(0.03 * SR), 0.0003, 0.006) * 1.2, tone(rng.uniform(380, 520), 0.03, 0.01, (1,)) * 0.15)
+def scratch(): n = noise(0.14); return bp(n, 800, 3500) * np.sin(np.linspace(0, np.pi, len(n))) * 0.5
+def chime(f=1046): return mx(ding(f) * 0.6, ding(f * 1.25) * 0.4, ding(f * 1.5) * 0.3)
+def water(d): n = noise(d); return bp(n, 1500, 7000) * (0.5 + 0.5 * np.abs(np.sin(np.linspace(0, 40, len(n))))) * 0.25
+if 'd1' in L:
+    put(T0('d1') - 0.3, sizzle(T1('d3') - T0('d1') + 0.8), 1.0, amb)
+    put(T0('d4') - 0.3, lp(noise(T1('g7') - T0('d4') + 0.6), 300) * 0.03, 1, amb)     # quiet room tone
+    street(T0('m1') - 0.6, DUR - 0.5, 0.7)
 
 # ---------- h0: steps, whip, glitch ----------
 for k in range(4): put(LT('h0', 0.08 + k * 0.32), step(), 0.55)
@@ -140,6 +156,62 @@ for k in range(6): put(tP + k * 0.33, whoosh(0.3), 0.35)
 put(W('b6', '없습니다', 2.0) - 0.3, stamp(), 0.9)
 tF = W('b6', '찾아', 4.5)
 put(tF, whoosh(0.3), 0.9); put(tF + 0.05, glitch(0.5), 1.1); put(tF + 0.05, boom(1.8, 46), 1.0)
+
+# ================= part 2 =================
+if 'd1' in L:
+    put(T0('d1') - 0.05, shimmer(1.2), 1.2)
+    put(W('d1', '세상', 2.5), scribble(2.5), 0.8)
+    put(W('d2', '떡볶이', 1.3) - 0.2, whoosh(0.25), 0.5); put(W('d2', '너도', 2.4) - 0.2, whoosh(0.25), 0.5)
+    put(W('d2', '숫자', 3.6) - 0.05, glitch(0.25), 0.8)
+    for k in range(3): put(T0('d3') + 0.05 + k * 0.35, lp(noise(0.08), 700) * env(int(0.08 * SR), 0.003, 0.03), 0.6)
+    tt = T0('d4')                                       # days pass: the clock ticks, faster and faster
+    k = 0
+    while tt < T1('d4') - 0.3: put(tt, tone(2600 if k % 2 else 2200, 0.03, 0.01, (1,)), 0.25); tt += max(0.12, 0.45 - k * 0.025); k += 1
+    put(W('d4', '질문', 2.8), pop_(600), 0.5)
+    put(T0('d5') - 0.1, lp(noise(0.9), 1200) * np.sin(np.linspace(0, np.pi, int(0.9 * SR))) * 0.25, 1.0)   # a sigh
+    tt = T0('d6') - 0.75
+    for i in range(5): put(tt + i * 0.11, keyclick(), 0.35)
+    put(W('d6', '화분', 4.0) + 0.5, tone(330, 1.2, 0.5, (1, 0.3)) * np.linspace(1, 0.3, int(1.2 * SR)), 0.25)
+    tF = W('d6', '친구', 8.0)
+    put(tF, buzz(0.45), 0.7); put(tF + 0.8, buzz(0.45), 0.6)
+    put(T0('d8') - 0.1, sweep(3.0, 900, 120) * 0.5, 0.5); put(T0('d8'), boom(2.5, 40), 0.35)
+    # g1: the laptop opens, a soft start-up chord; the push into the screen
+    put(T0('g1') - 0.15 + 0.75, pop_(500), 0.4); put(T0('g1') - 0.15 + 0.95, chime(784), 0.25)
+    put(W('g1', '손바닥', 4.5) - 0.2, whoosh(0.5), 0.4)
+    for x in [w['t'] + 0.12 for w in L['g2']['words'] if any(k_ in w['w'] for k_ in ('홱', '획', '휙'))] or [2.6, 3.4]:
+        put(T0('g2') - 0.15 + x, whoosh(0.2), 0.3); put(T0('g2') - 0.15 + x + 0.06, glitch(0.18), 0.25)
+    for i in range(7): put(T0('g3') - 0.15 + 0.2 + i * 1.7 / 7, scratch(), 0.6)
+    put(T0('g3') - 0.15 + 2.0, blip(700, 1100, 0.08), 0.4)
+    for k in range(3): put(T0('g4') + k * 0.9, mx(thud(0.18, 55) * 0.9, np.zeros(1)), 0.45)
+    # g5: typing / deleting
+    tT = W('g5', '너는', 3.0); tDel = W('g5', '글자', 7.0)
+    for i in range(6): put(tT + i * 0.11, keyclick(), 0.7)
+    for i in range(6): put(tDel + i * 0.16, keyclick() * 0.8, 0.6)
+    # g6: typing in time with his voice, send, colour comes back
+    D6 = L['g6']['t1'] - L['g6']['t0'] + 0.15; n6 = len('네가 아픈 것도, 네 친구도, 진짜야.')
+    for i in range(n6): put(T0('g6') - 0.15 + 0.1 + i / n6 * (D6 - 0.5), keyclick(), 0.45)
+    tS = T0('g6') - 0.15 + D6 - 0.15
+    put(tS, sweep(0.7, 600, 2400) * 0.6, 0.6); put(tS + 0.35, chime(1046), 0.5); put(tS + 0.5, shimmer(1.8), 1.2)
+    put(W('g7', '대답', 4.0) - 0.3, sweep(2.6, 200, 900) * 0.4, 0.5)
+    # c: book, labels, stamps, chalk, balance
+    put(T0('c1') - 0.1, thud(0.3, 90), 0.6); put(W('c1', '차머스', 2.5) + 0.5, pop_(1000), 0.2); put(W('c1', '가상', 6.5), pop_(800), 0.5)
+    put(W('c2', '떡볶이', 4.0) - 0.15, sizzle(2.0), 1.6)
+    put(W('c2', '떡볶이', 4.0) - 0.15 + 0.5, stamp(), 0.8); put(W('c2', '친구', 6.0) - 0.15 + 0.9, stamp(), 0.8)
+    put(W('c2', '친구', 6.0) - 0.15, buzz(0.35), 0.4)
+    tM = W('c3', '수학', 2.0)
+    for i in range(3):
+        for j in range(5): put(tM + i * 0.6 + j * 0.14, bp(noise(0.06), 2500, 8000) * env(int(0.06 * SR), 0.002, 0.03), 0.15)
+    put(W('c3', '논쟁', 6.5), pop_(900), 0.5)
+    # m: the morning whip, watering, the reply
+    xs = [w['t'] + 0.12 for w in L['m1']['words'] if any(k_ in w['w'] for k_ in ('홱', '획', '휙'))]
+    tW = T0('m1') - 0.15 + (xs[0] if xs else 2.7)
+    put(tW, whoosh(0.3), 0.7); put(tW + 0.05, glitch(0.3), 0.6)
+    tWa = W('m2', '물', 1.8); put(tWa + 0.35, water(1.4), 0.4); put(tWa + 0.8, chime(1318), 0.2)
+    put(T0('m4') - 0.1, chime(1568), 0.5); put(T0('m4'), buzz(0.4), 0.5)
+    for k in range(4): put(T0('o1') + 0.1 + k * 0.32, step(), 0.5)
+    put(T0('o1') - 0.15 + 0.35 * (L['o1']['t1'] - L['o1']['t0'] + 0.15), sweep(3.5, 1800, 200) * 0.5, 0.45)
+    put(T0('o1') - 0.15 + 0.5 * (L['o1']['t1'] - L['o1']['t0'] + 0.15), shimmer(3.0), 1.3)
+    put(T0('o2'), chime(1046), 0.35)
 
 mix = voice * 1.0 + bed + sfx * 0.5 + amb * 0.6
 sf.write('mix_raw_s.wav', mix, SR)
