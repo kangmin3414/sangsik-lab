@@ -345,6 +345,12 @@
    "item": "Gemini TTS simulation01 v3 샘플 (18줄, 최대 3테이크 + c1 다시 녹음)",
    "count": 1,
    "unit_usd": 0.1
+  },
+  {
+   "at": "2026-11-07",
+   "item": "Gemini TTS simulation01 v3 샘플 2판 (c1·c2·c4 다시 녹음, 각 1테이크)",
+   "count": 1,
+   "unit_usd": 0.02
   }
  ]
 }
