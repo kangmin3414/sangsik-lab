@@ -125,6 +125,7 @@ function char(o) {
   if (o.tied) for (const f of [p.fL, p.fR]) h += `<path d="M${f1(f[0] - 16)} ${f1(f[1] - 10)} L${f1(f[0] + 12)} ${f1(f[1] + 10)} M${f1(f[0] + 12)} ${f1(f[1] - 10)} L${f1(f[0] - 16)} ${f1(f[1] + 10)}" stroke="#8A6A44" stroke-width="5" stroke-linecap="round"/>`; // shoes tied up with string
   // upper body breathes
   h += `<g transform="translate(${sh} ${f1(-breath)})">`;
+  if (o.hairBehind) h += typeof o.hairBehind === 'function' ? o.hairBehind(t) : o.hairBehind; // long hair / ponytail behind the torso
   h += `<path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z" fill="${vest}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
   h += `<g clip-path="url(#vestClip)"><rect x="${L > 0 ? 226 : 120}" y="240" width="56" height="200" fill="${vshade}"/><path d="M135 404 Q200 396 268 404 L270 420 L130 420 Z" fill="${vshade}"/></g>`;
   if (o.dress) h += `<path d="M132 392 L268 392 L300 468 Q200 488 100 468 Z" fill="${o.dress}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M150 440 Q200 452 250 440" fill="none" stroke="#fff" stroke-width="4" opacity=".35"/>`; // skirt
@@ -171,11 +172,13 @@ function char(o) {
     }
     h += `<g fill="${o.wig}" stroke="${INK}" stroke-width="5">${w}</g>`;
   }
+  if (o.hairBack) h += typeof o.hairBack === 'function' ? o.hairBack(t) : o.hairBack; // hair behind the head (bob, ponytail, buns) — tilts with the head
   const hx = o.puffy ? 1.12 : 1;
   h += `<ellipse cx="200" cy="170" rx="${118 * hx}" ry="${o.puffy ? 118 : 112}" fill="#fff"/>`;
   h += `<g clip-path="url(#headClip)"><ellipse cx="200" cy="170" rx="140" ry="130" fill="${shade}"/><ellipse cx="${200 - 30 * L}" cy="${150}" rx="${118 * hx}" ry="112" fill="#fff"/></g>`;
   h += `<ellipse cx="200" cy="170" rx="${118 * hx}" ry="${o.puffy ? 118 : 112}" fill="none" stroke="${INK}" stroke-width="8"/>`;
-  if (o.hair) h += `<path d="M86 152 Q84 62 200 58 Q316 62 314 152 Q296 112 250 104 Q200 120 150 104 Q104 112 86 152 Z" fill="${o.hair}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+  if (o.hairFront) h += typeof o.hairFront === 'function' ? o.hairFront(t) : o.hairFront; // custom front hair (bangs, clips) — replaces o.hair
+  else if (o.hair) h += `<path d="M86 152 Q84 62 200 58 Q316 62 314 152 Q296 112 250 104 Q200 120 150 104 Q104 112 86 152 Z" fill="${o.hair}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
   if (o.wig) h += `<path d="M84 168 Q76 62 200 54 Q324 62 316 168 Q306 128 276 118 Q244 96 204 104 L200 70 L196 104 Q156 96 124 118 Q94 128 84 168 Z" fill="${o.wig}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M120 92 q14 -10 26 0 M254 92 q14 -10 26 0 M156 70 q12 -8 24 0 M222 70 q12 -8 24 0" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" opacity=".35"/>`;
   if (o.topknot) { // hair pulled up into a topknot with a pin
     h += `<ellipse cx="200" cy="48" rx="32" ry="27" fill="${o.topknot}" stroke="${INK}" stroke-width="6"/><line x1="156" y1="40" x2="246" y2="54" stroke="#C9A04A" stroke-width="7" stroke-linecap="round"/><line x1="156" y1="40" x2="246" y2="54" stroke="${INK}" stroke-width="2" opacity=".4"/>`;
@@ -188,6 +191,7 @@ function char(o) {
     const leaf = (x0, y0, cx, cy, x1, y1, side) => { let w = ''; for (let i = 0; i < 7; i++) { const k = 0.06 + i * 0.145, a = 1 - k; const x = a * a * x0 + 2 * a * k * cx + k * k * x1, y = a * a * y0 + 2 * a * k * cy + k * k * y1; const tx = 2 * a * (cx - x0) + 2 * k * (x1 - cx), ty = 2 * a * (cy - y0) + 2 * k * (y1 - cy); const ang = Math.atan2(ty, tx) * 180 / Math.PI; for (const sgn of [-1, 1]) w += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="17" ry="8" transform="rotate(${f1(ang + sgn * 38 * side)} ${f1(x)} ${f1(y)}) translate(${f1(12 * side)} 0)" fill="${sgn > 0 ? '#6DBE55' : '#4E9A3E'}" stroke="${INK}" stroke-width="4"/>`; } return w; };
     h += leaf(96, 168, 92, 80, 186, 58, 1) + leaf(304, 168, 308, 80, 214, 58, -1);
   }
+  if (e.fxUnder) h += typeof e.fxUnder === 'function' ? e.fxUnder(t) : e.fxUnder; // face layer under the eyes (cheek puff, shadow)
   if (e.blush) h += `<ellipse cx="148" cy="214" rx="16" ry="8" fill="#FF9BB0" opacity=".8"/><ellipse cx="252" cy="214" rx="16" ry="8" fill="#FF9BB0" opacity=".8"/>`;
   const by = 1 - 0.92 * blink;
   h += `<g transform="translate(${f1(look[0] * 7)} ${f1(look[1] * 5)}) translate(0 188) scale(1 ${f1(by * 100) / 100}) translate(0 -188)">`;
@@ -195,6 +199,8 @@ function char(o) {
   const pl = e.whites ? `translate(${f1(look[0] * 8)} ${f1(look[1] * 6)})` : '';
   h += `<g transform="${pl}"><path d="${e.eyeL}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/><path d="${e.eyeR}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/>`;
   if (e.eyeFill === INK && !e.whites && blink < 0.3) h += `<circle cx="168" cy="181" r="3.2" fill="#fff"/><circle cx="238" cy="181" r="3.2" fill="#fff"/>`;
+  if (e.fxEye) h += typeof e.fxEye === 'function' ? e.fxEye(t) : e.fxEye; // extra eye layer (highlights, stars, hearts) — moves and blinks with the eyes
+  if (o.lash2 && !e.noLash && e.eyeFill !== 'none') h += `<path d="M155 177 Q150 172 147 168 M160 173 Q158 167 157 162 M245 177 Q250 172 253 168 M240 173 Q242 167 243 162" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`; // lashes for the big v3 eyes
   if (o.lashes) h += e.eyeFill === INK ? `<path d="M152 178 L140 170 M157 173 L149 162 M248 178 L260 170 M243 173 L251 162" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` : `<path d="M150 192 L137 187 M153 186 L143 177 M250 192 L263 187 M247 186 L257 177" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
   h += `</g></g>`;
   if (gog !== 'none') {
@@ -205,7 +211,7 @@ function char(o) {
     h += `<path d="M${gl - 18} ${gy - 6} Q${gl - 14} ${gy - 18} ${gl - 2} ${gy - 20}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9"/><path d="M${gr - 18} ${gy - 6} Q${gr - 14} ${gy - 18} ${gr - 2} ${gy - 20}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9"/>`;
   }
   const bq = b => `M${f1(b[0])} ${f1(b[1])} Q${f1(b[2])} ${f1(b[3])} ${f1(b[4])} ${f1(b[5])}`;
-  h += `<path d="${bq(bL)}" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="${bq(bR)}" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/>`;
+  h += `<path d="${bq(bL)}" fill="none" stroke="${INK}" stroke-width="${o.browW || 13}" stroke-linecap="round"/><path d="${bq(bR)}" fill="none" stroke="${INK}" stroke-width="${o.browW || 13}" stroke-linecap="round"/>`;
   const mk = ex.k < 1 ? 0.7 + 0.3 * ex.k : 1;
   if (!o.noMouth) h += `<g transform="translate(0 ${o.stache ? 24 : (o.longBeard ? 16 : 0)}) translate(200 235) scale(${f1(mk * 100) / 100}) translate(-200 -235)"><path d="${e.mouth}" fill="${e.mouthFill}" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>`;
   if (o.stache) { // bushy walrus moustache (Nietzsche)
@@ -222,6 +228,7 @@ function char(o) {
     h += `<path d="M180 300 Q192 330 196 360 M220 300 Q208 330 204 360" fill="none" stroke="${INK}" stroke-width="3" opacity=".25" stroke-linecap="round"/>`;
     h += `<path d="M200 224 Q180 218 168 232 Q160 246 156 258 M200 224 Q220 218 232 232 Q240 246 244 258" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="M200 224 Q180 218 168 232 Q160 246 156 258 M200 224 Q220 218 232 232 Q240 246 244 258" fill="none" stroke="${o.longBeard}" stroke-width="7" stroke-linecap="round"/>`;
   }
+  if (e.fx) h += typeof e.fx === 'function' ? e.fx(t) : e.fx; // extra face layer in head coords (tears, anger mark, gloom lines, blush lines)
   if (e.sweat || o.sweat) { const sd = (t * 40) % 30; h += `<path d="M306 ${112 + sd * 0.4} Q292 ${138 + sd * 0.4} 306 ${148 + sd * 0.4} Q320 ${138 + sd * 0.4} 306 ${112 + sd * 0.4} Z" fill="#9ED8FF" stroke="${INK}" stroke-width="5"/>`; }
   h += `</g>`; // head
   const hand = q => `<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="22" fill="#fff" stroke="${INK}" stroke-width="7"/><path d="M${f1(q[0] - 10)} ${f1(q[1] + 8)} Q${f1(q[0])} ${f1(q[1] + 16)} ${f1(q[0] + 10)} ${f1(q[1] + 8)}" fill="none" stroke="${shade === '#D5E2EE' ? '#C9D6E2' : shade}" stroke-width="5" stroke-linecap="round"/>`;
