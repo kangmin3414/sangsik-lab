@@ -333,6 +333,12 @@
    "item": "Lyria 3 Pro simulation01 hollow_a, tiny_a, warm_a",
    "count": 3,
    "unit_usd": 0.08
+  },
+  {
+   "at": "2026-11-07",
+   "item": "Gemini TTS simulation01 v2 샘플 (20줄, 최대 3테이크 + 다시 녹음 4줄)",
+   "count": 1,
+   "unit_usd": 0.1
   }
  ]
 }

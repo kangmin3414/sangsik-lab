@@ -6,3 +6,5 @@ takes/
 *.mp4
 *.mp3
 __pycache__/
+fr2/
+chk2/
