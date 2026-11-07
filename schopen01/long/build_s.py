@@ -28,8 +28,8 @@ place('bgm/mystery.mp3', T0('s1') - 0.2, T0('t0') + 0.1, 0.34, fin=0.4, fout=0.4
 place('bgm/flute.mp3', T0('n7') - 0.3, T0('a1') - 0.2, 0.34, fin=0.6, fout=0.6, off=3.5)
 place('bgm/tick.mp3', T0('a1') - 0.4, T0('b1') - 0.2, 0.34, fin=0.8, fout=0.6, off=3.5)          # 1막: 시계추
 place('bgm/quirky.mp3', T0('b1') - 0.3, T0('b4') - 0.1, 0.28, fin=0.4, fout=0.5, off=30)        # 2막: 장바구니·바닷물
-place('bgm/tick.mp3', T0('b4') - 0.2, T0('c1') - 0.3, 0.26, fin=0.8, fout=0.8, off=48)          # 권태·쳇바퀴·시계추
-place('bgm/flute.mp3', T0('c1') - 0.4, T0('h1') - 0.3, 0.32, fin=0.6, fout=1.0, off=20)         # 쇼펜하우어의 일상
+place('bgm/tick.mp3', T0('b4') - 0.2, T0('d1') - 0.3, 0.26, fin=0.8, fout=0.8, off=48)          # 권태·쳇바퀴·시계추
+place('bgm/flute.mp3', T0('d1') - 0.4, T0('h1') - 0.3, 0.32, fin=0.6, fout=1.0, off=20)         # 쇼펜하우어의 일상
 place('bgm/sunset.mp3', T0('h1') - 0.4, T0('e1') - 0.3, 0.32, fin=2.0, fout=1.2, off=3.5)       # 힌트
 place('bgm/musicbox.mp3', T0('e1') - 0.3, DUR, 0.26, fin=1.5, fout=2.0, off=3.5)                # 열린 결말
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
@@ -146,13 +146,19 @@ put(A('b6'), creak(L['b6']['t1'] - A('b6')) * 0.8, 0.5)
 for k in range(int((L['b6']['t1'] - A('b6')) / 0.16)): put(A('b6') + k * 0.16, bp(noise(0.04), 300, 1500) * env(int(0.04 * SR), 0.001, 0.01), 0.18)
 put(W('b6', '쳇바퀴', 1.6), pop_(800), 0.4)
 for k in range(int((L['b7']['t1'] - A('b7')) / 1.0)): put(A('b7') + k * 1.0, tick_(900, 0.5))
-# ================= 3막 앞 =================
-put(A('c1'), lp(noise(L['c1']['t1'] - A('c1')), 400) * 0.12)
-put(W('c1', '끝나', 6.4), mx(thud(0.35, 90), snap()), 0.7)
-for k in range(int(2.2 / 0.45)): put(A('c2') + k * 0.45, bp(noise(0.05), 200, 1200) * env(int(0.05 * SR), 0.001, 0.015), 0.3)
-tM_ = W('c2', '말썽', 2.8); put(tM_, mx(glass(), thud(0.3, 100)), 0.5)
-put(A('S1'), mx(thud(0.3, 80), whoosh(0.3)), 0.5)
-put(W('c3', '플루트', 3.8), chime(), 0.25)
+# ================= 3막 앞: 쇼펜하우어의 일상 =================
+for k in range(int((L['d0']['t1'] - A('d0')) / 1.4)): put(A('d0') + k * 1.4, tick_(900, 0.4))
+put(W('d0', '쇼펜', 1.4) - 0.3, mx(whoosh(0.4), thud(0.2, 140)), 0.4); put(W('d0', '일상', 3.2), chime(), 0.35)
+put(A('d1'), lp(noise(L['d2']['t1'] - A('d1')), 400) * 0.1)
+put(W('d1', '꼬르륵', 1.0), gurgle(0.6), 0.5); put(W('d1', '꼬르륵', 1.0) + 0.3, pop_(1200), 0.4)
+put(W('d1', '같은', 5.6), mx(tick_(1500, 1.2), pop_(900)), 0.5); put(W('d1', '같은', 5.6) + 0.15, pop_(900), 0.4)
+put(W('d2', '꽉', 1.6), mx(*[np.pad(pop_(900 + 120 * i), (int(i * 0.06 * SR), 0)) for i in range(5)]), 0.35)
+put(W('d2', '첫', 3.0), mx(thud(0.35, 90), snap()), 0.7)
+put(W('d2', '시계추', 5.6) - 0.2, whoosh(0.5), 0.4); put(W('d2', '기운', 6.6), tone(165, 1.0, 0.5, (1, 0.5)) * 0.3)
+D3 = L['d3']['t1'] - L['d3']['t0'] + 0.15; tJ3 = W('d3', '일과', L['d3']['t0'] + D3 - 2.0) - A('d3')
+for k in range(int(max(0, tJ3 - 0.4) / 0.45)): put(A('d3') + k * 0.45, bp(noise(0.05), 200, 1200) * env(int(0.05 * SR), 0.001, 0.015), 0.25)
+put(A('d3') + tJ3, mx(pop_(800), tone(1320, 0.5, 0.3, (1, 0.4)) * 0.4), 0.45)
+put(W('d4', '플루트', 1.6), chime(), 0.2); put(W('d4', '잠들', 5.0), mx(slide_down(0.8), pop_(600)), 0.3)
 # ================= 3막: 힌트 =================
 put(W('h1', '힌트', 0.6), mx(pop_(700), chime()), 0.4)
 put(A('h2'), crackle(L['h2']['t1'] - A('h2') - 1.0), 0.12)
