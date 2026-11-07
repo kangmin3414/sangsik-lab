@@ -12,6 +12,15 @@ const zBlush = (op = 0.55, r = 1) => `<ellipse cx="146" cy="216" rx="${18 * r}" 
 const zBlushLines = `<path d="M134 220 l8 -12 M146 222 l8 -12 M158 224 l8 -12 M242 224 l8 -12 M254 222 l8 -12 M266 220 l8 -12" stroke="#FF6F8E" stroke-width="4" stroke-linecap="round"/>`;
 const zGloom = `<g clip-path="url(#headClip)">` + [128, 148, 168, 188, 208, 228, 248, 268].map((x, i) => `<line x1="${x}" y1="58" x2="${x}" y2="${f1(118 + (i % 3) * 10)}" stroke="${GLOOM}" stroke-width="5" opacity=".6"/>`).join('') + `</g>`;
 const zDrop = (x, y, s = 1, c = TEARC) => `<path d="M${f1(x)} ${f1(y - 14 * s)} Q${f1(x - 10 * s)} ${f1(y + 2 * s)} ${f1(x)} ${f1(y + 8 * s)} Q${f1(x + 10 * s)} ${f1(y + 2 * s)} ${f1(x)} ${f1(y - 14 * s)} Z" fill="${c}" stroke="${INK}" stroke-width="${f1(4 * s)}"/>`;
+// 눈물: 아래 눈꺼풀 바깥쪽에서 맺혀 → 볼을 타고 → 턱선에서 떨어진다. 눈과 같이 움직이도록 look을 받는다.
+const zTear = (t, lk, side = -1, ph = 0, s = 1) => { lk = lk || [0, 0]; const ex = 200 + side * 35 + lk[0] * 7, ey = 190 + lk[1] * 5, x0 = ex + side * 7, y0 = ey + 20;
+  const k = ((t * 0.62 + ph) % 1), grow = clamp(k / 0.25, 0, 1), run = clamp((k - 0.25) / 0.5, 0, 1), fall = clamp((k - 0.75) / 0.25, 0, 1);
+  const x = x0 + side * 10 * run, y = y0 + 52 * easeIn(run) + 70 * fall * fall, r = (3 + 5 * grow) * s;
+  let h = run > 0 ? `<path d="M${f1(x0)} ${f1(y0)} Q${f1(x0 + side * 4)} ${f1((y0 + y) / 2)} ${f1(x)} ${f1(Math.min(y, y0 + 52))}" stroke="${TEARC}" stroke-width="${f1(5 * s)}" fill="none" stroke-linecap="round" opacity="${f1((0.75 - 0.5 * fall) * 100) / 100}"/>` : '';
+  return h + `<g opacity="${f1((1 - fall) * 100) / 100}">${zDrop(x, y + r * 0.6, r / 9 * 1.0)}</g>`; };
+const zStream = (t, lk, side) => { lk = lk || [0, 0]; const x = 200 + side * 35 + lk[0] * 7, y = 198 + lk[1] * 5, o = f1((t * 120) % 40);
+  return `<path d="M${f1(x)} ${f1(y)} Q${f1(x + side * 22)} ${f1(y + 40)} ${f1(x + side * 30)} ${f1(y + 82)}" stroke="${TEARC}" stroke-width="15" fill="none" stroke-linecap="round" stroke-dasharray="24 12" stroke-dashoffset="${-o}" opacity=".9"/>` +
+    [0, 1].map(i => { const k = (t * 1.4 + i * 0.5) % 1; return zDrop(x + side * (30 + 6 * k), y + 92 + k * 90, 0.55); }).join(''); };
 const zVein = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="#E5484D" stroke-width="7" stroke-linecap="round"><path d="M-22 -6 Q-8 -8 -6 -22"/><path d="M6 -22 Q8 -8 22 -6"/><path d="M22 6 Q8 8 6 22"/><path d="M-6 22 Q-8 8 -22 6"/></g>`;
 const zSoftBrow = (y = 146) => ({ bL: [146, y + 2, 164, y - 4, 182, y + 1], bR: [218, y + 1, 236, y - 4, 254, y + 2] });
 const zWorryBrow = { bL: [144, 152, 164, 140, 184, 136], bR: [216, 136, 236, 140, 256, 152] };
@@ -41,7 +50,7 @@ Object.assign(E, {
     fxEye: `<path d="M150 194 Q165 180 180 194" stroke="${INK}" stroke-width="10" fill="none" stroke-linecap="round"/>` + zHL(235, 190), fx: `<path d="M190 233 Q189 262 202 262 Q215 262 212 233 Z" fill="${TONGUE}" stroke="${INK}" stroke-width="5"/><path d="M201 238 L201 252" stroke="#E46A82" stroke-width="3"/>` }),
   // ---- 당황 계열 ----
   'z당황': Object.assign({ eyeL: ell(165, 190, 7, 8), eyeR: ell(235, 190, 7, 8), eyeFill: INK, eyeSW: 0, whites: true }, zWorryBrow,
-    { mouth: 'M176 238 Q182 230 188 238 Q194 246 200 238 Q206 230 212 238 Q218 246 224 238', mouthFill: 'none', sweat: true, fx: zBlushLines + zDrop(92, 120, 0.8) + zDrop(76, 154, 0.6) }),
+    { mouth: 'M176 238 Q182 230 188 238 Q194 246 200 238 Q206 230 212 238 Q218 246 224 238', mouthFill: 'none', sweat: true, fx: zBlushLines }),
   'z민망': Object.assign(zEyes(11, 16, 192, 9), { bL: [146, 150, 164, 144, 182, 150], bR: [218, 144, 236, 138, 254, 146] },
     { mouth: 'M186 234 Q194 240 200 234 Q206 228 214 234', mouthFill: 'none', sweat: true, fxEye: zHL2(192, 0.9, 9), fx: zBlushLines }),
   'z의심': Object.assign({ eyeL: 'M152 188 L178 188 Q178 201 165 201 Q152 201 152 188 Z', eyeR: ell(235, 190, 11, 15), eyeFill: EY, eyeSW: 0 },
@@ -51,10 +60,10 @@ Object.assign(E, {
     { mouth: ell(200, 240, 6, 7), mouthFill: MO, fx: t => [0, 1, 2].map(i => `<circle cx="${170 + i * 30}" cy="34" r="${f1(7 + 4 * Math.max(0, Math.sin(t * 5 - i * 0.8)))}" fill="#fff" stroke="${INK}" stroke-width="4"/>`).join('') }),
   // ---- 슬픔 계열 ----
   'z울먹': Object.assign(zEyes(14, 19), zWorryBrow, { mouth: 'M182 238 Q191 230 200 238 Q209 246 218 238', mouthFill: 'none', fxUnder: zBlush(0.5),
-    fxEye: zHL2(188, 1.15) + `<path d="M153 199 Q165 207 177 199 M223 199 Q235 207 247 199" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>`, fx: zDrop(184, 206, 0.6) }),
+    fxEye: zHL2(188, 1.15) + `<path d="M153 199 Q165 207 177 199 M223 199 Q235 207 247 199" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>`, fx: (t, lk) => zTear(t, lk, -1, 0, 0.9) }),
   'z엉엉': Object.assign({ eyeL: 'M148 184 Q165 200 182 184', eyeR: 'M218 184 Q235 200 252 184', eyeFill: 'none', eyeSW: 10 }, zWorryBrow,
     { mouth: 'M172 224 Q200 214 228 224 Q222 264 200 264 Q178 264 172 224 Z', mouthFill: MO,
-      fx: t => { const o = f1((t * 120) % 40); return [[160, -1], [240, 1]].map(([x, s]) => `<path d="M${x} 196 Q${x + s * 26} 250 ${x + s * 10} 320" stroke="${TEARC}" stroke-width="16" fill="none" stroke-linecap="round" stroke-dasharray="26 14" stroke-dashoffset="${-o}" opacity=".9"/>`).join(''); } }),
+      fx: (t, lk) => zStream(t, lk, -1) + zStream(t, lk, 1) }),
   'z삐짐': Object.assign({ eyeL: 'M150 188 L180 194', eyeR: 'M220 194 L250 188', eyeFill: 'none', eyeSW: 9 }, { bL: [144, 158, 164, 150, 186, 156], bR: [214, 156, 236, 150, 256, 158] },
     { mouth: 'M190 238 Q200 230 210 238', mouthFill: 'none', fxUnder: `<circle cx="146" cy="214" r="26" fill="${BLUSH}" opacity=".75"/><circle cx="254" cy="214" r="26" fill="${BLUSH}" opacity=".75"/>`,
       fx: t => { const k = 0.6 + 0.4 * Math.abs(Math.sin(t * 3)); return `<g transform="translate(258 262) scale(${f1(k * 100) / 100})"><circle cx="0" cy="0" r="14" fill="#fff" stroke="${INK}" stroke-width="4"/><circle cx="16" cy="-6" r="10" fill="#fff" stroke="${INK}" stroke-width="4"/></g>`; } }),
@@ -79,7 +88,7 @@ Object.assign(E, {
     { mouth: ell(200, 240, 8, 6), mouthFill: MO, fxUnder: zBlush(0.35),
       fx: t => { const r = 6 + 16 * (0.5 + 0.5 * Math.sin(t * 2.2)); return `<circle cx="${f1(224 + r * 0.6)}" cy="226" r="${f1(r)}" fill="#CFEFFF" fill-opacity=".8" stroke="${INK}" stroke-width="4"/><circle cx="${f1(220 + r * 0.6)}" cy="${f1(222 - r * 0.3)}" r="${f1(r * 0.25)}" fill="#fff"/>`; } }),
   'z하품': Object.assign({ eyeL: 'M150 182 L176 190 L150 198', eyeR: 'M250 182 L224 190 L250 198', eyeFill: 'none', eyeSW: 8 }, zUpBrow,
-    { mouth: ell(200, 246, 22, 28), mouthFill: MO, fx: `<ellipse cx="200" cy="262" rx="12" ry="8" fill="${TONGUE}"/>` + zDrop(142, 206, 0.5) }),
+    { mouth: ell(200, 246, 22, 28), mouthFill: MO, fx: (t, lk) => `<ellipse cx="200" cy="262" rx="12" ry="8" fill="${TONGUE}"/>` + zDrop(152 + (lk ? lk[0] * 7 : 0), 204 + (lk ? lk[1] * 5 : 0), 0.45) }),
 });
 // 눈 깜빡임에 쓰는 '반쯤 감은 눈' 사이 단계: 큰 눈 표정에서 자연스러운 깜빡임은 엔진의 blink가 처리한다.
 const Z_EXPR = ['z기본', 'z반짝', 'z하트눈', 'z빵긋', 'z설렘', 'z뿌듯', 'z히죽', 'z메롱', 'z당황', 'z민망', 'z의심', 'z멍', 'z울먹', 'z엉엉', 'z삐짐', 'z버럭', 'z충격', 'z소름', 'z멘붕', 'z기절', 'z결심', 'z졸음', 'z하품'];

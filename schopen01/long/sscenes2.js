@@ -6,47 +6,51 @@ SV.forEach(k => CAMS[k] = 'fixed');
 const svSitY = (seat, s = 1) => seat - 12 * s + 148 * s;        // L자로 앉을 때 원점 y (엉덩이가 seat 위)
 const svCard = (t, lt, t0, x, y, big, sub, col) => fCard(t, lt, t0, x, y, big, sub, col);
 P['sv바닥'] = Object.assign({}, P['f앉기'], { legL: [[188, 412], [292, 416], [384, 420]], fL: [402, 410, -70], legR: [[212, 410], [300, 412], [392, 414]], fR: [410, 402, -70] }); // 바닥에 다리 뻗고
-P['sv양반'] = Object.assign({}, P['서기'], { armL: [[148, 285], [118, 380], [126, 452]], hL: [126, 456], armR: [[252, 285], [282, 380], [274, 452]], hR: [274, 456], legL: [[188, 412], [112, 466], [232, 500]], fL: [244, 500, 0], legR: [[212, 412], [288, 466], [168, 500]], fR: [156, 500, 0], dy: 0 });
+P['sv양반'] = Object.assign({}, P['서기'], { armL: [[148, 285], [118, 372], [112, 432]], hL: [110, 436], armR: [[252, 285], [282, 372], [288, 432]], hR: [290, 436], legL: [[188, 412], [104, 440], [224, 456]], fL: [236, 456, 0], legR: [[212, 412], [296, 440], [176, 456]], fR: [164, 456, 0], dy: 0 }); // 양반다리: 정강이가 방석 위
 const SV_PHONE_SIT = Object.assign({}, P['f앉기'], { armL: [[148, 285], [146, 350], [182, 356]], hL: [186, 354], armR: [[252, 285], [254, 350], [218, 356]], hR: [214, 354] });
 const svShoeHand = (x, y, s, lx, ly, o = {}) => { const [hx, hy] = ptOf(x, y, s, lx, ly); return soShoe(hx, hy + 10 * s, 0.75 * s, o); };
 
 /* ---------- 1막: 시계추 ---------- */
-const PEND = { px: 960, py: -260, L: 1040, A: 0.42, T: 3.2 };
+const PEND = { px: 960, py: -80, L: 900, A: 0.42, T: 3.2 };
+const SV_SEAT = 650; // 막대 위 앉는 판 높이(막대 로컬). 판은 핀에 매달려 늘 수평을 유지하고, 발은 추보다 위에 있다.
 const svTheta = t => PEND.A * Math.sin(2 * Math.PI * t / PEND.T);
-function svPendulum(t, th, o = {}) { // 시계추 + 그 위에 앉은 제로와 꼬르륵이 (o.zero, o.kko는 자세·표정)
-  const { px, py, L } = PEND, S = L - 10, deg = th * 180 / Math.PI;
+function svPendulum(t, th, o = {}) { // 시계추 + 그네처럼 매달린 판 위에 앉은 제로와 꼬르륵이 (o.zero, o.kko는 자세·표정)
+  const { px, py, L } = PEND, S = SV_SEAT, deg = -th * 180 / Math.PI, zx = 10; // th<0 → 왼쪽(고통), th>0 → 오른쪽(권태)
   let g = `<line x1="0" y1="0" x2="0" y2="${L}" stroke="#7A5A2A" stroke-width="26" stroke-linecap="round"/><line x1="0" y1="0" x2="0" y2="${L}" stroke="#E8B84A" stroke-width="14"/>`;
-  g += `<circle cx="0" cy="${L + 70}" r="120" fill="#E8B84A" stroke="${INK}" stroke-width="10"/><circle cx="-36" cy="${L + 30}" r="26" fill="#fff" opacity=".4"/><circle cx="0" cy="${L + 70}" r="70" fill="none" stroke="#C9952E" stroke-width="8"/>`;
-  g += `<rect x="-190" y="${S}" width="380" height="26" rx="12" fill="#B5845A" stroke="${INK}" stroke-width="8"/>`;
-  if (o.kko) g += soKko(t, Object.assign({ x: -150, y: S, s: 0.72 }, o.kko));
-  g += Z(Object.assign({ x: -40, y: svSitY(S), s: 1, t, pose: P['f앉기'], seed: 3 }, o.zero || {}));
-  if (o.shoe) g += svShoeHand(-40, svSitY(S), 1, 360, 232);
+  g += `<circle cx="0" cy="${L + 40}" r="100" fill="#E8B84A" stroke="${INK}" stroke-width="10"/><circle cx="-30" cy="${L + 6}" r="22" fill="#fff" opacity=".4"/><circle cx="0" cy="${L + 40}" r="58" fill="none" stroke="#C9952E" stroke-width="8"/>`;
+  let seat = `<path d="M-12 ${S - 34} L-12 ${S} M12 ${S - 34} L12 ${S}" stroke="${INK}" stroke-width="7"/><rect x="-210" y="${S}" width="380" height="26" rx="12" fill="#B5845A" stroke="${INK}" stroke-width="8"/>`;
+  if (o.kko) seat += soKko(t, Object.assign({ x: -150, y: S, s: 0.72 }, o.kko));
+  seat += Z(Object.assign({ x: zx, y: svSitY(S), s: 1, t, pose: P['f앉기'], seed: 3 }, o.zero || {}));
+  if (o.shoe) seat += svShoeHand(zx, svSitY(S), 1, 360, 232);
+  g += `<g transform="rotate(${f1(-deg)} 0 ${S - 34})">${seat}</g><circle cx="0" cy="${S - 34}" r="11" fill="#7A5A2A" stroke="${INK}" stroke-width="5"/>`;
   return `<g transform="translate(${px} ${py}) rotate(${f1(deg)})"><circle r="30" fill="#7A5A2A" stroke="${INK}" stroke-width="8"/>${g}</g>`; }
 const svSign = (x, y, a, b, c, on = 1) => `<g transform="translate(${x} ${y})" opacity="${f1(on * 100) / 100}"><line x1="0" y1="-260" x2="0" y2="0" stroke="${INK}" stroke-width="6"/><rect x="-140" y="0" width="280" height="130" rx="18" fill="${c}" stroke="${INK}" stroke-width="8"/>${fT(0, 58, a, 50, '#fff', { stroke: INK, sw: 8 })}${fT(0, 104, b, 30, '#fff', { stroke: INK, sw: 6, w: 700 })}</g>`;
-function svCase(x, y) { return `<rect x="${x - 90}" y="${y - 200}" width="180" height="200" fill="#8E6A48" stroke="${INK}" stroke-width="8"/><rect x="${x - 120}" y="${y - 420}" width="240" height="220" rx="10" fill="#DDF3FF" opacity=".55" stroke="${INK}" stroke-width="8"/>` + soShoe(x, y - 240, 1.3, { c: '#FF8FB1', ac: '#FFD23F', shine: 0.8 }) + `<path d="M${x - 100} ${y - 400} l40 0 M${x - 100} ${y - 385} l20 0" stroke="#fff" stroke-width="6" stroke-linecap="round"/>`; }
+// 진열장: 바닥(floor)부터 받침대가 올라오고, 그 위 유리 상자 안에 운동화
+function svCase(x, floor, top) { return `<rect x="${x - 70}" y="${top}" width="140" height="${floor - top}" fill="#8E6A48" stroke="${INK}" stroke-width="8"/><rect x="${x - 100}" y="${top - 16}" width="200" height="22" rx="6" fill="#A9825E" stroke="${INK}" stroke-width="7"/><rect x="${x - 110}" y="${top - 196}" width="220" height="180" rx="10" fill="#DDF3FF" opacity=".55" stroke="${INK}" stroke-width="8"/>` + soShoe(x, top - 28, 1.2, { c: '#FF8FB1', ac: '#FFD23F', shine: 0.8 }) + `<path d="M${x - 92} ${top - 178} l40 0 M${x - 92} ${top - 163} l20 0" stroke="#fff" stroke-width="6" stroke-linecap="round"/>`; }
 function spendScene(t, lt, a) {
-  const ph = a.ph; let th = svTheta(t), cam = [960, 560, 0.95], zero = {}, kko = {}, shoe = false, over = '', w = '', dim = 0;
+  const ph = a.ph; let th = svTheta(t), cam = [960, 520, 0.95], zero = {}, kko = {}, shoe = false, over = '', w = '', dim = 0;
   const tP = fAt(a, '고통', 2.6), tB = fAt(a, '권태', 3.4);
   const mood = th2 => { const k = th2 / PEND.A; return { ex: fEx(k < -0.55 ? 'z울먹' : k > 0.55 ? 'z멍' : 'z빵긋'), puff: k < 0 ? 1 - 0.5 * k : 1 - 0.3 * k }; };
   if (ph === 1) { const m = mood(th); zero = { ex: m.ex, look: [-th * 2, 0.2] }; kko = { puff: m.puff, eyes: th < -0.25 ? 'heart' : th > 0.25 ? 'shut' : 'norm', mouth: th > 0.25 ? 'o' : 'grin' }; }
-  if (ph === 2) { th = -PEND.A + Math.sin(t * 9) * 0.01; cam = qLerpCam(lt / 0.8, [960, 560, 0.95], [700, 620, 1.25]);
+  if (ph === 2) { th = -PEND.A + Math.sin(t * 9) * 0.01; cam = qLerpCam(lt / 0.8, [960, 520, 0.95], [600, 480, 1.2]);
     zero = { ex: exprAt([[0, 'z결심'], [0.8, 'z울먹']], lt), look: [-0.9, -0.1], pose: Object.assign({}, P['f앉기'], { armL: [[148, 285], [90, 262], [36, 246]], hL: [32, 244] }) };
     kko = { puff: 1.2 + 0.3 * clamp(lt / 1.5, 0, 1), eyes: 'heart', mouth: 'grin', drool: true, rumble: 1, arms: 'point', look: [-0.9, -0.3] }; }
-  if (ph === 3) { const k = easeInOut(clamp(lt / 0.7, 0, 1)); th = lerp(-PEND.A, PEND.A, k) + (k >= 1 ? Math.sin(t * 9) * 0.01 : 0); cam = qLerpCam(k, [700, 620, 1.25], [1220, 620, 1.25]);
+  if (ph === 3) { const k = easeInOut(clamp(lt / 0.7, 0, 1)); th = lerp(-PEND.A, PEND.A, k) + (k >= 1 ? Math.sin(t * 9) * 0.01 : 0); cam = qLerpCam(k, [600, 480, 1.2], [1260, 480, 1.2]);
     shoe = k > 0.6; zero = { ex: exprAt([[0, 'z반짝'], [1.2, 'z멍'], [2.0, 'z하품']], lt), look: [0.3, -0.5], pose: shoe ? Object.assign({}, P['f앉기'], { armR: [[252, 285], [316, 262], [356, 236]], hR: [360, 232] }) : P['f앉기'] };
     kko = { puff: lerp(1.4, 0.72, clamp((lt - 0.6) / 1.0, 0, 1)), eyes: lt > 1.4 ? 'shut' : 'norm', mouth: lt > 1.6 ? 'o' : 'smile' }; }
-  if (ph >= 4) { const m = mood(th); zero = { ex: m.ex, look: [-th * 2, 0.2] }; kko = { puff: m.puff, eyes: th < -0.25 ? 'heart' : th > 0.25 ? 'shut' : 'norm', mouth: th > 0.25 ? 'o' : 'grin' }; cam = [960, 600, 1.05]; }
+  if (ph >= 4) { const m = mood(th); zero = { ex: m.ex, look: [-th * 2, 0.2] }; kko = { puff: m.puff, eyes: th < -0.25 ? 'heart' : th > 0.25 ? 'shut' : 'norm', mouth: th > 0.25 ? 'o' : 'grin' }; cam = [960, 520, 1.0]; }
   if (ph === 5) { // 맨 아래에서 1초 슬로 모션 → 휙
     const slow = clamp((lt - 0.2) / 1.2, 0, 1), tt = lt < 0.2 ? 0 : lt < 1.4 ? 0.05 * slow : 0.06 + (lt - 1.4) * 1.6;
     th = PEND.A * Math.sin(2 * Math.PI * tt / PEND.T); const m = mood(th); zero = { ex: m.ex, look: [0, 0.2] }; kko.puff = m.puff; }
-  if (ph === 6) { th = 0.28 * Math.sin(2 * Math.PI * t / 4.2); cam = qLerpCam(lt / 4, [960, 600, 1.05], [960, 680, 1.25]); dim = 0.3;
+  if (ph === 6) { th = 0.28 * Math.sin(2 * Math.PI * t / 4.2); cam = qLerpCam(lt / 4, [960, 520, 1.0], [960, 540, 1.2]); dim = 0.3;
     zero = { ex: fEx('z멍'), sy: 0.94, look: [0, 0.4] }; kko = { puff: 0.9, eyes: 'shut', mouth: 'smile', still: true }; }
   // 바닥 "행복" 표시와 양 끝 팻말
   const near = Math.exp(-Math.pow(th / 0.1, 2));
   w += svSign(250, 300, '고통', '갖고 싶다', '#E5484D', ph === 1 ? clamp((lt - tP + 0.3) / 0.3, 0, 1) : 1) + svSign(1670, 300, '권태', '심심하다', '#8A8F99', ph === 1 ? clamp((lt - tB + 0.3) / 0.3, 0, 1) : 1);
-  if (ph === 2) w += svCase(330, 1000);
-  if (ph >= 4 && ph !== 6) { const glow = ph === 5 && lt > 0.2 && lt < 1.4 ? 1 : near; w += `<g opacity="${f1(clamp(glow, 0.15, 1) * 100) / 100}">${rSparks(960, 270, t, 8, 150, '#FFE34D')}${fT(960, 292, '행복', 64, '#FFE34D', { stroke: INK, sw: 10 })}</g>`; }
+  if (ph === 2) w += svCase(420, 1000, 470);
+  if (ph >= 4 && ph !== 6) { const glow = ph === 5 && lt > 0.2 && lt < 1.4 ? 1 : near; w += `<g opacity="${f1(clamp(glow, 0, 1) * 100) / 100}">${rSparks(960, 860, t, 8, 150, '#FFE34D')}</g>`; }
   w += svPendulum(t, th, { zero, kko, shoe });
+  if (ph >= 4 && ph !== 6) { const glow = ph === 5 && lt > 0.2 && lt < 1.4 ? 1 : near; w += `<g opacity="${f1(clamp(glow, 0, 1) * 100) / 100}">${fT(960, 882, '행복', 60, '#fff', { stroke: '#C9952E', sw: 10 })}</g>`; }
   if (ph === 4) { const tH = fAt(a, '행복', 1.0), tS = fAt(a, '멈춘', 4.8); if (lt > tS - 0.2) over += svCard(t, lt, tS - 0.2, 960, 200, '행복 = 아픔이 멈춘 순간', '『의지와 표상으로서의 세계』 §58', '#FFE34D'); }
   if (ph === 5 && lt > 1.4 && lt < 2.0) over += fx(t, t - lt + 1.4, t + 9, 960, 300, '휙!', '#fff', { size: 80 });
   if (ph === 1 && lt > 0.3) over += svCard(t, lt, fAt(a, '인생은', 1.8), 960, 160, '인생은 시계추', '고통 ↔ 권태', '#E8B84A');
@@ -75,13 +79,13 @@ function ssundayScene(t, lt, a) {
   let w = `<ellipse cx="${x + 30}" cy="${floor - 6}" rx="230" ry="34" fill="#E8A87C" stroke="${INK}" stroke-width="7"/>`;
   const rush = lt < tS ? 1 : 0;
   w += Z({ x, y: floor + 130, s: 1, t, pose: Object.assign({}, P['sv바닥'], { armL: SV_PHONE_SIT.armL, hL: SV_PHONE_SIT.hL, armR: SV_PHONE_SIT.armR, hR: SV_PHONE_SIT.hR }), ex: exprAt([[0, 'z설렘'], [tS, 'z기본'], [tP, 'z멍']], lt), look: [0, 0.8], seed: 3 }) + phone(x, floor + 130 - 216, 0.4, { on: true, glow: 0.4 });
-  w += soKko(t, { x: x + 260, y: floor - 20, s: 0.75, eyes: lt > tP ? 'shut' : 'norm', mouth: lt > tP ? 'o' : 'smile', look: [-0.6, 0.2] });
+  w += soKko(t, { x: x - 250, y: floor - 20, s: 0.75, eyes: lt > tP ? 'shut' : 'norm', mouth: lt > tP ? 'o' : 'smile', look: [0.6, 0.2] });
   // 벽시계(바늘이 빙글빙글)와 달력(금→토→일)
   const cx = 1460, cy = 470, sp = lt * (lt > tS ? 9 : 2);
   w += `<circle cx="${cx}" cy="${cy}" r="90" fill="#fff" stroke="${INK}" stroke-width="9"/><line x1="${cx}" y1="${cy}" x2="${f1(cx + Math.sin(sp) * 60)}" y2="${f1(cy - Math.cos(sp) * 60)}" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><line x1="${cx}" y1="${cy}" x2="${f1(cx + Math.sin(sp / 12) * 40)}" y2="${f1(cy - Math.cos(sp / 12) * 40)}" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>`;
   const dayIdx = lt < tW + 0.6 ? 0 : lt < tS ? 1 : 2, dn = ['금', '토', '일'][dayIdx];
   w += `<g transform="translate(470 460)"><rect x="-90" y="-100" width="180" height="200" rx="12" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-90" y="-100" width="180" height="50" rx="12" fill="#E5484D" stroke="${INK}" stroke-width="8"/>${fT(0, 60, dn, 90, dayIdx === 2 ? '#E5484D' : INK)}</g>`;
-  if (lt > tP) w += `<g transform="translate(${x + 120} ${floor - 470})">${bubble(0, 0, 200, 110, fT(0, 18, '심심…', 44, '#5B6478'), {})}</g>`;
+  if (lt > tP) w += `<g transform="translate(${x + 250} ${floor - 520})">${bubble(0, 0, 200, 110, fT(0, 18, '심심…', 44, '#5B6478'), {})}</g>`;
   return fPlate('living2', cam, 0.55) + qCam(cam, w) + fFull('#FFD9A0', 0.08);
 }
 
@@ -106,10 +110,10 @@ function sseaScene(t, lt, a) {
   const ph = a.ph, x = 760, y = 1000, cam = ph === 1 ? qLerpCam(lt / 8, [960, 620, 1.15], [1000, 600, 1.2]) : [1000, 600, 1.2];
   const tQ = fAt(a, '부는', 3.2), sips = ph === 1 ? [0.6, 2.6, 5.0].filter(s0 => s0 < lt) : [0, 1, 2], nS = sips.length;
   const drinking = ph === 1 && sips.some(s0 => lt > s0 && lt < s0 + 0.6);
-  const pose = drinking ? Object.assign({}, P['서기'], { armR: [[252, 285], [292, 280], [236, 246]], hR: [232, 244] }) : Object.assign({}, P['서기'], { armR: [[252, 285], [292, 330], [300, 372]], hR: [302, 376] });
+  const pose = drinking ? Object.assign({}, P['서기'], { armR: [[252, 285], [300, 300], [240, 266]], hR: [236, 266] }) : Object.assign({}, P['서기'], { armR: [[252, 285], [292, 330], [300, 372]], hR: [302, 376] });
   let w = qShadow(x, y, 66) + Z({ x, y, s: 1, t, pose, ex: drinking ? fEx('z기본') : fEx(nS >= 2 ? 'z메롱' : nS === 1 ? 'z당황' : 'z결심'), look: [0.6, 0.2], seed: 3 });
-  const [cx, cy] = drinking ? ptOf(x, y, 1, 232, 236) : ptOf(x, y, 1, 302, 368);
-  w += `<g transform="translate(${f1(cx)} ${f1(cy)})"><path d="M-26 -40 L26 -40 L20 20 L-20 20 Z" fill="#DDF3FF" stroke="${INK}" stroke-width="6"/><path d="M-22 -16 L22 -16 L19 16 L-19 16 Z" fill="#5BA8D8" opacity=".8"/></g>`;
+  const [cx, cy] = drinking ? ptOf(x, y, 1, 230, 252) : ptOf(x, y, 1, 302, 368);
+  w += `<g transform="translate(${f1(cx)} ${f1(cy)}) rotate(${drinking ? -38 : 0})"><path d="M-26 -40 L26 -40 L20 20 L-20 20 Z" fill="#DDF3FF" stroke="${INK}" stroke-width="6"/><path d="M-22 -16 L22 -16 L19 16 L-19 16 Z" fill="#5BA8D8" opacity=".8"/></g>`;
   if (nS >= 1) w += `<path d="M${x + 96} ${y - 470} q-8 22 0 30 q8 -8 0 -30 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="3"/>`;
   const grow = ph === 1 ? 0.8 + 0.35 * nS : 1.95, kx = 1300;
   w += soKko(t, { x: kx, y: y + 10, s: grow, puff: 1 + 0.1 * nS, eyes: ph === 2 ? 'heart' : 'norm', mouth: 'grin', drool: true, look: [-0.7, 0.1], arms: nS >= 2 || ph === 2 ? 'up' : 'down' });
@@ -124,7 +128,7 @@ function szenScene(t, lt, a) {
   const ph = a.ph, cx = 900, floor = 1000, cam = ph === 1 ? qLerpCam(lt / 5, [960, 700, 1.25], [940, 720, 1.35]) : [960, 700, 1.3];
   const tB = fAt(a, '권태', 2.8), tN = fAt(a, '새로운', 1.6);
   let w = `<ellipse cx="${cx}" cy="${floor - 10}" rx="200" ry="40" fill="#C8A2D8" stroke="${INK}" stroke-width="7"/>`;
-  const sitY = floor - 30 + 55;
+  const sitY = floor + 80; // local 466(발 아래) → 방석 윗면
   if (ph === 1) { w += Z({ x: cx, y: sitY, s: 1, t, pose: P['sv양반'], ex: lt < tB ? fEx('z졸음') : fEx('z멍'), look: [0, 0], seed: 3 });
     if (lt < tB) w += fT(cx + 170, floor - 520, '옴~', 44, '#7A6AA8', { stroke: '#fff', sw: 6 });
     else { for (let i = 0; i < 3; i++) w += `<circle cx="${cx - 40 + i * 40}" cy="${floor - 560}" r="9" fill="#5B6478" opacity="${f1(clamp((lt - tB - i * 0.3) / 0.2, 0, 1) * 100) / 100}"/>`; } }
@@ -146,8 +150,7 @@ function swheelScene(t, lt, a) {
   w += `<g transform="rotate(${f1(rot)} ${cx} ${cy})"><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#C9D3E0" stroke-width="30"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${INK}" stroke-width="6"/>` + Array.from({ length: 24 }, (_, i) => { const an = i * Math.PI / 12; return `<line x1="${f1(cx + Math.cos(an) * (R - 14))}" y1="${f1(cy + Math.sin(an) * (R - 14))}" x2="${f1(cx + Math.cos(an) * (R + 14))}" y2="${f1(cy + Math.sin(an) * (R + 14))}" stroke="${INK}" stroke-width="5"/>`; }).join('') + Array.from({ length: 6 }, (_, i) => { const an = i * Math.PI / 3; return `<line x1="${cx}" y1="${cy}" x2="${f1(cx + Math.cos(an) * R)}" y2="${f1(cy + Math.sin(an) * R)}" stroke="#AAB6C6" stroke-width="10"/>`; }).join('') + `</g><circle cx="${cx}" cy="${cy}" r="30" fill="#8E6A48" stroke="${INK}" stroke-width="7"/>`;
   const y = cy + R - 15;
   w += Z({ x: cx, y, s: 0.95, t, pose: walkPose(lt * 13, 1.1), ex: exprAt([[0, 'z결심'], [tZ, 'z멘붕']], lt), look: [0.8, 0], seed: 3 });
-  w += soKko(t, { x: cx, y: cy - 34, s: 0.62, eyes: 'heart', mouth: 'grin', arms: 'up', look: [0.3, 0.6] });
-  let over = `<g transform="translate(1600 210)"><rect x="-200" y="-60" width="400" height="120" rx="20" fill="#fff" stroke="${INK}" stroke-width="6"/>${fT(0, -8, '이동 거리', 30, '#5B6478', { w: 700 })}${fT(0, 42, '0 m', 48, '#E5484D')}</g>`;
+  let over = `<g transform="translate(1600 260)"><rect x="-200" y="-60" width="400" height="120" rx="20" fill="#fff" stroke="${INK}" stroke-width="6"/>${fT(0, -8, '이동 거리', 30, '#5B6478', { w: 700 })}${fT(0, 42, '0 m', 48, '#E5484D')}</g>` + soKko(t, { x: 1700, y: 200, s: 0.6, eyes: 'heart', mouth: 'grin', arms: 'up', look: [-0.8, 0.6] });
   if (lt > tT) over += svCard(t, lt, tT, 460, 200, '쾌락의 쳇바퀴', 'hedonic treadmill', '#7EC8F0');
   for (let i = 0; i < 4; i++) { const k = (lt * 2 + i / 4) % 1; over += `<line x1="${f1(1300 + k * 260)}" y1="${880 + i * 30}" x2="${f1(1360 + k * 260)}" y2="${880 + i * 30}" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity="${f1((1 - k) * 80) / 100}"/>`; }
   return fPlate('clocktower', cam, 0.35) + fFull('#0A1238', 0.15) + qCam(cam, w) + over;
@@ -158,15 +161,15 @@ const svSilP = (x, y, s, t, seed) => `<g filter="url(#sil)">${char({ goggles: 'n
 function shegelScene(t, lt, a) {
   const tH = fAt(a, '헤겔', 3.6), tE = fAt(a, '끝나', 6.4), cam = [960, 600, 1.0];
   let L0 = '', R0 = '';
-  const rows = [[760, 0.42], [860, 0.48], [960, 0.54]];
-  rows.forEach(([ry, s], ri) => { for (let i = 0; i < 6; i++) L0 += svSilP(70 + i * 150 + (ri % 2) * 60, ry + 40, s, t, 90 + ri * 6 + i); L0 += `<rect x="-200" y="${ry + 10}" width="1200" height="34" fill="#8E6A48" stroke="${INK}" stroke-width="5"/>`; });
-  L0 += `<g filter="url(#sil)">${char({ goggles: 'none', vest: '#333', patch: false, tee: true, x: 640, y: 730, s: 0.55, t, pose: Object.assign({}, P['서기'], { armR: [[252, 285], [320, 230], [360, 170]], hR: [364, 166] }), ex: fEx('z기본'), seed: 99 })}</g>` + fT(640, 120, '헤겔', 48, '#fff', { stroke: INK, sw: 8 });
-  rows.forEach(([ry]) => { R0 += `<rect x="960" y="${ry + 10}" width="1200" height="34" fill="#8E6A48" stroke="${INK}" stroke-width="5"/>`; });
+  const rows = [[690, 0.40], [790, 0.46], [895, 0.52]], desk = (x0, x1, ry, s) => `<rect x="${x0}" y="${ry - 26 * s / 0.46}" width="${x1 - x0}" height="${70 * s / 0.46}" fill="#8E6A48" stroke="${INK}" stroke-width="5"/>`;
+  rows.forEach(([ry, s], ri) => { for (let i = 0; i < 4; i++) L0 += fGrey(590 + i * 120 * s / 0.46 + (ri % 2) * 45, ry + 148 * s, s, t, ri * 4 + i, { ex: fEx(['z반짝', 'z빵긋', 'z설렘'][(ri + i) % 3]), look: [-0.8, -0.2] }); L0 += desk(520, 1000, ry, s); });
+  L0 += `<g filter="url(#sil)">${char({ goggles: 'none', vest: '#333', patch: false, tee: true, x: 360, y: 990, s: 0.6, t, pose: Object.assign({}, P['서기'], { armL: [[148, 285], [96, 230], [60, 170]], hL: [56, 164] }), ex: fEx('z기본'), seed: 99 })}</g>` + fT(640, 120, '헤겔', 48, '#fff', { stroke: INK, sw: 8 });
+  rows.forEach(([ry, s]) => { R0 += desk(1000, 1960, ry, s); });
   R0 += fT(1340, 120, '쇼펜하우어', 48, '#fff', { stroke: INK, sw: 8 });
-  const sx = 1300, sy = 900, fume = lt > tE;
-  R0 += `<rect x="${sx + 120}" y="${sy - 220}" width="160" height="220" fill="#7A5634" stroke="${INK}" stroke-width="7"/>`;
-  R0 += SCH({ x: sx, y: sy, s: 0.75, t, pose: '주머니', ex: fEx(fume ? 'z버럭' : 'z삐짐'), look: [-0.8, 0.2] });
-  R0 += soKko(t, { x: sx + 14, y: sy - 500 * 0.75 + 4, s: 0.55, puff: fume ? 1.4 : 1.1, eyes: 'norm', mouth: fume ? 'o' : 'smile', look: [-0.8, 0], arms: fume ? 'up' : 'down' });
+  const sx = 1230, sy = 990, fume = lt > tE;
+  R0 += `<rect x="${sx + 110}" y="${sy - 230}" width="150" height="230" fill="#7A5634" stroke="${INK}" stroke-width="7"/><rect x="${sx + 96}" y="${sy - 246}" width="178" height="22" fill="#8E6A48" stroke="${INK}" stroke-width="6"/>`;
+  R0 += SCH({ x: sx, y: sy, s: 0.7, t, pose: '주머니', ex: fEx(fume ? 'z버럭' : 'z삐짐'), look: [-0.8, 0.2] });
+  R0 += soKko(t, { x: sx + 13, y: sy - 500 * 0.7 + 4, s: 0.5, puff: fume ? 1.4 : 1.1, eyes: 'norm', mouth: fume ? 'o' : 'smile', look: [-0.8, 0], arms: fume ? 'up' : 'down' });
   if (fume) for (let i = 0; i < 3; i++) { const k = (t * 1.5 + i / 3) % 1; R0 += `<circle cx="${f1(sx + 30 + i * 20)}" cy="${f1(sy - 470 - k * 120)}" r="${f1(14 + k * 20)}" fill="#fff" opacity="${f1((1 - k) * 80) / 100}"/>`; }
   let over = '';
   if (lt > tE) over += pop(t, t - lt + tE, t + 99, 1640, 680, `<g transform="rotate(-14)"><rect x="-150" y="-70" width="300" height="140" rx="14" fill="none" stroke="#E5484D" stroke-width="12"/>${fT(0, 30, '폐강', 80, '#E5484D')}</g>`, {});
@@ -178,8 +181,9 @@ function svPot(x, y, tip) { return `<g transform="translate(${x} ${y}) rotate(${
 function spoodleScene(t, lt, a) {
   const ph = a.ph, cam = ph === 1 ? qLerpCam(lt / 5, [960, 620, 1.1], [1000, 640, 1.2]) : [1040, 640, 1.35];
   const tM = fAt(a, '말썽', 2.8), walkEnd = Math.min(tM - 0.4, 2.2), wk = clamp(lt / walkEnd, 0, 1);
-  const sx = ph === 1 ? lerp(420, 860, wk) : 860, sy = 1000, px = sx + 330, py = 1000;
-  const tip = ph === 1 ? easeIn(clamp((lt - tM + 0.2) / 0.4, 0, 1)) : 1;
+  const lunge = ph === 1 ? easeIn(clamp((lt - tM + 0.6) / 0.35, 0, 1)) : 1; // 푸들이 화분으로 돌진 → 부딪힌 뒤에 넘어진다
+  const sx = ph === 1 ? lerp(420, 860, wk) : 860, sy = 1000, px = lerp(sx + 330, 1230, lunge), py = 1000 - Math.sin(lunge * Math.PI) * 40;
+  const tip = ph === 1 ? easeIn(clamp((lt - tM + 0.25) / 0.4, 0, 1)) : 1;
   let w = svPot(1330, 1000, tip);
   if (tip > 0.5) w += `<ellipse cx="1430" cy="1004" rx="90" ry="16" fill="#6E4A2E"/>`;
   const walking = ph === 1 && wk < 1;
@@ -237,14 +241,14 @@ function sixionScene(t, lt, a) {
   const cx = 960, cy = 560;
   h += `<g transform="rotate(${f1(ang)} ${cx} ${cy})"><circle cx="${cx}" cy="${cy}" r="250" fill="none" stroke="#1E140E" stroke-width="26"/>` + Array.from({ length: 8 }, (_, i) => { const an = i * Math.PI / 4; return `<line x1="${cx}" y1="${cy}" x2="${f1(cx + Math.cos(an) * 250)}" y2="${f1(cy + Math.sin(an) * 250)}" stroke="#1E140E" stroke-width="12"/>`; }).join('');
   for (let i = 0; i < 12; i++) { const an = i * Math.PI / 6, fx0 = cx + Math.cos(an) * 270, fy0 = cy + Math.sin(an) * 270, fl = 30 + 20 * Math.sin(t * 12 + i); h += `<path d="M${f1(fx0)} ${f1(fy0)} q${f1(Math.cos(an) * fl * 0.6 - 10)} ${f1(Math.sin(an) * fl * 0.6)} ${f1(Math.cos(an) * fl)} ${f1(Math.sin(an) * fl)}" stroke="#1E140E" stroke-width="10" stroke-linecap="round" fill="none" opacity="${f1(speed * 100) / 100}"/>`; }
-  h += `<g filter="url(#svblk)">${char({ goggles: 'none', vest: '#333', patch: false, tee: true, x: cx, y: cy + 200, s: 0.55, t, pose: '만세', ex: fEx('z기본'), seed: 5 })}</g></g><circle cx="${cx}" cy="${cy}" r="24" fill="#1E140E"/>`;
+  h += `<g stroke="#1E140E" stroke-linecap="round" fill="none"><line x1="${cx}" y1="${cy - 110}" x2="${cx}" y2="${cy + 70}" stroke-width="22"/><path d="M${cx - 200} ${cy - 150} L${cx} ${cy - 80} L${cx + 200} ${cy - 150} M${cx - 160} ${cy + 200} L${cx} ${cy + 70} L${cx + 160} ${cy + 200}" stroke-width="16"/></g><circle cx="${cx}" cy="${cy - 150}" r="38" fill="#1E140E"/>` + [[-200, -150], [200, -150], [-160, 200], [160, 200]].map(([dx, dy]) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="13" fill="#C8642F" stroke="#1E140E" stroke-width="6"/>`).join('') + `</g><circle cx="${cx}" cy="${cy}" r="24" fill="#1E140E"/>`;
   if (k >= 1) h += `<g opacity="${f1(clamp((lt - tS - 0.4) / 0.6, 0, 1) * 100) / 100}">${fT(960, 900, '…멈춰 선다', 54, '#1E140E')}</g>`;
   h += fT(960, 70, '익시온: 그리스 신화에서 영원히 도는 불 바퀴에 묶인 죄인', 32, '#E8C79A', { w: 700 });
   return qCam([960, 560, 1.0 + 0.06 * clamp(lt / D, 0, 1)], h);
 }
 // 상자 셋: ① 나인 것 ② 가진 것 ③ 남에게 보이는 것
-function svGift(x, y, s, col, lab, num, open, inner = '') { const lid = open ? -60 - 40 * open : 0, rot = open ? -24 * open : 0;
-  return `<g transform="translate(${x} ${y}) scale(${s})">` + (open ? `<circle cx="0" cy="-120" r="${f1(120 + 40 * open)}" fill="#FFE34D" opacity="${f1(0.35 * open * 100) / 100}"/>` + inner : '') + `<rect x="-110" y="-150" width="220" height="150" rx="10" fill="${col}" stroke="${INK}" stroke-width="8"/><rect x="-14" y="-150" width="28" height="150" fill="#fff" opacity=".6"/><g transform="translate(0 ${lid}) rotate(${rot} -120 -150)"><rect x="-124" y="-182" width="248" height="40" rx="10" fill="${col}" stroke="${INK}" stroke-width="8"/></g>${fT(0, -64, num, 54, '#fff', { stroke: INK, sw: 8 })}${lab ? `<g transform="translate(0 ${open ? -400 : -300})"><rect x="${-lab.length * 17 - 22}" y="-30" width="${lab.length * 34 + 44}" height="60" rx="30" fill="#fff" stroke="${INK}" stroke-width="5"/>${fT(0, 12, lab, 32, INK)}</g>` : ''}</g>`; }
+function svGift(x, y, s, col, lab, num, open, inner = '') { const lid = 0, rot = open ? -118 * easeOut(open) : 0; // 뚜껑은 왼쪽 경첩에 붙은 채 열린다
+  return `<g transform="translate(${x} ${y}) scale(${s})">` + (open ? `<circle cx="0" cy="-120" r="${f1(120 + 40 * open)}" fill="#FFE34D" opacity="${f1(0.35 * open * 100) / 100}"/>` + inner : '') + `<rect x="-110" y="-150" width="220" height="150" rx="10" fill="${col}" stroke="${INK}" stroke-width="8"/><rect x="-14" y="-150" width="28" height="150" fill="#fff" opacity=".6"/><g transform="translate(0 ${lid}) rotate(${rot} -112 -150)"><rect x="-124" y="-182" width="248" height="40" rx="10" fill="${col}" stroke="${INK}" stroke-width="8"/></g>${fT(0, -64, num, 54, '#fff', { stroke: INK, sw: 8 })}${lab ? `<g transform="translate(0 ${open ? -400 : -300})"><rect x="${-lab.length * 17 - 22}" y="-30" width="${lab.length * 34 + 44}" height="60" rx="30" fill="#fff" stroke="${INK}" stroke-width="5"/>${fT(0, 12, lab, 32, INK)}</g>` : ''}</g>`; }
 function sboxesScene(t, lt, a) {
   const ph = a.ph, cam = [960, 600, 1.05], tA = fAt(a, '어떤', 3.4), tB = fAt(a, '가진', 5.0), tC = fAt(a, '보이는', 7.2);
   let h = `<rect x="-300" y="-200" width="2600" height="1500" fill="#F6EEDD"/><rect x="-300" y="-200" width="2600" height="1500" fill="url(#paper)"/><rect x="-300" y="980" width="2600" height="400" fill="#E3D3B4"/>`;
@@ -280,8 +284,9 @@ function snightScene(t, lt, a) {
   const ph = a.ph, D = a._dur || 6;
   if (ph === 1) { // 폰 화면: 마감 2분 전, [응모하기] 위에서 멈춘 손가락. 꼬르륵이는 책상 위
     let h = `<rect x="-300" y="-200" width="2600" height="1500" fill="#1A2244"/><rect x="-300" y="900" width="2600" height="400" fill="#4A3A5A"/><line x1="-300" y1="900" x2="2300" y2="900" stroke="${INK}" stroke-width="8"/>`;
-    h += `<g transform="translate(860 500) scale(.72)"><rect x="-420" y="-520" width="840" height="1040" rx="70" fill="#1F2D44" stroke="${INK}" stroke-width="14"/><rect x="-386" y="-480" width="772" height="960" rx="40" fill="#EEF2F7"/>${fT(0, -360, '다음 드롭 응모', 56, INK)}${fT(0, -290, '마감 23:59', 40, '#E5484D')}<g transform="translate(0 -60)">${soShoe(0, 60, 2.6, { c: '#FF8FB1', ac: '#FFD23F', shine: 0.6 + 0.3 * Math.sin(t * 6) })}</g><rect x="-250" y="180" width="500" height="140" rx="70" fill="#FF5A6E" stroke="${INK}" stroke-width="8"/>${fT(0, 268, '응모하기', 56, '#fff')}${fT(0, 400, '23:57', 44, '#5B6478')}</g>`;
-    const tipY = 900 + 10 * Math.sin(t * 2.6);
+    h += `<path d="M700 900 L1020 900 L960 840 L760 840 Z" fill="#3B3F4E" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`;
+    h += `<g transform="translate(860 500) scale(.72)"><rect x="-420" y="-520" width="840" height="1040" rx="70" fill="#1F2D44" stroke="${INK}" stroke-width="14"/><rect x="-386" y="-480" width="772" height="960" rx="40" fill="#EEF2F7"/>${fT(0, -360, '다음 드롭 응모', 56, INK)}${fT(0, -290, '마감 23:59', 40, '#E5484D')}${fT(0, -232, '지금 23:57', 34, '#5B6478', { w: 700 })}<g transform="translate(0 -60)">${soShoe(0, 60, 2.6, { c: '#FF8FB1', ac: '#FFD23F', shine: 0.6 + 0.3 * Math.sin(t * 6) })}</g><rect x="-250" y="180" width="500" height="140" rx="70" fill="#FF5A6E" stroke="${INK}" stroke-width="8"/>${fT(0, 268, '응모하기', 56, '#fff')}</g>`;
+    const tipY = 770 + 8 * Math.sin(t * 2.6);
     h += `<g transform="translate(${f1(870 + 30 * Math.sin(lt * 0.9))} ${f1(tipY)})"><circle cx="20" cy="430" r="150" fill="#fff" stroke="${INK}" stroke-width="10"/><rect x="-34" y="0" width="68" height="360" rx="34" fill="#fff" stroke="${INK}" stroke-width="10"/></g>`;
     h += soKko(t, { x: 1420, y: 900, s: 0.9, puff: 1.2, eyes: 'heart', mouth: 'grin', drool: true, rumble: 0.6, arms: 'point', look: [-0.7, -0.2] });
     return qCam([960, 560, 1.0], h) + fFull('#0A1238', 0.15); }
@@ -292,7 +297,6 @@ function snightScene(t, lt, a) {
   w += Z({ x, y: svSitY(step), s: 1, t, pose: Object.assign({}, P['f앉기'], { armL: [[148, 285], [146, 350], [190, 392]], hL: [194, 394] }), ex: exprAt([[0, 'z기본'], [D * 0.55, 'z뿌듯']], lt), look: [0.9, 0.5], seed: 3 }) + phone(...ptOf(x, svSitY(step), 1, 196, 384), 0.36, { on: true, glow: 0.3, rot: 70 });
   w += soKko(t, { x: x + 250, y: step - 6, s: 0.7, puff: lerp(1.2, 0.95, clamp(lt / D, 0, 1)), eyes: 'norm', mouth: 'smile', look: [0.9, 0.4] });
   const sw = 0.25 * Math.exp(-lt / (D * 0.6)) * Math.sin(lt * 2.2);
-  w += `<g opacity=".18" transform="translate(560 120) rotate(${f1(sw * 57.3)})"><line x1="0" y1="0" x2="0" y2="420" stroke="#000" stroke-width="16"/><circle cx="0" cy="460" r="60" fill="#000"/></g>`;
   const mm = lt > D - 0.8 ? '23:58' : '23:57';
   w += `<g transform="translate(1600 330)"><rect x="-120" y="-50" width="240" height="100" rx="16" fill="#0E0E12" stroke="${INK}" stroke-width="6"/>${fT(0, 22, mm, 56, '#FF4D4D')}</g>`;
   const black = clamp((lt - (D - 0.25)) / 0.2, 0, 1);

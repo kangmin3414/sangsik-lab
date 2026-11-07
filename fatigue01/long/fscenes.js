@@ -63,18 +63,23 @@ const fDesk = (x0, x1, top, col = '#C8A27A') => `<rect x="${x0 - 10}" y="${top -
 const fLaptop = (x, y, s, screen) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-130 0 L130 0 L150 20 L-150 20 Z" fill="#B8C4D6" stroke="${INK}" stroke-width="6"/><rect x="-120" y="-170" width="240" height="166" rx="12" fill="#2B3445" stroke="${INK}" stroke-width="6"/><rect x="-106" y="-156" width="212" height="138" rx="6" fill="#DDEBFA"/>${screen || ''}</g>`;
 
 /* ---------- 0. 05:00 알람 ---------- */
-function falarmScene(t, lt, a) {
-  const cam = qLerpCam(lt / 2.8, [1120, 640, 1.3], [1100, 620, 1.38]), tJ = 0.9, J = fJump(lt, tJ, 0.6);
-  let w = '';
-  const x = 1000, y = 1000;
+function falarmScene(t, lt, a) { // 침대에서 자다가 알람에 깜짝 → 이불째 들썩 (서서 자지 않게)
+  const cam = qLerpCam(lt / 2.8, [1040, 690, 1.3], [1030, 680, 1.38]), tJ = 0.9, J = fJump(lt, tJ, 0.45);
   const ex = exprAt([[0, 'z졸음'], [tJ + 0.1, 'z충격'], [tJ + 0.75, 'z당황']], lt);
-  w += qShadow(x, y, 66) + Z({ x, y: y + J.dy, s: 1, sx: J.sx, sy: J.sy, t, pose: lt < tJ ? '서기' : fJumpPose(J.ph), ex, look: lt > tJ + 0.75 ? [0.8, 0.3] : [0, 0], tilt: lt < tJ ? 8 * Math.sin(t * 2) : 0, seed: 3 });
-  // the phone alarm on the nightstand
+  let w = `<rect x="620" y="440" width="680" height="330" rx="44" fill="#5B6B9A" stroke="${INK}" stroke-width="9"/><rect x="650" y="470" width="620" height="40" rx="16" fill="#6E7EB0"/>`;
+  w += `<rect x="1340" y="760" width="220" height="300" rx="10" fill="#4A3A5A" stroke="${INK}" stroke-width="8"/><line x1="1340" y1="860" x2="1560" y2="860" stroke="${INK}" stroke-width="5"/>`;
   const ring = lt < tJ + 1.4, sh = ring ? Math.sin(t * 60) * 6 : 0;
-  w += `<g transform="translate(${f1(1380 + sh)} 560) rotate(${f1(sh)}) scale(.7)"><rect x="-44" y="-74" width="88" height="148" rx="16" fill="#1F2D44" stroke="${INK}" stroke-width="6"/><rect x="-36" y="-62" width="72" height="118" rx="8" fill="${ring && Math.floor(t * 6) % 2 ? '#FFE34D' : '#BFE6FF'}"/>${fT(0, 6, '05:00', 22, INK)}</g>`;
-  if (ring) for (let i = 0; i < 3; i++) w += `<path d="M${1430 + i * 22} ${520 - i * 10} q14 16 0 32" fill="none" stroke="#FFD23F" stroke-width="6" stroke-linecap="round" opacity="${f1((0.5 + 0.5 * Math.sin(t * 20 + i)) * 100) / 100}"/>`;
-  if (J.ph >= 2 && J.ph <= 4) w += speedLines(x, y - 420, 260, 380, 14, t, '#fff', 0.7);
-  return fPlate('bedn', cam, 1) + qCam(cam, w) + fFull('#0A1238', 0.25 * (1 - prog(lt, 1.2, 2.6))) + (lt > 0.1 && lt < tJ + 0.5 ? fx(t, t - lt + 0.1, t - lt + tJ + 0.5, 1360, 230, '삐비빅!', '#FFE34D', { size: 70, rot: -6 }) : '');
+  w += `<g transform="translate(${f1(1450 + sh)} 700) rotate(${f1(sh)}) scale(.7)"><rect x="-44" y="-74" width="88" height="148" rx="16" fill="#1F2D44" stroke="${INK}" stroke-width="6"/><rect x="-36" y="-62" width="72" height="118" rx="8" fill="${ring && Math.floor(t * 6) % 2 ? '#FFE34D' : '#BFE6FF'}"/>${fT(0, 6, '05:00', 22, INK)}</g>`;
+  if (ring) for (let i = 0; i < 3; i++) w += `<path d="M${1500 + i * 22} ${660 - i * 10} q14 16 0 32" fill="none" stroke="#FFD23F" stroke-width="6" stroke-linecap="round" opacity="${f1((0.5 + 0.5 * Math.sin(t * 20 + i)) * 100) / 100}"/>`;
+  w += `<ellipse cx="960" cy="660" rx="240" ry="74" fill="#fff" stroke="${INK}" stroke-width="8"/>`;
+  // 자는 동안 숨쉬기, 알람에 이불째 들썩(깜짝 7단계를 이불과 몸에 같이)
+  const breathe = lt < tJ ? 1 + 0.02 * Math.sin(t * 2.4) : 1;
+  let body = Z({ x: 960, y: 1010, s: 1, t, pose: '서기', ex, look: lt > tJ + 0.75 ? [0.8, 0.1] : [0, 0], tilt: lt < tJ ? 8 : 4, seed: 3 });
+  body += `<path d="M590 760 Q960 704 1330 760 L1360 1120 L560 1120 Z" fill="#8FA6D8" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/><path d="M640 800 Q960 760 1280 800" fill="none" stroke="#fff" stroke-width="8" opacity=".35"/>`;
+  w += `<g transform="translate(960 ${f1(1100 + J.dy)}) scale(${f1(J.sx * 1000) / 1000} ${f1(J.sy * breathe * 1000) / 1000}) translate(-960 -1100)">${body}</g>`;
+  if (lt < tJ) for (let i = 0; i < 3; i++) { const k = (lt * 0.9 + i / 3) % 1; w += `<g opacity="${f1(Math.sin(k * Math.PI) * 100) / 100}">${fT(800 - k * 60, 520 - k * 150, 'z', 40 + i * 8, '#fff', { stroke: INK, sw: 6 })}</g>`; }
+  if (J.ph >= 2 && J.ph <= 4) w += speedLines(960, 620, 220, 340, 14, t, '#fff', 0.7);
+  return fPlate('bedn', cam, 0.6) + qCam(cam, w) + fFull('#0A1238', 0.25 * (1 - prog(lt, 1.2, 2.6))) + (lt > 0.1 && lt < tJ + 0.5 ? fx(t, t - lt + 0.1, t - lt + tJ + 0.5, 1360, 230, '삐비빅!', '#FFE34D', { size: 70, rot: -6 }) : '');
 }
 
 /* ---------- 1~2. 갓생 몽타주 ---------- */
@@ -238,15 +243,15 @@ function ftitleScene(t, lt, a) {
 /* ---------- 9. 책 카드: 피로사회 ---------- */
 function fbookScene(t, lt, a) {
   const tN = fAt(a, '한병철', 3.6), tF = fAt(a, '피로사회', (a._dur || 7) - 1.0), cam = qLerpCam(lt / (a._dur || 7), [960, 560, 1.0], [960, 560, 1.08]);
-  let w = fFull('#EDE6D8') + `<rect x="-300" y="-200" width="2600" height="1500" fill="url(#paper)"/>`;
+  let w = fFull('#EDE6D8') + `<rect x="-300" y="-200" width="2600" height="1500" fill="url(#paper)"/><rect x="-300" y="1000" width="2600" height="400" fill="#DCCFB8"/><line x1="-300" y1="1000" x2="2300" y2="1000" stroke="${INK}" stroke-width="6" opacity=".5"/>`;
   const bk = easeOutBack(clamp(lt / 0.5, 0, 1)), zoom = lt > tF ? 1 + 0.06 * Math.exp(-(lt - tF) * 6) : 1;
-  w += `<g transform="translate(960 560) scale(${f1(bk * zoom * 100) / 100}) rotate(-3)"><rect x="-230" y="-310" width="460" height="620" rx="16" fill="#000" opacity=".2" transform="translate(14 16)"/><rect x="-230" y="-310" width="460" height="620" rx="16" fill="#C9D6E4" stroke="${INK}" stroke-width="9"/><rect x="-230" y="-310" width="40" height="620" fill="#A9BAD0" stroke="${INK}" stroke-width="6"/>` +
+  w += `<g transform="translate(960 1000) scale(${f1(bk * zoom * 100) / 100}) rotate(-3) translate(0 -310)"><rect x="-230" y="-310" width="460" height="620" rx="16" fill="#000" opacity=".2" transform="translate(14 16)"/><rect x="-230" y="-310" width="460" height="620" rx="16" fill="#C9D6E4" stroke="${INK}" stroke-width="9"/><rect x="-230" y="-310" width="40" height="620" fill="#A9BAD0" stroke="${INK}" stroke-width="6"/>` +
     fT(20, -120, '피로사회', 92, '#2B3445') + `<line x1="-120" y1="-80" x2="160" y2="-80" stroke="#2B3445" stroke-width="5"/>` + (lt > tN ? fT(20, 170, '한병철', 46, '#2B3445') : '') + fT(20, 240, '2010', 34, '#5B6478') + `</g>`;
   // Zero peeks from the left, the coach sits on top of the book
   const peek = easeOut(clamp((lt - 0.4) / 0.5, 0, 1));
-  w += `<g transform="translate(${f1(560 + 80 * peek)} 0)">${Z({ x: 0, y: 1100, s: 1, t, pose: '만세', ex: exprAt([[0, 'z멍'], [tF, 'z하품']], lt), look: [0.8, -0.2], seed: 3 })}</g>`;
-  w += fCoach(t, { x: 1060, y: 268 + (lt > tF ? 0 : Math.abs(Math.sin(t * 3)) * -6), s: 0.34, pose: P['f앉기'], ex: fEx(lt > tF ? 'z졸음' : 'z빵긋'), look: [-0.5, 0.3] });
-  if (lt > tF) w += pop(t, t - lt + tF, t + 99, 1420, 360, fT(0, 0, 'z z z', 60, '#5B6478'), {});
+  w += `<g transform="translate(${f1(560 + 80 * peek)} 0)">${qShadow(0, 1000, 66)}${Z({ x: 0, y: 1000, s: 1, t, pose: '만세', ex: exprAt([[0, 'z멍'], [tF, 'z하품']], lt), look: [0.8, -0.2], seed: 3 })}</g>`;
+  w += fCoach(t, { x: 1060, y: 422 + (lt > tF ? 0 : Math.abs(Math.sin(t * 3)) * -6), s: 0.34, pose: P['f앉기'], ex: fEx(lt > tF ? 'z졸음' : 'z빵긋'), look: [-0.5, 0.3] });
+  if (lt > tF) w += pop(t, t - lt + tF, t + 99, 1260, 330, fT(0, 0, 'z z z', 60, '#5B6478'), {});
   return qCam(cam, w);
 }
 // shared defs for every scene (blur, warm light, neon)

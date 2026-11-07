@@ -88,7 +88,7 @@ function sodrawScene(t, lt, a) {
 const HUG = Object.assign({}, P['서기'], { armL: [[148, 285], [124, 338], [160, 372]], hL: [164, 374], armR: [[252, 285], [276, 338], [240, 372]], hR: [236, 374] });
 function soday1Scene(t, lt, a) {
   const D = a._dur || 2.5, cutT = Math.min(1.2, D * 0.45);
-  if (lt < cutT) { const cam = [960, 640, 1.25], x = 960, y = 1000, sp = 0.84 + 0.16 * Math.cos(lt * 12), hop = Math.abs(Math.sin(lt * 6)) * 30, tw = Math.sin(lt * 6) * 9;
+  if (lt < cutT) { const cam = [960, 640, 1.25], x = 960, y = 1000, sp = 0.93 + 0.07 * Math.cos(lt * 12), hop = Math.abs(Math.sin(lt * 6)) * 30, tw = Math.sin(lt * 6) * 9;
     let w = qShadow(x, y, 66) + `<g transform="rotate(${f1(tw)} ${x} ${y - hop})">` + Z({ x, y: y - hop, s: 1, sx: sp, t, pose: HUG, ex: fEx('z하트눈'), seed: 3 }) + `<g transform="translate(${x} 0) scale(${f1(sp * 100) / 100} 1) translate(${-x} 0)">` + soBox(x, y - hop - 168, 0.9) + `</g></g>`;
     for (let i = 0; i < 5; i++) { const ang = lt * 3 + i * 1.26; w += `<path transform="translate(${f1(x + Math.cos(ang) * 300)} ${f1(y - 420 + Math.sin(ang) * 120)}) scale(1.2)" d="M0 8 C-14 -2 -12 -14 -4 -14 C0 -14 0 -10 0 -8 C0 -10 0 -14 4 -14 C12 -14 14 -2 0 8 Z" fill="#FF8FB1" stroke="${INK}" stroke-width="3"/>`; }
     return fPlate('bedn', cam, 0.5) + qCam(cam, w) + fFull('#FFD9A0', 0.08) + soTag(t, lt, '1일째'); }

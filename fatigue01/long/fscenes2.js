@@ -57,7 +57,8 @@ function fhashScene(t, lt, a) {
   const tags = ['#갓생', '#미라클모닝', '#N잡러', '#오운완', '#자기계발', '#갓생러', '#새벽기상', '#부업'];
   tags.forEach((s0, i) => { const ph = (lt * 0.28 + i / tags.length) % 1, x = 220 + (i * 173) % 1100; w += `<g opacity="${f1(Math.sin(ph * Math.PI) * 100) / 100}">${fT(x, -100 + ph * 1300, s0, 54 + (i % 3) * 10, ['#FF5A6E', '#3D7EC8', '#3DBA8A', '#E89A2E'][i % 4], { stroke: '#fff', sw: 8 })}</g>`; });
   const feed = [0, 1, 2].map(i => `<rect x="-140" y="${-230 + i * 150}" width="280" height="130" rx="14" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="-124" y="${-214 + i * 150}" width="96" height="96" rx="10" fill="${['#FFD36E', '#9ED8B4', '#7EC8F0'][i]}"/>${fT(-14, -170 + i * 150, ['#갓생', '#오운완', '#N잡러'][i], 28, INK, { anchor: 'start' })}<rect x="-14" y="${-150 + i * 150}" width="120" height="10" fill="#D5DEEA"/>`).join('');
-  w += `<g transform="translate(660 560) rotate(-6)"><rect x="-190" y="-330" width="380" height="660" rx="50" fill="#1F2D44" stroke="${INK}" stroke-width="12"/><rect x="-168" y="-300" width="336" height="600" rx="22" fill="#EAF0F6"/>${feed}</g>`;
+  w += `<rect x="-300" y="1000" width="2600" height="400" fill="#F6CFE0"/><line x1="-300" y1="1000" x2="2300" y2="1000" stroke="${INK}" stroke-width="6" opacity=".45"/><ellipse cx="660" cy="1004" rx="230" ry="22" fill="#2A1A30" opacity=".2"/>`;
+  w += `<g transform="translate(660 670)"><rect x="-190" y="-330" width="380" height="660" rx="50" fill="#1F2D44" stroke="${INK}" stroke-width="12"/><rect x="-168" y="-300" width="336" height="600" rx="22" fill="#EAF0F6"/>${feed}</g>`;
   const up = !a.card && lt > tF, J = fJump(lt, tF, 0.5);
   w += qShadow(1320, 1000, 66) + Z({ x: 1320, y: 1000 + (up ? J.dy : 0), s: 1, sx: up ? J.sx : 1, sy: up ? J.sy : 1, t, pose: up && J.ph > 1 && J.ph < 6 ? '만세' : '서기', ex: fEx(a.card ? 'z빵긋' : 'z반짝'), look: [-0.8, 0], seed: 3 });
   if (up) w += rSparks(1320, 520, t, 8, 260, '#FFE34D');
@@ -145,7 +146,7 @@ function fsundayScene(t, lt, a) {
     if (ph >= 2) NOTI.forEach(([n, s0], i) => { const t0 = ph === 2 ? 0.25 + i * 0.9 : -9; if (lt > t0) over += pop(t, t - lt + t0, t + 99, 1500, 260 + i * 150, `<g><rect x="-300" y="-56" width="600" height="112" rx="22" fill="#fff" stroke="${INK}" stroke-width="6"/><circle cx="-240" cy="0" r="32" fill="${['#F0A0B8', '#9FC7F0', '#C7B0F0'][i]}" stroke="${INK}" stroke-width="4"/>${fT(-190, -8, n, 28, '#5B6478', { anchor: 'start', w: 700 })}${fT(-190, 32, s0, 32, INK, { anchor: 'start', w: 800 })}</g>`, {}); });
     if (ph === 3) { const [ax, ay] = [SOFA.x - 366, SOFA.S - 112], up = easeOutBack(clamp(lt / 0.5, 0, 1));
       E['_fw'] = Object.assign({}, qTalk('z히죽', env(t) * 0.6));
-      front += `<g transform="translate(0 ${f1((1 - up) * 160)})">` + fCoach(t, { x: ax, y: ay, s: 0.3, pose: Object.assign({}, P['서기'], { armR: [[252, 285], [300, 260], [282, 222]], hR: [278, 220] }), ex: fEx('_fw'), look: [0.9, 0.3] }) + `</g>`;
+      front += `<defs><clipPath id="fArmClip"><rect x="${ax - 300}" y="-2000" width="600" height="${2000 + SOFA.S - 108}"/></clipPath></defs><g clip-path="url(#fArmClip)"><g transform="translate(0 ${f1((1 - up) * 160)})">` + fCoach(t, { x: ax, y: ay, s: 0.3, pose: Object.assign({}, P['서기'], { armR: [[252, 285], [300, 260], [282, 222]], hR: [278, 220] }), ex: fEx('_fw'), look: [0.9, 0.3] }) + `</g></g>`;
       for (let i = 0; i < 3; i++) { const k = (t * 0.8 + i / 3) % 1; front += `<path d="M${f1(ax + 70 + k * 160)} ${f1(ay - 120 - Math.sin(k * 6) * 10)} q12 -10 24 0 q12 10 24 0" fill="none" stroke="#B9A6E8" stroke-width="6" stroke-linecap="round" opacity="${f1((1 - k) * 100) / 100}"/>`; } }
   } else { // ph4: 벌떡 일어나 단어장을 집어 든다, 코치는 머리 위로
     const J = fJump(lt, 0.0, 0.5), x = SOFA.x - 80, y = SOFA.floor + 20;
@@ -170,11 +171,11 @@ function farrowScene(t, lt, a) {
     if (lt > tA && lt < tB + 0.35) { const k = (lt - tA) / (tB + 0.35 - tA), ang = k * Math.PI * 2, ax = x + 500 + Math.cos(ang - Math.PI) * 500, ay = y - 300 + Math.sin(ang - Math.PI) * 260;
       const dir = Math.atan2(Math.cos(ang - Math.PI) * 260, -Math.sin(ang - Math.PI) * 500) * 180 / Math.PI;
       w += `<g transform="translate(${f1(ax)} ${f1(ay)}) rotate(${f1(dir)})"><line x1="-70" y1="0" x2="70" y2="0" stroke="#8A5A34" stroke-width="10"/><path d="M70 0 l-24 -14 l0 28 Z" fill="#B8C4D6" stroke="${INK}" stroke-width="4"/><path d="M-70 0 l-18 -12 M-70 0 l-18 12" stroke="#E5484D" stroke-width="7"/></g>`; }
-    if (hit) { w += `<g transform="translate(${x - 50} ${y - 215}) rotate(205)"><line x1="0" y1="0" x2="110" y2="0" stroke="#8A5A34" stroke-width="10"/><path d="M110 0 l-18 -12 M110 0 l-18 12" stroke="#E5484D" stroke-width="7"/></g>`; over += lt < tB + 1.2 ? fx(t, t - lt + tB + 0.35, t + 9, 640, 340, '퍽!', '#fff', { size: 74 }) : ''; }
+    if (hit) { const [ax0, ay0] = ptOf(x + rec * 30, y, 1, 136, 330); w += `<g transform="translate(${f1(ax0)} ${f1(ay0)}) rotate(${f1(205 + rec * 10)})"><line x1="0" y1="0" x2="150" y2="0" stroke="${INK}" stroke-width="16" stroke-linecap="round"/><line x1="0" y1="0" x2="150" y2="0" stroke="#B07A44" stroke-width="9" stroke-linecap="round"/><path d="M150 0 l22 -18 l12 0 l-18 18 l18 18 l-12 0 Z" fill="#E5484D" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/></g>`; over += lt < tB + 1.2 ? fx(t, t - lt + tB + 0.35, t + 9, 640, 340, '퍽!', '#fff', { size: 74 }) : ''; }
     if (lt > tP) w += pop(t, t - lt + tP, t + 99, x - 330, y - 520, label(0, 0, '내가 부족해서', { size: 34, bg: '#D5DAE3' }), { rot: -8 });
     if (lt > tG) w += pop(t, t - lt + tG, t + 99, x + 300, y - 400, label(0, 0, '게을러서', { size: 34, bg: '#D5DAE3' }), { rot: 8 });
   } else { const tU = fAt(a, '고유한', 2.8);
-    w += qShadow(x, y, 66) + Z({ x, y: y + 20, s: 1, sy: 0.92, t, pose: '웅크림', ex: fEx('z울먹'), look: [0, 0.6], seed: 3 }) + `<g transform="translate(${x} ${f1(y - 520 + Math.sin(t) * 8)})"><ellipse cx="0" cy="0" rx="150" ry="58" fill="#9AA6B8" stroke="${INK}" stroke-width="7"/>` + [-60, -20, 20, 60].map((dx, i) => { const p2 = (t * 1.2 + i * 0.27) % 1; return `<line x1="${dx}" y1="${f1(60 + p2 * 120)}" x2="${dx - 6}" y2="${f1(84 + p2 * 120)}" stroke="#7EC8F0" stroke-width="6" stroke-linecap="round" opacity="${f1((1 - p2) * 100) / 100}"/>`; }).join('') + `</g>`;
+    w += qShadow(x, y, 66) + Z({ x, y: y + 20, s: 1, sy: 0.92, t, pose: '웅크림', ex: fEx('z울먹'), look: [0, 0.6], seed: 3 }) + `<g transform="translate(${x} ${f1(y - 540 + Math.sin(t) * 6)})"><ellipse cx="0" cy="0" rx="150" ry="58" fill="#9AA6B8" stroke="${INK}" stroke-width="7"/>` + [-60, -20, 20, 60].map((dx, i) => { const p2 = (t * 1.6 + i * 0.27) % 1, yy = 60 + p2 * 30; return p2 < 0.85 ? `<line x1="${dx}" y1="${f1(yy)}" x2="${dx - 3}" y2="${f1(yy + 16)}" stroke="#7EC8F0" stroke-width="6" stroke-linecap="round"/>` : `<path d="M${dx - 12} 104 l-6 -8 M${dx + 4} 104 l6 -8" stroke="#7EC8F0" stroke-width="4" stroke-linecap="round"/>`; }).join('') + `</g>`;
     if (lt > tU) over += fCard(t, lt, tU, 1360, 260, '우울', '긍정이 넘쳐 나는 사회의 병', '#7A6AA8');
   }
   return fPlate('office', cam, 0.6) + fFull('#1C2340', ph === 3 ? 0.4 : 0.2) + qCam(cam, w) + over;
@@ -309,15 +310,16 @@ function fbenchScene(t, lt, a) {
   const hop = ph === 1 ? 0 : ph === 2 ? clamp((lt - 1.0) / 0.6, 0, 1) : 1, sat = hop >= 1;
   const cEx = ph === 1 ? 'z결심' : ph === 2 ? (lt < 1.0 ? 'z당황' : lt < 2.2 ? 'z하품' : 'z졸음') : 'z졸음';
   const lean = ph === 2 ? clamp((lt - 2.2) / 0.8, 0, 1) : ph > 2 ? 1 : 0;
-  const coach = (side) => { const sx0 = side < 0 ? zx + 17 : hx - 17, sy0 = y0 - 500 * 0.95, ex0 = side < 0 ? 930 : 990, ey0 = fCoachSitY(RAIL, cs);
+  const LAP = y0 + (408 - 560) * 0.95 - 6; // thigh top of the L-sitting pair: the coaches hop down onto their owners' laps
+  const coach = (side) => { const sx0 = side < 0 ? zx + 17 : hx - 17, sy0 = y0 - 500 * 0.95, ex0 = side < 0 ? 884 : 1046, ey0 = fCoachSitY(LAP, cs);
     const x = lerp(sx0, ex0, easeInOut(hop)), y = lerp(sy0, ey0, easeInOut(hop)) - Math.sin(hop * Math.PI) * 90;
-    return fCoach(t, Object.assign({ x, y, s: cs, rot: -side * 9 * lean, pose: sat ? (side < 0 ? P['f앉기L'] : P['f앉기']) : '서기', ex: fEx(cEx), look: [-side * 0.9, 0] }, side > 0 ? { vest: '#FF7FA8' } : {})); };
-  let body = rail + (sat ? coach(-1) + coach(1) : '') + seatG;
+    return fCoach(t, Object.assign({ x, y, s: cs, rot: -side * 22 * lean, pose: sat ? (side < 0 ? P['f앉기L'] : P['f앉기']) : '서기', ex: fEx(cEx), look: [-side * 0.9, 0] }, side > 0 ? { vest: '#FF7FA8' } : {})); };
+  let body = rail + seatG;
   body += Z({ x: zx, y: y0, s: 0.95, t, pose: zPose, ex: zEx, look: ph === 2 && lt < 1.6 ? [0.2, -0.9] : [0.8, 0], seed: 3 });
   body += zGirl({ hairStyle: 'pony', top: '#FF9AB0', x: hx, y: y0, s: 0.95, t, pose: hPose, ex: hEx, look: ph === 2 && lt < 1.6 ? [-0.2, -0.9] : [-0.8, 0], seed: 51 });
   if (toast) { const [zhx, zhy] = ptOf(zx, y0, 0.95, lerp(300, 340, toast), 216), [hhx, hhy] = ptOf(hx, y0, 0.95, lerp(100, 60, toast), 216); body += can(zhx, zhy - 20, '#E5484D') + can(hhx, hhy - 20, '#3D7EC8'); }
-  if (!sat) body += coach(-1) + coach(1);
-  if (lean > 0.6) body += fT(960, RAIL - 150, 'z z', 44, '#fff', { stroke: INK, sw: 6 });
+  body += coach(-1) + coach(1);
+  if (lean > 0.6) body += fT(965, LAP - 150, 'z z', 40, '#fff', { stroke: INK, sw: 6 });
   let over = '';
   if (ph === 1) over += fCard(t, lt, 0.2, 1500, 160, '힌트 3', '함께 지치기', '#FF9AB0');
   if (ph === 3) { const tA = fAt(a, '탈진', 1.6), tB = fAt(a, '이어', 3.4);
@@ -363,7 +365,9 @@ function fdawn5Scene(t, lt, a) {
     return fPlate('bedn', cam, 0.6) + qCam(cam, w) + fFull('#0A1238', 0.3) + (ring && lt < 1.2 ? fx(t, t - lt + 0.2, t + 9, 1400, 260, '삐비빅…', '#FFE34D', { size: 56 }) : ''); }
   // phone close-up: two buttons; a finger comes up from below and hovers — then stops right before touching
   const sway = ph === 2 ? Math.sin(lt * 1.1) : 0.15 * Math.sin(lt * 2.4), down = ph === 3 ? clamp((lt - (D - 2.0)) / 1.2, 0, 1) : 0;
-  let h = `<rect x="-300" y="-200" width="2600" height="1500" fill="#1A2244"/>`;
+  // 위에서 내려다본 이불 위에 놓인 폰(뜨지 않게): 이불 주름 + 베개 모서리 + 폰 그림자
+  let h = `<rect x="-300" y="-200" width="2600" height="1500" fill="#5E6FA6"/>` + [0, 1, 2, 3, 4].map(i => `<path d="M-300 ${120 + i * 230} Q300 ${60 + i * 230} 900 ${150 + i * 230} T2300 ${110 + i * 230}" stroke="#4E5E94" stroke-width="26" fill="none" stroke-linecap="round" opacity=".7"/>`).join('') + `<rect x="1420" y="-120" width="700" height="360" rx="90" fill="#E9EEF8" stroke="${INK}" stroke-width="8"/><rect x="1420" y="-120" width="700" height="360" rx="90" fill="#0A1238" opacity=".25"/>`;
+  h += `<rect x="${960 - 336 + 24}" y="${470 - 384 + 30}" width="672" height="800" rx="56" fill="#000" opacity=".28"/>`;
   h += `<g transform="translate(960 470) scale(.8)"><rect x="-420" y="-480" width="840" height="1000" rx="70" fill="#1F2D44" stroke="${INK}" stroke-width="14"/><rect x="-386" y="-440" width="772" height="920" rx="40" fill="#EAF0F6"/>${fT(0, -280, '05:00', 120, INK)}${fT(0, -200, '알람', 36, '#5B6478', { w: 700 })}` +
     `<rect x="-330" y="20" width="300" height="140" rx="70" fill="#9FC7F0" stroke="${INK}" stroke-width="8"/>${fT(-180, 106, '다시 자기', 44, INK)}<rect x="30" y="20" width="300" height="140" rx="70" fill="#FFB27A" stroke="${INK}" stroke-width="8"/>${fT(180, 106, '일어나기', 44, INK)}</g>`;
   const fxp = 960 + 144 * sway, tipY = lerp(700, 612, easeOut(down)) + Math.sin(t * 3) * 5;
