@@ -31,7 +31,16 @@ place('bgm/eve.mp3', T0('n1') + 0.2, T0('t0') - 0.1, 0.32, fin=1.2, fout=0.6, of
 place('bgm/bench.mp3', T0('s2') - 0.2, T0('y2') - 0.1, 0.26, fin=1.0, fout=0.4, off=0)    # 편의점 앞
 place('bgm/oracle.mp3', T0('y2') - 0.15, E1('y2') + 0.5, 0.28, fin=0.1, fout=0.5, off=20) # 예언이의 비극 예언
 place('bgm/bench.mp3', E1('y2') + 0.2, T0('n4') - 0.1, 0.21, fin=1.0, fout=0.6, off=40)   # 옆에 앉는다
-place('bgm/oracle.mp3', T0('n4') - 0.2, DUR, 0.24, fin=0.8, fout=1.8, off=34)             # 구슬 클로즈업
+place('bgm/oracle.mp3', T0('n4') - 0.2, T0('s6') + 0.3, 0.24, fin=0.8, fout=1.0, off=34)   # 구슬 클로즈업
+place('bgm/bench.mp3', T0('s6') - 0.1, T0('s8') - 0.1, 0.22, fin=1.2, fout=0.5, off=60)      # 2막: 컵라면·두유·영수증
+place('bgm/morning.mp3', T0('s8') - 0.2, E1('n6') + 0.4, 0.26, fin=0.6, fout=1.0, off=4)     # 영수증에 적기, 구슬이 넓어진다
+place('bgm/bench.mp3', E1('n6') + 0.2, T0('m1') + 0.2, 0.22, fin=1.0, fout=0.8, off=82)      # 3막: 삼촌의 수능
+place('bgm/memory.mp3', T0('m1') - 0.2, E1('m1') + 0.6, 0.36, fin=0.8, fout=1.0, off=0)      # 몽타주
+place('bgm/bench.mp3', E1('m1') + 0.3, T0('s12') - 0.1, 0.2, fin=1.0, fout=0.6, off=20)      # "이렇게 됐지"
+place('bgm/memory.mp3', T0('s12') - 0.3, E1('s13') + 0.3, 0.28, fin=1.0, fout=1.2, off=26)   # 어른들의 예언이
+place('bgm/morning.mp3', T0('s14') - 0.2, T0('s18') - 0.1, 0.27, fin=0.8, fout=0.8, off=20)  # 수능 날
+place('bgm/eve.mp3', T0('s18') - 0.1, T0('s19') - 0.2, 0.16, fin=0.6, fout=0.8, off=30)      # 고요한 1시 10분
+place('bgm/dusk.mp3', T0('s19') - 0.3, DUR, 0.32, fin=1.2, fout=2.5, off=0)                  # 해 질 녘 → 질문
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -127,6 +136,53 @@ tL = W('n5', '길게', 10.3)
 for k in range(12): put(tL + k * 0.08, rip(0.06), 0.12)
 put(tL + 0.1, pop_(1100), 0.35)
 put(A('s5') + 0.3, sparkle(), 0.3)
+
+# ================= 2막 =================
+def chime2(): return mx(tone(988, 0.5, 0.3, (1, 0.3)) * 0.4, np.pad(tone(784, 0.6, 0.35, (1, 0.3)) * 0.4, (int(0.22 * SR), 0)))  # 딩동
+def clink(): return mx(tone(2400, 0.25, 0.08, (1, 0.5)) * 0.35, tone(3100, 0.2, 0.06, (1,)) * 0.2)
+def scribble(d=0.6): n = noise(d); t = np.arange(len(n)) / SR; return bp(n, 1800, 6000) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 9 * t))) * 0.35
+def rattle(d=0.9): t = np.arange(int(d * SR)) / SR; return bp(noise(d), 800, 4000) * (np.sin(2 * np.pi * 18 * t) > 0) * 0.4
+def slurp(): t = np.arange(int(0.45 * SR)) / SR; return bp(noise(0.45), 300, 2500) * (0.5 + 0.5 * np.sin(2 * np.pi * 14 * t)) * env(len(t), 0.02, 0.25) * 0.5
+def rumble(d=1.2): return lp(noise(d), 120) * np.sin(np.linspace(0, np.pi, int(d * SR))) * 1.2
+put(A('s6') + 0.2, creak(0.4), 0.5)
+for k in range(4): put(A('s6') + 0.5 + k * 0.24, flap(), 0.3)
+put(A('s6') + 1.5, chime2(), 0.5); put(A('s6') + 2.1, chime2(), 0.35)
+for k in range(5): put(A('s6') + 2.2 + k * 0.26, flap(), 0.3)
+put(W('z3', '이거', 0.5) + 0.3, clink(), 0.6)
+put(A('s7') + 0.6, thud(0.2, 120), 0.45); put(A('s7') + 1.15, thud(0.12, 260), 0.35); put(A('s7') + 1.45, rip(0.5), 0.25); put(A('s7') + 2.25, whoosh(0.2), 0.3)
+put(A('w3') + 0.6, rip(0.3), 0.3)
+for i in range(6): put(A('s8') + 0.4 + i * 0.85, scribble(0.55), 0.35); put(A('s8') + 0.95 + i * 0.85, whoosh(0.25), 0.18)
+put(A('s8') + 2.6, rattle(0.9), 0.4)
+put(A('w4') + 0.3, scribble(0.5), 0.3)
+put(W('n6', '아무리', 7.0), mx(pop_(800), chime()), 0.35)
+# ================= 3막 =================
+put(A('s9') + 0.2, rip(0.35), 0.3); put(A('s9') + 1.1, slurp(), 0.45)
+put(W('z5', '근데', 3.6) + 0.3, bp(noise(0.25), 1500, 5000) * env(int(0.25 * SR), 0.01, 0.08), 0.25)
+put(A('w6') + 0.2, pop_(1100), 0.25)
+for i in range(5):
+    t0 = A('m1') + 0.15 + i * 2.7
+    put(t0, whoosh(0.5), 0.3)
+    if i == 0: put(t0 + 0.3, rumble(1.6), 0.6)
+    else: put(t0 + 0.75, mx(pop_(900 + 80 * i), tone(1568, 0.3, 0.15, (1,)) * 0.3), 0.4)
+for k, tt in enumerate([0, 0.65, 1.3, 1.95]): put(A('s10') + tt, mx(whoosh(0.18), pop_(900 + 120 * k)), 0.4)
+put(A('s11') + 0.75, mx(pop_(1200), chime()), 0.4)
+for k in range(8): put(A('s12') + k * 0.42, step(), 0.12)
+put(W('n7', '어른', 1.2), chime(), 0.25)
+put(A('s13') + 0.3, bwoop(), 0.4); put(A('s13') + 1.3, rip(0.4), 0.3)
+# ================= 결말 =================
+put(A('s14'), lp(noise(5.0), 220) * 0.25, 0.6)
+for k in range(5): put(A('s14') + 0.4 + k * 0.5, tick_(900, 0.25))
+put(A('s14') + 2.6, pop_(900), 0.3)
+put(A('s15') + 0.6, ding(), 0.45)
+for k in range(12): put(A('s16') + 0.2 + k * 0.3, snap(), 0.15)
+put(A('s16') + 2.7, mx(pop_(1000), chime()), 0.35)
+for k in range(7): put(A('s16') + 2.5 + k * 0.3, step(), 0.15)
+put(A('n8') + 0.3, zap() * 0.6, 0.45)
+put(A('s17') + 0.35, pop_(600), 0.35); put(A('s17') + 2.5, rip(0.35), 0.3); put(A('s17') + 4.0, clink(), 0.35)
+put(A('s18'), lp(noise(5.4), 400) * np.sin(np.linspace(0, np.pi, int(5.4 * SR))) * 0.25, 0.6)
+for k in range(9): put(A('s19') + 0.2 + k * 0.33, step(), 0.12)
+put(W('n10', '다만', 3.2) - 0.1, rip(0.4), 0.3); put(A('s20') + 0.3, rip(0.3), 0.25)
+put(A('n11') + 0.2, chime(), 0.3)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_su.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_su.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_su.wav'], check=True)

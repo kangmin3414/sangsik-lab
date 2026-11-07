@@ -195,6 +195,7 @@ function suBenchSeat() { const { x, S, F, hw } = SB; return `<rect x="${x - hw -
   [-1, 1].map(sd => `<path d="M${x + sd * (hw - 30)} ${S + 14} L${x + sd * (hw - 22)} ${F}" stroke="#5B4636" stroke-width="16" stroke-linecap="round"/><path d="M${x + sd * (hw - 30)} ${S + 14} L${x + sd * (hw - 22)} ${F}" stroke="${INK}" stroke-width="5" stroke-linecap="round" opacity=".5"/>`).join(''); }
 const SB_SX = 1130, SB_ZX = 790, SB_ZST = 560; // 서윤 자리, 제로 앉을 자리, 제로 서 있는 자리
 function subenchScene(t, lt, a) {
+  if (a.ph >= 10) return suBench2(t, lt, a);
   const ph = a.ph, s = 0.95, wy = SB_SIT(s), zs = 1.0;
   E['_suz'] = qTalk('z기본', env(t)); E['_suz2'] = qTalk('z빵긋', env(t)); E['_suz3'] = qTalk('z민망', env(t) * 0.8);
   E['_suw'] = qTalk('z기본', env(t) * 0.7); E['_suw2'] = qTalk('z울먹', env(t) * 0.6);
@@ -232,9 +233,9 @@ function subenchScene(t, lt, a) {
   w += qShadow(SB_SX, SB.F, 70, 0.6);
   w += SY({ x: SB_SX + wJit, y: wy, s, t, pose: P['f앉기L'], ex: wEx, look: wLook, tilt: wTilt });
   const zSY = zSit > 0 ? lerp(zy, SB_SIT(zs), easeInOut(zSit)) - Math.sin(zSit * Math.PI) * 50 : zy;
-  if (zSit > 0) w += ZS({ x: zx, y: zSY, s: zs, t, pose: zSit >= 1 ? P['f앉기'] : '서기', ex: zEx, look: zLook, seed: 3 }) + (zSit >= 1 ? suSlip(zx, zSY, zs, P['f앉기']) : '');
+  if (zSit > 0) { const zpp = zSit >= 1 ? P['f앉기'] : '서기'; w += ZS({ x: zx, y: zSY, s: zs, t, pose: zpp, ex: zEx, look: zLook, seed: 3 }) + suPants(zx, zSY, zs, zpp) + suSlip(zx, zSY, zs, zpp); }
   w += suBenchSeat();
-  if (zSit === 0) { const zp = typeof zPose === 'string' ? P[zPose] : zPose; w += qShadow(zx, SB.F, 62) + ZS({ x: zx, y: zy, s: zs, t, pose: zPose, ex: zEx, look: zLook, seed: 3 }) + suSlip(zx, zy, zs, zp); }
+  if (zSit === 0) { const zp = typeof zPose === 'string' ? P[zPose] : zPose; w += qShadow(zx, SB.F, 62) + ZS({ x: zx, y: zy, s: zs, t, pose: zPose, ex: zEx, look: zLook, seed: 3 }) + suPants(zx, zy, zs, zp) + suSlip(zx, zy, zs, zp); }
   // 입김
   const [wmx, wmy] = ptOf(SB_SX, wy, s, 190, 236), [zmx, zmy] = ptOf(zx, zSit >= 1 ? SB_SIT(zs) : zy, zs, 214, 236);
   w += suBreath(wmx - 14, wmy, t, 0.1, -1) + (ph !== 4 ? suBreath(zmx + 10, zmy, t, 0.6, 1) : '');
