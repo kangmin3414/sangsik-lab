@@ -182,6 +182,7 @@ function char(o) {
     const leaf = (x0, y0, cx, cy, x1, y1, side) => { let w = ''; for (let i = 0; i < 7; i++) { const k = 0.06 + i * 0.145, a = 1 - k; const x = a * a * x0 + 2 * a * k * cx + k * k * x1, y = a * a * y0 + 2 * a * k * cy + k * k * y1; const tx = 2 * a * (cx - x0) + 2 * k * (x1 - cx), ty = 2 * a * (cy - y0) + 2 * k * (y1 - cy); const ang = Math.atan2(ty, tx) * 180 / Math.PI; for (const sgn of [-1, 1]) w += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="17" ry="8" transform="rotate(${f1(ang + sgn * 38 * side)} ${f1(x)} ${f1(y)}) translate(${f1(12 * side)} 0)" fill="${sgn > 0 ? '#6DBE55' : '#4E9A3E'}" stroke="${INK}" stroke-width="4"/>`; } return w; };
     h += leaf(96, 168, 92, 80, 186, 58, 1) + leaf(304, 168, 308, 80, 214, 58, -1);
   }
+  if (e.fxUnder) h += typeof e.fxUnder === 'function' ? e.fxUnder(t) : e.fxUnder; // face layer under the eyes (cheek puff, shadow)
   if (e.blush) h += `<ellipse cx="148" cy="214" rx="16" ry="8" fill="#FF9BB0" opacity=".8"/><ellipse cx="252" cy="214" rx="16" ry="8" fill="#FF9BB0" opacity=".8"/>`;
   const by = 1 - 0.92 * blink;
   h += `<g transform="translate(${f1(look[0] * 7)} ${f1(look[1] * 5)}) translate(0 188) scale(1 ${f1(by * 100) / 100}) translate(0 -188)">`;
@@ -189,6 +190,7 @@ function char(o) {
   const pl = e.whites ? `translate(${f1(look[0] * 8)} ${f1(look[1] * 6)})` : '';
   h += `<g transform="${pl}"><path d="${e.eyeL}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/><path d="${e.eyeR}" fill="${e.eyeFill}" stroke="${INK}" stroke-width="${e.eyeSW}" stroke-linecap="round"/>`;
   if (e.eyeFill === INK && !e.whites && blink < 0.3) h += `<circle cx="168" cy="181" r="3.2" fill="#fff"/><circle cx="238" cy="181" r="3.2" fill="#fff"/>`;
+  if (e.fxEye) h += typeof e.fxEye === 'function' ? e.fxEye(t) : e.fxEye; // extra eye layer (highlights, stars, hearts) — moves and blinks with the eyes
   if (o.lashes) h += e.eyeFill === INK ? `<path d="M152 178 L140 170 M157 173 L149 162 M248 178 L260 170 M243 173 L251 162" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` : `<path d="M150 192 L137 187 M153 186 L143 177 M250 192 L263 187 M247 186 L257 177" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>`;
   h += `</g></g>`;
   if (gog !== 'none') {
@@ -216,6 +218,7 @@ function char(o) {
     h += `<path d="M180 300 Q192 330 196 360 M220 300 Q208 330 204 360" fill="none" stroke="${INK}" stroke-width="3" opacity=".25" stroke-linecap="round"/>`;
     h += `<path d="M200 224 Q180 218 168 232 Q160 246 156 258 M200 224 Q220 218 232 232 Q240 246 244 258" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="M200 224 Q180 218 168 232 Q160 246 156 258 M200 224 Q220 218 232 232 Q240 246 244 258" fill="none" stroke="${o.longBeard}" stroke-width="7" stroke-linecap="round"/>`;
   }
+  if (e.fx) h += typeof e.fx === 'function' ? e.fx(t) : e.fx; // extra face layer in head coords (tears, anger mark, gloom lines, blush lines)
   if (e.sweat || o.sweat) { const sd = (t * 40) % 30; h += `<path d="M306 ${112 + sd * 0.4} Q292 ${138 + sd * 0.4} 306 ${148 + sd * 0.4} Q320 ${138 + sd * 0.4} 306 ${112 + sd * 0.4} Z" fill="#9ED8FF" stroke="${INK}" stroke-width="5"/>`; }
   h += `</g>`; // head
   const hand = q => `<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="22" fill="#fff" stroke="${INK}" stroke-width="7"/><path d="M${f1(q[0] - 10)} ${f1(q[1] + 8)} Q${f1(q[0])} ${f1(q[1] + 16)} ${f1(q[0] + 10)} ${f1(q[1] + 8)}" fill="none" stroke="${shade === '#D5E2EE' ? '#C9D6E2' : shade}" stroke-width="5" stroke-linecap="round"/>`;
