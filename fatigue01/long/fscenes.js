@@ -142,17 +142,17 @@ function fSofaFront() { const x = SOFA.x, S = SOFA.S, F = SOFA.floor;
     [-1, 1].map(sd => `<rect x="${sd < 0 ? x - 416 : x + 316}" y="${S - 110}" width="100" height="${F - S + 104}" rx="42" fill="${SOFA_C.arm}"/>`).join('') +
     [-1, 1].map(sd => `<rect x="${x + sd * 330 - 14}" y="${F - 6}" width="28" height="22" rx="6" fill="#6A4A2A"/>`).join('') + `</g>`; }
 const ARM_R = () => [SOFA.x + 366, SOFA.S - 112]; // coach stands on the right armrest
-P['f앉기'] = { armL: [[148, 285], [122, 340], [118, 384]], hL: [118, 384], armR: [[252, 285], [278, 340], [282, 384]], hR: [282, 384], legL: [[182, 412], [170, 440], [166, 476]], fL: [156, 488, 0], legR: [[218, 412], [230, 440], [234, 476]], fR: [244, 488, 0], dy: 0 };
-const fSitY = sy => SOFA.S + 10 + 148 * sy; // origin y so the hips stay on the seat
+P['f앉기'] = { armL: [[148, 285], [156, 352], [214, 396]], hL: [218, 398], armR: [[252, 285], [282, 344], [282, 394]], hR: [284, 396], legL: [[188, 412], [282, 420], [284, 512]], fL: [302, 522, 0], legR: [[212, 408], [304, 410], [308, 504]], fR: [326, 514, 0], dy: 0 }; // L-shape: thighs flat on the cushion, shins down
+const fSitY = sy => SOFA.S - 12 + 148 * sy; // origin y so the hips rest ON the cushion top
 function fMelted(t, lt, k, o = {}) { // k: 0..1 melt amount (hips stay on the cushion)
   const x = SOFA.x, sy = 1 - 0.42 * k, sx = 1 + 0.22 * k, y = fSitY(sy);
-  const sw = Math.sin(t * 4.2) * 10, pz = Object.assign({}, P['f앉기'], { fL: [156 + sw, 488, sw * 1.5], fR: [244 + sw, 488, sw * 1.5], legL: [[182, 412], [170 + sw * 0.4, 440], [166 + sw, 476]], legR: [[218, 412], [230 + sw * 0.4, 440], [234 + sw, 476]] });
+  const sw = Math.sin(t * 4.2) * 6, pz = Object.assign({}, P['f앉기'], { legL: [[188, 412], [282, 420], [284 + sw, 512]], fL: [302 + sw, 522, sw], legR: [[212, 408], [304, 410], [308 - sw, 504]], fR: [326 - sw, 514, -sw] });
   let w = Z({ x, y, s: 1, sx, sy, t, pose: pz, ex: o.ex || fEx(k > 0.5 ? 'z기절' : 'z멍'), look: o.look || [0, 0.2], tilt: o.tilt || 0, seed: 3 });
   if (k > 0.4 && !o.noSoul) { const [hx, hy] = fHead(x, y, 1, sy), r = 0.5 + 0.5 * Math.sin(t * 1.5);
     w += `<g opacity=".85"><path d="M${hx} ${f1(hy - 100 * sy)} Q${hx + 20} ${f1(hy - 150)} ${f1(hx + 10 + r * 10)} ${f1(hy - 190)}" stroke="#fff" stroke-width="10" fill="none"/><g transform="translate(${f1(hx + 10 + r * 10)} ${f1(hy - 220 - r * 16)})"><path d="M-34 24 Q-40 -38 0 -40 Q40 -38 34 24 Q24 14 16 26 Q8 14 0 26 Q-8 14 -16 26 Q-24 14 -34 24 Z" fill="#F4F8FF" stroke="${INK}" stroke-width="5"/><path d="M-16 -8 L-6 -14 M6 -14 L16 -8" stroke="${INK}" stroke-width="4"/></g></g>`; }
   return w;
 }
-const fRoom = (cam, back, front) => fPlate('living2', cam, 0.6) + qCam(cam, fSofaBack() + back + fSofaFront() + front);
+const fRoom = (cam, back, front) => fPlate('living2', cam, 0.6) + qCam(cam, fSofaBack() + fSofaFront() + back + front); // the whole sofa is behind the sitter
 function fmeltScene(t, lt, a) {
   const tQ = fAt(a, '이상', 0.9), tS = fAt(a, '이렇게', 2.0), tM = fAt(a, '피곤', 3.6);
   const cam = qLerpCam(prog(lt, tS, tM + 1), [960, 660, 1.15], [960, 720, 1.35]);
