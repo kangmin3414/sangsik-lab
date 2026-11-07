@@ -1,0 +1,11 @@
+fr/
+chk/
+mix_raw_r.wav
+mix_r.wav
+sfx_r.wav
+tmp_bed.wav
+takes/
+*.log
+retrieval_long_v1.mp4
+retrieval_long_v*.mp4
+bed_only.wav

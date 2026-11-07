@@ -710,6 +710,5 @@ thanksScene = function (t, lt) {
   h += Z({ t, seed: 78, x: 960, y: 890, s: 0.56, pose: '손인사', ex: exprAt([[0, '신남']], t) });
   h += DY({ t, seed: 79, x: 1240, y: 890, s: 0.56, pose: '손인사', ex: exprAt([[0, '뿌듯']], t), look: [-0.3, 0] });
   h += fire12(1560, 870, 0.32, t, 2);
-  h += pop(t, t - lt + 1.2, t + 99, 960, 450, label(0, 0, '상식실험실', { size: 46, bg: MINT }), {});
   return h;
 };

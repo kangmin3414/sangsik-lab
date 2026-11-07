@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}</style><script src="../shorts/engine.js"></script></head><body>
+<svg id="v" width="900" height="1100" viewBox="0 0 900 1100" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const TEE = '#FF9A55';
+function draw(pose, ex) {
+  const defs = `<defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath><clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>
+  <filter id="halo" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="9" result="d"/><feFlood flood-color="#FFF8EC" flood-opacity="1"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+  const z = char({ goggles: 'none', vest: TEE, patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)', t: 0.4, seed: 3, x: 450, y: 1040, s: 1.75, pose, expr: ex, look: [0.2, 0.1], still: true, noBlink: true });
+  document.getElementById('v').innerHTML = defs + `<g filter="url(#halo)">${z}</g>`;
+}
+P['wave2'] = Object.assign({}, P['서기'], { armR: [[252, 285], [336, 250], [380, 172]], hR: [384, 160] });
+window.draw = draw;
+</script></body></html>

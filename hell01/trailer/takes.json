@@ -1,0 +1,107 @@
+{
+ "r0": {
+  "take": "takes/r0_1.wav",
+  "cer": 0.0,
+  "asr": "제로 씨, 내리시죠. 시간 없습니다."
+ },
+ "z0": {
+  "take": "takes/z0_0.wav",
+  "cer": 0.143,
+  "asr": "네? 여기가 어디?"
+ },
+ "r1": {
+  "take": "takes/r1_3.wav",
+  "cer": 0.3,
+  "asr": "49일 안에 7분의 대왕을 다 배셔야 합니다."
+ },
+ "z1": {
+  "take": "takes/z1_0.wav",
+  "cer": 0.5,
+  "asr": "49일이요?"
+ },
+ "r2": {
+  "take": "takes/r2_0.wav",
+  "cer": 0.235,
+  "asr": "49제 들어보셨죠? 그게 이 일정입니다."
+ },
+ "k1": {
+  "take": "takes/k1_1.wav",
+  "cer": 0.0,
+  "asr": "살생"
+ },
+ "r3": {
+  "take": "takes/r3_0.wav",
+  "cer": 0.75,
+  "asr": "목이 312마리"
+ },
+ "z2": {
+  "take": "takes/z2_2.wav",
+  "cer": 0.167,
+  "asr": "정당방위에요"
+ },
+ "k2": {
+  "take": "takes/k2_0.wav",
+  "cer": 0.0,
+  "asr": "도둑질"
+ },
+ "r4": {
+  "take": "takes/r4_3.wav",
+  "cer": 0.333,
+  "asr": "회사 볼펜 17자루"
+ },
+ "z3": {
+  "take": "takes/z3_3.wav",
+  "cer": 0.0,
+  "asr": "그건 제 가방이 알아서"
+ },
+ "k3": {
+  "take": "takes/k3_1.wav",
+  "cer": 0.0,
+  "asr": "배신"
+ },
+ "r5": {
+  "take": "takes/r5_0.wav",
+  "cer": 0.364,
+  "asr": "다이어트 결심 142번"
+ },
+ "z4": {
+  "take": "takes/z4_0.wav",
+  "cer": 0.0,
+  "asr": "그건 제가 저를"
+ },
+ "k4": {
+  "take": "takes/k4_1.wav",
+  "cer": 0.0,
+  "asr": "거짓말?"
+ },
+ "r6": {
+  "take": "takes/r6_0.wav",
+  "cer": 0.4,
+  "asr": "괜찮아요 4만 1200번"
+ },
+ "r7": {
+  "take": "takes/r7_0.wav",
+  "cer": 0.143,
+  "asr": "마지막 뿐입니다"
+ },
+ "y1": {
+  "take": "takes/y1_0.wav",
+  "cer": 0.0,
+  "asr": "비춰보아라."
+ },
+ "r8": {
+  "take": "takes/r8_0.wav",
+  "cer": 0.0,
+  "asr": "살아온 모든 게 그대로 비치는 거울입니다."
+ },
+ "z5": {
+  "take": "takes/z5_0.wav",
+  "cer": 0.0,
+  "asr": "잠깐만요! 아직 마음의 준비가..."
+ },
+ "zi": {
+  "take": "takes/zi_4.wav",
+  "cer": 0.143,
+  "asr": "죽으면 49일 동안 저승 재판을 받는데요 제가 먼저 받아 봤습니다"
+ }
+}

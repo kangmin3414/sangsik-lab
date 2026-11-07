@@ -1,0 +1,6 @@
+art/*.png
+voice/takes/
+voice/*.wav
+*.mp4
+chk_*.jpg
+art.log

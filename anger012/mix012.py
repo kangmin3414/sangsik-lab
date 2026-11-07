@@ -9,7 +9,7 @@ voice, sr = sf.read('voice.wav'); assert sr == SR
 if voice.ndim > 1: voice = voice.mean(1)
 N = int(DUR * SR); voice = np.pad(voice, (0, max(0, N - len(voice))))[:N]; voice = voice / (np.abs(voice).max() + 1e-9) * 0.9
 load = lambda f: librosa.load(f, sr=SR, mono=False)[0].T
-A = load('../bgm/cand_2_strings_b.mp3'); B = load('../bgm/cand_1_piano_a.mp3')
+A = load('../bgm/cand_2_strings_b.mp3'); B = load('../bgm/cand_1_piano_b.mp3')  # piano_a had ghost vocals; v2 uses piano_b
 
 def loop(song, n, body_end=171.0, xf=6.0):
     out = np.zeros((n, 2)); step = int((body_end - xf) * SR); x = int(xf * SR); s = 0; k = 0

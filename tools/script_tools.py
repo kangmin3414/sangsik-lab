@@ -60,7 +60,9 @@ def read_md(p, m):
         else: line = sub
         if ar.get('tone'): line += f' *({TONE[ar["tone"]]})*'
         if ar.get('sfx'): line += f' 🔊{ar["sfx"]}'
-        if ar.get('count'): line += f' `집에 가고 싶은 사람 {ar["count"]}/5`'
+        if ar.get('count'):
+            lab = getattr(m, 'COUNT_LABEL', '집에 가고 싶은 사람 {n}/5')  # each episode may set its own on-screen counter label
+            line += ' `' + lab.format(n=ar['count']) + '`'
         o.append('- ' + line)
     assert i == len(m.S)
     out = os.path.join(os.path.dirname(os.path.abspath(p)), 'script_read.md')

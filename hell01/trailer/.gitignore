@@ -1,0 +1,8 @@
+art/*.png
+takes/
+tempo/
+frames/
+*.mp4
+mix.wav
+*.log
+fonts
