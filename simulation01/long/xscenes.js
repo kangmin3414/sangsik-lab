@@ -44,15 +44,78 @@ const xBill = (x, y, s, rot) => `<g transform="translate(${f1(x)} ${f1(y)}) rota
 const xCam = (cam, lt, tk) => [cam[0], cam[1], cam[2] * (1 + 0.08 * xPunch(lt, tk))];
 
 /* ================= o0~o2: the little game (night) ================= */
-const XGX = 880, XGS = 1060;   // tiny Zero / tiny Sora in the game
-function xGame(t, l, o = {}) {   // the village with tiny Zero and tiny Sora (+ optional dialog over tiny Sora)
-  const tz = xZero(t, { x: XGX, y: SMGY + 30, s: 0.5, pose: '서기', ex: xEx('z기본'), look: [0.6, 0] });
-  const ts = xSora(t, { x: XGS, y: SMGY + 30, s: 0.5, pose: o.wave ? xGreetPose(o.wave) : '서기', tilt: o.wave ? xGreetTilt(o.wave) : 0, ex: xEx(o.wave ? 'z빵긋' : 'z기본'), look: [-0.6, 0] });
-  const over = (o.dialog ? xDialog(XGS + 30, SMGY - 330, '소라', '오늘도 살아 있냐?', o.dialog, 1) : '') + (o.over || '');
-  return smGameWorld(t, o.cam || [960, 820, 1.25], { kidX: 970, kid: qShadow(XGX, SMGY + 30, 30) + tz + ts, over, sat: o.sat });
+/* pixel sprites: the GAME versions of Zero and Sora — only their features (orange hood / brown ponytail), not the same people */
+Object.assign(QBG, { village_px: 'ai/village_px.png' });
+const XPX = 12;   // one pixel cell = 12 game units
+function xSprite(kind, o = {}) {
+  const C = new Map(), set = (x, y, c) => C.set(x + ',' + y, c), has = (x, y) => C.has(x + ',' + y);
+  const f = o.frame || 'stand', cr = f === 'crouch' ? 3 : 0, HY = -16 + cr, lk = Math.round(clamp(o.look || 0, -1, 1));
+  const shirt = o.shirt || (kind === 'zero' ? '#F28C38' : kind === 'sora' ? '#9FDCC4' : '#8CCB9B'), shoe = '#FFFFFF', DK = '#1E1E26';
+  // legs + shoes
+  const L = { stand: [[-2, 0], [2, 0]], walk1: [[-3, 0], [2, -1]], walk2: [[-2, -1], [3, 0]], crouch: [[-3, 0], [3, 0]] }[f] || [[-2, 0], [2, 0]];
+  L.forEach(([lx, ly]) => { for (let y = -4 + cr; y < ly; y++) set(lx, y, DK); set(lx, ly, shoe); set(lx + (lx < 0 ? -1 : 1), ly, shoe); });
+  // body (+ skirt for Sora)
+  const bTop = -9 + cr, bBot = kind === 'sora' ? -6 + cr : -5 + cr;
+  for (let y = bTop; y <= bBot; y++) for (let x = -3; x <= 3; x++) set(x, y, shirt);
+  if (kind === 'sora') for (let y = bBot + 1; y <= bBot + 2; y++) for (let x = -4; x <= 4; x++) set(x, y, o.skirt || '#F4B9CB');
+  if (kind === 'zero') { for (let x = -1; x <= 1; x++) set(x, bBot - 1, '#D9762A'); set(-1, bTop + 1, '#FFF1E0'); set(1, bTop + 1, '#FFF1E0'); for (let x = -4; x <= 4; x++) set(x, bTop - 1, '#E07A2C'); }
+  // arms (+ wave)
+  const armL = f === 'crouch' ? [[-4, bTop + 1], [-5, bTop + 2], [-5, bTop + 3]] : [[-4, bTop + 1], [-4, bTop + 2], [-5, bTop + 3]];
+  const armR = f === 'wave1' ? [[4, bTop], [5, bTop - 1], [5, bTop - 2], [6, bTop - 3]] : f === 'wave2' ? [[4, bTop], [5, bTop - 1], [6, bTop - 2], [7, bTop - 3]] : f === 'write' ? [[4, bTop + 1], [5, bTop + 2], [6, bTop + 3]] : [[4, bTop + 1], [4, bTop + 2], [5, bTop + 3]];
+  armL.forEach(([x, y]) => set(x, y, DK)); armR.forEach(([x, y]) => set(x, y, DK));
+  const hl = armL[armL.length - 1], hr = armR[armR.length - 1]; set(hl[0], hl[1] + 1, '#FFFFFF'); set(hr[0] + (f.startsWith('wave') ? 0 : 0), hr[1] + (f.startsWith('wave') ? -1 : 1), '#FFFFFF');
+  // head
+  for (let dy = -5; dy <= 5; dy++) for (let dx = -5; dx <= 5; dx++) if (dx * dx + dy * dy <= 27) set(dx, HY + dy, '#FFFFFF');
+  if (kind === 'sora' || o.hair) {   // hair cap + bangs + side hair
+    const hc = o.hair || '#6A4232';
+    for (let dy = -5; dy <= -2; dy++) for (let dx = -5; dx <= 5; dx++) if (dx * dx + dy * dy <= 27) set(dx, HY + dy, hc);
+    [-4, -3, 1, 2, 3].forEach(x => set(x, HY - 1, hc)); [[-5, 0], [-5, 1], [5, 0], [5, 1]].forEach(([x, y]) => set(x, HY + y, hc));
+    if (kind === 'sora') { const sw = Math.round(Math.sin((o.t || 0) * 6) * 0.7); [[6, -4], [7, -3], [7, -2], [7 + sw, -1], [7 + sw, 0], [6 + sw, 1]].forEach(([x, y]) => set(x, HY + y, hc)); set(5, HY - 4, '#FF8FB1'); set(6, HY - 5, '#FF8FB1'); }
+  }
+  // face
+  const ey = o.blink ? [HY + 1] : [HY, HY + 1];
+  ey.forEach(y => { set(-2 + lk, y, DK); set(2 + lk, y, DK); });
+  set(-3 + lk, HY + 2, '#FF9BB0'); set(3 + lk, HY + 2, '#FF9BB0');
+  if (o.mouth === 'o') { set(lk, HY + 3, '#5A1E2A'); set(lk, HY + 4, '#5A1E2A'); } else if (o.mouth === 'sad') { set(-1 + lk, HY + 4, DK); set(lk, HY + 3, DK); set(1 + lk, HY + 4, DK); } else { set(-1 + lk, HY + 3, DK); set(lk, HY + 4, DK); set(1 + lk, HY + 3, DK); }
+  if (o.sweat) set(5, HY - 3, '#8FD3FF');
+  // outline: every empty neighbour of a filled cell
+  const out = [];
+  C.forEach((c, k) => { const [x, y] = k.split(',').map(Number); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([a, b]) => { if (!has(x + a, y + b)) out.push([x + a, y + b]); }); });
+  out.forEach(([x, y]) => { if (!has(x, y)) set(x, y, '#141418'); });
+  const s = o.s || 1, fl = o.flip ? -1 : 1;
+  let h = `<g transform="translate(${f1(o.x)} ${f1(o.y)}) rotate(${f1(o.tilt || 0)}) scale(${f1(fl * s * XPX * 1000) / 1000} ${f1(s * XPX * 1000) / 1000})" shape-rendering="crispEdges">`;
+  C.forEach((c, k) => { const [x, y] = k.split(','); h += `<rect x="${+x - 0.5}" y="${+y - 0.5}" width="1.02" height="1.02" fill="${c}"/>`; });
+  return h + `</g>`;
 }
-const xEditor = (txt, n, cur) => `<g><rect x="70" y="40" width="560" height="74" rx="14" fill="#0E1626" opacity=".88"/><text x="96" y="90" font-family="${MONO}" font-weight="700" font-size="34" fill="#9FD8FF">손바닥 마을 v0.3</text></g>` +
-  (txt != null ? `<g><rect x="200" y="860" width="1520" height="150" rx="24" fill="#0E1626" opacity=".92" stroke="#FF8FB1" stroke-width="5"/><text x="240" y="912" font-family="${FONT}" font-weight="900" font-size="34" fill="#FF8FB1">작은 소라 · 인사 대사</text>` +
+const xWalkF = (t, sp = 6) => Math.floor(t * sp) % 2 ? 'walk1' : 'walk2';
+// the game world: pixel village + pixel villagers (+ actors)
+function xGameWorld(t, cam, o = {}) {
+  const sat = o.sat == null ? 1 : o.sat;
+  let h = smFx('xgsat', sat) + smPlate('village_px', cam, 1.0, { filter: 'xgsat' });
+  if (o.wireX != null) h += smWire('village_px', cam, 1.0, o.wireX);
+  let ch = '';
+  const NPC = [['#F2C14E', null], ['#E2574C', '#2E2A33'], ['#C08AE0', '#B7793E'], ['#F08FB0', null], ['#7FB0E8', '#2E3550']];
+  NPC.forEach(([shirt, hair], i) => {
+    const sp = 0.1 + hash(i * 3.3) * 0.07, u = (t * sp + hash(i * 7.1)) % 1, dir = u < 0.5 ? 1 : -1, xx = 140 + (u < 0.5 ? u * 2 : (1 - u) * 2) * 1640 + i * 25;
+    if (o.keep && o.keep.some(k => Math.abs(xx - k) < 150)) return;
+    const y = SMGY - 10 + (i % 3) * 18;
+    ch += `<ellipse cx="${f1(xx)}" cy="${y + 4}" rx="44" ry="9" fill="#5A4022" opacity=".25"/>` + xSprite('npc', { x: xx, y, s: 0.75, frame: xWalkF(t + i * 0.3), flip: dir < 0, shirt, hair, look: dir, t });
+  });
+  h += qCam(cam, (o.under || '') + ch + (o.actors || '') + (o.over || ''));
+  if (o.glitch) h += smGlitch(t, o.glitch, 11);
+  return h;
+}
+const XGX = 860, XGS = 1080;   // pixel Zero / pixel Sora in the game
+function xGame(t, l, o = {}) {
+  const sh = (x) => `<ellipse cx="${x}" cy="${SMGY + 34}" rx="54" ry="11" fill="#5A4022" opacity=".28"/>`;
+  const wf = o.wave ? (Math.floor(o.wave * 6) % 2 ? 'wave1' : 'wave2') : 'stand';
+  const actors = sh(XGX) + xSprite('zero', { x: XGX, y: SMGY + 30, s: 0.95, look: 1, blink: (t % 3.1) < 0.12, t }) + sh(XGS) + xSprite('sora', { x: XGS, y: SMGY + 30, s: 0.95, frame: wf, look: -1, flip: false, blink: (t % 2.7) < 0.12, t });
+  const over = (o.dialog ? xDialog(XGS + 20, SMGY - 330, '소라', '오늘도 살아 있냐?', o.dialog, 1) : '') + (o.over || '');
+  return xGameWorld(t, o.cam || [960, 820, 1.25], { keep: [XGX, XGS], actors, over, sat: o.sat });
+}
+const xGift = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-22" y="-14" width="44" height="34" rx="4" fill="#FF8FB1" stroke="#fff" stroke-width="4"/><rect x="-26" y="-22" width="52" height="12" rx="3" fill="#FF6F96" stroke="#fff" stroke-width="4"/><rect x="-4" y="-22" width="8" height="42" fill="#FFE34D"/><path d="M0 -22 q-18 -16 -20 -4 M0 -22 q18 -16 20 -4" stroke="#FFE34D" stroke-width="5" fill="none"/></g>`;
+const xEditor = (txt, n, cur, big = 0) => `<g><rect x="70" y="40" width="${560 + 60 * big}" height="${74 + 24 * big}" rx="14" fill="#0E1626" opacity=".88"/>${xGift(120, 78 + 12 * big, 0.9 + 0.4 * big)}<text x="160" y="${90 + 12 * big}" font-family="${FONT}" font-weight="900" font-size="${34 + 14 * big}" fill="#FFD6E2">소라 생일 선물 · v0.3</text></g>` +
+  (txt != null ? `<g><rect x="200" y="860" width="1520" height="150" rx="24" fill="#0E1626" opacity=".92" stroke="#FF8FB1" stroke-width="5"/><text x="240" y="912" font-family="${FONT}" font-weight="900" font-size="34" fill="#FF8FB1">도트 소라 · 인사 대사</text>` +
   `<text x="240" y="978" font-family="${FONT}" font-weight="900" font-size="54" fill="#fff">${esc([...txt].slice(0, n).join(''))}${cur ? '<tspan fill="#FF8FB1">|</tspan>' : ''}</text></g>` : '');
 function xopenScene(t, lt, a) {
   const id = a._id || '', D = a._dur || 2;
@@ -62,9 +125,9 @@ function xopenScene(t, lt, a) {
     const lp = ptOf(SMRX, SMRY, 1.0, 200, 400); ch += smLapBack(lp[0], lp[1] + 6, 0.95, 1) + `<circle cx="${SMRX}" cy="${SMRY - 400}" r="150" fill="#9FD8FF" opacity=".16" filter="url(#qfg)"/>`;
     return smDefs() + smRoom(t, cam, { sat: 0.9, night: 1, plant: { droop: 0, green: 1 } }) + qCam(cam, ch);
   }
-  if (id === 'o0') {   // the screen: Palm Village — tiny Zero and tiny Sora among bean-sized people
-    const k = lt - 1.3, w = lerp(1420, 1500, clamp(k / 1.3, 0, 1));
-    return smDefs() + smFull('#0A0E1C') + smLapScreen(960, 500, w, xGame(t, k) + xEditor(null)) + `<circle cx="960" cy="500" r="760" fill="#9FD8FF" opacity=".05" filter="url(#qfg)"/>`;
+  if (id === 'o0' || id === 'oN') {   // the screen: the pixel village he is making for Sora's birthday
+    const k = id === 'o0' ? lt - 1.3 : lt + 1.3, w = lerp(1380, 1520, clamp(k / (D + 1.3), 0, 1)), big = id === 'oN' ? easeOutBack(clamp((lt - 0.3) / 0.4, 0, 1)) * Math.max(0, 1 - Math.max(0, lt - D + 0.8) / 0.6) : 0;
+    return smDefs() + smFull('#0A0E1C') + smLapScreen(960, 500, w, xGame(t, k) + xEditor(null, 0, false, big)) + `<circle cx="960" cy="500" r="760" fill="#9FD8FF" opacity=".05" filter="url(#qfg)"/>`;
   }
   if (id === 'o1') {   // he types Sora's real greeting into the tiny Sora: CU (talking) → the screen (typing)
     const tT = smAt(a, '이렇게', 0.45 * D);
