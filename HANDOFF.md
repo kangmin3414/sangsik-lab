@@ -6,6 +6,7 @@
 
 **지금 진행 중 (2026-11-06 기준, 새 대화는 여기서 이어서):**
 - **연출 기준 v3 기획(2026-11-07)** `zw/PLAN_v3_연출.md`: 귀여움·표정 23종(`zw/face2.js`, 표정 시트 `zw/out/`), 연기 원칙, 만화 기호+효과음, 비트 시트 양식. 엔진에 표정 효과 층(fxUnder/fxEye/fx) 추가. **운영자 결정 대기**(10절). 다음: 30초 비교 테스트(A형 등장).
+- **피로사회 편(열심히 살수록 지치는 이유, 한병철)** `fatigue01/`: 대본 `SCRIPT_v2.md`(개연성·몰입·열린 결말 검토판, 운영자 승인 "만들자"). 전체 v1 제작(약 5:02): 대사 55줄 `long/lines_f.py`(내레이터 Schedar, 제로·코치 Puck, 코치는 gen_tl.py에서 음높이 올림). 장면 `long/fscenes.js`(인트로) + `long/fscenes2.js`(1막~열린 결말). 배경 판 `long/ai/`(factory·cvs 추가), BGM `long/bgm/`(ragtime·uneasy·warm 추가, 음성 없음 확인). 순서: `voice_f.py → gen_tl.py → shot_f.py → render_loop.sh 0..2 → build_f.py → qa_mix.py → ffmpeg`. 물리 규칙: 앉을 가구는 SVG로 직접 그리고 L자 다리, 코치는 머리·팔걸이·책상·손바닥 위에(`fCoachSitY`), 소품·카드가 얼굴을 가리지 않게. 덕킹은 말끝 0.5초 유지로 바꿈(말끝 '함' 묻힘 수정).
 - **혈액형 × 철학자 편** `bloodtype01/`: 대본 v3(7분 압축, 운영자 승인 "만들어 보자") `SCRIPT_v3.md`. 영상 속 이름은 [제로의 세계]. 완성본 v1 `long/제로의세계_혈액형x철학자_심야멘탈수리점_v1.mp4`(6:20, -14.3 LUFS) 전달함. 목소리: 내레이터 Schedar, A Enceladus, B Fenrir, O Achird, AB Kore. 장면 `long/bscenes.js`(인트로·A) + `bscenes2.js`(B·O·AB·아웃트로). 순서: `voice_b.py → gen_tl.py → shot_b.py → render_loop.sh 0..2 → build_b.py → ffmpeg`. 다음: 운영자 피드백, 업로드 패키지(썸네일·제목·설명란·자막).
 - **니체 2탄(르상티망)** `nietzsche_ep2/SCRIPT_v1.md`: 대본 초안, 운영자 승인 전. van de Ven 2011 원문 미확인.
 - **운영자 쪽 남은 일**: 니체 거절 편 v2 업로드(`nietzsche_no01/유튜브_업로드_니체_거절편.txt`), 화 편 012 v1(11/14 예약) → v2 교체, 고정 댓글은 승인 후에만.

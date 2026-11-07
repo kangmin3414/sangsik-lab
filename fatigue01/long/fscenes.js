@@ -78,16 +78,17 @@ function falarmScene(t, lt, a) {
 }
 
 /* ---------- 1~2. 갓생 몽타주 ---------- */
+const fExtra = (x, y, t) => window.F_EXTRA ? window.F_EXTRA(x, y, t) : '';
 const SHOT = {
   wake: (t, l, d) => { const cam = [960, 620, 1.3], st = 1 + 0.05 * Math.sin(Math.min(l, 0.9) / 0.9 * Math.PI);
     let w = qShadow(900, 1000, 66) + Z({ x: 900, y: 1000, s: 1, sy: st, t, pose: '만세', ex: exprAt([[0, 'z하품'], [0.7, 'z결심']], l), seed: 3 });
     if (l > 0.7) w += rSparks(900, 420, t, 6, 180, '#FFE34D');
-    return fPlate('bedn', cam, 0.5) + qCam(cam, w) + fFull('#FFD9A0', 0.12); },
+    return fPlate('bedn', cam, 0.5) + qCam(cam, w + fExtra(900, 1000, t)) + fFull('#FFD9A0', 0.12); },
   shower: (t, l, d) => { const cam = [960, 600, 1.3];
     let w = '';
     for (let i = 0; i < 16; i++) { const x = 920 + (i % 8) * 17 + (i > 7 ? 8 : 0), ph = (t * 3 + i * 0.13) % 1; w += `<line x1="${x}" y1="${f1(110 + ph * 620)}" x2="${x - 4}" y2="${f1(160 + ph * 620)}" stroke="#8FD3FF" stroke-width="7" stroke-linecap="round" opacity=".85"/>`; }
     w += qShadow(960, 1000, 66) + Z({ x: 960, y: 1000, s: 1, sy: 0.96, t, pose: '가슴' in P ? '가슴' : '웅크림', shiver: true, ex: fEx('z소름'), seed: 3 });
-    return fPlate('shower', cam, 1) + qCam(cam, w) + fx(t, t - l + 0.15, t + 9, 1260, 300, '으아아!', '#BFE6FF', { size: 60, rot: 6 }); },
+    return fPlate('shower', cam, 1) + qCam(cam, w + fExtra(960, 1000, t)) + fx(t, t - l + 0.15, t + 9, 1260, 300, '으아아!', '#BFE6FF', { size: 60, rot: 6 }); },
   subway: (t, l, d) => { const cam = [960, 600, 1.3], x = 960, y = 1000, sway = Math.sin(t * 2.2) * 4;
     const pose = Object.assign({}, P['서기'], { armR: [[252, 285], [282, 200], [290, 120]], hR: [290, 112], armL: [[148, 285], [130, 330], [170, 352]], hL: [176, 352] });
     let w = `<line x1="${x + 52}" y1="-100" x2="${x + 52}" y2="300" stroke="#9AA6B8" stroke-width="12"/><path d="M${x + 22} 300 Q${x + 52} 270 ${x + 82} 300 Q${x + 52} 340 ${x + 22} 300 Z" fill="none" stroke="#E9EEF5" stroke-width="12"/>`;
@@ -95,21 +96,22 @@ const SHOT = {
     const [hx, hy] = fHead(x, y); w += `<circle cx="${hx - 116}" cy="${hy + 20}" r="12" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="${hx + 116}" cy="${hy + 20}" r="12" fill="#fff" stroke="${INK}" stroke-width="5"/>`;
     w += `<g transform="translate(${x - 30} ${y - 220}) rotate(-12)"><rect x="-56" y="-38" width="112" height="76" rx="8" fill="#fff" stroke="${INK}" stroke-width="5"/>${fT(0, 10, 'grit', 30, INK)}</g>`;
     ['efficiency', 'deadline', 'resilience', 'growth'].forEach((s, i) => { const ph = (l * 1.4 + i * 0.25) % 1; w += `<g opacity="${f1(Math.sin(ph * Math.PI) * 100) / 100}">${fT(hx + (i % 2 ? 1 : -1) * (160 + ph * 80), hy - 120 - ph * 160, s, 34, '#3D7EC8', { stroke: '#fff', sw: 6 })}</g>`; });
-    return fPlate('subway', cam, 0.5) + qCam(cam, w) + tag(t, t - l + 0.1, t + 9, 380, 220, '재생 속도 2배', '#BFE6FF', { size: 40 }); },
+    return fPlate('subway', cam, 0.5) + qCam(cam, w + fExtra(x, y, t)) + tag(t, t - l + 0.1, t + 9, 380, 220, '재생 속도 2배', '#BFE6FF', { size: 40 }); },
   lunch: (t, l, d) => { const cam = [960, 640, 1.35], x = 960, y = 980;
-    const typ = Math.floor(t * 12) % 2, pose = Object.assign({}, P['서기'], { armR: [[252, 285], [300, 340], [312, 392 - typ * 8]], hR: [312, 392 - typ * 8], armL: [[148, 285], [118, 250], [168, 214]], hL: [172, 210] });
-    let w = qShadow(x, y, 66) + Z({ x, y, s: 1, t, pose, ex: fEx('z당황'), look: [0.6, 0.6], seed: 3 }) + fDesk(560, 1360, 800) + fLaptop(1110, 778, 1, `${fT(0, -80, '보고서_최종_진짜최종', 18, INK)}<rect x="-90" y="-60" width="180" height="10" fill="#9AA6B8"/><rect x="-90" y="-40" width="140" height="10" fill="#9AA6B8"/>`);
-    const [hx, hy] = fHead(x, y); w += `<g transform="translate(${hx - 70} ${hy + 50}) rotate(-30)"><rect x="-4" y="-60" width="8" height="70" fill="#C89A5A"/><rect x="6" y="-60" width="8" height="70" fill="#C89A5A"/><circle cx="5" cy="-62" r="14" fill="#2E3B2E" stroke="${INK}" stroke-width="4"/><circle cx="5" cy="-62" r="7" fill="#fff"/></g>`;
+    const typ = Math.floor(t * 12) % 2, pose = Object.assign({}, P['서기'], { armR: [[252, 285], [300, 340], [312, 392 - typ * 8]], hR: [312, 392 - typ * 8], armL: [[148, 285], [120, 330], [152, 312]], hL: [154, 310] });
+    let w = qShadow(x, y, 66) + Z({ x, y, s: 1, t, pose, ex: fEx('z당황'), look: [0.6, 0.6], seed: 3 }) + fDesk(560, 1360, 800) + fLaptop(1214, 778, 1, `${fT(0, -80, '보고서_최종_진짜최종', 18, INK)}<rect x="-90" y="-60" width="180" height="10" fill="#9AA6B8"/><rect x="-90" y="-40" width="140" height="10" fill="#9AA6B8"/>`);
+    { const [c0x, c0y] = ptOf(x, y, 1, 158, 306), [c1x, c1y] = ptOf(x, y, 1, 184, 254); w += `<line x1="${c0x}" y1="${c0y}" x2="${c1x - 4}" y2="${c1y}" stroke="#C89A5A" stroke-width="7" stroke-linecap="round"/><line x1="${c0x + 8}" y1="${c0y}" x2="${c1x + 6}" y2="${c1y + 2}" stroke="#C89A5A" stroke-width="7" stroke-linecap="round"/><circle cx="${c1x}" cy="${c1y - 4}" r="13" fill="#2E3B2E" stroke="${INK}" stroke-width="4"/><circle cx="${c1x}" cy="${c1y - 4}" r="6" fill="#fff"/>`; }
+    w += qShadow(1560, 980, 60) + zGirl({ hairStyle: 'pony', top: '#FF9AB0', x: 1560, y: 980, s: 0.95, t, pose: '서기', ex: fEx('z당황'), look: [0.4, 0.6], seed: 51 }) + fDesk(1380, 1760, 800) + `<ellipse cx="1600" cy="780" rx="70" ry="18" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="1580" cy="770" r="12" fill="#7BC47F"/><circle cx="1610" cy="768" r="10" fill="#E5484D"/>` + fCoach(t, { x: 1574, y: 980 - 500 * 0.95, s: 0.24, vest: '#FF7FA8', pose: '서기', ex: fEx('z결심'), look: [-0.4, 0.5], mega: true, megaSide: -1, megaTilt: 20 });
     w += `<ellipse cx="760" cy="782" rx="90" ry="20" fill="#fff" stroke="${INK}" stroke-width="5"/>` + [0, 1, 2, 3].map(i => `<circle cx="${712 + i * 32}" cy="770" r="15" fill="#2E3B2E" stroke="${INK}" stroke-width="4"/><circle cx="${712 + i * 32}" cy="770" r="7" fill="#fff"/>`).join('');
-    return fPlate('office', cam, 0.5) + qCam(cam, w) + fx(t, t - l + 0.2, t + 9, 1360, 330, '타닥타닥', '#fff', { size: 50, rot: -4 }); },
+    return fPlate('office', cam, 0.5) + qCam(cam, w + fExtra(x, y, t)) + fx(t, t - l + 0.2, t + 9, 1360, 330, '타닥타닥', '#fff', { size: 50, rot: -4 }); },
   gym: (t, l, d) => { const cam = [960, 620, 1.3], x = 960, y = 1000, rep = (Math.sin(t * 7) + 1) / 2;
     const up = rep > 0.5, hy = up ? 40 : 330, pose = Object.assign({}, P['서기'], { armL: [[148, 285], [84, up ? 170 : 310], [96, hy]], hL: [96, hy], armR: [[252, 285], [316, up ? 170 : 310], [304, hy]], hR: [304, hy] });
     let w = qShadow(x, y, 66) + Z({ x, y, s: 1, sy: up ? 1.03 : 0.98, t, pose, ex: fEx('z결심'), sweat: true, seed: 3 });
     for (const sx of [96, 304]) { const [px, py] = ptOf(x, y, 1, sx, hy); w += `<g transform="translate(${f1(px)} ${f1(py)})"><rect x="-46" y="-8" width="92" height="16" fill="#5B5B66" stroke="${INK}" stroke-width="4"/><rect x="-60" y="-26" width="22" height="52" rx="5" fill="#3B3F4E" stroke="${INK}" stroke-width="5"/><rect x="38" y="-26" width="22" height="52" rx="5" fill="#3B3F4E" stroke="${INK}" stroke-width="5"/></g>`; }
-    return fPlate('gym', cam, 0.5) + qCam(cam, w) + pop(t, t - l + 0.1, t + 9, 400, 260, label(0, 0, `${10 + Math.min(2, Math.floor(l * 2.2))} / 12`, { size: 52, bg: '#FFE34D' }), {}); },
+    return fPlate('gym', cam, 0.5) + qCam(cam, w + fExtra(x, y, t)) + pop(t, t - l + 0.1, t + 9, 400, 260, label(0, 0, `${10 + Math.min(2, Math.floor(l * 2.2))} / 12`, { size: 52, bg: '#FFE34D' }), {}); },
   night: (t, l, d) => { const cam = [1000, 640, 1.35], x = 1000, y = 980, nod = Math.max(0, Math.sin(t * 2.6)) ** 3;
     let w = qShadow(x, y, 66) + Z({ x, y, s: 1, t, pose: '카운터' in P ? '카운터' : '서기', ex: fEx('z졸음'), tilt: 14 * nod, seed: 3 }) + fDesk(640, 1400, 800, '#B88A62') + fLaptop(1180, 778, 1, `<polygon points="-16,-104 -16,-64 18,-84" fill="#E5484D"/>${fT(0, -36, '부업 강의 7강', 20, INK)}`);
-    return fPlate('desknight', cam, 0.5) + qCam(cam, w) + pop(t, t - l + 0.1, t + 9, 400, 230, label(0, 0, '23:00', { size: 48, bg: '#BFE6FF' }), {}); },
+    return fPlate('desknight', cam, 0.5) + qCam(cam, w + fExtra(x, y, t)) + pop(t, t - l + 0.1, t + 9, 400, 230, label(0, 0, '23:00', { size: 48, bg: '#BFE6FF' }), {}); },
 };
 function fmontScene(t, lt, a) {
   const cuts = a.cuts, base = a.base || 0, D = a._dur || 4;
@@ -203,12 +205,12 @@ function ftakeScene(t, lt, a) {
 /* ---------- 6. 누가 시켰지? (코치는 제로 오른쪽 어깨 위) ---------- */
 const fSil = (x, y, s, o = {}) => `<g filter="url(#sil)">${char(Object.assign({ goggles: 'none', vest: '#444', patch: false, tee: true, x, y, s, t: 0, still: true, pose: '서기', ex: fEx('기본') }, o))}</g>`;
 function fwhoScene(t, lt, a) {
-  const tB = fAt(a, '상사', 0.2), tP = fAt(a, '부모님', 1.6), tW = fAt(a, '누가', 3.4), x = SOFA.x, y = SOFA.floor + 20;
+  const tB = fAt(a, '회사', 0.2), tP = fAt(a, '영어', 2.2), tH = fAt(a, '헬스', 3.0), tW = fAt(a, '누가', 4.4), x = SOFA.x, y = SOFA.floor + 20;
   const cam = lt < tW - 0.1 ? qLerpCam(lt / tW, [960, 640, 1.2], [960, 640, 1.26]) : qLerpCam((lt - tW + 0.1) / 0.35, [960, 640, 1.26], [990, 560, 1.75]);
   let w = qShadow(x, y, 66) + Z({ x, y, s: 1, t, pose: '턱괴기', ex: exprAt([[0, 'z의심'], [tW, 'z기본']], lt), look: lt < tP ? [-0.9, -0.3] : lt < tW ? [0.9, -0.3] : [0.2, 0], seed: 3 });
-  const bub = (bx, by, inner, t0) => pop(t, t - lt + t0, t + 99, bx, by, `<g>${bubble(0, 0, 360, 260, inner)}</g>` + (lt > t0 + 0.7 ? `<g transform="scale(${f1(easeOutBack(clamp((lt - t0 - 0.7) / 0.25, 0, 1)) * 100) / 100})"><path d="M-110 -90 L110 90 M110 -90 L-110 90" stroke="#E5484D" stroke-width="22" stroke-linecap="round"/></g>` : ''), { bob: 3 });
-  if (lt < tW - 0.05) w += bub(560, 420, fSil(0, 110, 0.36, { collar: true, tie: '#1E2230' }) + fT(0, 116, '상사', 28, INK), tB);
-  if (lt < tW - 0.05) w += bub(1360, 420, fSil(-50, 110, 0.32, {}) + fSil(50, 110, 0.32, { hairBack: HAIR.bob().hairBehind }) + fT(0, 116, '부모님', 28, INK), tP);
+  const bub = (bx, by, inner, t0) => pop(t, t - lt + t0, t + 99, bx, by, `<g>${bubble(0, 0, 380, 270, inner)}</g>`, { bob: 3 });
+  if (lt < tW - 0.05) w += bub(560, 420, fSil(0, 110, 0.36, { collar: true, tie: '#1E2230' }) + fT(0, 116, '회사 일', 28, INK) + (lt > tB + 0.6 ? `<g transform="translate(110 -80) scale(${f1(easeOutBack(clamp((lt - tB - 0.6) / 0.25, 0, 1)) * 100) / 100})"><circle r="44" fill="#3DBA8A" stroke="${INK}" stroke-width="6"/><path d="M-20 0 L-6 14 L22 -16" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></g>` : ''), tB);
+  if (lt < tW - 0.05 && lt > tP - 0.2) w += bub(1360, 420, [['05:00 영어', tP], ['퇴근 후 헬스', tH], ['밤 11시 부업', tH + 0.5]].map(([s0, t0], i) => fT(-120, -60 + i * 64, '□ ' + s0, 34, INK, { anchor: 'start', w: 700 }) + (lt > t0 ? `<g transform="translate(150 ${-70 + i * 64}) scale(${f1(easeOutBack(clamp((lt - t0) / 0.25, 0, 1)) * 100) / 100})">${fT(0, 14, '?', 54, '#E5484D', { stroke: '#fff', sw: 6 })}</g>` : '')).join(''), tP - 0.2);
   const innocent = lt > tW, sh = [x + 18, y - 500];
   w += fCoach(t, { x: sh[0], y: sh[1], s: 0.32, pose: '서기', ex: fEx(innocent ? 'z히죽' : 'z기본'), look: innocent ? [0.9, -0.6] : [-0.4, 0.4], mega: true, megaSide: 1, megaTilt: 25 });
   if (innocent) for (let i = 0; i < 2; i++) { const ph = (lt * 1.2 + i * 0.5) % 1; w += `<g opacity="${f1(Math.sin(ph * Math.PI) * 100) / 100}">${fT(sh[0] + 70 + ph * 50, sh[1] - 140 - ph * 60, '♪', 46, '#3D7EC8', { stroke: '#fff', sw: 6 })}</g>`; }

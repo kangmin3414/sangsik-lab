@@ -4,7 +4,9 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_f import LINES
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s0': 0, 'n1': 0.15, 'n2': 0.15, 'n3': 0.2, 'n4': 0.45, 'c1': 0.3, 'c2': 0.1, 'n5': 0.35, 'n6': 0.4, 't0': 0.35, 'n7': 0.2}
+GAP = {'s0': 0, 'n1': 0.15, 'n2': 0.15, 'n3': 0.2, 'n4': 0.45, 'c1': 0.3, 'c2': 0.1, 'n5': 0.35, 'n6': 0.4, 't0': 0.35, 'n7': 0.2,
+       'a1': 0.7, 'a4': 0.45, 'a5': 0.4, 'a7': 0.5, 'a10': 0.5, 'b1': 0.8, 'b3': 0.6, 's1': 0.15, 'C3': 0.1, 'b4': 0.35, 'b5': 0.5, 'b8': 0.5,
+       'Z1': 0.8, 's2': 0.05, 'C4': 0.1, 's3': 0.2, 'p1': 0.2, 'Z2': 0.45, 'h1': 0.35, 'h4': 0.6, 'h7': 0.6, 'e1': 0.8, 'e0': 0.5, 'e2': 0.2, 'e4': 0.9}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
 words = json.load(open('words.json')) if os.path.exists('words.json') else {}
