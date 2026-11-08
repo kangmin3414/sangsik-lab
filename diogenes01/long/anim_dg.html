@@ -607,7 +607,7 @@ function render(t) {
   document.getElementById('v').innerHTML = defs(t) +
     `<g filter="url(#boil)"><g transform="translate(960 100) scale(.88) translate(-960 -100)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g></g>` +
     `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
-    `<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +
+    (line.sub ? `<defs><linearGradient id="subG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".3" stop-color="#000" stop-opacity=".16"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><rect x="0" y="830" width="${W}" height="250" fill="url(#subG)"/>` : '') +
     over + subtitle(t) +
     (flash ? `<rect width="${W}" height="${H}" fill="#fff" opacity="${f1(flash * 100) / 100}"/>` : '') +
     `<rect width="${W}" height="${H}" fill="#000" opacity="${f1(fade * 100) / 100}"/>`;

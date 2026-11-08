@@ -114,11 +114,11 @@ function dgstairsScene(t, lt, a) {
   if (ph === 0) { const H = [0.25, 0.95, 1.65]; step = 3; H.forEach(v => { const f = dgK(v, v + 0.45, lt); step += easeInOut(f); hop = Math.max(hop, Math.sin(f * Math.PI) * 30); });
     size = lerp(0.9, 1.2, dgK(0, 2.4, lt)); lean = lerp(4, 26, dgK(0.7, 2.4, lt)); ex = exprAt([[0, 'z결심'], [1.5, 'z당황']], lt); }
   else { tP = fAt(a, '끌고', 2.4); const sl = easeOut(dgK(tP - 0.05, tP + 0.9, lt)); step = 6 - 2 * sl; size = 1.2;
-    lean = lt < tP ? 26 + Math.sin(t * 9) * 3 : 26 - 14 * dgK(tP - 0.05, tP + 0.4, lt); rot = -13 * dgK(tP - 0.1, tP + 0.3, lt) + (lt > tP + 0.9 ? Math.sin(t * 7) * 1.5 : 0);
+    lean = lt < tP ? 26 + Math.sin(t * 9) * 3 : 26 - 32 * dgK(tP - 0.05, tP + 0.4, lt); rot = -13 * dgK(tP - 0.1, tP + 0.3, lt) + (lt > tP + 0.9 ? Math.sin(t * 7) * 1.5 : 0);
     ex = lt < tP ? fEx('z당황') : fEx('z울먹'); look = lt < tP ? [0.9, -0.5] : [1, -0.6];
-    if (lt > tP - 0.1) pose = dgPose('서기', { armL: [[148, 285], [214, 236], [276, 214]], hL: [282, 210], armR: [[252, 285], [306, 238], [360, 210]], hR: [366, 206], legL: [[180, 412], [200, 470], [214, 522]], fL: [226, 534, -10], legR: [[220, 412], [250, 466], [276, 514]], fR: [288, 526, -14] }); }
+    if (lt > tP - 0.1) pose = dgPose('서기', { armL: [[148, 285], [100, 236], [80, 188]], hL: [76, 182], armR: [[252, 285], [306, 238], [360, 210]], hR: [366, 206], legL: [[180, 412], [196, 476], [222, 532]], fL: [228, 540, -10], legR: [[220, 412], [262, 470], [290, 546]], fR: [296, 553, -14] }); }
   const i0 = Math.floor(step), fr = step - i0, [ax0, ay0] = dgStep(i0), [ax1, ay1] = dgStep(i0 + 1), x = lerp(ax0, ax1, fr), F = lerp(ay0, ay1, fr) - hop;
-  const cam = ph === 0 ? [810, 520, 1.15] : [790, 500, 1.18];
+  const cam = [800, 510, 1.16]; // s1·n2 같은 숏: 카메라 고정
   let w = dgStairs();
   w += `<path d="M1182 424 L1720 150 L${f1(1720 + DG_LD[0] * 1500)} ${f1(150 + DG_LD[1] * 1500)} L${f1(1182 + DG_LD[0] * 1000)} ${f1(424 + DG_LD[1] * 1000)} Z" fill="url(#dgBeam)" opacity=".6"/>`; // 출구에서 쏟아지는 햇빛
   w += qShadow(x, F, 52);
@@ -187,7 +187,7 @@ function dgSoldier(x, y, ss, t, pose, ex, i) { const p = dgPose(pose, DG_SPEAR_A
   return `<line x1="${f1(hx)}" y1="${f1(y - 4)}" x2="${f1(hx)}" y2="${f1(top)}" stroke="${INK}" stroke-width="18" stroke-linecap="round"/><line x1="${f1(hx)}" y1="${f1(y - 4)}" x2="${f1(hx)}" y2="${f1(top)}" stroke="#7A5434" stroke-width="9" stroke-linecap="round"/><path d="M${f1(hx - 16)} ${f1(top + 6)} L${f1(hx)} ${f1(top - 58)} L${f1(hx + 16)} ${f1(top + 6)} Z" fill="#C9C3B8" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>` +
     SOLD({ x, y, s: ss, t, pose: p, ex, look: [-0.8, 0.1] }, i); }
 // 앉아 기대기(땅에): 엉덩이가 땅, 다리는 오른쪽으로 쭉, 팔은 배 위
-const DG_RECL = dgPose('서기', { armL: [[148, 285], [150, 350], [190, 362]], hL: [194, 362], armR: [[252, 285], [252, 350], [212, 356]], hR: [208, 356], legL: [[188, 412], [290, 420], [390, 424]], fL: [400, 420, 70], legR: [[212, 408], [310, 412], [404, 414]], fR: [414, 408, 70], dy: 0 });
+const DG_RECL = dgPose('서기', { armL: [[148, 285], [124, 350], [120, 402]], hL: [118, 408], armR: [[252, 285], [266, 344], [236, 372]], hR: [232, 374], legL: [[188, 412], [290, 420], [390, 424]], fL: [400, 420, 70], legR: [[212, 408], [310, 412], [404, 414]], fR: [414, 408, 70], dy: 0 });
 const dgRecY = s => DG_GROUND - 4 + (560 - 420) * s; // 엉덩이(local 420)가 땅에 닿는 원점 y
 // 왕의 그림자: 해가 오른쪽 위에서 낮게 → 발에서 왼쪽 위로 비스듬히 길게 눕는다(디오게네스를 덮도록)
 const dgCast = (inner, fx0, op) => `<g opacity="${op}"><g filter="url(#dgSil)" transform="translate(${f1(fx0)} ${DG_GROUND}) matrix(1 0 1.21 0.6 0 0) translate(${f1(-fx0)} ${-DG_GROUND})">${inner}</g></g>`;
@@ -199,7 +199,7 @@ function dgcorScene(t, lt, a) {
   if (ph === 0) { const k = easeOut(dgK(0.5, 2.6, lt)); ax = lerp(2250, DG_AX, k); aWalk = lt < 2.45; if (aWalk) aPose = walkPose(lt * 7.5, 0.9); }
   if (ph === 1) { aEx = fEx('_dga'); const tW = fAt(a, '무엇이든', 2.8); aPose = lt > tW - 0.2 ? dgPose('서기', { armL: [[148, 285], [90, 250], [40, 230]], hL: [34, 226], armR: [[252, 285], [310, 250], [360, 230]], hR: [366, 226] }) : '서기'; }
   if (ph === 3) aEx = exprAt([[0, 'z결심'], [fAt(a, '비켜', 1.4), 'z충격']], lt);
-  if (ph === 4) { const k = easeInOut(dgK(0.15, 0.95, lt)); ax = lerp(DG_AX, DG_AX2, k); aWalk = k > 0 && k < 1; if (aWalk) aPose = walkPose(lt * 7.5, 0.6); aEx = fEx('z멍'); aLook = [-0.9, 0.2]; }
+  if (ph === 4) { const k = easeInOut(dgK(0.15, 0.95, lt)); ax = lerp(DG_AX, DG_AX2, k); aWalk = k > 0 && k < 1; if (aWalk) aPose = walkPose(lt * 7.5, 0.6); aEx = exprAt([[0, 'z충격'], [0.35, 'z멍']], lt); aLook = [-0.9, 0.2]; }
   if (ph === 5) { ax = DG_AX2; aEx = fEx('z멍'); }
   // 디오게네스: 햇볕에 졸다 → 그림자 → 한쪽 눈 → "비켜" 손짓 → 햇볕이 돌아오면 흐뭇
   let dEx = fEx('z졸음'), dPose = DG_RECL, dLook = [0.1, -0.6], tB = -1;
@@ -207,14 +207,14 @@ function dgcorScene(t, lt, a) {
   if (ph === 2) { dEx = lt < 0.5 ? fEx('z졸음') : fEx('_dg1'); dLook = [0.8, -0.3]; }
   if (ph === 3) { dEx = fEx('_dgd'); dLook = [0.8, -0.3]; tB = fAt(a, '비켜', 1.4); if (lt > tB - 0.1 && lt < tB + 1.5) { const wv = (Math.sin((lt - tB) * 13) + 1) / 2; dPose = dgPose(DG_RECL, { armR: [[252, 285], [306, 250], [lerp(330, 372, wv), lerp(214, 230, wv)]], hR: [lerp(334, 378, wv), lerp(208, 226, wv)] }); } }
   if (ph >= 4) { dEx = ph === 4 && lt < 0.9 ? fEx('_dg1') : fEx('z뿌듯'); dLook = [0.2, -0.6]; }
-  const CM = { 0: qLerpCam(lt / 3.0, [1000, 640, 1.0], [980, 650, 1.05]), 1: qLerpCam(lt / 3.5, [980, 650, 1.05], [1100, 720, 1.25]), 2: [900, 700, 1.7], 3: [900, 720, 1.4], 4: qLerpCam(lt / 2.4, [940, 700, 1.3], [960, 690, 1.1]), 5: qLerpCam(lt / 4, [930, 735, 1.3], [920, 740, 1.36]) };
+  const CM = { 0: qLerpCam(lt / 3.0, [1000, 640, 1.0], [980, 650, 1.05]), 1: qLerpCam(lt / 3.5, [980, 650, 1.05], [1100, 720, 1.25]), 2: [900, 700, 1.7], 3: [900, 720, 1.4], 4: qLerpCam(lt / 2.4, [900, 720, 1.4], [960, 690, 1.1]), 5: qLerpCam(lt / 4, [930, 735, 1.3], [920, 740, 1.36]) };
   const cam = CM[ph];
   let w = dgCorProps() + dgJar(DG_JAR[0], DG_JAR[1], 1.05);
   w += dgDog(470, DG_GROUND, 0.8, t, { pose: 'curl', eyes: 'shut', yawn: ph === 4 ? Math.sin(dgK(0.9, 2.1, lt) * Math.PI) : 0 });
   w += qShadow(DG_DX + 90, DG_GROUND, 150, 0.5) + DIO({ x: DG_DX, y: dy, s, t, pose: dPose, ex: dEx, look: dLook, rot: -8, sit: true });
   if (tB > 0 && lt > tB - 0.1 && lt < tB + 1.5) { const [hx, hy] = ptOf(DG_DX, dy, s, 360, 214); w += `<path d="M${f1(hx + 36)} ${f1(hy - 40)} q24 24 0 52 M${f1(hx + 56)} ${f1(hy - 56)} q34 36 0 80" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round" opacity=".75"/>`; }
   // 병사 셋(앞줄 둘, 뒷줄 하나)이 창을 손에 쥐고 들어와 선다
-  const sx0 = ph === 0 ? lerp(1500, 0, easeOut(dgK(0.8, 2.8, lt))) : ph === 5 ? 170 : 0, frozen = ph >= 4; // ph5(n3)는 화면 밖으로 조금 물러나 있음
+  const sx0 = ph === 0 ? lerp(1500, 0, easeOut(dgK(0.8, 2.8, lt))) : ph === 4 ? 60 : ph === 5 ? 170 : 0, frozen = ph >= 4; // s4부터 한 발 물러나 있음(알렉산더가 비켜설 자리, n3 화면 끝에 안 걸리게)
   [[1870, 0.8, -26, 2], [1800, 0.86, 0, 0], [1940, 0.88, 0, 1]].forEach(([x0, ss, oy, i]) => { const x = x0 + sx0, p = ph === 0 && lt < 2.8 ? walkPose(lt * 7 + i, 0.6) : '서기';
     w += qShadow(x, DG_GROUND + oy, 50) + dgSoldier(x, DG_GROUND + oy, ss, t, p, fEx(frozen ? 'z충격' : 'z기본'), i); });
   // 왕의 그림자(망토까지) → 왕
@@ -234,7 +234,7 @@ function dgtitleScene(t, lt, a) { return window.ftitleScene(t, lt, a); }
 
 /* ---------- 4. 항아리가 집: 고개와 두 손만 입구 위로 ---------- */
 function dgjarScene(t, lt, a) {
-  const cam = qLerpCam(lt / 5.5, [560, 670, 1.1], [540, 680, 1.18]), jx = DG_JAR[0], js = 1.05, s = 0.95, rimY = DG_GROUND - 470 * js;
+  const cam = qLerpCam(lt / 5.5, [660, 670, 1.1], [640, 680, 1.18]), jx = DG_JAR[0], js = 1.05, s = 0.95, rimY = DG_GROUND - 470 * js;
   const pk = easeOutBack(dgK(0.4, 1.0, lt)), tJ = fAt(a, '항아리', 4.0), oy = rimY + 8 + (560 - 290) * s + (1 - pk) * 330;
   let w = dgCorProps() + dgJar(jx, DG_GROUND, js);
   // 입구 아래(항아리 속)는 잘라 낸다 → 몸통은 보이지 않고 고개·어깨·두 손만
@@ -257,7 +257,7 @@ function dgInvIcon(kind, s = 1) { let g = '';
   if (kind === 'cup') g = `<path d="M-40 -30 L40 -30 L30 40 Q0 52 -30 40 Z" fill="#C2703F" stroke="${INK}" stroke-width="6"/><path d="M40 -10 q24 6 0 30" fill="none" stroke="${INK}" stroke-width="6"/><ellipse cx="0" cy="-30" rx="40" ry="10" fill="#8E4A26" stroke="${INK}" stroke-width="5"/>`;
   return `<g transform="scale(${s})">${g}</g>`; }
 function dgInvPanel(x, y, sc, n, o = {}) { // n칸까지 찼음, o.cross: 컵 칸 X, o.big: 글자 크게(작게 띄울 때)
-  const ts = o.big ? 54 : 44, ls = o.big ? 44 : 32;
+  const ts = o.big ? 56 : 44, ls = o.big ? 50 : 32;
   let h = `<g transform="translate(${f1(x)} ${f1(y)}) scale(${f1(sc * 1000) / 1000})"><rect x="-470" y="-190" width="940" height="380" rx="28" fill="#2A2238" stroke="${INK}" stroke-width="8"/>${fT(-430, -124, o.title || '디오게네스의 전 재산', ts, '#FFE9A8', { anchor: 'start' })}`;
   for (let i = 0; i < 4; i++) { const cx = -330 + i * 220, cy = 50, k = clamp(n - i, 0, 1);
     h += `<rect x="${cx - 95}" y="${cy - 95}" width="190" height="190" rx="18" fill="#3E3452" stroke="#7A6C96" stroke-width="5"/>`;
@@ -323,16 +323,16 @@ function dgfountScene(t, lt, a) {
   // 지팡이(손 뒤) → 몸 → 허리 자루 → 컵 → 손
   const [sx1, sy1] = ptOf(dx, F, ds, 288, 390);
   w += dgDog(dx - 250, F, 0.72, t, { pose: 'sit', tilt: ph === 1 && lt > tRel ? -18 : ph >= 2 ? -10 : 0 });
-  w += `<line x1="${f1(sx1)}" y1="${f1(F - 4)}" x2="${f1(sx1)}" y2="${f1(F - 640 * ds)}" stroke="${INK}" stroke-width="22" stroke-linecap="round"/><line x1="${f1(sx1)}" y1="${f1(F - 4)}" x2="${f1(sx1)}" y2="${f1(F - 640 * ds)}" stroke="#7A5434" stroke-width="12" stroke-linecap="round"/>`;
+  w += dgStaff(sx1, F - 4, sx1 + 2, F - 640 * ds);
   w += qShadow(dx, F, 64) + DIO({ x: dx, y: F, s: ds, t, pose: dPose, ex: dEx, look: dLook });
-  const [skx, sky] = ptOf(dx, F, ds, SACK[0], SACK[1] + 70); w += dgSack(skx, sky, 0.62, 6);
+  const [skx, sky] = ptOf(dx, F, ds, SACK[0], SACK[1] + 70), [bx1, by1] = ptOf(dx, F, ds, 132, 404); w += `<path d="M${f1(bx1)} ${f1(by1)} Q${f1(skx + 10)} ${f1(sky - 96)} ${f1(skx)} ${f1(sky - 70)}" fill="none" stroke="#5A3E28" stroke-width="7" stroke-linecap="round"/>` + dgSack(skx, sky, 0.62, 6);
   if (cupInSack) { const [ux, uy] = ptOf(dx, F, ds, SACK[0] - 4, SACK[1] + 70 - 66 * 0.62 * 1.4); w += `<path d="M${f1(ux - 14)} ${f1(uy + 4)} q14 -14 28 0" fill="#C2703F" stroke="${INK}" stroke-width="4"/>`; }
   if (cup) w += cup;
   w += dgHand(...ptOf(dx, F, ds, ...dPose.hL), ds) + dgHand(sx1, sy1, ds) + after;
   let over = `<circle cx="${DG_SUN[0]}" cy="${DG_SUN[1]}" r="300" fill="url(#dgSunG)" opacity=".9"/>`;
   if (sp.gulp) { const [gx2, gy2] = dgScr(cam, ...ptOf(kx, kFeet, ks, 40, 90)); over += fx(t, t - lt + tS + 1.3, t - lt + tS + 1.75, f1(gx2), f1(gy2), '꿀꺽', '#fff', { size: 62, rot: -8 }); }
   if (ph === 1 && lt > tCup - 0.1 && lt < tThrow) { const [ex2, ey2] = dgScr(cam, dx + 60, F - 700 * ds); over += fx(t, t - lt + tCup - 0.1, t - lt + tThrow, f1(ex2), f1(ey2), '!', '#FFE34D', { size: 70 }); }
-  if (ph >= 2) { const k = ph === 2 ? dgK(0, 0.3, lt) : 1, cr = ph === 2 ? dgK(fAt(a, '구먼', 2.3) - 0.1, fAt(a, '구먼', 2.3) + 0.3, lt) : 1; if (k > 0) over += `<g opacity="${f1(k * 100) / 100}">${dgInvPanel(330, 130, 0.62, 4, { cross: cr, big: true })}</g>`; }
+  if (ph >= 2) { const k = ph === 2 ? dgK(0, 0.3, lt) : 1, cr = ph === 2 ? dgK(fAt(a, '구먼', 2.3) - 0.1, fAt(a, '구먼', 2.3) + 0.3, lt) : 1; if (k > 0) over += `<g opacity="${f1(k * 100) / 100}">${dgInvPanel(380, 150, 0.74, 4, { cross: cr, big: true })}</g>`; }
   return dgDefs() + dgPlate('fount', cam, DG_FD) + qCam(cam, w) + over;
 }
 
