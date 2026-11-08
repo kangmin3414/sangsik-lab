@@ -89,7 +89,17 @@ place(B + 'hollow_a.mp3', T0('o4') - 0.2, T0('a1') + 0.3, 0.30, fin=0.6, fout=0.
 place(B + 'myst_a.mp3', T0('a1') - 0.2, T0('t0') + 0.1, 0.34, fin=0.8, fout=0.15, off=30)       # the rain, the ring
 place(B + 'tiny_a.mp3', T0('s1') - 0.3, T1('s5') + 0.4, 0.28, fin=0.4, fout=0.6, off=50)        # testing it (playful)
 place(B + 'cosmic_a.mp3', T0('n1') - 0.4, T1('n2') + 0.3, 0.32, fin=1.0, fout=0.8, off=8)       # Glaucon's story
-place(B + 'tense_a.mp3', T1('n3') + 0.05, DUR, 0.30, fin=0.5, fout=1.2, off=12)                  # the temptation begins (after his line)
+place(B + 'tense_a.mp3', T1('n3') + 0.05, T1('p3') + 0.4, 0.30, fin=0.5, fout=0.6, off=12)        # the temptation (the ring, the evaluation, the deleted file)
+place(B + 'tense_b.mp3', T0('p4') - 0.3, T1('p6') + 0.2, 0.28, fin=0.4, fout=0.3)                # the missing file
+place(B + 'warm_a.mp3', T0('p7') - 0.1, T1('p8') + 0.5, 0.30, fin=0.3, fout=0.8, off=20)         # applause: being seen (the wrong way)
+place(B + 'hollow_a.mp3', T0('c1') - 0.3, T1('c4') + 0.4, 0.30, fin=0.8, fout=0.8, off=30)       # the blame
+place(B + 'warm_a.mp3', T0('f1') - 0.4, T1('f6') + 0.3, 0.24, fin=1.0, fout=0.8, off=50)         # the bunsik, Sora
+place(B + 'cosmic_a.mp3', T0('r1') - 0.3, T1('r2') + 0.5, 0.28, fin=0.8, fout=0.8, off=40)       # the mirror, the answer
+place(B + 'tense_a.mp3', T0('h1') - 0.3, LT('h2', 2.0), 0.26, fin=0.6, fout=0.15, off=60)       # the box; the ring — music stops as the hand goes up
+place(B + 'warm_a.mp3', T0('h5') + 0.2, T1('h8') + 0.6, 0.26, fin=1.5, fout=1.0, off=70)         # after the confession
+place(B + 'hollow_a.mp3', T0('e1') - 0.4, T0('e2') + 0.2, 0.26, fin=0.8, fout=0.5, off=60)       # alone in the rain
+place(B + 'warm_a.mp3', T0('e2') - 0.1, T1('e5') + 0.3, 0.32, fin=0.8, fout=0.8, off=0)          # the yellow umbrella
+place(B + 'myst_a.mp3', T0('e6') - 0.2, T1('e6') + 0.1, 0.30, fin=0.5, fout=0.1, off=60)         # someone else's shoe
 bed *= (1.0 - 0.78 * np.clip(act * 2.0, 0, 1))
 
 # ---------------- ambience ----------------
@@ -104,7 +114,15 @@ for k in range(4): put(T0('s1') + 0.3 + k * 0.8, thud(0.08, 140) * 0.3, 1, amb, 
 def chatter(t0, t1):
     n = noise(t1 - t0); put(t0, bp(n, 2500, 9000) * (0.6 + 0.4 * np.abs(np.sin(np.linspace(0, (t1 - t0) * 37, len(n))))) * 0.05, 1, amb, dodge=False, free=True)
 chatter(T0('s2') - 0.2, T1('s5') + 0.2)
-put(T0('n1') - 0.3, lp(noise(DUR - T0('n1') + 0.3), 300) * 0.022, 1, amb, dodge=False, free=True)  # night room
+put(T0('n1') - 0.3, lp(noise(T1('n4') - T0('n1') + 0.6), 300) * 0.022, 1, amb, dodge=False, free=True)  # night room
+put(T0('p1') - 0.2, bp(noise(D_('p1') + 0.3), 80, 500) * 0.03, 1, amb, dodge=False, free=True)       # office hum
+put(T0('p2') - 0.2, lp(noise(T1('p3') - T0('p2') + 0.5), 200) * 0.02, 1, amb, dodge=False, free=True)  # the empty office at night
+put(T0('p4') - 0.3, bp(noise(T1('h8') - T0('p4') + 0.6), 80, 400) * 0.016, 1, amb, dodge=False, free=True)  # meeting room tone
+chatter(T0('f1') - 0.2, T1('f4') + 0.2); chatter(T0('f6') - 0.1, T1('f6') + 0.2)
+rain(T0('f5') - 0.1, T1('f5') + 0.1, 0.8)
+put(T0('r1') - 0.2, lp(noise(T1('r2') - T0('r1') + 0.5), 250) * 0.018, 1, amb, dodge=False, free=True)
+for i in range(6): put(T0('r1') + 0.5 + i * 1.9, plop() * 0.25, 0.25, amb, dodge=False, free=True)   # a dripping tap
+rain(T0('e1') - 0.4, T1('e6') + 0.1)
 
 # ---------------- sfx ----------------
 put(LT('o1', 0.35), pop_(900), 0.4, dodge=False, free=True)                                      # the credit line lights up
@@ -130,6 +148,26 @@ put(W('n1', '죽여', 11.0) + 0.3, thud(0.35, 60), 0.5)                         
 put(W('n1', '되었', 13.0) + 0.1, chime(1046) * 0.6, 0.3)                                         # the crown
 put(W('n2', '보지', 2.3) + 0.1, sweep(0.6, 2200, 500) * 0.5, 0.3)
 for i in range(6): put(LT('n4', 0.2 + i * 0.3), tone(3000, 0.03, 0.01, (1,)) * 0.25, 0.4, dodge=False, free=True)   # tick… tick…
+click_ = lambda: mx(tone(3200, 0.04, 0.01, (1,)), bp(noise(0.03), 3000, 9000) * 0.4)
+put(LT('p1', 1.35), blip(900, 700, 0.08), 0.3, dodge=False, free=True)                             # the evaluation sheet
+for x in (0.1, 0.55, 0.75): put(LT('p2', 1.3 + x * (D_('p2') - 1.3)), click_() * 0.6, 0.35, dodge=False, free=True)   # mouse clicks
+put(LT('p2', 1.3 + 0.82 * (D_('p2') - 1.3)), scribble(0.35) * 1.2, 0.5, dodge=False, free=True)   # the bin empties (paper crumple)
+for i in range(7): put(T0('p4') + 0.05 + i * 0.16, keyclick(), 0.35, free=True, dodge=False)     # frantic typing
+put(LT('p6', 0.35), click_() * 0.5, 0.3, dodge=False, free=True)                                 # the USB stick
+t = T0('p7') - 0.1
+while t < LT('p7', 2.0): put(t, clap(), 0.3, dodge=False, free=True); t += np.pi / 9
+put(LT('c4', 1.6), ding(2600) * 0.3, 0.25, dodge=False, free=True)                                # the ring in his pocket
+put(T0('f5') - 0.15, sweep(0.5, 600, 2400) * 0.5, 0.3, dodge=False)                              # into the memory
+for x in (0.7, 1.9): put(LT('r1', x), mx(click_(), sweep(0.4, 2200, 600) * 0.5), 0.4, dodge=False, free=True)   # the ring turns: gone / back
+put(LT('h2', 0.45), click_() * 0.4, 0.3, dodge=False, free=True)                                 # the thumb stops
+put(LT('h2', 1.1 + 0.5), clink() * 0.5, 0.4, dodge=False, free=True)                             # the ring set down on the table
+put(LT('h2', 2.05), whoosh(0.3) * 0.6, 0.3, dodge=False, free=True)                              # the hand goes up
+for k in range(3): put(T0('h4') + 0.05 + k * 0.12, scrape(0.18) * 0.4, 0.25, dodge=False, free=True)   # chairs turn
+put(LT('h8', 0.75), thud(0.2, 120), 0.4, dodge=False, free=True)                                 # the box set down
+put(LT('e1', 1.6 + 0.45 * (D_('e1') - 1.6)), plop() * 0.6, 0.4, dodge=False, free=True)          # the ring into the water
+for k in range(6): put(T0('e2') + 0.05 + k * 0.09, tone(rng.uniform(500, 800), 0.04, 0.01, (1,)) * 0.25, 0.3, dodge=False, free=True)   # rain drumming on the umbrella
+for k in range(8): put(LT('e5', 1.9 + k * 0.22), step() * 0.5, 0.25, dodge=False, free=True)
+put(LT('e6', 1.85), mx(step() * 0.8, bp(noise(0.12), 400, 3000) * env(int(0.12 * SR), 0.002, 0.05)), 0.5, dodge=False, free=True)   # a stranger's step in the wet
 amb *= (1.0 - 0.7 * np.clip(act * 2.0, 0, 1))
 mix = voice * 1.0 + bed + sfx * 0.5 + amb * 0.6
 k = int(1.2 * SR); mix[-k:] *= np.linspace(1, 0, k)

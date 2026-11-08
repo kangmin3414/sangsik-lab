@@ -7,7 +7,7 @@ takes = json.load(open('takes_g1.json'))
 for a_, b_ in SAME.items():
     if b_ in takes: takes[a_] = takes[b_]; SR = 44100
 SR = 44100
-GAP = {'o2': 0.15, 'o3': 0.1, 'o4': 0.15, 'a1': 0.6, 'a2': 0.05, 'a3': 0.05, 'a4': 0.1, 't0': 0.1, 's1': 0.5, 's2': 0.3, 's3': 0.1, 's4': 0.2, 's5': 0.15, 'n1': 0.6, 'n3': 0.3, 'n4': 0.1}
+GAP = {'p1': 0.6, 'p2': 0.1, 'p3': 0.05, 'p4': 0.6, 'p7': 0.15, 'p8': 0.1, 'c1': 0.6, 'c4': 0.1, 'f1': 0.7, 'f5': 0.2, 'f6': 0.05, 'r1': 0.6, 'r2': 0.2, 'h1': 0.6, 'h2': 0.1, 'h3': 0.05, 'h4': 0.05, 'h5': 0.1, 'h6': 0.15, 'h8': 0.1, 'e1': 0.8, 'e2': 0.1, 'e5': 0.3, 'e6': 0.1, 'e7': 0.3, 'o2': 0.15, 'o3': 0.1, 'o4': 0.15, 'a1': 0.6, 'a2': 0.05, 'a3': 0.05, 'a4': 0.1, 't0': 0.1, 's1': 0.5, 's2': 0.3, 's3': 0.1, 's4': 0.2, 's5': 0.15, 'n1': 0.6, 'n3': 0.3, 'n4': 0.1}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
 words = json.load(open('words_g1.json')) if os.path.exists('words_g1.json') else {}

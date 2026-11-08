@@ -363,6 +363,18 @@
    "item": "Gemini TTS gyges01 샘플 (14줄, 최대 3테이크 + 3줄 다시 녹음)",
    "count": 1,
    "unit_usd": 0.08
+  },
+  {
+   "at": "2026-11-08",
+   "item": "Nano Banana 2.1 2K gyges01 배경 판(화장실 거울)",
+   "count": 1,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-11-08",
+   "item": "Gemini TTS gyges01 본편 나머지 20줄(최대 3테이크) + 1줄 다시 녹음",
+   "count": 1,
+   "unit_usd": 0.1
   }
  ]
 }
