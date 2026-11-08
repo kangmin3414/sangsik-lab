@@ -17,22 +17,22 @@ A2.ik = (root, target, L1, L2, bend) => {
   const end = d > dm ? [root[0] + dx / d * dm, root[1] + dy / d * dm] : target; // 너무 멀면 닿는 데까지만
   return [root, mid, end];
 };
-// 손·발 위치로 포즈 만들기. o = { hL, hR, fL:[x,y,rot], fR, dy, bend:{aL,aR,lL,lR} }
+// 손·발 위치로 포즈 만들기. o = { hL, hR, fL:[x,y,rot], fR, dy, bend:{aL,aR,lL,lR} } — 기본은 팔꿈치·무릎 모두 바깥쪽(무릎이 안으로 모이면 X다리가 된다)
 A2.pose = o => {
-  const b = Object.assign({ aL: 1, aR: -1, lL: -1, lR: 1 }, o.bend || {}), dy = o.dy || 0, keep = o.keepFeet !== false;
+  const b = Object.assign({ aL: 1, aR: -1, lL: 1, lR: -1 }, o.bend || {}), dy = o.dy || 0, keep = o.keepFeet !== false;
   const st = P['서기'], hL = o.hL || st.hL, hR = o.hR || st.hR, fL = o.fL || st.fL, fR = o.fR || st.fR;
   // 발은 땅에 그대로(dy로 몸 전체가 내려가도 발은 같은 자리): local 발 목표에서 dy를 뺀다
   const ankle = (f, side) => [f[0] - side * 12, f[1] - 12 - (keep ? dy : 0)];
   const armL = A2.ik(A2.SH.L, hL, A2.ARM[0], A2.ARM[1], b.aL), armR = A2.ik(A2.SH.R, hR, A2.ARM[0], A2.ARM[1], b.aR);
   const legL = A2.ik(A2.HIP.L, ankle(fL, -1), A2.LEG[0], A2.LEG[1], b.lL), legR = A2.ik(A2.HIP.R, ankle(fR, 1), A2.LEG[0], A2.LEG[1], b.lR);
-  return { armL, armR, legL, legR, hL: armL[2], hR: armR[2], fL: [legL[2][0] - 12, legL[2][1] + 12, fL[2] || 0], fR: [legR[2][0] + 12, legR[2][1] + 12, fR[2] || 0], dy };
+  return { armL, armR, legL, legR, hL: armL[2], hR: armR[2], fL: [legL[2][0] - 12, legL[2][1] + 12, fL[2] || 0], fR: [legR[2][0] + 12, legR[2][1] + 12, fR[2] || 0], dy, bend: o.bend };
 };
 // 두 포즈 사이를 '손 위치'로 섞고, 손은 직선 대신 바깥으로 휘는 길(arc)로 움직인다
 A2.blend = (a, b, k, arc = 0.25) => {
   const m = (p, q, side) => { const x = lerp(p[0], q[0], k), y = lerp(p[1], q[1], k), d = Math.hypot(q[0] - p[0], q[1] - p[1]), bulge = Math.sin(k * Math.PI) * d * arc;
     const nx = -(q[1] - p[1]) / (d || 1), ny = (q[0] - p[0]) / (d || 1), s = (nx * side < 0 ? -1 : 1); return [x + nx * bulge * s, y + ny * bulge * s]; };
   const f = (p, q) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k), lerp(p[2] || 0, q[2] || 0, k)];
-  return A2.pose({ hL: m(a.hL, b.hL, -1), hR: m(a.hR, b.hR, 1), fL: f(a.fL, b.fL), fR: f(a.fR, b.fR), dy: lerp(a.dy || 0, b.dy || 0, k), bend: a.bend });
+  return A2.pose({ hL: m(a.hL, b.hL, -1), hR: m(a.hR, b.hR, 1), fL: f(a.fL, b.fL), fR: f(a.fR, b.fR), dy: lerp(a.dy || 0, b.dy || 0, k), bend: k < 0.5 ? (a.bend || b.bend) : (b.bend || a.bend) });
 };
 // ---- 시간 곡선 ----
 // 예비 동작 + 오버슈트: t0에 시작(예비 antic초 전부터), dur 동안 주 동작, 끝나면 over만큼 지나쳤다가 안착

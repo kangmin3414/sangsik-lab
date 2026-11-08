@@ -167,7 +167,9 @@ function char(o) {
     h += sl(p.armL) + sl(p.armR);
   }
   // head tilts around the neck
-  h += `<g transform="rotate(${f1(tilt)} 200 280)">`;
+  // o.headSq = [sx, sy]: 머리만 찌그러짐·늘어남(목 기준), o.headDy: 머리만 위아래(움츠림·끄덕임). 안 주면 예전과 같다.
+  const hsq = o.headSq ? ` translate(200 280) scale(${f1(o.headSq[0] * 1000) / 1000} ${f1(o.headSq[1] * 1000) / 1000}) translate(-200 -280)` : '';
+  h += `<g transform="rotate(${f1(tilt)} 200 280)${o.headDy ? ` translate(0 ${f1(o.headDy)})` : ''}${hsq}">`;
   if (o.longHair) h += `<path d="M86 160 Q80 56 200 50 Q320 56 314 160 Q322 240 330 300 Q318 336 284 326 Q270 300 268 252 L132 252 Q130 300 116 326 Q82 336 70 300 Q78 240 86 160 Z" fill="${o.longHair}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`; // long hair behind the head
   if (o.wig) { // long curly baroque wig falling on the shoulders (behind the head)
     let w = '';
