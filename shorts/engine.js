@@ -99,6 +99,17 @@ function naturalBlink(t, seed) {
 }
 
 /* ---------- character ---------- */
+// 손 모양: q = 손 중심, ang = 아래팔 방향(도), side = -1 왼손 / 1 오른손
+function handShape(kind, q, ang, side) {
+  const [x, y] = q.map(f1), S = `stroke="${INK}"`, W = `fill="#fff" ${S} stroke-width="7"`;
+  const R = (inner, a = ang) => `<g transform="translate(${x} ${y}) rotate(${f1(a)})">${inner}</g>`;
+  if (kind === 'fist') return R(`<circle r="21" ${W}/><path d="M6 -12 q6 4 0 8 M8 -2 q6 4 0 8 M6 8 q6 4 0 8" fill="none" ${S} stroke-width="3.5" stroke-linecap="round"/>`);
+  if (kind === 'grip') return R(`<circle r="21" ${W}/><path d="M-4 -19 L-4 19 M6 -18 L6 18" fill="none" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".55"/>`);
+  if (kind === 'point') return R(`<rect x="6" y="-9" width="40" height="16" rx="8" ${W}/><circle r="20" ${W}/>`);
+  if (kind === 'thumb') return `<g transform="translate(${x} ${y})"><rect x="-6" y="-58" width="20" height="44" rx="10" ${W}/><circle r="22" ${W}/><path d="M-12 -4 h20 M-12 8 h20" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".45"/></g>`;
+  if (kind === 'open') { let f = ''; for (const a of [-50, -20, 10, 40]) f += `<g transform="rotate(${a})"><rect x="12" y="-6" width="${a === 40 ? 22 : 30}" height="12" rx="6" ${W} stroke-width="6"/></g>`; return R(f + `<circle r="19" ${W}/>`); }
+  return `<circle cx="${x}" cy="${y}" r="22" ${W}/>`;
+}
 function char(o) {
   const t = o.t || 0, seed = o.seed || 1;
   const ex = o.ex || { expr: o.expr || '기본', prev: o.expr || '기본', k: 1, blink: 0 };
@@ -180,6 +191,8 @@ function char(o) {
   }
   if (o.guan) h += `<path d="M154 74 L156 18 Q200 0 244 18 L246 74 Q200 64 154 74 Z" fill="${o.guan === true ? '#1E1E24' : o.guan}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><line x1="128" y1="44" x2="272" y2="44" stroke="#C9A04A" stroke-width="7" stroke-linecap="round"/><circle cx="200" cy="44" r="9" fill="#5FB08A" stroke="${INK}" stroke-width="3"/>`; // official's cap
   if (o.ribbon) h +=`<g transform="translate(272 84) rotate(18)"><path d="M0 0 L-34 -22 L-34 22 Z M0 0 L34 -22 L34 22 Z" fill="${o.ribbon}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><circle r="10" fill="${o.ribbon}" stroke="${INK}" stroke-width="5"/></g>`;
+  const turn = o.turn || 0; // 3/4 머리 돌리기(-1 왼쪽 ~ 1 오른쪽): 얼굴 부위가 옆으로 옮겨 간다
+  h += `<g transform="translate(${f1(turn * 26)} 0)">`;
   if (o.beard) h += `<path d="M90 176 Q94 300 200 322 Q306 300 310 176 Q296 236 252 252 Q226 262 200 262 Q174 262 148 252 Q104 236 90 176 Z" fill="${o.beard}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M176 248 Q200 240 224 248" fill="none" stroke="${o.beard}" stroke-width="12" stroke-linecap="round"/>`;
   if (o.wreath) {
     const leaf = (x0, y0, cx, cy, x1, y1, side) => { let w = ''; for (let i = 0; i < 7; i++) { const k = 0.06 + i * 0.145, a = 1 - k; const x = a * a * x0 + 2 * a * k * cx + k * k * x1, y = a * a * y0 + 2 * a * k * cy + k * k * y1; const tx = 2 * a * (cx - x0) + 2 * k * (x1 - cx), ty = 2 * a * (cy - y0) + 2 * k * (y1 - cy); const ang = Math.atan2(ty, tx) * 180 / Math.PI; for (const sgn of [-1, 1]) w += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="17" ry="8" transform="rotate(${f1(ang + sgn * 38 * side)} ${f1(x)} ${f1(y)}) translate(${f1(12 * side)} 0)" fill="${sgn > 0 ? '#6DBE55' : '#4E9A3E'}" stroke="${INK}" stroke-width="4"/>`; } return w; };
@@ -224,9 +237,14 @@ function char(o) {
   }
   if (e.fx) h += typeof e.fx === 'function' ? e.fx(t, look) : e.fx; // extra face layer in head coords (tears, anger mark, gloom lines, blush lines)
   if (e.sweat || o.sweat) { const sd = (t * 40) % 30; h += `<path d="M306 ${112 + sd * 0.4} Q292 ${138 + sd * 0.4} 306 ${148 + sd * 0.4} Q320 ${138 + sd * 0.4} 306 ${112 + sd * 0.4} Z" fill="#9ED8FF" stroke="${INK}" stroke-width="5"/>`; }
+  h += `</g>`; // turn
   h += `</g>`; // head
   const hand = q => `<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="22" fill="#fff" stroke="${INK}" stroke-width="7"/><path d="M${f1(q[0] - 10)} ${f1(q[1] + 8)} Q${f1(q[0])} ${f1(q[1] + 16)} ${f1(q[0] + 10)} ${f1(q[1] + 8)}" fill="none" stroke="${shade === '#D5E2EE' ? '#C9D6E2' : shade}" stroke-width="5" stroke-linecap="round"/>`;
-  h += hand(p.hL) + hand(p.hR);
+  // 손 모양(o.handL/o.handR: 'fist'·'grip'·'point'·'thumb'·'open')과 쥔 물건(o.holdL/o.holdR: SVG 문자열, 손 중심 기준. {svg, follow:true}면 아래팔 방향으로 회전)
+  const fa = arm => { const q0 = arm[arm.length - 2], q1 = arm[arm.length - 1]; return Math.atan2(q1[1] - q0[1], q1[0] - q0[0]) * 180 / Math.PI; };
+  const hold = (q, ang, pr) => !pr ? '' : typeof pr === 'string' ? `<g transform="translate(${f1(q[0])} ${f1(q[1])})">${pr}</g>` : `<g transform="translate(${f1(q[0])} ${f1(q[1])}) rotate(${f1(pr.follow ? ang : (pr.rot || 0))})">${pr.svg}</g>`;
+  h += hold(p.hL, fa(p.armL), o.holdL) + hold(p.hR, fa(p.armR), o.holdR);
+  h += (o.handL ? handShape(o.handL, p.hL, fa(p.armL), -1) : hand(p.hL)) + (o.handR ? handShape(o.handR, p.hR, fa(p.armR), 1) : hand(p.hR));
   h += `</g></g></g>`;
   return h;
 }
