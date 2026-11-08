@@ -35,8 +35,8 @@ place('bgm/oracle.mp3', T0('n4') - 0.2, T0('s6') + 0.3, 0.24, fin=0.8, fout=1.0,
 place('bgm/bench.mp3', T0('s6') - 0.1, T0('s8') - 0.1, 0.22, fin=1.2, fout=0.5, off=60)      # 2막: 컵라면·두유·영수증
 place('bgm/morning.mp3', T0('s8') - 0.2, E1('n6') + 0.4, 0.26, fin=0.6, fout=1.0, off=4)     # 영수증에 적기, 구슬이 넓어진다
 place('bgm/bench.mp3', E1('n6') + 0.2, T0('m1') + 0.2, 0.22, fin=1.0, fout=0.8, off=82)      # 3막: 삼촌의 수능
-place('bgm/memory.mp3', T0('m1') - 0.2, E1('m1') + 0.6, 0.36, fin=0.8, fout=1.0, off=0)      # 몽타주
-place('bgm/bench.mp3', E1('m1') + 0.3, T0('s12') - 0.1, 0.2, fin=1.0, fout=0.6, off=20)      # "이렇게 됐지"
+place('bgm/memory.mp3', T0('m1') - 0.2, E1('m1') + 0.1, 0.36, fin=0.8, fout=0.8, off=0)      # 몽타주
+place('bgm/bench.mp3', E1('w7') + 0.1, T0('s12') - 0.1, 0.2, fin=1.0, fout=0.6, off=20)      # "이렇게 됐지"
 place('bgm/memory.mp3', T0('s12') - 0.3, E1('s13') + 0.3, 0.28, fin=1.0, fout=1.2, off=26)   # 어른들의 예언이
 place('bgm/morning.mp3', T0('s14') - 0.2, T0('s18') - 0.1, 0.27, fin=0.8, fout=0.8, off=20)  # 수능 날
 place('bgm/eve.mp3', T0('s18') - 0.1, T0('s19') - 0.2, 0.16, fin=0.6, fout=0.8, off=30)      # 고요한 1시 10분
