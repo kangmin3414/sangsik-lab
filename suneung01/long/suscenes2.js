@@ -316,7 +316,7 @@ function sulunchScene(t, lt, a) {
   let cam = ph === 1 ? qLerpCam(lt / 1.2, [960, 600, 1.2], [960, 560, 1.4]) : lt < 1.0 ? [960, 620, 1.35] : lt < 2.3 ? [600, SL_DESK - 150, 2.6] : [960, 580, 1.42];
   const open = ph === 2 ? suK(0.3, 0.9, lt) : 0, rec = ph === 2 ? suK(2.4, 2.9, lt) : 0, eat = ph === 2 ? suK(3.9, 4.4, lt) : 0;
   const calm = ph === 2 ? suK(3.0, 3.6, lt) : 0;
-  const pose = rec > 0 && eat === 0 ? suPose('서기', { armL: [[148, 285], [138, 330], [176, 300]], hL: [180, 298], armR: [[252, 285], [262, 330], [224, 300]], hR: [220, 298] }) :
+  const pose = rec > 0 && eat === 0 ? suPose('서기', { armL: [[148, 285], [130, 340], [170, 332]], hL: [174, 332], armR: [[252, 285], [270, 340], [230, 332]], hR: [226, 332] }) :
     eat > 0 ? suPose('서기', { armR: [[252, 285], [282, 300], [236, 266]], hR: [232, 262], armL: [[148, 285], [126, 340], [150, 334]], hL: [146, 334] }) : suPose('서기', { armL: [[148, 285], [126, 340], [150, 334]], hL: [146, 334], armR: [[252, 285], [274, 340], [250, 334]], hR: [254, 334] });
   const ex = ph === 1 ? exprAt([[0, 'z기본'], [0.4, 'z당황']], lt) : lt < 2.4 ? fEx(lt > 1.0 ? 'z울먹' : 'z당황') : lt < 3.9 ? fEx('z멍') : fEx('z기본');
   let w = SY({ x, y: F, s, t, pose, ex, look: ph === 2 && lt > 2.4 && lt < 3.9 ? [0, 0.8] : ph === 2 ? [0, 0.7] : [0, -0.6] });
@@ -329,7 +329,7 @@ function sulunchScene(t, lt, a) {
   w += `<g transform="translate(${f1(lidX)} ${f1(lidY)}) rotate(${f1(lidR)})"><rect x="-84" y="-22" width="168" height="26" rx="12" fill="#5E95C2" stroke="${INK}" stroke-width="6"/>` + (open >= 1 ? `<g transform="translate(0 -60) rotate(-4)"><rect x="-56" y="-34" width="112" height="70" fill="#FFE34D" stroke="${INK}" stroke-width="4"/>${fT(0, 8, '천천히 먹어', 20, INK)}</g>` : '') + `</g>`;
   // 수험표 지갑 → 영수증 펼침
   w += `<g transform="translate(1150 ${SL_DESK - 30})"><rect x="-56" y="-14" width="112" height="22" rx="6" fill="#E8F4FF" opacity=".8" stroke="${INK}" stroke-width="4"/></g>`;
-  if (rec > 0 && eat === 0) { const [hx, hy] = ptOf(x, F, s, 200, 288); w += suSlip2(hx, hy - 40, 1.4, { lines: 6, rot: 0 }); }
+  if (rec > 0 && eat === 0) { const [hx, hy] = ptOf(x, F, s, 200, 332); w += suSlip2(hx, hy - 2, 0.85, { lines: 6, rot: 0 }); }
   if (eat > 0) { w += suSlip2(1160, SL_DESK - 60, 1.0, { lines: 6, rot: 80 }); const [sx0, sy0] = ptOf(x, F, s, 232, 262); w += `<path d="M${f1(sx0)} ${f1(sy0)} l-26 50" stroke="#C9D3E0" stroke-width="7" stroke-linecap="round"/><ellipse cx="${f1(sx0 + 2)}" cy="${f1(sy0 - 6)}" rx="12" ry="8" fill="#C9D3E0" stroke="${INK}" stroke-width="3"/>`; }
   // 예언이: 1교시가 끝나면 다시 깨어난다 → 영수증을 보면 구슬이 넓어지고 도로 앉는다
   const wake = ph === 1 ? suK(0.2, 0.6, lt) : 1 - calm, R = lerp(32, 52, wake);
