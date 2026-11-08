@@ -88,7 +88,7 @@ place(B + 'tiny_a.mp3', 0.0, T0('o3') + 0.1, 0.26, fin=0.4, fout=0.25, off=20)  
 place(B + 'hollow_a.mp3', T0('o4') - 0.2, T0('a1') + 0.3, 0.30, fin=0.6, fout=0.5)              # nobody sees him
 place(B + 'myst_a.mp3', T0('a1') - 0.2, T0('t0') + 0.1, 0.34, fin=0.8, fout=0.15, off=30)       # the rain, the ring
 place(B + 'tiny_a.mp3', T0('s1') - 0.3, T1('s5') + 0.4, 0.28, fin=0.4, fout=0.6, off=50)        # testing it (playful)
-place(B + 'cosmic_a.mp3', T0('n1') - 0.4, T1('n2') + 0.3, 0.32, fin=1.0, fout=0.8, off=8)       # Glaucon's story
+place(B + 'cosmic_a.mp3', T0('n1') - 0.4, T1('n2') + 0.1, 0.32, fin=1.0, fout=0.5, off=8)       # Glaucon's story
 place(B + 'tense_a.mp3', T1('n3') + 0.05, T1('p3') + 0.4, 0.30, fin=0.5, fout=0.6, off=12)        # the temptation (the ring, the evaluation, the deleted file)
 place(B + 'tense_b.mp3', T0('p4') - 0.3, T1('p6') + 0.2, 0.28, fin=0.4, fout=0.3)                # the missing file
 place(B + 'warm_a.mp3', T0('p7') - 0.1, T1('p8') + 0.5, 0.30, fin=0.3, fout=0.8, off=20)         # applause: being seen (the wrong way)
@@ -101,6 +101,10 @@ place(B + 'hollow_a.mp3', T0('e1') - 0.4, T0('e2') + 0.2, 0.26, fin=0.8, fout=0.
 place(B + 'warm_a.mp3', T0('e2') - 0.1, T1('e5') + 0.3, 0.32, fin=0.8, fout=0.8, off=0)          # the yellow umbrella
 place(B + 'myst_a.mp3', T0('e6') - 0.2, T1('e6') + 0.1, 0.30, fin=0.5, fout=0.1, off=60)         # someone else's shoe
 bed *= (1.0 - 0.78 * np.clip(act * 2.0, 0, 1))
+def dip(buf, t0, t1, g, r=0.25):   # extra dip under one line (where the mix check found words masked)
+    i0, i1 = int(t0 * SR), int(t1 * SR); e = np.ones(N); e[i0:i1] = g; k_ = int(r * SR); e[max(0, i0 - k_):i0] = np.linspace(1, g, i0 - max(0, i0 - k_)); e[i1:i1 + k_] = np.linspace(g, 1, len(e[i1:i1 + k_])); buf *= e
+MASKED = ['n3', 'f2', 'f3', 'f4', 's5', 'e2', 'e3', 'e4']   # + lines whose background sat within ~3 dB of the voice (rain, bunsik chatter)
+for lid_ in MASKED: dip(bed, T0(lid_) - 0.15, T1(lid_) + 0.1, 0.5)
 
 # ---------------- ambience ----------------
 put(0, bp(noise(T0('a1')), 80, 400) * 0.02, 1, amb, dodge=False, free=True)                      # office room tone
@@ -169,6 +173,7 @@ for k in range(6): put(T0('e2') + 0.05 + k * 0.09, tone(rng.uniform(500, 800), 0
 for k in range(8): put(LT('e5', 1.9 + k * 0.22), step() * 0.5, 0.25, dodge=False, free=True)
 put(LT('e6', 1.85), mx(step() * 0.8, bp(noise(0.12), 400, 3000) * env(int(0.12 * SR), 0.002, 0.05)), 0.5, dodge=False, free=True)   # a stranger's step in the wet
 amb *= (1.0 - 0.7 * np.clip(act * 2.0, 0, 1))
+for lid_ in MASKED: dip(amb, T0(lid_) - 0.15, T1(lid_) + 0.1, 0.35)
 mix = voice * 1.0 + bed + sfx * 0.5 + amb * 0.6
 k = int(1.2 * SR); mix[-k:] *= np.linspace(1, 0, k)
 sf.write('mix_raw_g1.wav', mix, SR)
