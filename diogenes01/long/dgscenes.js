@@ -214,7 +214,7 @@ function dgcorScene(t, lt, a) {
   w += qShadow(DG_DX + 90, DG_GROUND, 150, 0.5) + DIO({ x: DG_DX, y: dy, s, t, pose: dPose, ex: dEx, look: dLook, rot: -8, sit: true });
   if (tB > 0 && lt > tB - 0.1 && lt < tB + 1.5) { const [hx, hy] = ptOf(DG_DX, dy, s, 360, 214); w += `<path d="M${f1(hx + 36)} ${f1(hy - 40)} q24 24 0 52 M${f1(hx + 56)} ${f1(hy - 56)} q34 36 0 80" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round" opacity=".75"/>`; }
   // 병사 셋(앞줄 둘, 뒷줄 하나)이 창을 손에 쥐고 들어와 선다
-  const sx0 = ph === 0 ? lerp(1500, 0, easeOut(dgK(0.8, 2.8, lt))) : 0, frozen = ph >= 4;
+  const sx0 = ph === 0 ? lerp(1500, 0, easeOut(dgK(0.8, 2.8, lt))) : ph === 5 ? 170 : 0, frozen = ph >= 4; // ph5(n3)는 화면 밖으로 조금 물러나 있음
   [[1870, 0.8, -26, 2], [1800, 0.86, 0, 0], [1940, 0.88, 0, 1]].forEach(([x0, ss, oy, i]) => { const x = x0 + sx0, p = ph === 0 && lt < 2.8 ? walkPose(lt * 7 + i, 0.6) : '서기';
     w += qShadow(x, DG_GROUND + oy, 50) + dgSoldier(x, DG_GROUND + oy, ss, t, p, fEx(frozen ? 'z충격' : 'z기본'), i); });
   // 왕의 그림자(망토까지) → 왕
