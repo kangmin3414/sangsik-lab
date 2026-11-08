@@ -109,9 +109,9 @@ for k in ['외투', '항이', '자루', '컵']: put(W('n5', k, 1.0) - 0.05, mx(p
 put(A('s5') + 0.4, lp(noise(3.0), 2500) * 0.08, 1.0)
 tT = W('d2', '구먼', 2.2); put(tT, whoosh(0.3), 0.5); put(tT + 0.8, clink(), 0.6); put(tT + 1.0, clink(), 0.35); put(tT + 1.2, clink(), 0.2)
 put(tT + 0.9, mx(pop_(500), thud(0.15, 160)), 0.3)
-put(W('n7a', '개라고', 1.3), bwoop(), 0.35)
+put(E1('n7a') + 0.1, bwoop(), 0.3)
 put(W('n7b', '견유', 4.9) - 0.1, mx(pop_(800), chime()), 0.35)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_dg.wav', mix, SR)
-subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_dg.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_dg.wav'], check=True)
+subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_dg.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-13.4:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_dg.wav'], check=True)
 print('dur', round(DUR, 2), 'peak raw', round(float(np.abs(mix).max()), 2))
