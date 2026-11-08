@@ -4,6 +4,7 @@
    3) 눈 연기 ACT.saccade: 시선은 미끄러지지 않고 '휙' 옮겨 가서 멈춘다. 크게 옮길 땐 깜빡인다. ACT.blink: 빨리 감고 천천히 뜬다.
    4) 팝 ACT.pop: 커졌다 돌아오는 반동(눈 커짐·머리 늘어남·기호 등장).
    5) 만화 기호 ACT.sym: 머리 좌표에 붙어 같이 움직이고, 튀어나와 흔들리다 사라진다.
+   7) 복잡한 감정 재료: 짝입꼬리 c=[왼,오른], 입술 떨림 wob, 삐죽·입술 깨물기, 볼 부풀림 puff, 무거운 눈꺼풀 flat, 멍한 눈 hl:false, 미간 찌푸림 knit, 눈물 tear, 한숨 ACT.sigh.
    6) 감정 몸짓 ACT.attitude: 부끄러움·시무룩·신남 같은 감정을 몸 전체 선으로. */
 const ACT = {};
 const MO2 = '#5A1E2A', TONG2 = '#FF8FA3';
@@ -15,6 +16,8 @@ ACT.natBlink = (t, seed = 1, per = 3.4) => { const p = per + hash(seed) * 1.4, p
 ACT.pop = (t, t0, f = 2.6, z = 0.32) => A2.spring(t, t0, f, z);
 // 뾰족한 일시 펄스(0→1→0): 끄덕·강조
 ACT.pulse = (t, t0, dur = 0.25) => { const u = (t - t0) / dur; return u <= 0 || u >= 1 ? 0 : Math.sin(u * Math.PI) * (1 - u * 0.3); };
+// 한숨: t0부터 들숨(inh초, 0→+1) → 날숨(exh초, +1→-1) → 조금 돌아와 -0.4에 머묾. 몸 높이·어깨·머리에 곱해 쓴다
+ACT.sigh = (t, t0, inh = 0.5, exh = 1.0) => { if (t <= t0) return 0; if (t < t0 + inh) return easeInOut((t - t0) / inh); const u = (t - t0 - inh) / exh; if (u < 1) return lerp(1, -1, easeOut(u)); return lerp(-1, -0.4, easeInOut(clamp((u - 1) * exh / 0.6, 0, 1))); };
 // 시선 '휙': keys = [[t, [x,y]], ...], 옮기는 데 sn초(0.06). 머무는 동안 아주 작은 떨림(살아 있는 눈)
 ACT.saccade = (t, keys, sn = 0.06, seed = 1) => { let i = 0; while (i + 1 < keys.length && t >= keys[i + 1][0]) i++;
   const a = i ? keys[i - 1][1] : keys[0][1], b = keys[i][1], k = i ? easeOut(clamp((t - keys[i][0]) / sn, 0, 1)) : 1;
@@ -29,7 +32,7 @@ ACT.eyePath = (cx, cy, rx, ryT, ryB) => { const k = 0.5523;
   return `M${f1(cx - rx)} ${f1(cy)} C${f1(cx - rx)} ${f1(cy - k * ryT)} ${f1(cx - k * rx)} ${f1(cy - ryT)} ${f1(cx)} ${f1(cy - ryT)} C${f1(cx + k * rx)} ${f1(cy - ryT)} ${f1(cx + rx)} ${f1(cy - k * ryT)} ${f1(cx + rx)} ${f1(cy)}` +
     ` C${f1(cx + rx)} ${f1(cy + k * ryB)} ${f1(cx + k * rx)} ${f1(cy + ryB)} ${f1(cx)} ${f1(cy + ryB)} C${f1(cx - k * rx)} ${f1(cy + ryB)} ${f1(cx - rx)} ${f1(cy + k * ryB)} ${f1(cx - rx)} ${f1(cy)} Z`; };
 ACT.star4 = (cx, cy, r, rot = 0, fill = '#fff') => `<path transform="rotate(${f1(rot)} ${f1(cx)} ${f1(cy)})" d="M${f1(cx)} ${f1(cy - r)} Q${f1(cx + r * 0.16)} ${f1(cy - r * 0.16)} ${f1(cx + r)} ${f1(cy)} Q${f1(cx + r * 0.16)} ${f1(cy + r * 0.16)} ${f1(cx)} ${f1(cy + r)} Q${f1(cx - r * 0.16)} ${f1(cy + r * 0.16)} ${f1(cx - r)} ${f1(cy)} Q${f1(cx - r * 0.16)} ${f1(cy - r * 0.16)} ${f1(cx)} ${f1(cy - r)} Z" fill="${fill}"/>`;
-// e = { open(0~1, 1=뜸), squint(0~1 웃는 아래 눈꺼풀), size(1), sparkle(0~1), openL/openR(윙크), wet(0~1 촉촉), squeeze(>0.5면 꽉 감은 > <) }
+// e = { open(0~1, 1=뜸), squint(0~1 웃는 아래 눈꺼풀), size(1), sparkle(0~1), openL/openR(윙크), wet(0~1 촉촉), squeeze(>0.5면 꽉 감은 > <), flat(0~1 무거운 윗눈꺼풀), hl(false면 하이라이트 끔: 멍한 눈) }
 ACT.eyes = e => { const sz = e.size || 1, sq = clamp(e.squint || 0, 0, 1); let g = '';
   [[165, -1], [235, 1]].forEach(([cx, side]) => {
     const open = clamp(side < 0 ? (e.openL != null ? e.openL : (e.open == null ? 1 : e.open)) : (e.openR != null ? e.openR : (e.open == null ? 1 : e.open)), 0, 1);
@@ -39,8 +42,10 @@ ACT.eyes = e => { const sz = e.size || 1, sq = clamp(e.squint || 0, 0, 1); let g
     g += `<path d="${ACT.eyePath(cx, cy, rx, ryT, ryB)}" fill="${EY}"/>`;
     // 하이라이트: 큰 것(위·오른쪽) + 작은 것(아래·왼쪽). 감기는 동안 위에서부터 가려진다
     const top = cy - ryT, hy = cy - 7 * sz, sp = clamp(e.sparkle || 0, 0, 1);
-    if (hy - 5 > top) g += sp > 0.05 ? ACT.star4(cx + 5 * sz, hy, (6 + 7 * sp) * sz, sp * 20) : `<circle cx="${f1(cx + 5 * sz)}" cy="${f1(hy)}" r="${f1(5.8 * sz)}" fill="#fff"/>`;
-    if (cy + 6 * sz < cy + ryB - 3 && cy + 6 * sz - 3 > top) g += `<circle cx="${f1(cx - 4 * sz)}" cy="${f1(cy + 6 * sz)}" r="${f1(2.8 * sz)}" fill="#fff"/>`;
+    if (e.hl !== false && hy - 5 > top) g += sp > 0.05 ? ACT.star4(cx + 5 * sz, hy, (6 + 7 * sp) * sz, sp * 20) : `<circle cx="${f1(cx + 5 * sz)}" cy="${f1(hy)}" r="${f1(5.8 * sz)}" fill="#fff"/>`;
+    if (e.hl !== false && cy + 6 * sz < cy + ryB - 3 && cy + 6 * sz - 3 > top) g += `<circle cx="${f1(cx - 4 * sz)}" cy="${f1(cy + 6 * sz)}" r="${f1(2.8 * sz)}" fill="#fff"/>`;
+    // 무거운 윗눈꺼풀(e.flat 0~1): 위를 평평하게 잘라 '−_−' 느낌(어이없음·체념·곁눈질)
+    if (e.flat > 0.02) { const ly = cy - ry + 2 * ry * e.flat * 0.55; g += `<rect x="${f1(cx - rx - 4)}" y="${f1(cy - ry - 8)}" width="${f1(2 * rx + 8)}" height="${f1(ly - (cy - ry - 8))}" fill="#fff"/><path d="M${f1(cx - rx - 4)} ${f1(ly + side * e.flat * 1.5)} L${f1(cx + rx + 4)} ${f1(ly - side * e.flat * 1.5)}" stroke="${EY}" stroke-width="7" stroke-linecap="round"/>`; }
     if (e.wet) g += `<path d="M${f1(cx - rx + 3)} ${f1(cy + ryB * 0.55)} Q${f1(cx)} ${f1(cy + ryB + 2)} ${f1(cx + rx - 3)} ${f1(cy + ryB * 0.55)}" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="${f1(e.wet * 100) / 100}"/>`;
   });
   return g; };
@@ -49,14 +54,25 @@ ACT.eyes = e => { const sz = e.size || 1, sq = clamp(e.squint || 0, 0, 1); let g
 // 입 모양 매개변수: w(반폭), T(윗입술 높이), B(아랫입술 깊이), k(둥근 정도)
 ACT.VIS = { M: [15, 0, 2, 0.7], A: [21, 5, 30, 0.95], EO: [17, 6, 22, 1], O: [12.5, 11, 16, 1], U: [9, 7, 10, 1], EU: [22, 1.5, 9, 0.75], I: [24, 2, 12, 0.8], E: [21, 4, 20, 0.9] };
 ACT.vowelVis = m => [0, 2, 9].includes(m) ? 'A' : [4, 6, 14].includes(m) ? 'EO' : [8, 12, 11].includes(m) ? 'O' : [13, 17, 16].includes(m) ? 'U' : [18, 19].includes(m) ? 'EU' : m === 20 ? 'I' : 'E';
-// 입 그리기(머리 좌표). v = [w,T,B,k], o = 벌림 0~1, c = 입꼬리(+웃음/-시무룩), id = clipPath용 고유 이름
-ACT.mouth = (v, o, c = 2, id = 'm') => { const [w0, T0, B0, k] = v, w = w0 * lerp(0.86, 1, o), T = T0 * o, B = Math.max(B0 * o, 0), y0 = 236, x0 = 200 - w, x1 = 200 + w, yc = y0 - c;
-  if (B < 3.2) return `<path d="M${f1(x0)} ${f1(yc)} Q200 ${f1(y0 + 5 + c * 0.9)} ${f1(x1)} ${f1(yc)}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
-  const hT = T * 4 / 3, hB = B * 4 / 3, d = `M${f1(x0)} ${f1(yc)} C${f1(200 - w * k)} ${f1(y0 - hT)} ${f1(200 + w * k)} ${f1(y0 - hT)} ${f1(x1)} ${f1(yc)} C${f1(200 + w * k)} ${f1(y0 + hB)} ${f1(200 - w * k)} ${f1(y0 + hB)} ${f1(x0)} ${f1(yc)} Z`;
+// 입 그리기(머리 좌표). v = [w,T,B,k], o = 벌림 0~1, c = 입꼬리(+웃음/-시무룩, [왼, 오른]이면 짝입꼬리), id = clipPath용 고유 이름
+// x = { wob(입술 떨림 0~1), t(떨림 시간), dx(입을 옆으로), style: 'bite'(입술 깨물기) | 'pout'(삐죽 '3') }
+ACT.mouth = (v, o, c = 2, id = 'm', x = {}) => { const [w0, T0, B0, k] = v, w = w0 * lerp(0.86, 1, o), T = T0 * o, B = Math.max(B0 * o, 0), y0 = 236, x0 = 200 - w, x1 = 200 + w;
+  const [cL, cR] = Array.isArray(c) ? c : [c, c], cm = (cL + cR) / 2, yL = y0 - cL, yR = y0 - cR, wob = x.wob || 0, tt = x.t || 0, wv = Math.sin(tt * 27) * wob;
+  const wrap = g => x.dx ? `<g transform="translate(${f1(x.dx)} 0)">${g}</g>` : g;
+  if (x.style === 'bite') return wrap(`<path d="M${f1(x0 + 2)} ${f1(yL + 2)} Q200 ${f1(y0 + 1 + cm * 0.6)} ${f1(x1 - 2)} ${f1(yR + 2)}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><rect x="192" y="${f1(y0 + 1)}" width="16" height="9" rx="3" fill="#fff" stroke="${INK}" stroke-width="3.5"/>`);
+  if (x.style === 'pout') return wrap(`<path d="M196 ${f1(222 + wv * 2)} Q209 224 206 231 Q203 236 208 240 Q212 249 196 250" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`);
+  if (B < 3.2) { if (wob > 0.02) return wrap(`<path d="M${f1(x0)} ${f1(yL)} Q${f1(200 - w / 2)} ${f1(y0 + 3 + cm * 0.9 + 5 * wv)} 200 ${f1(y0 + 2 + cm * 0.5)} Q${f1(200 + w / 2)} ${f1(y0 + 3 + cm * 0.9 - 5 * wv)} ${f1(x1)} ${f1(yR)}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`);
+    return wrap(`<path d="M${f1(x0)} ${f1(yL)} Q200 ${f1(y0 + 5 + cm * 0.9)} ${f1(x1)} ${f1(yR)}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`); }
+  const hT = T * 4 / 3, hB = (B + 3 * wv) * 4 / 3, d = `M${f1(x0)} ${f1(yL)} C${f1(200 - w * k)} ${f1(y0 - hT)} ${f1(200 + w * k)} ${f1(y0 - hT)} ${f1(x1)} ${f1(yR)} C${f1(200 + w * k)} ${f1(y0 + hB)} ${f1(200 - w * k)} ${f1(y0 + hB)} ${f1(x0)} ${f1(yL)} Z`;
   let g = `<clipPath id="${id}"><path d="${d}"/></clipPath><path d="${d}" fill="${MO2}"/><g clip-path="url(#${id})">`;
   if (B > 9) g += `<ellipse cx="200" cy="${f1(y0 + B * 0.95)}" rx="${f1(w * 0.62)}" ry="${f1(B * 0.42)}" fill="${TONG2}"/>`;
-  if (T0 <= 4.5 && w0 >= 19 && o > 0.45) g += `<rect x="${f1(x0)}" y="${f1(y0 - hT - 2)}" width="${f1(2 * w)}" height="${f1(4 + T * 0.9)}" fill="#fff"/>`;
-  return g + `</g><path d="${d}" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`; };
+  if (T0 <= 4.5 && w0 >= 19 && o > 0.45) g += `<rect x="${f1(x0)}" y="${f1(Math.min(yL, yR, y0 - hT) - 2)}" width="${f1(2 * w)}" height="${f1(4 + T * 0.9 + Math.abs(cm) * 0.5)}" fill="#fff"/>`;
+  return wrap(g + `</g><path d="${d}" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`); };
+// 볼 부풀리기(머리 좌표, fxUnder 층): 얼굴 윤곽이 볼 자리에서 바깥으로 불룩
+ACT.cheekPuff = (pL = 0, pR = 0, shade = '#D5E2EE') => { let g = '';
+  if (pL > 0.03) { const c = `M84 188 C${f1(84 - 26 * pL)} 206 ${f1(100 - 26 * pL)} 250 120 253`; g += `<path d="${c} L132 253 L132 188 Z" fill="#fff"/><path d="${c}" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`; }
+  if (pR > 0.03) { const c = `M316 188 C${f1(316 + 26 * pR)} 206 ${f1(300 + 26 * pR)} 250 280 253`; g += `<path d="${c} L268 253 L268 188 Z" fill="${shade}"/><path d="${c}" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`; }
+  return g; };
 const lerpV = (a, b, k) => a.map((x, i) => lerp(x, b[i], k));
 
 // ---------- 립싱크 ----------
@@ -88,24 +104,29 @@ ACT.lip = (track, t, amp) => { const i = track.findIndex(s => t >= s.a - 0.03 &&
   return { v, o, s }; };
 
 // ---------- 눈썹 ----------
-// base: [x0,y0,cx,cy,x1,y1] 두 개. b = { raise, worry, angry, asymL, asymR }
+// base: [x0,y0,cx,cy,x1,y1] 두 개. b = { raise, worry, angry, asymL, asymR, knit(미간 찌푸림) }
 ACT.brows = (bL, bR, b = {}) => { const r = b.raise || 0, w = b.worry || 0, a = b.angry || 0;
   const L = bL.slice(), R = bR.slice();
   [L, R].forEach((B, s) => { const al = s ? (b.asymR || 0) : (b.asymL || 0); for (let i = 1; i < 6; i += 2) B[i] -= r + al; });
   // 안쪽 끝: L의 x1(4,5) / R의 x0(0,1)
   L[5] += -w * 12 + a * 11; L[1] += w * 5 - a * 5; R[1] += -w * 12 + a * 11; R[5] += w * 5 - a * 5;
   L[3] += -w * 3; R[3] += -w * 3;
+  const kn = b.knit || 0; L[4] += kn * 7; L[5] += kn * 4; R[0] -= kn * 7; R[1] += kn * 4; // 미간 찌푸림: 안쪽 끝이 가운데로 모이며 살짝 내려옴
   return { bL: L, bR: R }; };
 
 // ---------- 얼굴 조립 ----------
-// o = { base:'z기본', eyes:{...}, brow:{...}, mouth:{v,o,c} 또는 null(기본 입), blush(0~1), lines(볼 빗금 0~1), fx: 추가 머리 좌표 SVG(함수 t→문자열 가능), id }
+// o = { base:'z기본', eyes:{...}, brow:{...}, mouth:{v,o,c,wob,dx,style} 또는 null(기본 입), mouthPath, blush(0~1), lines(볼 빗금 0~1), puff:[왼,오른](볼 부풀림), tear(0~1 눈물), t(떨림용 시간), fx: 추가 머리 좌표 SVG(함수 가능), id }
 // 반환한 객체를 E['_키']에 넣고 char({ex: fEx('_키'), noBlink:true, noMouth:true})로 그린다(입은 이 층에서 그림)
 ACT.face = o => { const base = E[o.base || 'z기본'] || E['z기본'], br = ACT.brows(base.bL, base.bR, o.brow || {}), bl = o.blush == null ? 0.35 : o.blush;
   const fxU = `<ellipse cx="146" cy="218" rx="${f1(18 + 4 * bl)}" ry="${f1(9 + 2 * bl)}" fill="${BLUSH}" opacity="${f1(clamp(bl, 0, 1) * 85) / 100}"/><ellipse cx="254" cy="218" rx="${f1(18 + 4 * bl)}" ry="${f1(9 + 2 * bl)}" fill="${BLUSH}" opacity="${f1(clamp(bl, 0, 1) * 85) / 100}"/>`;
   const lines = o.lines ? `<g opacity="${f1(clamp(o.lines, 0, 1) * 100) / 100}">${zBlushLines}</g>` : '';
-  const m = o.mouth ? ACT.mouth(o.mouth.v, o.mouth.o, o.mouth.c == null ? 2 : o.mouth.c, 'mc' + (o.id || 'a')) : `<path d="${o.mouthPath || base.mouth}" fill="${o.mouthPath ? (o.mouthFill || 'none') : base.mouthFill}" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const mx = o.mouth ? { wob: o.mouth.wob, t: o.t, dx: o.mouth.dx, style: o.mouth.style } : {};
+  const m = o.mouth ? ACT.mouth(o.mouth.v || ACT.VIS.M, o.mouth.o || 0, o.mouth.c == null ? 2 : o.mouth.c, 'mc' + (o.id || 'a'), mx) : `<path d="${o.mouthPath || base.mouth}" fill="${o.mouthPath ? (o.mouthFill || 'none') : base.mouthFill}" stroke="${INK}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const pf = o.puff ? ACT.cheekPuff(o.puff[0], o.puff[1]) : '', kn = (o.brow && o.brow.knit) || 0;
+  const wr = kn > 0.3 ? `<path d="M194 ${f1(150 - 2 * kn)} l-2 ${f1(10 * kn)} M206 ${f1(150 - 2 * kn)} l2 ${f1(10 * kn)}" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" opacity="${f1(kn * 70) / 100}"/>` : '';
+  const tear = o.tear > 0.05 ? (t, lk) => `<g opacity="${f1(clamp(o.tear, 0, 1) * 100) / 100}">${zTear(t, lk, -1, 0, 0.95)}${zTear(t, lk, 1, 0.45, 0.95)}</g>` : null;
   return Object.assign({}, br, { eyeL: 'M0 0', eyeR: 'M0 0', eyeFill: 'none', eyeSW: 0, mouth: base.mouth, mouthFill: base.mouthFill,
-    fxUnder: fxU, fxEye: ACT.eyes(o.eyes || {}), fx: (t, lk) => m + lines + (typeof o.fx === 'function' ? o.fx(t, lk) : (o.fx || '')) }); };
+    fxUnder: pf + fxU, fxEye: ACT.eyes(o.eyes || {}), fx: (t, lk) => wr + m + lines + (tear ? tear(t, lk) : '') + (typeof o.fx === 'function' ? o.fx(t, lk) : (o.fx || '')) }); };
 
 // ---------- 만화 기호(머리 좌표, 머리 중심 200,170 / 반지름 약 118) ----------
 // 등장: 튀어나와 커졌다 안착, 머무는 동안 살짝 흔들림, 끝: 작아지며 사라짐
@@ -122,6 +143,13 @@ ACT.sym = (kind, x, y, t, t0, t1, s = 1) => { const k = ACT.symK(t, t0, t1); if 
   else if (kind === 'dots') g = [0, 1, 2].map(i => { const kk = clamp(((t - t0) - i * 0.25) / 0.2, 0, 1); return kk > 0 ? `<circle cx="${(i - 1) * 26}" cy="${f1(-i * 12)}" r="${f1(8 * easeOutBack(kk))}" fill="#fff" stroke="${INK}" stroke-width="4"/>` : ''; }).join('');
   else if (kind === 'burst') g = [...Array(10)].map((_, i) => { const a = i / 10 * Math.PI * 2; return `<line x1="${f1(Math.cos(a) * 128)}" y1="${f1(Math.sin(a) * 120)}" x2="${f1(Math.cos(a) * 158)}" y2="${f1(Math.sin(a) * 148)}" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`; }).join('');
   else if (kind === 'gloom') g = `<g opacity=".75">${zGloom}</g>`;
+  else if (kind === 'sigh') { const u = clamp((t - t0) / Math.max(0.3, t1 - t0), 0, 1); g = [0, 1, 2].map(i => { const uu = clamp(u * 1.3 - i * 0.12, 0, 1); return uu > 0 ? `<circle cx="${f1(uu * 110 + i * 12)}" cy="${f1(-uu * 18 + (i - 1) * 9)}" r="${f1(7 + uu * 16 - i * 2)}" fill="#fff" stroke="${INK}" stroke-width="4" opacity="${f1((1 - uu * 0.85) * 100) / 100}"/>` : ''; }).join(''); }
+  else if (kind === 'storm') { const z = Math.sin((t - t0) * 5) * 3; g = `<g transform="translate(${f1(z)} 0)"><circle cx="-26" cy="0" r="22" fill="#6B6B8F" stroke="${INK}" stroke-width="5"/><circle cx="2" cy="-12" r="27" fill="#6B6B8F" stroke="${INK}" stroke-width="5"/><circle cx="30" cy="2" r="20" fill="#6B6B8F" stroke="${INK}" stroke-width="5"/><rect x="-30" y="0" width="64" height="20" fill="#6B6B8F"/><path d="M-36 20 L40 20" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` +
+    ((t - t0) % 0.9 < 0.25 ? `<path d="M2 22 L-8 42 L4 42 L-6 64" fill="none" stroke="#FFD43B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>` : '') + `</g>`; }
+  else if (kind === 'memory') g = [[-62, 58, 7], [-46, 40, 10]].map(([dx, dy, r]) => `<circle cx="${dx}" cy="${dy}" r="${r}" fill="#FFF8E7" stroke="${INK}" stroke-width="4"/>`).join('') +
+    `<path d="M-40 0 Q-46 -30 -16 -30 Q-8 -52 20 -44 Q44 -56 56 -30 Q82 -26 74 0 Q80 26 50 26 Q34 42 8 30 Q-20 40 -30 22 Q-50 20 -40 0 Z" fill="#FFF8E7" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>` +
+    `<circle cx="-8" cy="-6" r="13" fill="#FFD66B"/><path d="${zHeartP(32, 0, 0.42)}" fill="#FF8FAB" stroke="${INK}" stroke-width="3"/>`;
+  else if (kind === 'vein') g = zVein(0, 0, 0.9 + 0.15 * Math.abs(Math.sin((t - t0) * 9)));
   else if (kind === 'note') g = `<text x="0" y="16" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="54" fill="#7C6CF0" stroke="${INK}" stroke-width="5" paint-order="stroke">♪</text>`;
   if (kind === 'gloom' || kind === 'burst') return `<g opacity="${f1(clamp(k, 0, 1) * 100) / 100}">${kind === 'burst' ? `<g transform="translate(200 170) scale(${f1((0.9 + 0.1 * k) * 100) / 100})">${g}</g>` : g}</g>`;
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(wob)}) scale(${f1(k * 100) / 100})">${g}</g>`; };
