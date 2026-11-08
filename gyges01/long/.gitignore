@@ -1,0 +1,8 @@
+fr/
+chk/
+*.log
+*.mp4
+mix_raw*.wav
+mix_g1.wav
+voice_g1.wav
+__pycache__/
