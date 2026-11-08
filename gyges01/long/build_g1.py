@@ -89,7 +89,7 @@ place(B + 'hollow_a.mp3', T0('o4') - 0.2, T0('a1') + 0.3, 0.30, fin=0.6, fout=0.
 place(B + 'myst_a.mp3', T0('a1') - 0.2, T0('t0') + 0.1, 0.34, fin=0.8, fout=0.15, off=30)       # the rain, the ring
 place(B + 'tiny_a.mp3', T0('s1') - 0.3, T1('s5') + 0.4, 0.28, fin=0.4, fout=0.6, off=50)        # testing it (playful)
 place(B + 'cosmic_a.mp3', T0('n1') - 0.4, T1('n2') + 0.3, 0.32, fin=1.0, fout=0.8, off=8)       # Glaucon's story
-place(B + 'tense_a.mp3', T0('n3') - 0.2, DUR, 0.30, fin=0.8, fout=1.2, off=12)                   # the temptation begins
+place(B + 'tense_a.mp3', T1('n3') + 0.05, DUR, 0.30, fin=0.5, fout=1.2, off=12)                  # the temptation begins (after his line)
 bed *= (1.0 - 0.78 * np.clip(act * 2.0, 0, 1))
 
 # ---------------- ambience ----------------
@@ -116,7 +116,7 @@ put(LT('a1', 0.95), scribble(0.45), 0.6, dodge=False, free=True)                
 put(LT('a2', 0.35), ding(2600) * 0.5, 0.35, dodge=False)                                          # the glint in the puddle
 put(LT('a2', 0.9 + 0.55), mx(tone(3200, 0.04, 0.01, (1,)), bp(noise(0.03), 3000, 9000) * 0.4), 0.45, dodge=False)   # the stone clicks round
 put(LT('a2', 2.2 + 0.1), sweep(0.7, 2400, 600) * 0.7, 0.4, dodge=False)                          # he fades from the glass
-put(LT('a3', 0.05 + 4 / 24), boing(), 0.5, dodge=False); put(LT('a3', 0.05 + 13 / 24), plop(), 0.5, dodge=False, free=True)
+put(T0('a3') - 0.32, whoosh(0.22), 0.35, dodge=False)   # (no boing/plop: they sat on '내 몸' and read as a word)
 for x in (0.25, 0.95, 1.6): put(LT('a4', x), mx(tone(3200, 0.04, 0.01, (1,)), bp(noise(0.03), 3000, 9000) * 0.4), 0.45, dodge=False, free=True)
 put(T0('t0') - 0.12, whoosh(0.35), 0.5, dodge=False); put(T0('t0') - 0.05, boom(1.6, 46), 0.6, dodge=False)
 for k in range(5): put(T0('s1') + 0.1 + k * 0.26, step() * 0.6, 0.3, free=True, dodge=False)     # the man's steps
