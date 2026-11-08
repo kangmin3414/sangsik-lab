@@ -86,31 +86,38 @@ def clink(): return mx(tone(2400, 0.25, 0.08, (1, 0.5)) * 0.35, tone(3100, 0.2, 
 def slide(d=0.5): t = np.arange(int(d * SR)) / SR; f = 900 - 600 * t / d; return np.sin(2 * np.pi * np.cumsum(f) / SR) * env(len(t), 0.02, 0.15) * 0.3
 def trumpet(): t = np.arange(int(0.9 * SR)) / SR; f = np.where(t < 0.3, 392, np.where(t < 0.5, 523, 659)); s = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * 0.5 + np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.5; return lp(s, 2500) * env(len(t), 0.03, 0.2) * 0.25
 def yawn_dog(): t = np.arange(int(0.7 * SR)) / SR; f = 500 - 250 * t / 0.7; return bp(np.sin(2 * np.pi * np.cumsum(f) / SR) + noise(0.7) * 0.2, 200, 2000) * env(len(t), 0.05, 0.3) * 0.35
-# 인트로: 알림 5번 → 쿵 5번
-for i, v in enumerate([0.35, 1.15, 1.95, 2.75, 3.55]):
-    put(A('s0') + 0.15 + v, noti(), 0.55); put(A('s0') + 0.15 + v + 0.55, mx(thud(0.25, 90 + 10 * i), pop_(400)), 0.55 + 0.05 * i)
-put(A('n1') + 0.3, sparkle(), 0.25)
-# 계단: 한 칸씩, 휘청 → 주르륵
-for k in range(4): put(A('s1') + 0.15 + 0.6 * k + 0.4, step(), 0.25)
-put(A('s1') + 1.8, creak(0.6), 0.4)
-put(W('n2', '끌고', 3.6) - 0.1, slide(0.5), 0.6)
+def gulp(): return mx(bwoop() * 0.6, tone(180, 0.15, 0.06, (1, 0.3)) * 0.3)
+# 인트로: 알림(폰) → 물건이 날아가 → 배낭에 쿵 (dghallScene T, FLY 0.35, LAND 0.85)
+for i, v in enumerate([0.3, 1.1, 1.9, 2.7, 3.5]):
+    put(T0('s0') + v, noti(), 0.55); put(T0('s0') + v + 0.38, whoosh(0.4), 0.25); put(T0('s0') + v + 0.85, mx(thud(0.25, 90 + 10 * i), pop_(400)), 0.55 + 0.05 * i)
+put(T0('n1') + 0.2, sparkle(), 0.25)
+for k in range(4): put(T0('n1') + 1.6 + 0.45 * k, step(), 0.22)
+# 계단: 세 번 올라섬(hop 착지), 휘청 → 주르륵
+for v in [0.25, 0.95, 1.65]: put(T0('s1') + v + 0.45, step(), 0.28)
+put(T0('s1') + 1.8, creak(0.6), 0.4)
+put(W('n2', '끌고', 2.25) + 0.1, slide(0.6), 0.6)
 # 코린토스: 모래빛 전환, 행진, 나팔
 put(A('s2'), whoosh(0.8), 0.4); put(A('s2') + 0.7, trumpet(), 0.35)
-for k in range(8): put(A('s2') + 0.8 + k * 0.28, step(), 0.18)
-put(A('s3') + 0.4, bwoop(), 0.25)
-put(W('d1', '햇빛', 3.4), sparkle(), 0.3)
-for k in range(2): put(A('s4') + 0.3 + k * 0.3, step(), 0.2)
-put(A('s4') + 0.8, sparkle(), 0.35); put(A('s4') + 1.1, yawn_dog(), 0.5)
-put(W('n3', '디오게네스', 4.4) - 0.1, mx(pop_(800), chime()), 0.35)
+for k in range(8): put(T0('s2') + 0.6 + k * 0.27, step(), 0.18)
+put(T0('s3') + 0.47, pop_(1400), 0.3)
+put(W('d1', '비켜', 1.24) + 0.1, whoosh(0.35), 0.3)
+for k in range(3): put(T0('s4') + 0.25 + k * 0.27, step(), 0.2)
+put(T0('s4') + 0.9, sparkle(), 0.35); put(T0('s4') + 1.25, yawn_dog(), 0.5)
+put(W('n3', '디오게', 5.2) - 0.05, mx(pop_(800), chime()), 0.35)
 put(T0('t0') + 0.2, crackle(0.8), 0.5)
 # 1막
-put(A('n4') + 0.5, pop_(600), 0.4); put(W('n4', '항아리', 4.3), mx(pop_(1000), thud(0.15, 200)), 0.35)
+put(T0('n4') + 0.5, pop_(600), 0.4); put(W('n4', '항아리', 4.3), mx(pop_(1000), thud(0.15, 200)), 0.35)
 for k in ['외투', '항이', '자루', '컵']: put(W('n5', k, 1.0) - 0.05, mx(pop_(900), tick_(2000, 0.5)), 0.4)
-put(A('s5') + 0.4, lp(noise(3.0), 2500) * 0.08, 1.0)
-tT = W('d2', '구먼', 2.2); put(tT, whoosh(0.3), 0.5); put(tT + 0.8, clink(), 0.6); put(tT + 1.0, clink(), 0.35); put(tT + 1.2, clink(), 0.2)
-put(tT + 0.9, mx(pop_(500), thud(0.15, 160)), 0.3)
+# 샘터: 물소리, 아이 꿀꺽 두 번, 자루 → 컵 → 던짐 → 땡그랑, X, 엄지
+water = lp(noise(E1('s5b') - T0('s5') + 0.6), 2500) * 0.07; water[:int(0.4 * SR)] *= np.linspace(0, 1, int(0.4 * SR)); water[-int(0.6 * SR):] *= np.linspace(1, 0, int(0.6 * SR)); put(T0('s5') - 0.2, water, 1.0)
+put(T0('s5') + 1.35, gulp(), 0.5); put(T0('n6') + 0.8 + 1.35, gulp(), 0.4)
+put(W('n6', '보고', 2.82) + 0.4, rip(0.3), 0.25)
+tR = W('n6', '던져', 4.44) + 0.3; put(tR - 0.05, whoosh(0.35), 0.5); put(tR + 0.75, clink(), 0.6); put(tR + 1.1, clink(), 0.35); put(tR + 1.45, clink(), 0.2)
+put(W('d2', '구먼', 2.22) + 0.05, mx(pop_(500), thud(0.15, 160)), 0.3)
+put(T0('s5b') + 0.2, sparkle(), 0.3)
 put(E1('n7a') + 0.1, bwoop(), 0.3)
-put(W('n7b', '견유', 4.9) - 0.1, mx(pop_(800), chime()), 0.35)
+for k in range(5): put(W('n7b', '따르는', 2.66) + 0.2 + 0.4 * k, step(), 0.2)
+put(W('n7b', '견유', 5.06) + 0.05, mx(pop_(800), chime()), 0.35)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_dg.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_dg.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-13.4:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_dg.wav'], check=True)
