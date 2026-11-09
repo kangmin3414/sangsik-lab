@@ -43,7 +43,7 @@ function aiLayout(msgs) {
 function aiBubble(it, top) {
   const k = it.k == null ? 1 : it.k; if (k <= 0.01) return '';
   const y = top + it.y + (1 - k) * 24, op = f1(clamp(k * 1.4, 0, 1) * 100) / 100;
-  if (it.date) return `<g opacity="${op}"><rect x="-80" y="${f1(y)}" width="160" height="40" rx="20" fill="#C9D1DC"/>${fT(0, y + 28, it.date, 20, '#fff', { w: 700 })}</g>`;
+  if (it.date) return `<g opacity="${op}"><rect x="-84" y="${f1(y)}" width="168" height="42" rx="21" fill="#8E99AB"/>${fT(0, y + 30, it.date, 23, '#fff', { w: 800 })}</g>`;
   const me = it.me, x0 = me ? 200 - it.w : -150;
   let g = `<g opacity="${op}">`;
   if (!me) g += it.ai ? aiStar(-185, y + 24, 23) : aiAvT(-185, y + 24, 23);
@@ -55,8 +55,8 @@ function aiBubble(it, top) {
     it.lines.forEach((l, i) => { g += fT(x0 + 22, y + 15 + AI_LH * (i + 0.72), l, AI_FS, INK, { anchor: 'start', w: 600 }); });
     for (let b = 0; b < (it.bars || 0); b++) { const bw = (it.w - 44) * (b % 5 === 4 ? 0.45 : 0.72 + 0.28 * hash(b * 13 + 5)); g += `<rect x="${f1(x0 + 22)}" y="${f1(y + 15 + AI_LH * (it.lines.length + b) + 10)}" width="${f1(bw)}" height="16" rx="8" fill="#D5DAE2"/>`; }
   }
-  if (it.time) g += fT(me ? x0 - 8 : x0 + it.w + 8, y + it.h - 4, it.time, 17, '#8A93A3', { anchor: me ? 'end' : 'start', w: 600 });
-  if (it.unread) g += fT(x0 - 8, y + it.h - 26, '1', 21, '#E8A21A', { anchor: 'end', w: 900 });
+  if (it.time) g += fT(me ? x0 - 8 : x0 + it.w + 8, y + it.h - 4, it.time, 20, '#6E7787', { anchor: me ? 'end' : 'start', w: 600 });
+  if (it.unread) g += fT(x0 - 8, y + it.h - 26, '1', 30, '#F2A20C', { anchor: 'end', w: 900 });
   return g + '</g>';
 }
 // 자판(두벌식 모양, 글자 장식). kb: 0~1 올라온 정도. press: 눌린 키 [줄, 칸]
@@ -82,6 +82,7 @@ function aiChatScreen(o) {
   // 입력줄
   const on = typed.length > 0, sp = o.send ? 0.88 : 1;
   g += `<rect x="-222" y="${f1(yIn)}" width="444" height="${f1(ih)}" fill="#fff"/><rect x="-206" y="${f1(yIn + 12)}" width="350" height="${f1(fh)}" rx="${f1(Math.min(26, fh / 2))}" fill="#F1F3F6" stroke="#D5DAE2" stroke-width="2"/>`;
+  if (o.flash > 0.01) g += `<rect x="-206" y="${f1(yIn + 12)}" width="350" height="${f1(fh)}" rx="${f1(Math.min(26, fh / 2))}" fill="#BFE3FF" opacity="${f1(o.flash * 80) / 100}"/>`;
   if (on) tl.forEach((l, i) => { g += fT(-188, yIn + 12 + 13 + 32 * (i + 0.78), l, 25, INK, { anchor: 'start', w: 600 }); });
   else g += fT(-188, yIn + 12 + 13 + 32 * 0.78, '메시지 입력', 25, '#A0A6B0', { anchor: 'start', w: 500 });
   if (o.caret) { const lw = aiTW(tl[tl.length - 1], 25); g += `<rect x="${f1(-186 + lw)}" y="${f1(yIn + 12 + 13 + 32 * (tl.length - 1) + 2)}" width="3" height="28" fill="#3D7BF7"/>`; }
@@ -93,8 +94,9 @@ function aiChatScreen(o) {
 const aiStatus = time => fT(-190, -410, time || '2:07', 22, INK, { anchor: 'start', w: 800 }) + `<g transform="translate(150 -418)"><rect x="0" y="0" width="38" height="18" rx="4" fill="none" stroke="${INK}" stroke-width="3"/><rect x="3" y="3" width="${f1(22)}" height="12" rx="2" fill="${INK}"/><rect x="39" y="6" width="4" height="7" rx="1" fill="${INK}"/></g>` +
   [0, 1, 2, 3].map(i => `<rect x="${110 + i * 8}" y="${-404 - i * 4}" width="5" height="${6 + i * 4}" rx="1" fill="${INK}"/>`).join('');
 // 대화 목록 화면. press: 눌린 줄 번호
-const AI_ROWS = [{ n: 'AI', p: '언제든 이야기해 주세요.', t: '오전 2:07', av: 'ai' }, { n: '태호', p: 'ㅇㅇ 고마움', t: '3월 2일', av: 'tae' }, { n: '엄마', p: '밥은 먹었니?', t: '어제', av: ['엄', '#E58FA5'] },
-  { n: '팀 공지방', p: '내일 회의 9시입니다', t: '어제', av: ['팀', '#7B8AA8'] }, { n: '헬스장', p: '회원권 만료 안내', t: '월요일', av: ['헬', '#E0A458'] }];
+const AI_ROWS = [{ n: 'AI', p: '언제든 이야기해 주세요.', t: '오전 2:07', av: 'ai' }, { n: '엄마', p: '밥은 먹었니?', t: '어제', av: ['엄', '#E58FA5'] }, { n: '팀 공지방', p: '내일 회의 9시입니다', t: '어제', av: ['팀', '#7B8AA8'] },
+  { n: '헬스장', p: '회원권 만료 안내', t: '월요일', av: ['헬', '#E0A458'] }, { n: '태호', p: 'ㅇㅇ 고마움', t: '3월 2일', av: 'tae' }];
+const AI_TROW = 4;
 function aiListScreen(o) {
   let g = `<rect x="-222" y="-440" width="444" height="880" fill="#fff"/>` + aiStatus(o.time) + fT(-196, -340, '채팅', 38, INK, { anchor: 'start', w: 900 });
   AI_ROWS.forEach((r, i) => { const y = -290 + i * 104;
@@ -104,36 +106,26 @@ function aiListScreen(o) {
   return g;
 }
 
-/* ---------- 제로 시점(POV): 이불 속, 두 손 + 폰 ---------- */
-// 이불 텐트(화면 가장자리 주름, 폰 빛을 받음)
-const aiTent = glow => { const hi = f1(glow * 0.75 * 100) / 100;
-  return `<path d="M-300 -200 L2300 -200 L2300 70 Q1650 -30 960 70 Q280 -30 -300 70 Z" fill="#18204A" stroke="${INK}" stroke-width="9"/>` +
-    `<path d="M-300 -200 Q190 260 110 720 Q60 1010 -300 1400 Z" fill="#141B3E" stroke="${INK}" stroke-width="9"/><path d="M2300 -200 Q1730 260 1810 720 Q1860 1010 2300 1400 Z" fill="#141B3E" stroke="${INK}" stroke-width="9"/>` +
-    `<g fill="none" stroke="#5D72B8" stroke-width="12" stroke-linecap="round" opacity="${hi}"><path d="M120 120 Q260 380 200 700"/><path d="M1800 120 Q1660 380 1720 700"/><path d="M420 40 Q960 110 1500 40"/></g>`; };
-// o: { screen(svg, 화면 좌표), thumbs: [[lx,ly],[rx,ry]](화면 좌표, 엄지 끝), glow, py, rot, zoom }
+/* ---------- 제로 시점(POV): 침대에 앉아 내려다본 폰. 두 손은 폰을 쥐기만 한다(손가락으로 누르는 장면 없음) ---------- */
+// 무릎 위 이불(내려다본 모습, 폰 빛을 받음)
+const aiPovHand = (sx, sy, hx, hy, r) => `<path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="${f1(r * 0.42)}" stroke-linecap="round"/><circle cx="${f1(hx)}" cy="${f1(hy)}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="9"/>`;
+const aiLap = glow => { const hi = f1(glow * 0.8 * 100) / 100;
+  return `<g filter="url(#gfBlur)"><image href="${QBG.ainight}" x="-150" y="-30" width="2220" height="1250" preserveAspectRatio="xMidYMid slice"/></g>` + fFull('#070B1E', 0.55) +
+    `<path d="M-300 1400 L-300 760 Q-60 560 300 640 Q560 700 700 900 L760 1400 Z" fill="#3A4570" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/>` +
+    `<path d="M2300 1400 L2300 760 Q1980 560 1620 640 Q1360 700 1220 900 L1160 1400 Z" fill="#3A4570" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/>` +
+    `<g fill="none" stroke="#283158" stroke-width="9" stroke-linecap="round"><path d="M-100 860 Q160 760 420 840"/><path d="M80 1000 Q320 900 600 1000"/><path d="M2020 860 Q1760 760 1500 840"/><path d="M1840 1000 Q1600 900 1320 1000"/></g>` +
+    `<g fill="none" stroke="#7F95D6" stroke-width="8" stroke-linecap="round" opacity="${hi}"><path d="M300 650 Q520 700 660 860"/><path d="M1620 650 Q1400 700 1260 860"/></g>`; };
+// o: { screen(화면 좌표 svg), glow, py, rot, cam }
 function aiPov(t, o) {
   GF_SLEEVE = AI_HD;
   const PY = o.py || 548, R = o.rot == null ? -3 : o.rot, glow = o.glow == null ? 1 : o.glow;
-  let g = `<rect x="-300" y="-200" width="2600" height="1500" fill="url(#aiDark)"/>` + aiTent(glow) +
-    `<ellipse cx="960" cy="${PY}" rx="760" ry="700" fill="url(#aiGlow)" opacity="${f1(0.42 * glow * 100) / 100}"/>`;
-  const [[lx, ly], [rx, ry]] = o.thumbs || [[-196, 392], [196, 392]];
-  const LH = [-262, 318], RH = [262, 318];
+  let g = aiLap(glow) + `<ellipse cx="960" cy="${PY}" rx="760" ry="700" fill="url(#aiGlow)" opacity="${f1(0.42 * glow * 100) / 100}"/>`;
+  // 손: 폰 아래쪽을 양손으로 받쳐 쥠(손가락 없음, 화면은 가리지 않음)
   g += `<g transform="translate(960 ${PY}) rotate(${R})"><rect x="-250" y="-470" width="500" height="940" rx="56" fill="#22262E" stroke="${INK}" stroke-width="10"/>` +
     `<g clip-path="url(#aiScr)">${o.screen}</g><rect x="-222" y="-440" width="444" height="880" rx="34" fill="none" stroke="#11141A" stroke-width="3"/>` +
-    gfPovHand(-760, 1000, LH[0], LH[1], 84) + gfPovHand(760, 1000, RH[0], RH[1], 84) + gfPovFinger(LH[0] + 20, LH[1] - 24, lx, ly, 50) + gfPovFinger(RH[0] - 20, RH[1] - 24, rx, ry, 50) + `</g>`;
+    aiPovHand(-700, 1250, -268, 386, 84) + aiPovHand(700, 1250, 268, 386, 84) + `</g>`;
   const cam = o.cam || [960, 560, 1.0];
   return aiDefs() + gfDefs() + qCam(cam, g);
-}
-// 타이핑 엄지: i번째 글자를 칠 때 번갈아. 반환 [[왼],[오]], press
-function aiTypeThumbs(lt, times) {
-  let L = [-196, 392], R = [196, 392], press = null;
-  const i = times.findIndex((x, j) => lt >= x && (j === times.length - 1 || lt < times[j + 1]));
-  const rest = (side) => side ? [150, 300] : [-150, 300];
-  L = rest(0); R = rest(1);
-  if (i >= 0) { const r = Math.floor(hash(i * 3 + 1) * 3), hn = Math.ceil(AI_KR[r].length / 2), c = Math.floor(hash(i * 7 + 2) * hn) + (i % 2 ? AI_KR[r].length - hn : 0), [kx, ky] = aiKeyPos(r, c), dip = ACT.pulse(lt, times[i], 0.12);
-    const pt = [kx + 6, ky + 4 + 10 * (1 - dip)]; if (i % 2) R = pt; else L = pt; if (lt < times[i] + 0.09) press = [r, c];
-    const j = i + 1; if (j < times.length) { const r2 = Math.floor(hash(j * 3 + 1) * 3), hn2 = Math.ceil(AI_KR[r2].length / 2), c2 = Math.floor(hash(j * 7 + 2) * hn2) + (j % 2 ? AI_KR[r2].length - hn2 : 0), p2 = aiKeyPos(r2, c2), hv = [p2[0] + 6, p2[1] + 18]; if (j % 2) R = hv; else L = hv; } }
-  return { thumbs: [L, R], press };
 }
 const aiOldAI = [{ date: '오늘' }, { me: false, ai: true, text: '안녕하세요, 제로님. 무엇이든 이야기해 주세요.', time: '오전 2:01' }];
 const AI_Z1 = '오늘 진짜 억울해… 다 그만두고 싶다.';
@@ -142,8 +134,7 @@ const AI_A1 = '제로님, 오늘 정말 많이 힘드셨겠어요. 그건 절대
 /* =========== 0. 이불 덩어리 + 새어 나오는 푸른 빛 =========== */
 function aiBedBack() {
   return `<rect x="600" y="688" width="720" height="320" rx="28" fill="#6B5848" stroke="${INK}" stroke-width="9"/><rect x="630" y="716" width="660" height="40" rx="12" fill="#7D6957"/>` +
-    `<path d="M640 860 L1280 860 L1405 1004 L515 1004 Z" fill="#E6E1D6" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>` +
-    `<rect x="815" y="780" width="290" height="104" rx="48" fill="#DCE3EE" stroke="${INK}" stroke-width="8"/>`;
+    `<path d="M640 860 L1280 860 L1405 1004 L515 1004 Z" fill="#E6E1D6" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>` ;
 }
 function aiBedFrame() { return `<rect x="505" y="1000" width="910" height="120" rx="12" fill="#5A4838" stroke="${INK}" stroke-width="9"/><rect x="530" y="1120" width="40" height="70" fill="#4A3A2C" stroke="${INK}" stroke-width="7"/><rect x="1350" y="1120" width="40" height="70" fill="#4A3A2C" stroke="${INK}" stroke-width="7"/>`; }
 // 이불 앞쪽(무릎 위 ~ 침대 앞으로 늘어짐). top: 윗선 y
@@ -159,69 +150,57 @@ function aiClock(txt, o = {}) {
     `<text x="0" y="24" text-anchor="middle" font-family="'DejaVu Sans Mono', monospace" font-weight="700" font-size="${o.big ? 62 : 58}" fill="#FF5A5A">${txt}</text>` +
     `<ellipse cx="0" cy="0" rx="130" ry="80" fill="#FF5A5A" opacity=".1"/></g>`;
 }
-// 이불 두건(머리 위로 덮은 이불) 뒷면/앞테. 제로 로컬 좌표(머리 가운데 200,170)
-const aiHoodBack = (X, Y, S, c = AI_BL) => `<g transform="translate(${f1(X)} ${f1(Y)}) scale(${S}) translate(-200 -560)"><path d="M26 700 Q14 330 66 176 Q116 34 200 30 Q284 34 334 176 Q386 330 374 700 Z" fill="${c}" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/></g>`;
-const aiHoodRim = (X, Y, S, c = AI_BL, tilt = 0, dy = 0) => `<g transform="translate(${f1(X)} ${f1(Y)}) scale(${S}) translate(-200 -560) translate(0 ${f1(dy)}) rotate(${f1(tilt)} 200 330)"><path d="M78 226 Q62 44 200 38 Q338 44 322 226 Q312 116 200 100 Q88 116 78 226 Z" fill="${c}" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>` +
-  `<path d="M120 84 Q200 62 280 84" fill="none" stroke="${AI_BL2}" stroke-width="8" stroke-linecap="round"/></g>`;
-// 침대 위 제로(두건 이불 + 폰 뒷면). face: ACT.face 옵션, o: { pose, look, glow, headDy, tilt, sy, noPhone, x, y, s }
+// 폰 뒷면: 두 손이 아래 양 모서리를 잡는다(왼손 기준으로 오른쪽에 붙임)
+const AI_PHB = GF_PHBACK.replace('translate(0 -50)', 'translate(27 -40)');
+// 침대에 앉은 제로(회색 후드 잠옷, 허리까지 이불). face: ACT.face 옵션, o: { pose, look, headDy, tilt, sy, noPhone, x, y, s }
 function aiBedZero(key, t, face, o = {}) {
   const X = o.x || AB.X, Y = o.y || AB.Y, S = o.s || AB.S;
-  const pose = o.pose || A2.pose({ hL: [178, 352], hR: [222, 362] });
-  const zero = gfZero(key, face, { t, x: X, y: Y, s: S, pose, look: o.look, vest: AI_HD, vshade: 'rgba(30,40,70,0.22)', headDy: o.headDy || 0, tilt: o.tilt || 0, sy: o.sy, sx: o.sx,
-    holdL: o.noPhone ? undefined : { svg: GF_PHBACK, rot: -8 }, handL: o.noPhone ? undefined : 'grip' });
-  return aiHoodBack(X, Y, S) + zero + aiHoodRim(X, Y, S, AI_BL, o.tilt || 0, o.headDy || 0);
+  const pose = o.pose || A2.pose({ hL: [173, 378], hR: [227, 378] });
+  return gfZero(key, face, { t, x: X, y: Y, s: S, pose, look: o.look, vest: AI_HD, vshade: 'rgba(30,40,70,0.22)', headDy: o.headDy || 0, tilt: o.tilt || 0, sy: o.sy, sx: o.sx,
+    holdL: o.noPhone ? undefined : { svg: AI_PHB, rot: 0 }, handL: o.noPhone ? undefined : 'grip', handR: o.noPhone ? undefined : 'grip' });
 }
 // 폰 화면 빛(얼굴·가슴). 장면 마지막에 screen 합성
 const aiFaceGlow = (x, y, k, r = 1) => k > 0.01 ? `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(300 * r)}" ry="${f1(270 * r)}" fill="url(#aiGlow)" opacity="${f1(0.85 * k * 100) / 100}" style="mix-blend-mode:screen"/>` : '';
 const aiNightTint = (k = 1) => fFull('#0A1238', 0.34 * k);
 
 function aibedScene(t, lt, a) {
-  const run = a._run, br = Math.sin(run * 2.4) * 6, fl = 0.75 + 0.25 * Math.sin(run * 23) * Math.sin(run * 7.3);
-  const cam = qLerpCam(run / 1.3, [1010, 640, 1.02], [1000, 760, 1.3]);
-  // 이불 덩어리(제로가 통째로 들어가 있음)
-  const lump = `<path d="M600 ${930 - br} Q640 ${760 - br} 820 ${742 - br} Q900 ${700 - br} 1010 ${716 - br} Q1180 ${730 - br} 1270 ${830 - br} Q1340 ${880} 1410 1000 Q1440 1090 1386 1102 Q960 1124 534 1102 Q474 1090 494 1010 Q520 960 600 ${930 - br} Z" fill="${AI_BL}" stroke="${INK}" stroke-width="9" stroke-linejoin="round"/>` +
-    `<g fill="none" stroke="#3E4A72" stroke-width="7" stroke-linecap="round" opacity=".7"><path d="M780 ${770 - br} Q850 900 760 1060"/><path d="M1120 ${740 - br} Q1100 880 1220 1070"/></g>`;
-  // 이불 틈(베개 쪽)에서 새어 나오는 빛
-  const leak = `<path d="M790 ${800 - br} Q860 ${780 - br} 930 ${792 - br}" fill="none" stroke="#BDE6FF" stroke-width="${f1(6 + 4 * fl)}" stroke-linecap="round" opacity="${f1(0.9 * fl * 100) / 100}"/>` +
-    `<ellipse cx="860" cy="${770 - br}" rx="220" ry="120" fill="url(#aiGlow)" opacity="${f1(0.9 * fl * 100) / 100}" style="mix-blend-mode:screen"/>`;
-  const w = qPlate('ainight', cam, 0.5) + qCam(cam, aiBedBack() + lump + aiBedFrame() + aiClock('02:07')) + aiNightTint(1) + qCam(cam, leak);
+  // 불 꺼진 원룸: 침대에 앉은 제로, 얼굴만 폰 빛을 받는다(전체 → 천천히 다가감)
+  const run = a._run, fl = 0.85 + 0.15 * Math.sin(run * 23) * Math.sin(run * 7.3);
+  const cam = qLerpCam(run / 1.3, [1010, 640, 1.02], [990, 700, 1.22]);
+  const face = { eyes: { open: 1 - ACT.blinks(run, [0.7], 0.18), flat: 0.35 }, brow: { worry: 0.65, knit: 0.3 }, mouth: { v: ACT.VIS.M, o: 0, c: -3 }, blush: 0.15 };
+  const zero = aiBedZero('_ai0', t, face, { look: [0, 0.8], headDy: 6 });
+  const w = qPlate('ainight', cam, 0.5) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame() + aiClock('02:07')) + aiNightTint(1.15) + qCam(cam, aiFaceGlow(960, 720, fl));
   return aiDefs() + gfDefs() + qDefs() + w;
 }
 
 /* =========== 1. 제로 시점: AI에게 타이핑 → 전송 → 1초 만의 장문 답장 =========== */
 function aiphoneScene(t, lt, a) {
-  const ph = a.ph, run = a._run;
+  const ph = a.ph;
   if (ph === 0) {
-    // 말에 맞춰 한 글자씩(목소리 시작 0.05 ~ 끝 -0.2)
-    const D = a._dur || 4.2, n = AI_Z1.length, times = [...Array(n)].map((_, i) => 0.05 + (D - 0.3) * i / n).filter((_, i) => AI_Z1[i] !== ' ');
-    const typedN = Math.round(n * clamp((lt - 0.05) / (D - 0.3), 0, 1)), typed = AI_Z1.slice(0, typedN);
-    const { thumbs, press } = aiTypeThumbs(lt, times.slice(0, Math.max(0, times.length)));
-    const S = aiChatScreen({ who: 'ai', msgs: aiOldAI, typed, kb: 1, press, caret: Math.floor(lt * 2.4) % 2 === 0, time: '2:07' });
-    return aiPov(t, { screen: S.svg, thumbs, cam: qLerpCam((lt - 0.4) / (D - 1.2), [960, 430, 1.28], [960, 560, 1.38]) });
+    // 말에 맞춰 입력칸에 한 글자씩 써진다(손가락은 보이지 않음)
+    const D = a._dur || 4.2, n = AI_Z1.length, typedN = Math.round(n * clamp((lt - 0.05) / (D - 0.3), 0, 1)), typed = AI_Z1.slice(0, typedN);
+    const S = aiChatScreen({ who: 'ai', msgs: aiOldAI, typed, kb: 1, caret: Math.floor(lt * 2.4) % 2 === 0, time: '2:07' });
+    return aiPov(t, { screen: S.svg, cam: qLerpCam((lt - 0.4) / (D - 1.2), [960, 430, 1.28], [960, 540, 1.36]) });
   }
   const sent = { me: true, text: AI_Z1, time: '오전 2:07' };
   if (ph === 1) {
     const run = lt - 0.15;
-    // 0.18 전송 → 0.4~0.7 점 세 개 → 0.72 장문 답장
+    // 0.18 전송(말풍선이 올라감) → 0.4~0.7 점 세 개 → 0.72 장문 답장
     const tap = 0.18, kSent = aiK(run, tap, tap + 0.18), kb = 1 - easeInOut(aiK(run, 0.28, 0.55)), dots = run > 0.4 && run < 0.72, kRep = aiK(run, 0.72, 0.86);
     const msgs = aiOldAI.concat([Object.assign({ k: kSent }, sent)]);
     if (dots) msgs.push({ me: false, ai: true, dots: true, ph: run });
     if (run >= 0.72) msgs.push({ me: false, ai: true, text: AI_A1, bars: 12, time: '오전 2:07', k: kRep });
     let scroll = null;
     if (run >= 0.72) { const L = aiLayout(msgs), last = L.items[L.items.length - 1], auto0 = Math.max(0, aiLayout(msgs.slice(0, -1)).H + 16 - 684); scroll = lerp(auto0, last.y - 10, easeInOut(aiK(run, 0.74, 1.05))); }
-    const S = aiChatScreen({ who: 'ai', msgs, typed: run < tap ? AI_Z1 : '', kb, send: Math.abs(run - tap) < 0.07, time: '2:07', scroll });
-    const toSend = easeInOut(aiK(run, 0, tap)), sendPt = [184 + 4, S.yIn + 50];
-    const R = run < tap + 0.12 ? [lerp(150, sendPt[0], toSend), lerp(300, sendPt[1] + 10 * (1 - ACT.pulse(run, tap - 0.04, 0.14)), toSend)] : [lerp(sendPt[0], 196, aiK(run, tap + 0.12, 0.5)), lerp(sendPt[1], 392, aiK(run, tap + 0.12, 0.5))];
-    return aiPov(t, { screen: S.svg, thumbs: [[lerp(-150, -196, aiK(run, 0.2, 0.5)), lerp(300, 392, aiK(run, 0.2, 0.5))], R], cam: qLerpCam(run / 1.1, [960, 560, 1.38], [960, 470, 1.3]) });
+    const S = aiChatScreen({ who: 'ai', msgs, typed: run < tap ? AI_Z1 : '', kb, time: '2:07', scroll });
+    return aiPov(t, { screen: S.svg, cam: qLerpCam(run / 1.1, [960, 520, 1.32], [960, 470, 1.3]) });
   }
-  // ph2(a1): 답장을 읽는 동안 천천히 아래로 스크롤(오른손 엄지가 쓸어 올림)
+  // ph2(a1): 답장을 읽는 동안 끝에서 화면이 천천히 위로 흐른다
   const msgs = aiOldAI.concat([sent, { me: false, ai: true, text: AI_A1, bars: 12, time: '오전 2:07' }]);
   const L = aiLayout(msgs), last = L.items[L.items.length - 1], D = a._dur || 6.4;
-  const sw = [D - 1.6, D - 0.6], sc = last.y - 10 + sw.reduce((s, x) => s + 60 * easeInOut(aiK(lt, x, x + 0.5)), 0);
-  const swipe = sw.map(x => aiK(lt, x - 0.05, x + 0.45)).find(k => k > 0 && k < 1);
-  const R = swipe != null ? [120, lerp(260, 80, swipe)] : [196, 392];
+  const sc = last.y - 10 + 50 * easeInOut(aiK(lt, D - 0.7, D));
   const S = aiChatScreen({ who: 'ai', msgs, kb: 0, time: '2:07', scroll: sc });
-  return aiPov(t, { screen: S.svg, thumbs: [[-196, 392], R], cam: qLerpCam(lt / D, [960, 470, 1.3], [960, 430, 1.36]) });
+  return aiPov(t, { screen: S.svg, cam: qLerpCam(lt / D, [960, 470, 1.3], [960, 430, 1.36]) });
 }
 
 /* =========== 2. 얼굴: 위로받은 얼굴 + 화내지도·졸지도·귀찮아하지도 ✕ =========== */
@@ -232,9 +211,10 @@ const aiEmo = (kind, x, y, r, kX, kIn) => {
   if (kind === 'angry') g += `<path d="M-34 -22 L-10 -10 M34 -22 L10 -10" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><circle cx="-18" cy="2" r="6" fill="${INK}"/><circle cx="18" cy="2" r="6" fill="${INK}"/><path d="M-22 32 Q0 16 22 32" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
   else if (kind === 'sleep') g += `<path d="M-30 0 Q-18 10 -6 0 M6 0 Q18 10 30 0" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><ellipse cx="0" cy="26" rx="8" ry="10" fill="${INK}"/>` + fT(44, -34, 'z', 34, '#fff', { stroke: INK, sw: 5 });
   else g += `<path d="M-30 -2 L-8 -2 M8 -2 L30 -2" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M-16 28 L16 28" stroke="${INK}" stroke-width="7" stroke-linecap="round"/><path d="M30 22 Q56 14 66 30 Q60 46 40 40" fill="#fff" stroke="${INK}" stroke-width="5"/>`;
-  if (kX > 0.01) { const d = 120, p1 = f1(d * clamp(kX * 2, 0, 1)), p2 = f1(d * clamp(kX * 2 - 1, 0, 1));
-    g += `<g stroke-linecap="round"><path d="M-42 -42 L42 42" stroke="${INK}" stroke-width="30" stroke-dasharray="${p1} 200"/><path d="M-42 -42 L42 42" stroke="#E5484D" stroke-width="18" stroke-dasharray="${p1} 200"/>` +
-      `<path d="M42 -42 L-42 42" stroke="${INK}" stroke-width="30" stroke-dasharray="${p2} 200"/><path d="M42 -42 L-42 42" stroke="#E5484D" stroke-width="18" stroke-dasharray="${p2} 200"/></g>`; }
+  g += fT(0, r + 46, kind === 'angry' ? '화' : kind === 'sleep' ? '졸음' : '귀찮음', 44, '#fff', { stroke: INK, sw: 8 });
+  if (kX > 0.01) { const d = 190, p1 = f1(d * clamp(kX * 2, 0, 1)), p2 = f1(d * clamp(kX * 2 - 1, 0, 1)), e = r * 1.08;
+    g += `<g stroke-linecap="round" opacity=".88"><path d="M${-e} ${-e} L${e} ${e}" stroke="${INK}" stroke-width="17" stroke-dasharray="${p1} 400"/><path d="M${-e} ${-e} L${e} ${e}" stroke="#E5484D" stroke-width="9" stroke-dasharray="${p1} 400"/>` +
+      `<path d="M${e} ${-e} L${-e} ${e}" stroke="${INK}" stroke-width="17" stroke-dasharray="${p2} 400"/><path d="M${e} ${-e} L${-e} ${e}" stroke="#E5484D" stroke-width="9" stroke-dasharray="${p2} 400"/></g>`; }
   return g + '</g>';
 };
 function aifaceScene(t, lt, a) {
@@ -249,7 +229,7 @@ function aifaceScene(t, lt, a) {
   const kT = ACT.symK(lt, t1 - 0.1, D);
   if (kT > 0.01) ov += `<g transform="translate(330 250) scale(${f1(kT * 125) / 100})"><circle r="74" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-14" y="-98" width="28" height="22" rx="5" fill="${INK}"/><path d="M0 0 L0 -50" stroke="#E5484D" stroke-width="8" stroke-linecap="round" transform="rotate(${f1(36 * Math.min(1, (lt - t1 + 0.1) * 4))})"/><circle r="8" fill="${INK}"/>${fT(0, 120, '1초', 54, '#fff', { stroke: INK, sw: 8 })}</g>`;
   ov += aiEmo('angry', 1320, 250, 82, aiK(lt, tA + 0.15, tA + 0.45), aiK(lt, tA - 0.25, tA + 0.05)) + aiEmo('sleep', 1560, 250, 82, aiK(lt, tS + 0.1, tS + 0.4), aiK(lt, tS - 0.3, tS)) + aiEmo('sigh', 1800, 250, 82, aiK(lt, tB + 0.15, tB + 0.45), aiK(lt, tB - 0.3, tB));
-  const W = qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(905) + aiBedFrame() + aiClock('02:07')) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.9 + 0.08 * Math.sin(lt * 9)));
+  const W = qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame()) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.9 + 0.08 * Math.sin(lt * 9)));
   return aiDefs() + gfDefs() + qDefs() + W + ov;
 }
 
@@ -258,51 +238,48 @@ const AI_TOLD = [{ date: '3월 2일' }, { me: true, text: '생일 축하한다',
 // 침대 몽타주(세 시간): u = 몽타주 시작 뒤 시간, U = 전체 길이
 function aiLapse(t, u, U) {
   const k = clamp(u / U, 0, 1), mins = Math.round(lerp(2 * 60 + 8, 5 * 60 + 12, Math.pow(k, 0.9))), clk = `0${Math.floor(mins / 60)}:${String(mins % 60).padStart(2, '0')}`;
-  // 박자: 폰 확인(빛 켜짐/꺼짐) → 천장 보기 → 양 세기 → 꾸벅
+  // 박자: 폰 확인(빛 켜짐/꺼짐) → 천장 보기 → 양 세기(생각 구름) → 꾸벅
   const B = [0, U * 0.22, U * 0.42, U * 0.66, U];
-  const glow = u < B[1] ? ((u % 0.5) < 0.32 ? 1 : 0) : 0, stare = u >= B[1] && u < B[2], sheep = u >= B[2] && u < B[3], doze = u >= B[3];
-  const dozeK = easeInOut(aiK(u, B[3], B[3] + 0.6)), nod = doze ? 10 * Math.max(0, Math.sin((u - B[3]) * 5)) : 0;
+  const glow = u < B[1] ? ((u % 0.5) < 0.32 ? 1 : 0.35) : 0.3, stare = u >= B[1] && u < B[2], sheep = u >= B[2] && u < B[3], doze = u >= B[3];
+  const dozeK = easeInOut(aiK(u, B[3], B[3] + 0.6)), nod = doze ? 6 * Math.max(0, Math.sin((u - B[3]) * 5)) : 0;
   const face = { eyes: { open: doze ? lerp(0.55, 0, dozeK) : sheep ? 0.6 - 0.15 * Math.sin(u * 3) : 1 - ACT.natBlink(u, 44), flat: sheep ? 0.4 : 0.15, size: stare ? 1.05 : 1 }, brow: { worry: 0.4 }, mouth: { v: ACT.VIS.M, o: 0, c: -1 }, blush: 0.2,
     hfx: tt => doze ? `<g opacity="${f1(dozeK * 100) / 100}">${fT(330 + Math.sin(u * 2) * 6, 70 - (u * 40) % 40, 'z', 48, '#fff', { stroke: INK })}${fT(366, 24 - (u * 40 + 20) % 40, 'z', 36, '#fff', { stroke: INK })}</g>` : '' };
-  const look = u < B[1] ? [0, 0.8] : stare ? [0.1, -1] : sheep ? [lerp(-0.8, 0.8, ((u - B[2]) / 0.55) % 1), -0.8] : [0, 0.6];
-  const zero = aiBedZero('_ai2', t, face, { look, headDy: 26 * dozeK + nod, tilt: 8 * dozeK });
+  const look = u < B[1] ? [0, 0.8] : stare ? [0.1, -1] : sheep ? [0.6, -0.8] : [0, 0.6];
+  const lap = doze ? dozeK : 0, hy = lerp(378, 420, lap);
+  const zero = aiBedZero('_ai2', t, face, { look, headDy: 12 * dozeK + nod, tilt: 7 * dozeK, pose: A2.pose({ hL: [173, hy], hR: [227, hy] }) });
   let sh = '';
-  if (sheep) for (let i = 0; i < 4; i++) { const s0 = B[2] + i * 0.55, q = (u - s0) / 0.8; if (q > 0 && q < 1) sh += aiSheep(lerp(740, 1190, q), 600 - 150 * Math.sin(q * Math.PI), 1.15, lerp(-14, 14, q)); }
+  if (sheep) { const kc = ACT.symK(u, B[2], B[3] - 0.15), cx = 1170, cy = 470;
+    if (kc > 0.01) { sh += `<g transform="translate(${cx} ${cy}) scale(${f1(kc * 100) / 100})"><circle cx="-150" cy="150" r="14" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="-112" cy="112" r="22" fill="#fff" stroke="${INK}" stroke-width="5"/>` +
+      `<path d="M-120 40 Q-150 -40 -80 -60 Q-60 -120 10 -100 Q70 -140 120 -80 Q190 -70 170 10 Q190 80 110 80 Q60 120 0 90 Q-60 120 -100 80 Q-140 80 -120 40Z" fill="#fff" stroke="${INK}" stroke-width="7"/>` +
+      `<g stroke="${INK}" stroke-width="5" fill="#C98B4E"><path d="M-30 74 L-30 14 L-22 4 L-14 14 L-14 74 Z"/><path d="M14 74 L14 14 L22 4 L30 14 L30 74 Z"/><rect x="-50" y="28" width="100" height="12" rx="3"/><rect x="-50" y="52" width="100" height="12" rx="3"/></g>`;
+      for (let i = 0; i < 3; i++) { const q = ((u - B[2]) / 0.6 - i * 0.55); if (q > 0 && q < 1) sh += aiSheep(lerp(-120, 120, q), 30 - 100 * Math.sin(q * Math.PI), 0.78, lerp(-14, 14, q)); }
+      sh += '</g>'; } }
   const cam = qLerpCam(u / U, [1220, 740, 1.48], [1240, 760, 1.56]);
-  const ff = `<g transform="translate(150 140)" opacity=".92"><path d="M-40 -30 L0 0 L-40 30 Z M0 -30 L40 0 L0 30 Z" fill="#fff" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`;
-  return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45) + qCam(cam, aiBedBack() + zero + aiBlanketFront(905) + aiBedFrame() + aiClock(clk, { big: true }) + sh) + aiNightTint(1) +
-    qCam(cam, aiFaceGlow(955, 700, glow * 0.9)) + ff;
+  const ff = `<g transform="translate(170 150)"><rect x="-74" y="-46" width="148" height="92" rx="20" fill="#000" opacity=".45"/><path d="M-52 -28 L-4 0 L-52 28 Z M0 -28 L48 0 L0 28 Z" fill="#fff" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`;
+  return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame() + aiClock(clk, { big: true })) + aiNightTint(1) +
+    qCam(cam, aiFaceGlow(955, 700, glow * 0.9) + sh) + ff;
 }
 function aisendScene(t, lt, a) {
   const ph = a.ph, run = a._run;
   if (ph === 0) {
-    // 목록으로 → '태호' 누름 → 태호 방(오래된 대화) → 자판 → 입력칸 꾹 → 붙여넣기
+    // 목록으로 → '태호' 줄이 눌린 표시 → 태호 방(오래된 대화) → 자판이 올라옴
     const kL = easeInOut(aiK(run, 0, 0.3)), tap = 0.78, kRoom = easeInOut(aiK(run, 0.98, 1.28));
     let scr;
     if (run < 0.98) { const prevS = aiChatScreen({ who: 'ai', msgs: aiOldAI.concat([{ me: true, text: AI_Z1, time: '오전 2:07' }, { me: false, ai: true, text: AI_A1, bars: 12, time: '오전 2:07' }]), time: '2:07' }).svg;
-      scr = `<g transform="translate(${f1(444 * kL)} 0)">${prevS}</g><g transform="translate(${f1(-444 * (1 - kL))} 0)">${aiListScreen({ time: '2:07', press: run > tap && run < tap + 0.2 ? 1 : -1 })}</g>`; }
-    else { const kb = easeInOut(aiK(run, 1.4, 1.7));
-      const room = aiChatScreen({ who: 'tae', msgs: AI_TOLD, kb, time: '2:07', paste: easeOutBack(aiK(run, 2.0, 2.22)) }).svg;
-      scr = `<g transform="translate(${f1(-444 * kRoom)} 0)">${aiListScreen({ time: '2:07', press: 1 })}</g><g transform="translate(${f1(444 * (1 - kRoom))} 0)">${room}</g>`; }
-    const row = [-60, -290 + 104 + 46], mv = easeInOut(aiK(run, 0.35, tap)), dip = ACT.pulse(run, tap - 0.03, 0.16);
-    let R = run < 1.0 ? [lerp(196, row[0], mv), lerp(392, row[1] + 8 * (1 - dip) + 10, mv)] : [lerp(row[0], 196, aiK(run, 1.0, 1.3)), lerp(row[1], 392, aiK(run, 1.0, 1.3))];
-    const inY = 440 - 300 - 37;
-    if (run > 1.6) R = [lerp(196, -60, easeInOut(aiK(run, 1.6, 1.85))), lerp(392, inY + 8, easeInOut(aiK(run, 1.6, 1.85)))];
-    return aiPov(t, { screen: scr, thumbs: [[-196, 392], R], cam: qLerpCam(run / 2.3, [960, 470, 1.26], [960, 520, 1.3]) });
+      scr = `<g transform="translate(${f1(444 * kL)} 0)">${prevS}</g><g transform="translate(${f1(-444 * (1 - kL))} 0)">${aiListScreen({ time: '2:07', press: run > tap ? AI_TROW : -1 })}</g>`; }
+    else { const kb = easeInOut(aiK(run, 1.5, 1.8));
+      const room = aiChatScreen({ who: 'tae', msgs: AI_TOLD, kb, time: '2:07' }).svg;
+      scr = `<g transform="translate(${f1(-444 * kRoom)} 0)">${aiListScreen({ time: '2:07', press: AI_TROW })}</g><g transform="translate(${f1(444 * (1 - kRoom))} 0)">${room}</g>`; }
+    return aiPov(t, { screen: scr, cam: qLerpCam(run / 2.3, [960, 470, 1.26], [960, 520, 1.3]) });
   }
   const tAns = ph === 1 ? gfW(a, ['답은'], 4.6) - 0.15 : -1;
   if (ph === 1 && lt < tAns) {
-    // 붙여넣기 → (혹시 몰라…) → '보냈습니다'에 전송, 숫자 1이 남는다
+    // 같은 문장이 붙여넣어짐(입력칸 반짝) → '보냈습니다'에 전송, 숫자 1이 남는다
     const tPaste = 0.35, tSend = gfW(a, ['보냈'], 3.6);
     const typed = lt < tPaste ? '' : lt < tSend ? AI_Z1 : '', kSent = aiK(lt, tSend, tSend + 0.18), kb = lt < tSend + 0.1 ? 1 : 1 - easeInOut(aiK(lt, tSend + 0.1, tSend + 0.4));
     const msgs = AI_TOLD.concat([{ date: '오늘' }]); if (lt >= tSend) msgs.push({ me: true, text: AI_Z1, time: '오전 2:08', unread: true, k: kSent });
-    const S = aiChatScreen({ who: 'tae', msgs, typed, kb, time: lt < tSend ? '2:07' : '2:08', paste: lt < tPaste ? 1 - aiK(lt, tPaste - 0.08, tPaste) : 0, send: Math.abs(lt - tSend) < 0.07 });
-    const pasteBtn = [-120, S.yIn - 44], sendPt = [188, S.yIn + S.yIn * 0 + 50];
-    let R;
-    if (lt < tPaste + 0.1) R = [lerp(-60, pasteBtn[0], aiK(lt, 0, tPaste - 0.05)), lerp(440 - 337 + 8, pasteBtn[1] + 6 * (1 - ACT.pulse(lt, tPaste - 0.05, 0.14)), aiK(lt, 0, tPaste - 0.05))];
-    else if (lt < tSend + 0.15) { const mv = easeInOut(aiK(lt, tSend - 0.55, tSend - 0.05)), hes = lt < tSend - 0.55 ? 0 : 1; R = [lerp(150, sendPt[0], mv), lerp(300, sendPt[1] + 8 * (1 - ACT.pulse(lt, tSend - 0.04, 0.14)), mv)]; if (!hes) R = [lerp(pasteBtn[0], 150, aiK(lt, tPaste + 0.1, tPaste + 0.5)), lerp(pasteBtn[1], 300, aiK(lt, tPaste + 0.1, tPaste + 0.5))]; }
-    else R = [lerp(sendPt[0], 196, aiK(lt, tSend + 0.15, tSend + 0.5)), lerp(sendPt[1], 392, aiK(lt, tSend + 0.15, tSend + 0.5))];
-    return aiPov(t, { screen: S.svg, thumbs: [[-196, 392], R], cam: qLerpCam(lt / tAns, [960, 520, 1.3], [960, 640, 1.38]) });
+    const S = aiChatScreen({ who: 'tae', msgs, typed, kb, time: lt < tSend ? '2:07' : '2:08', flash: ACT.pulse(lt, tPaste, 0.4) });
+    return aiPov(t, { screen: S.svg, cam: qLerpCam(lt / tAns, [960, 520, 1.3], [960, 640, 1.38]) });
   }
   // 몽타주: n2 '답은'부터 s3 끝까지
   const n2 = TL.lines.find(l => l.id === 'n2'), s3 = TL.lines.find(l => l.id === 's3'), wa = (n2.words || []).find(w => w.w.includes('답은')), st = n2.t0 - 0.15 + (wa ? wa.t : 4.6);
@@ -315,14 +292,15 @@ function aireplyScene(t, lt, a) {
   const ph = a.ph, run = a._run;
   const tMsgs = (k) => AI_TOLD.concat([{ date: '오늘' }, { me: true, text: AI_Z1, time: '오전 2:08' }, { me: false, text: AI_T1, time: '오전 5:12', k }, { me: false, emoji: 'chicken', k }]);
   if (ph === 0 && run < 0.78) {
-    // 띵(진동) → 벌떡: 눈 번쩍, 몸이 늘었다 돌아옴
-    const j = A2.spring(run, 0.08, 3.2, 0.3), wake = run > 0.08;
-    const face = { eyes: { open: wake ? 1 : 0, size: wake ? 1.25 - 0.2 * aiK(run, 0.3, 0.7) : 1 }, brow: { raise: wake ? 14 : 0 }, mouth: wake ? { v: ACT.VIS.O, o: 0.7 } : { v: ACT.VIS.M, o: 0, c: -1 }, blush: 0.25,
-      fx: tt => wake ? ACT.sym('burst', 330, 70, run, 0.1, 0.8) : '' };
-    const zero = aiBedZero('_ai3', t, face, { look: [0, 0.7], headDy: wake ? -6 * j : 26, tilt: wake ? 0 : 8, sy: 1 + 0.07 * j });
-    const cam = qLerpCam(run / 0.7, [1100, 720, 1.6], [1020, 700, 1.9]), buzz = run < 0.5 ? Math.sin(run * 90) * 4 : 0;
-    return aiDefs() + gfDefs() + qDefs() + `<g transform="translate(${f1(buzz)} 0)">` + qPlate('ainight', cam, 0.45) + qCam(cam, aiBedBack() + zero + aiBlanketFront(905) + aiBedFrame() + aiClock('05:12', { big: true })) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 1)) + `</g>` +
-      (run > 0.06 && run < 0.7 ? fx(t, t - run + 0.06, t - run + 0.7, 1500, 300, '띵!', '#FFE34D', { size: 100, rot: 8 }) : '');
+    // 띵(진동) → 벌떡: 눈 번쩍, 몸이 늘었다 돌아옴, 무릎의 폰을 들어 올림
+    const j = A2.spring(run, 0.08, 3.2, 0.3), wake = run > 0.08, up = easeOut(aiK(run, 0.12, 0.4)), hy = lerp(420, 378, up);
+    const face = { eyes: { open: wake ? 1 : 0, size: wake ? 1.25 - 0.2 * aiK(run, 0.3, 0.7) : 1 }, brow: { raise: wake ? 14 : 0 }, mouth: wake ? { v: ACT.VIS.O, o: 0.7 } : { v: ACT.VIS.M, o: 0, c: -1 }, blush: 0.25 };
+    const zero = aiBedZero('_ai3', t, face, { look: [0, 0.7], headDy: wake ? -6 * j : 12, tilt: wake ? 0 : 7, sy: 1 + 0.07 * j, pose: A2.pose({ hL: [173, hy], hR: [227, hy] }) });
+    const cam = qLerpCam(run / 0.6, [1240, 760, 1.56], [1060, 730, 1.85]), buzz = run < 0.5 ? Math.sin(run * 90) * 4 : 0;
+    const kD = ACT.symK(run, 0.06, 0.7), kE = ACT.symK(run, 0.12, 0.7);
+    const fxs = (kD > 0.01 ? `<g transform="translate(1110 860) rotate(-8) scale(${f1(kD * 100) / 100})">${fT(0, 0, '띵!', 62, '#FFE34D', { stroke: INK, sw: 10 })}</g>` : '') +
+      (kE > 0.01 ? `<g transform="translate(1090 560) rotate(12) scale(${f1(kE * 100) / 100})">${fT(0, 0, '!', 96, '#fff', { stroke: INK, sw: 12 })}</g>` : '');
+    return aiDefs() + gfDefs() + qDefs() + `<g transform="translate(${f1(buzz)} 0)">` + qPlate('ainight', cam, 0.45) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame() + aiClock('05:12', { big: true })) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 1) + fxs) + `</g>`;
   }
   if (ph === 0 || ph === 1) {
     const k = ph === 0 ? easeOutBack(aiK(run, 0.82, 1.05)) : 1, D = a._dur || 3.2;
@@ -330,21 +308,19 @@ function aireplyScene(t, lt, a) {
     const cam = ph === 0 ? [960, 560, 1.28] : qLerpCam(lt / D, [960, 560, 1.28], [960, 700, 1.48]);
     return aiPov(t, { screen: S.svg, cam });
   }
-  // ph2(s5): 나란히 비교(기기 없이 말풍선만): 왼쪽 AI 장문은 끝없이 내려가고, 오른쪽 태호는 한 줄
-  const run2 = lt - 0.15, unroll = easeInOut(aiK(run2, 0.05, 1.3)), kR = easeOutBack(aiK(run2, 0.45, 0.7));
+  // ph2(s5): 나란히 비교(기기 없이 말풍선만): 왼쪽 AI 장문은 끝없이 내려가고, 오른쪽 태호는 한 줄 + 닭다리
+  const run2 = lt - 0.15, unroll = easeInOut(aiK(run2, 0.05, 1.3)), kR = easeOutBack(aiK(run2, 0.35, 0.6)), kC = easeOutBack(aiK(run2, 0.55, 0.8));
   let g = `<rect x="-300" y="-200" width="2600" height="1500" fill="#1B2448"/><line x1="960" y1="-200" x2="960" y2="1400" stroke="#3B4C86" stroke-width="6" stroke-dasharray="20 18"/>`;
-  // 왼쪽
-  g += aiStar(330, 150, 46) + fT(400, 168, 'AI', 54, '#fff', { anchor: 'start' }) + `<g transform="translate(560 124)">${label(0, 0, '답장 1초', { size: 34, bg: '#BFE3FF' })}</g>`;
-  const LW = 640, lx = 170, lH = lerp(180, 1500, unroll);
-  g += `<rect x="${lx}" y="230" width="${LW}" height="${f1(lH)}" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
-  aiWrap(AI_A1, 16).forEach((l, i) => { g += fT(lx + 34, 300 + i * 56, l, 40, INK, { anchor: 'start', w: 700 }); });
-  for (let b = 0; b < 26; b++) { const y = 300 + 56 * 3 + b * 50; if (y > 230 + lH - 30) break; g += `<rect x="${lx + 34}" y="${y - 6}" width="${f1((LW - 68) * (b % 5 === 4 ? 0.45 : 0.7 + 0.3 * hash(b * 7 + 3)))}" height="20" rx="10" fill="#D5DAE2"/>`; }
-  g += `<rect x="${lx + LW - 26}" y="250" width="12" height="${f1(Math.max(40, lH - 40))}" rx="6" fill="#E6E9EF"/><rect x="${lx + LW - 26}" y="250" width="12" height="40" rx="6" fill="#9AA3B2"/>`;
-  // 오른쪽
-  g += aiAvT(1150, 150, 46) + fT(1220, 168, '태호', 54, '#fff', { anchor: 'start' }) + `<g transform="translate(1470 124)">${label(0, 0, '답장 3시간', { size: 34, bg: '#FFE14A' })}</g>`;
-  if (kR > 0.01) g += `<g transform="translate(1110 230) scale(${f1(kR * 100) / 100})"><rect x="0" y="0" width="${f1(aiTW(AI_T1, 40) + 68)}" height="88" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>${fT(34, 58, AI_T1, 40, INK, { anchor: 'start', w: 700 })}` +
-    `<g transform="translate(64 160)">${aiChicken(0, 0, 1.3)}</g></g>`;
-  const cam = qLerpCam(run2 / 1.9, [960, 470, 1.12], [960, 520, 1.16]);
+  g += aiStar(220, 120, 46) + fT(282, 140, 'AI', 58, '#fff', { anchor: 'start' }) + `<g transform="translate(560 116)">${label(0, 0, '답장 1초', { size: 38, bg: '#BFE3FF' })}</g>`;
+  const LW = 700, lx = 140, lH = lerp(200, 1500, unroll);
+  g += `<rect x="${lx}" y="200" width="${LW}" height="${f1(lH)}" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>`;
+  aiWrap(AI_A1, 14).forEach((l, i) => { g += fT(lx + 36, 270 + i * 60, l, 44, INK, { anchor: 'start', w: 700 }); });
+  const nL = aiWrap(AI_A1, 14).length;
+  for (let b = 0; b < 26; b++) { const y = 270 + 60 * nL + b * 52; if (y > 200 + lH - 30) break; g += `<rect x="${lx + 36}" y="${y - 22}" width="${f1((LW - 72) * (b % 5 === 4 ? 0.45 : 0.7 + 0.3 * hash(b * 7 + 3)))}" height="22" rx="11" fill="#D5DAE2"/>`; }
+  g += aiAvT(1040, 120, 46) + fT(1102, 140, '태호', 58, '#fff', { anchor: 'start' }) + `<g transform="translate(1430 116)">${label(0, 0, '답장 3시간', { size: 38, bg: '#FFE14A' })}</g>`;
+  if (kR > 0.01) g += `<g transform="translate(1000 200) scale(${f1(kR * 100) / 100})"><rect x="0" y="0" width="${f1(aiTW(AI_T1, 44) + 72)}" height="96" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>${fT(36, 64, AI_T1, 44, INK, { anchor: 'start', w: 700 })}</g>`;
+  if (kC > 0.01) g += `<g transform="translate(1000 320) scale(${f1(kC * 100) / 100})"><rect x="0" y="0" width="170" height="140" rx="30" fill="#fff" stroke="${INK}" stroke-width="7"/>${aiChicken(88, 72, 1.25)}</g>`;
+  const cam = qLerpCam(run2 / 1.9, [960, 455, 1.24], [960, 490, 1.27]);
   return aiDefs() + gfDefs() + qCam(cam, g);
 }
 
@@ -352,10 +328,10 @@ function aireplyScene(t, lt, a) {
 function aideadScene(t, lt, a) {
   const ph = a.ph, run = a._run;
   if (ph === 0) {
-    const face = { eyes: { flat: 0.5, hl: false, open: 1 - ACT.blinks(run, [0.4, 0.85], 0.4), size: 0.97 }, brow: { asymR: 12 * ACT.pulse(run, 0.9, 0.3) }, mouthPath: 'M184 238 L216 238', blush: 0.15, fx: tt => ACT.sym('dots', 318, 92, run, 0.15, 1.2) };
+    const face = { eyes: { flat: 0.5, hl: false, open: 1 - ACT.blinks(run, [0.4, 0.85], 0.4), size: 0.97 }, brow: { asymR: 12 * ACT.pulse(run, 0.9, 0.3) }, mouthPath: 'M184 238 L216 238', blush: 0.15 };
     const zero = aiBedZero('_ai4', t, face, { look: [0, 0.75] });
     const cam = qLerpCam(run / 1.1, [960, 690, 2.1], [960, 690, 2.2]);
-    return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(905) + aiBedFrame()) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.9));
+    return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame()) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.9));
   }
   const D = a._dur || 3.4, tAI = gfW(a, ['AI', '에이'], 1.7), shake = lt > 0.15 && lt < 1.3 ? Math.sin((lt - 0.15) * 15) * 9 * (1 - aiK(lt, 0.9, 1.3)) : 0, proud = easeInOut(aiK(lt, tAI - 0.2, tAI + 0.5));
   const mouth = gfMouth(t, { v: ACT.VIS.M, o: 0, c: lerp(-1, 5, proud) }, lerp(-1, 4, proud));
@@ -363,35 +339,36 @@ function aideadScene(t, lt, a) {
   const look = lt < 1.3 ? [Math.sin((lt - 0.15) * 15) * 0.6, 0.5] : [0, 0.8];
   const zero = aiBedZero('_ai5', t, face, { look, tilt: shake, headDy: -4 * proud });
   const cam = qLerpCam(lt / D, [960, 690, 2.2], [960, 700, 2.35]);
-  return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(905) + aiBedFrame()) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.95 + 0.1 * proud));
+  return aiDefs() + gfDefs() + qDefs() + qPlate('ainight', cam, 0.45, { blur: true }) + qCam(cam, aiBedBack() + zero + aiBlanketFront(885) + aiBedFrame()) + aiNightTint(1) + qCam(cam, aiFaceGlow(955, 700, 0.95 + 0.1 * proud));
 }
 
 /* =========== 6. 요즘 사람들(지하철·사무실·카페): 모두 폰 뒷면 + 푸른 빛 =========== */
 // 화면 빛을 받는 사람(폰 뒷면). 작은 말풍선(별 아이콘)이 폰 위에서 깜빡
+const AI_SPEC = `<g fill="none" stroke="${INK}" stroke-width="7"><circle cx="165" cy="190" r="27"/><circle cx="235" cy="190" r="27"/><path d="M192 188 Q200 182 208 188"/></g>`;
 function aiCrowdP(key, t, x, y, s, o) {
-  const nod = Math.max(0, Math.sin(t * 3.1 + o.seed)) * 7;
-  const face = { eyes: { open: 1 - ACT.natBlink(t, o.seed), squint: 0.3, size: 0.95 }, brow: { worry: 0.15 }, mouth: { v: ACT.VIS.M, o: 0, c: 3 }, blush: 0.3 };
-  const p = gfP(key, face, Object.assign({ x, y, s, t, seed: o.seed, pose: A2.pose({ hL: [178, 352], hR: [222, 362] }), look: [0.05, 0.8], headDy: nod, holdL: { svg: GF_PHBACK, rot: -8 }, handL: 'grip', vshade: 'rgba(0,0,0,0.18)' }, o));
-  const hx = x + (178 - 200) * s, hy = y + (300 - 560) * s, pulse = 0.6 + 0.4 * Math.sin(t * 4 + o.seed);
-  const bub = `<g transform="translate(${f1(x + 150 * s)} ${f1(y - 570 * s)}) scale(${f1(s * 1.25 * 100) / 100})" opacity="${f1(pulse * 100) / 100}"><path d="M-62 -40 Q-62 -60 -42 -60 L42 -60 Q62 -60 62 -40 L62 10 Q62 30 42 30 L-20 30 L-44 54 L-36 30 L-42 30 Q-62 30 -62 10Z" fill="#fff" stroke="${INK}" stroke-width="6"/>${aiStar(0, -15, 26)}</g>`;
-  return { svg: p + bub, glow: aiFaceGlow(x - 10 * s, y - 380 * s, 1, 0.62 * s) };
+  const nod = Math.max(0, Math.sin(t * 3.1 + o.seed)) * 6;
+  const face = { eyes: { open: 1 - ACT.natBlink(t, o.seed), squint: 0.3, size: 0.95 }, brow: { worry: 0.15 }, mouth: { v: ACT.VIS.M, o: 0, c: 3 }, blush: 0.3, fx: o.glasses ? AI_SPEC : '' };
+  const p = gfP(key, face, Object.assign({ x, y, s, t, seed: o.seed, pose: A2.pose({ hL: [173, 378], hR: [227, 378] }), look: [0.05, 0.8], headDy: nod, holdL: { svg: AI_PHB, rot: 0 }, handL: 'grip', handR: 'grip', vshade: 'rgba(0,0,0,0.18)' }, o));
+  const pop = 1 + 0.06 * Math.sin(t * 4 + o.seed);
+  const bub = `<g transform="translate(${f1(x + 165 * s)} ${f1(y - 560 * s)}) scale(${f1(s * 1.15 * pop * 100) / 100})"><path d="M-62 -40 Q-62 -60 -42 -60 L42 -60 Q62 -60 62 -40 L62 10 Q62 30 42 30 L-20 30 L-44 54 L-36 30 L-42 30 Q-62 30 -62 10Z" fill="#fff" stroke="${INK}" stroke-width="6"/>${aiStar(0, -15, 26)}</g>`;
+  return { svg: p + bub, glow: aiFaceGlow(x, y - 380 * s, 1, 0.62 * s) };
 }
 function aicrowdScene(t, lt, a) {
   const t2 = gfW(a, ['친구보다'], 2.8) - 0.2, t3 = gfW(a, ['마음을'], 5.0) - 0.45;
   if (lt < t2) {
-    const cam = qLerpCam(lt / t2, [960, 600, 1.0], [960, 620, 1.08]);
-    const A = aiCrowdP('_ac1', t, 680, 1180, 1.3, { seed: 3, vest: '#9AA3B0', hair: '#2F2F33', collar: true }), B = aiCrowdP('_ac2', t, 1300, 1180, 1.3, { seed: 7, vest: '#A9927C', hair: '#4A3A2E', longHair: '#4A3A2E', lashes: true });
-    return aiDefs() + gfDefs() + qDefs() + qPlate('aisubway', cam, 0.5) + qCam(cam, qShadow(680, 1180, 130, 0.6) + qShadow(1300, 1180, 130, 0.6) + A.svg + B.svg) + fFull('#0A1238', 0.12) + qCam(cam, A.glow + B.glow);
+    const cam = qLerpCam(lt / t2, [990, 700, 1.42], [990, 710, 1.5]);
+    const A = aiCrowdP('_ac1', t, 690, 1180, 1.3, { seed: 3, vest: '#4E8F6A', hair: '#3B2A20', glasses: true }), B = aiCrowdP('_ac2', t, 1290, 1180, 1.3, { seed: 7, vest: '#D9776B', hair: '#2A1E18', longHair: '#2A1E18', lashes: true });
+    return aiDefs() + gfDefs() + qDefs() + qPlate('aisubway', cam, 0.5, { blur: true }) + qCam(cam, A.svg + B.svg) + fFull('#0A1238', 0.14) + qCam(cam, A.glow + B.glow);
   }
   if (lt < t3) {
-    const u = lt - t2, cam = qLerpCam(u / (t3 - t2), [1000, 600, 1.15], [990, 610, 1.22]);
-    const A = aiCrowdP('_ac3', t, 960, 1170, 1.35, { seed: 11, vest: '#7E8CA0', hair: '#2F2F33', collar: true, tie: '#3D5A80' });
-    return aiDefs() + gfDefs() + qDefs() + qPlate('aioffice', cam, 0.5) + qCam(cam, qShadow(960, 1170, 140, 0.6) + A.svg) + qCam(cam, A.glow);
+    const u = lt - t2, cam = qLerpCam(u / (t3 - t2), [960, 700, 1.42], [960, 710, 1.5]);
+    const A = aiCrowdP('_ac3', t, 960, 1180, 1.3, { seed: 11, vest: '#F2F4F7', vshade: 'rgba(0,0,0,0.12)', hair: '#4A3A2E', collar: true, tie: '#3D5A80' });
+    return aiDefs() + gfDefs() + qDefs() + qPlate('aioffice', cam, 0.5, { blur: true }) + qCam(cam, A.svg) + qCam(cam, A.glow);
   }
-  const u = lt - t3, D = (a._dur || 6.6) - t3, cam = qLerpCam(u / D, [1060, 620, 1.2], [1070, 630, 1.28]);
-  const A = aiCrowdP('_ac4', t, 1090, 1110, 1.1, { seed: 17, vest: '#C9B8A6', hair: '#5A4030', longHair: '#5A4030', lashes: true });
-  // 카페 탁자(앞판이 있어 다리를 가림)
-  const table = `<rect x="820" y="905" width="560" height="26" rx="10" fill="#8A5C34" stroke="${INK}" stroke-width="8"/><rect x="845" y="931" width="510" height="220" fill="#6E4626" stroke="${INK}" stroke-width="8"/>` +
-    `<g transform="translate(1270 905)"><rect x="-26" y="-58" width="52" height="58" rx="8" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M26 -44 Q46 -40 44 -24 Q42 -12 26 -14" fill="none" stroke="${INK}" stroke-width="6"/><path d="M-10 -72 Q-4 -84 -10 -96 M8 -72 Q14 -84 8 -96" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/></g>`;
-  return aiDefs() + gfDefs() + qDefs() + qPlate('aicafe', cam, 0.5) + qCam(cam, A.svg + table) + qCam(cam, A.glow);
+  const u = lt - t3, D = (a._dur || 6.6) - t3, cam = qLerpCam(u / D, [1040, 700, 1.42], [1050, 710, 1.5]);
+  const A = aiCrowdP('_ac4', t, 1080, 1180, 1.3, { seed: 17, vest: '#E8C15A', hair: '#6A4A30', longHair: '#6A4A30', lashes: true, glasses: true });
+  // 카페 탁자: 윗면 가장자리와 컵만(앞쪽은 화면 아래로 이어짐)
+  const table = `<path d="M560 1000 Q1050 960 1560 1000 L1600 1400 L520 1400 Z" fill="#6E4626"/><path d="M560 1000 Q1050 960 1560 1000" fill="none" stroke="${INK}" stroke-width="9"/><path d="M570 1012 Q1050 974 1550 1012" fill="none" stroke="#9A6A40" stroke-width="10"/>` +
+    `<g transform="translate(1330 990)"><rect x="-30" y="-66" width="60" height="66" rx="9" fill="#fff" stroke="${INK}" stroke-width="7"/><path d="M30 -50 Q54 -46 52 -26 Q50 -12 30 -14" fill="none" stroke="${INK}" stroke-width="7"/><path d="M-12 -80 Q-5 -94 -12 -108 M10 -80 Q17 -94 10 -108" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/></g>`;
+  return aiDefs() + gfDefs() + qDefs() + qPlate('aicafe', cam, 0.5, { blur: true }) + qCam(cam, A.svg + table) + qCam(cam, A.glow);
 }
