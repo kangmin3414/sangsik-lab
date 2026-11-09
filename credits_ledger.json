@@ -381,6 +381,36 @@
    "item": "Nano Banana 2.1 2K gyges01 썸네일 그림 4장",
    "count": 4,
    "unit_usd": 0.07
+  },
+  {
+   "at": "2026-11-09",
+   "item": "Gemini TTS camus01 왜요 목소리 후보 5개 시험",
+   "count": 1,
+   "unit_usd": 0.01
+  },
+  {
+   "at": "2026-11-09",
+   "item": "Gemini TTS camus01 샘플 14줄(최대 3테이크)",
+   "count": 1,
+   "unit_usd": 0.06
+  },
+  {
+   "at": "2026-11-09",
+   "item": "Nano Banana 2.1 2K camus01 배경 판(지하철역 계단)",
+   "count": 1,
+   "unit_usd": 0.07
+  },
+  {
+   "at": "2026-11-09",
+   "item": "Lyria camus01 배경음(office, myth)",
+   "count": 2,
+   "unit_usd": 0.08
+  },
+  {
+   "at": "2026-11-09",
+   "item": "Gemini TTS camus01 6번 줄(왜요) 다시 녹음 3테이크",
+   "count": 1,
+   "unit_usd": 0.005
   }
  ]
 }

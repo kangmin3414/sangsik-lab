@@ -1,0 +1,7 @@
+fr/
+chk/
+takes/
+*.wav
+*.log
+*.mp4
+__pycache__/
