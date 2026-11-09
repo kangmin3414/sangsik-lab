@@ -46,7 +46,7 @@ function cx2Scene(t, lt) {
   const sm = easeInOut(prog(lt, 0.9, 1.45)), hu = ACT.pulse(lt, 1.75, 0.35);
   const bl = Math.max(ACT.blinks(lt, ACT.saccadeBlinks(LK, 0.5), 0.17), ACT.blinks(lt, [2.55], 0.45));
   w += cxZ('_c2', { t: lt, eyes: { open: (0.9 - 0.08 * sm) * (1 - bl), squint: 0.18 * sm, wet: 0.35 * sm }, brow: { worry: lerp(0.2, 0.85, easeInOut(prog(lt, 0.6, 1.2))) },
-    mouth: { v: ACT.VIS.M, o: 0, c: [lerp(1, 6, sm), lerp(1, -2.5, sm)], dx: 5 * sm }, blush: 0.3,
+    mouth: { v: ACT.VIS.M, o: 0, c: [lerp(1, 8, sm), lerp(1, -3, sm)], dx: 6 * sm }, blush: 0.3,
     fx: tt => ACT.sym('hut', 226, 232, lt, 1.75, 2.5) },
     { t, look, tilt: -6 * sm, headDy: 5 * hu, turn: -0.15 * sm });
   return w;
@@ -59,7 +59,7 @@ function cx3Scene(t, lt) {
   const LK = [[0, [0, 0.1]], [0.5, [0.75, -0.1]], [2.15, [0.98, 0.12]]], look = ACT.saccade(lt, LK, 0.06, 23);
   const sh = Math.sin(lt * 42) * 3 * (lt > 0.9 ? 1 : 0), turn = after ? 0.35 * dk : 0.2;
   const pose = A2.pose({ hL: lt > 0.9 ? [118 + sh, 384] : [150, 412], hR: cg ? [312, 300] : after ? [282 + sh, 384] : [252, 412] });
-  const face = after ? { turn, eyes: { flat: 0.45 * dk, size: 0.97, open: 1 - ACT.blinks(lt, [3.4], 0.2) }, brow: { angry: 0.38 * dk, knit: 0.45 * dk }, puff: [0.85 * pf, 0.85 * pf], mouth: { style: 'pout', dx: -4 }, blush: 0.55 }
+  const face = after ? { turn, eyes: { flat: 0.45 * dk, size: 0.97, open: 1 - ACT.blinks(lt, [3.4], 0.2) }, brow: { angry: 0.38 * dk, knit: 0.45 * dk }, puff: [0.6 * pf, 0.6 * pf], mouth: { style: 'pout', dx: -4 }, blush: 0.55 }
     : { eyes: { squint: cg ? 0.55 : 0, open: 1 - ACT.blinks(lt, [0.48], 0.15) }, brow: { raise: cg ? 5 : 0 }, mouth: cg ? { v: ACT.VIS.A, o: 0.7, c: 5 } : { v: ACT.VIS.M, o: 0, c: 2 }, blush: 0.5 };
   w += cxZ('_c3', Object.assign({ t: lt, fx: tt => ACT.sym('vein', 266, 98, lt, 1.3, 2.1), hfx: tt => ACT.sym('storm', 352, 74, lt, 2.5, 99) }, face),
     { t, pose, look, handL: lt > 0.9 ? 'fist' : null, handR: cg ? 'thumb' : (after ? 'fist' : null), tilt: cg ? 5 : -3 * dk, turn });
@@ -72,11 +72,11 @@ function cx4Scene(t, lt) {
   const away = lt >= 0.95, fl = ACT.pulse(lt, 0.5, 0.45);
   // 고개: 돌림(-0.85) → 흘끗할 때 반쯤 돌아옴(-0.4) → "흥" 하고 더 크게 돌림(-1)
   const tk = away ? A2.spring(lt, 0.95, 2.4, 0.45) : 0, pk1 = clamp((lt - 1.9) / 0.08, 0, 1) * (1 - clamp((lt - 2.25) / 0.08, 0, 1)), pk2 = clamp((lt - 3.1) / 0.08, 0, 1) * (1 - clamp((lt - 3.32) / 0.08, 0, 1));
-  const toss = lt > 2.25 ? A2.spring(lt, 2.25, 3, 0.4) : 0, turn = -0.85 * tk + 0.45 * Math.max(pk1, pk2 * 0.7) - 0.15 * toss;
+  const toss = lt > 2.25 ? A2.spring(lt, 2.25, 3, 0.4) : 0, turn = -0.85 * tk + 0.55 * Math.max(pk1, pk2 * 0.8) - 0.15 * toss;
   const LK = [[0, [0.6, -0.1]], [0.95, [-1, 0.45]], [1.9, [0.85, 0.02]], [2.25, [-1, 0.45]], [3.1, [0.8, 0]], [3.32, [-1, 0.45]]], look = ACT.saccade(lt, LK, 0.05, 24);
   const tossP = ACT.pulse(lt, 2.28, 0.32), pf = away ? 0.6 + 0.3 * clamp((lt - 2.28) / 0.2, 0, 1) : 0;
   const face = lt < 0.95 ? { eyes: { size: 1 + 0.24 * fl, open: 1 - ACT.blinks(lt, [0.75], 0.17) }, brow: { raise: 10 * fl, worry: 0.5 * clamp((lt - 0.6) / 0.3, 0, 1) }, mouth: { v: ACT.VIS.M, o: 0, c: -2, wob: 0.4 }, blush: 0.45 }
-    : { turn, eyes: { open: 1 - ACT.blinks(lt, [2.27, 3.33], 0.15), wet: 0.45, size: 1 + 0.15 * Math.max(pk1, pk2) }, brow: { worry: 0.7 }, puff: [pf * 0.7, pf * 0.7], mouth: { style: 'pout', dx: -6 }, blush: 0.75,
+    : { turn, eyes: { open: 1 - ACT.blinks(lt, [2.27, 3.33], 0.15), wet: 0.35, flat: 0.25 * (1 - Math.max(pk1, pk2)), size: 1 + 0.15 * Math.max(pk1, pk2) }, brow: { worry: 0.45, angry: 0.25 }, puff: [pf * 0.8, pf * 0.8], mouth: { style: 'pout', dx: -6 }, blush: 0.8,
         fx: tt => ACT.sym('huff', 186, 238, lt, 2.27, 2.9, -1) };
   w += cxZ('_c4', Object.assign({ t: lt }, face), { t, pose: cxSt(), crossArms: lt > 1.05, look, turn, tilt: -5 * tk - 12 * tossP, headDy: -6 * fl - 3 * tossP });
   return w;
@@ -85,7 +85,7 @@ function cx4Scene(t, lt) {
 /* 5. 망설임: 하고 싶음 + 두려움 */
 function cx5Scene(t, lt) {
   let w = cxBg('망설임', '손이 나갔다 들어오기 두 번 · 입술 깨물기 · 시선이 왔다 갔다', lt);
-  const KR = [[0, 0], [0.5, 0], [0.95, 0.82], [1.12, 0.82], [1.4, 0.1], [1.8, 0.1], [2.3, 0.97], [2.6, 0.95], [3.0, 0], [9, 0]];
+  const KR = [[0, 0], [0.5, 0], [0.95, 0.6], [1.12, 0.6], [1.4, 0.1], [1.8, 0.1], [2.3, 0.97], [2.6, 0.95], [3.0, 0], [9, 0]];
   let i = 0; while (i + 1 < KR.length && lt >= KR[i + 1][0]) i++; const [ta, va] = KR[i], [tb, vb] = KR[i + 1], rk = lerp(va, vb, easeInOut(clamp((lt - ta) / (tb - ta), 0, 1)));
   const hover = lt > 2.3 && lt < 2.6 ? Math.sin(lt * 38) * 5 : 0, down = easeInOut(prog(lt, 3.3, 3.8));
   // 폰은 왼손, 전송 버튼은 손 위 34px. 검지 끝(손 중심에서 왼쪽 56px)은 버튼 오른쪽 끝 바로 앞에서 멈춘다(누르지 않음)
@@ -138,7 +138,7 @@ function cx8Scene(t, lt) {
   const hk = clamp(A2.actK(lt, 1.2, 0.35, { anticAmt: 0.08 }), 0, 1.1);
   const mouth = lt > 0.5 && lt < 0.85 ? { v: ACT.VIS.O, o: 0.4 } : sm > 0.05 ? { v: ACT.VIS.E, o: 0.32 * sm, c: lerp(0, 4, sm), wob: lerp(1, 0.5, sm) * wob } : { v: ACT.VIS.M, o: 0, c: 0, wob };
   w += cxZ('_c8', { t: lt, eyes: { size: 1 + 0.24 * pk + 0.04 * wet, wet: wet, squint: 0.55 * sm, open: 1 - ACT.blinks(lt, [1.15], 0.2) }, brow: { raise: 10 * pk, worry: 0.75 * clamp((lt - 0.8) / 0.3, 0, 1) },
-    mouth, tear, blush: lerp(0.45, 0.85, sm), fx: tt => ACT.sym('heart', 330, 40, lt, 2.6, 99) },
+    mouth, tear, blush: lerp(0.45, 0.85, sm), fx: tt => ACT.sym('heart', 352, 150, lt, 2.6, 99) },
     { t, pose: A2.blend(cxSt(), A2.pose({ hR: [212, 318] }), hk, 0.2), look, headDy: 4 * sob - 5 * pk, tilt: 4 * sm });
   return w;
 }
@@ -160,9 +160,9 @@ function cx10Scene(t, lt) {
   let w = cxBg('어이없음', '무표정으로 멈춤 · 느린 깜빡 두 번 · 눈썹 씰룩 · 코웃음', lt) + cxPartner(lt, 0.1) + cxSay('그거 내가 다 했어~', lt, 0.3, 1.6);
   const dead = lt >= 0.5, tw = ACT.pulse(lt, 2.2, 0.3) + 0.6 * ACT.pulse(lt, 2.45, 0.25), hm = lt >= 2.62;
   const look = ACT.saccade(lt, [[0, [0.3, 0]], [0.5, [0.72, -0.05]], [2.9, [0.03, 0.02]]], 0.06, 30);
-  w += cxZ('_c10', { t: lt, eyes: { flat: dead ? 0.45 : 0, hl: !dead, open: 1 - ACT.blinks(lt, [1.0, 1.75], 0.42) }, brow: { asymR: 13 * tw },
+  w += cxZ('_c10', { t: lt, eyes: { flat: dead ? 0.45 : 0, hl: !dead, open: 1 - ACT.blinks(lt, [1.0, 1.75], 0.42) }, brow: { asymR: 16 * tw },
     mouth: dead && !hm ? null : { v: ACT.VIS.M, o: 0, c: hm ? [4.5, -1.5] : 0, dx: hm ? 5 : 0 }, mouthPath: 'M184 238 L216 238', blush: 0.2,
-    fx: tt => ACT.sym('dots', 300, 22, lt, 1.2, 2.2) + ACT.sym('huff', 224, 230, lt, 2.62, 3.5) },
+    fx: tt => ACT.sym('dots', 318, 92, lt, 1.2, 2.2) + ACT.sym('huff', 224, 230, lt, 2.62, 3.5) },
     { t, look, headDy: -4 * ACT.pulse(lt, 2.62, 0.3), tilt: 5 * tw });
   return w;
 }

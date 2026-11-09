@@ -104,12 +104,13 @@ function handShape(kind, q, ang, side) {
   // 실루엣만 봐도 무슨 손인지 알게: 검지는 가늘고 길게(+접힌 손가락 마디), 엄지 척은 가로 주먹 위 굵고 짧은 엄지, 편 손은 짧고 굵은 손가락 넷 + 엄지
   const [x, y] = q.map(f1), S = `stroke="${INK}"`, W = `fill="#fff" ${S} stroke-width="7"`;
   const R = (inner, a = ang) => `<g transform="translate(${x} ${y}) rotate(${f1(a)})">${inner}</g>`;
-  if (kind === 'fist') return R(`<circle r="21" ${W}/><path d="M4 -13 Q14 -9 13 0 Q14 9 4 13" fill="none" ${S} stroke-width="4" stroke-linecap="round"/>`);
+  if (kind === 'fist') return R(`<circle r="21" ${W}/><path d="M9 -9 Q14 -3 10 3 M8 5 Q12 9 7 13" fill="none" ${S} stroke-width="4" stroke-linecap="round"/>`);
   if (kind === 'grip') return R(`<circle r="20" ${W}/><path d="M7 -12 Q15 0 7 12" fill="none" ${S} stroke-width="4" stroke-linecap="round"/>`);
   if (kind === 'point') return R(`<rect x="8" y="-6.5" width="48" height="13" rx="6.5" ${W} stroke-width="6"/><circle r="19" ${W}/><path d="M2 3 Q10 6 14 12 M-2 10 Q6 13 9 18" fill="none" ${S} stroke-width="3.5" stroke-linecap="round"/>`);
   if (kind === 'thumb') return `<g transform="translate(${x} ${y})"><rect x="-6" y="-50" width="22" height="34" rx="11" ${W}/><rect x="-24" y="-20" width="46" height="40" rx="16" ${W}/><path d="M-18 -6 h30 M-18 6 h30" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".55"/></g>`;
-  if (kind === 'open') { let f = ''; for (const a of [-42, -14, 14, 42]) f += `<g transform="rotate(${a})"><rect x="12" y="-6" width="${Math.abs(a) > 40 ? 24 : 30}" height="12" rx="6" ${W} stroke-width="5.5"/></g>`;
-    f += `<g transform="rotate(${-78 * side})"><rect x="9" y="-7" width="18" height="14" rx="7" ${W} stroke-width="6"/></g>`; return R(f + `<circle r="19" ${W}/>`); }
+  if (kind === 'open') { // 편 손: 손가락 넷이 나란히(살짝 부채꼴) + 옆으로 엄지. 둥글게 둘러 붙이면 꽃처럼 보인다
+    let f = ''; [[-10.5, 21, -7], [-3.5, 26, -2], [3.5, 25, 2], [10.5, 20, 7]].forEach(([dy, L, a]) => { f += `<g transform="rotate(${a}) translate(0 ${dy})"><rect x="10" y="-5.5" width="${L}" height="11" rx="5.5" ${W} stroke-width="5"/></g>`; });
+    f += `<g transform="rotate(${-62 * side})"><rect x="8" y="-6" width="18" height="12" rx="6" ${W} stroke-width="5"/></g>`; return R(f + `<ellipse rx="19" ry="21" ${W}/>`); }
   return `<circle cx="${x}" cy="${y}" r="22" ${W}/>`;
 }
 function char(o) {
@@ -161,9 +162,9 @@ function char(o) {
     h += `<line x1="200" y1="256" x2="200" y2="416" stroke="${INK}" stroke-width="4"/>`;
     h += `<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"/><text x="168" y="318" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="18" fill="${MINT}">00</text>`;
   }
-  if (o.crossArms) { // 팔짱(막대 인물 방식): 팔꿈치는 몸 옆으로 나오고 앞팔 두 개가 가슴 앞에서 X로 겹친다. 손끝은 반대쪽 겨드랑이 밑으로 숨김
-    const ln = q => `<polyline points="${q.map(v => v.join(',')).join(' ')}" fill="none" stroke="${INK}" stroke-width="${11 * lw}" stroke-linecap="round" stroke-linejoin="round"/>`;
-    h += ln([[148, 285], [124, 338], [246, 304]]) + ln([[252, 285], [276, 338], [154, 304]]);
+  if (o.crossArms) { // 팔짱(막대 인물 방식): 앞팔 두 개가 가슴 앞에서 X로 겹치고, 손끝은 반대쪽 위팔 쪽에 살짝 보인다
+    const ln = q => `<polyline points="${q.map(v => v.join(',')).join(' ')}" fill="none" stroke="${INK}" stroke-width="${11 * lw}" stroke-linecap="round" stroke-linejoin="round"/>`, hd = (x, y) => `<circle cx="${x}" cy="${y}" r="16" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
+    h += ln([[124, 338], [240, 306]]) + ln([[276, 338], [160, 306]]) + hd(244, 304) + hd(156, 304) + ln([[148, 285], [124, 338]]) + ln([[252, 285], [276, 338]]);
     p = Object.assign({}, p, { armL: [[148, 285], [124, 338], [114, 338]], armR: [[252, 285], [276, 338], [286, 338]] }); }
   else h += `<g stroke="${INK}" stroke-width="${10 * lw}" stroke-linecap="round" stroke-linejoin="round" fill="none"><polyline points="${p.armL.map(q => q.map(f1).join(',')).join(' ')}"/><polyline points="${p.armR.map(q => q.map(f1).join(',')).join(' ')}"/></g>`;
   if (o.tee) { // short t-shirt sleeves over the arm roots

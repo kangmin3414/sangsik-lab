@@ -23,23 +23,27 @@ A2.pose = o => {
   const st = P['서기'], hL = o.hL || st.hL, hR = o.hR || st.hR, fL = o.fL || st.fL, fR = o.fR || st.fR;
   // 발은 땅에 그대로(dy로 몸 전체가 내려가도 발은 같은 자리): local 발 목표에서 dy를 뺀다
   const ankle = (f, side) => [f[0] - side * 12, f[1] - 12 - (keep ? dy : 0)];
-  // 팔꿈치 방향: bend를 안 주면 두 해 중 머리(200,170)에서 더 먼 쪽 — 팔을 들어도 팔꿈치가 머리 뒤로 숨지 않는다
+  // 팔꿈치 방향: bend를 안 주면 몸 바깥쪽(머리 뒤에 숨으면 반대쪽) — 팔을 들어도 팔꿈치가 머리 뒤로 숨지 않는다
   // o.reach = {L:1.35} 처럼 주면 그 팔만 길어진다(손을 얼굴에 가져가는 동작 전용, 만화식 늘이기)
   const rk = o.reach || {}, ob = o.bend || {}, vis = q => ((q[0] - 200) / 130) ** 2 + ((q[1] - 170) / 125) ** 2;
   const arm = (side, tgt) => { const sh = A2.SH[side], k = rk[side] || 1, L1 = A2.ARM[0] * k, L2 = A2.ARM[1] * k, key = 'a' + side;
     if (ob[key] != null) return A2.ik(sh, tgt, L1, L2, ob[key]);
-    const p1 = A2.ik(sh, tgt, L1, L2, 1), p2 = A2.ik(sh, tgt, L1, L2, -1), d = side === 'L' ? 1 : -1;
-    const pick = Math.abs(vis(p1[1]) - vis(p2[1])) < 0.05 ? (d > 0 ? p1 : p2) : (vis(p1[1]) > vis(p2[1]) ? p1 : p2); return pick; };
+    if (o['elbow' + side]) return [sh, o['elbow' + side], tgt]; // 팔꿈치 위치를 직접(생각하는 자세처럼 IK로 안 나오는 모양)
+    // 팔꿈치는 몸 바깥쪽이 기본. 바깥쪽 팔꿈치가 머리 뒤에 숨으면(vis<1.05) 다른 쪽
+    const p1 = A2.ik(sh, tgt, L1, L2, 1), p2 = A2.ik(sh, tgt, L1, L2, -1), sd = side === 'L' ? -1 : 1, out = q => (q[1][0] - 200) * sd;
+    let a = out(p1) >= out(p2) ? p1 : p2, b2 = a === p1 ? p2 : p1; if (vis(a[1]) < 1.05 && vis(b2[1]) > vis(a[1])) a = b2; return a; };
   const armL = arm('L', hL), armR = arm('R', hR);
   const legL = A2.ik(A2.HIP.L, ankle(fL, -1), A2.LEG[0], A2.LEG[1], b.lL), legR = A2.ik(A2.HIP.R, ankle(fR, 1), A2.LEG[0], A2.LEG[1], b.lR);
-  return { armL, armR, legL, legR, hL: armL[2], hR: armR[2], fL: [legL[2][0] - 12, legL[2][1] + 12, fL[2] || 0], fR: [legR[2][0] + 12, legR[2][1] + 12, fR[2] || 0], dy, bend: o.bend };
+  return { armL, armR, legL, legR, hL: armL[2], hR: armR[2], fL: [legL[2][0] - 12, legL[2][1] + 12, fL[2] || 0], fR: [legR[2][0] + 12, legR[2][1] + 12, fR[2] || 0], dy, bend: o.bend, elbowL: o.elbowL, elbowR: o.elbowR };
 };
 // 두 포즈 사이를 '손 위치'로 섞고, 손은 직선 대신 바깥으로 휘는 길(arc)로 움직인다
 A2.blend = (a, b, k, arc = 0.25) => {
   const m = (p, q, side) => { const x = lerp(p[0], q[0], k), y = lerp(p[1], q[1], k), d = Math.hypot(q[0] - p[0], q[1] - p[1]), bulge = Math.sin(k * Math.PI) * d * arc;
     const nx = -(q[1] - p[1]) / (d || 1), ny = (q[0] - p[0]) / (d || 1), s = (nx * side < 0 ? -1 : 1); return [x + nx * bulge * s, y + ny * bulge * s]; };
   const f = (p, q) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k), lerp(p[2] || 0, q[2] || 0, k)];
-  return A2.pose({ hL: m(a.hL, b.hL, -1), hR: m(a.hR, b.hR, 1), fL: f(a.fL, b.fL), fR: f(a.fR, b.fR), dy: lerp(a.dy || 0, b.dy || 0, k), bend: k < 0.5 ? (a.bend || b.bend) : (b.bend || a.bend) });
+  // 팔꿈치를 직접 정한 포즈(elbowL/R)가 끼면 팔꿈치 위치도 같이 섞는다
+  const eb = side => { const A = a['elbow' + side], B = b['elbow' + side]; if (!A && !B) return undefined; const pa = A || a['arm' + side][1], pb = B || b['arm' + side][1]; return [lerp(pa[0], pb[0], k), lerp(pa[1], pb[1], k)]; };
+  return A2.pose({ hL: m(a.hL, b.hL, -1), hR: m(a.hR, b.hR, 1), fL: f(a.fL, b.fL), fR: f(a.fR, b.fR), dy: lerp(a.dy || 0, b.dy || 0, k), bend: k < 0.5 ? a.bend : b.bend, elbowL: eb('L'), elbowR: eb('R') });
 };
 // ---- 시간 곡선 ----
 // 예비 동작 + 오버슈트: t0에 시작(예비 antic초 전부터), dur 동안 주 동작, 끝나면 over만큼 지나쳤다가 안착
