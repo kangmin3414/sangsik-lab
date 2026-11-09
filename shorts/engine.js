@@ -101,13 +101,15 @@ function naturalBlink(t, seed) {
 /* ---------- character ---------- */
 // 손 모양: q = 손 중심, ang = 아래팔 방향(도), side = -1 왼손 / 1 오른손
 function handShape(kind, q, ang, side) {
+  // 실루엣만 봐도 무슨 손인지 알게: 검지는 가늘고 길게(+접힌 손가락 마디), 엄지 척은 가로 주먹 위 굵고 짧은 엄지, 편 손은 짧고 굵은 손가락 넷 + 엄지
   const [x, y] = q.map(f1), S = `stroke="${INK}"`, W = `fill="#fff" ${S} stroke-width="7"`;
   const R = (inner, a = ang) => `<g transform="translate(${x} ${y}) rotate(${f1(a)})">${inner}</g>`;
-  if (kind === 'fist') return R(`<circle r="21" ${W}/><path d="M6 -12 q6 4 0 8 M8 -2 q6 4 0 8 M6 8 q6 4 0 8" fill="none" ${S} stroke-width="3.5" stroke-linecap="round"/>`);
-  if (kind === 'grip') return R(`<circle r="21" ${W}/><path d="M-4 -19 L-4 19 M6 -18 L6 18" fill="none" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".55"/>`);
-  if (kind === 'point') return R(`<rect x="6" y="-9" width="40" height="16" rx="8" ${W}/><circle r="20" ${W}/>`);
-  if (kind === 'thumb') return `<g transform="translate(${x} ${y})"><rect x="-6" y="-58" width="20" height="44" rx="10" ${W}/><circle r="22" ${W}/><path d="M-12 -4 h20 M-12 8 h20" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".45"/></g>`;
-  if (kind === 'open') { let f = ''; for (const a of [-50, -20, 10, 40]) f += `<g transform="rotate(${a})"><rect x="12" y="-6" width="${a === 40 ? 22 : 30}" height="12" rx="6" ${W} stroke-width="6"/></g>`; return R(f + `<circle r="19" ${W}/>`); }
+  if (kind === 'fist') return R(`<circle r="21" ${W}/><path d="M4 -13 Q14 -9 13 0 Q14 9 4 13" fill="none" ${S} stroke-width="4" stroke-linecap="round"/>`);
+  if (kind === 'grip') return R(`<circle r="20" ${W}/><path d="M7 -12 Q15 0 7 12" fill="none" ${S} stroke-width="4" stroke-linecap="round"/>`);
+  if (kind === 'point') return R(`<rect x="8" y="-6.5" width="48" height="13" rx="6.5" ${W} stroke-width="6"/><circle r="19" ${W}/><path d="M2 3 Q10 6 14 12 M-2 10 Q6 13 9 18" fill="none" ${S} stroke-width="3.5" stroke-linecap="round"/>`);
+  if (kind === 'thumb') return `<g transform="translate(${x} ${y})"><rect x="-6" y="-50" width="22" height="34" rx="11" ${W}/><rect x="-24" y="-20" width="46" height="40" rx="16" ${W}/><path d="M-18 -6 h30 M-18 6 h30" ${S} stroke-width="3.5" stroke-linecap="round" opacity=".55"/></g>`;
+  if (kind === 'open') { let f = ''; for (const a of [-42, -14, 14, 42]) f += `<g transform="rotate(${a})"><rect x="12" y="-6" width="${Math.abs(a) > 40 ? 24 : 30}" height="12" rx="6" ${W} stroke-width="5.5"/></g>`;
+    f += `<g transform="rotate(${-78 * side})"><rect x="9" y="-7" width="18" height="14" rx="7" ${W} stroke-width="6"/></g>`; return R(f + `<circle r="19" ${W}/>`); }
   return `<circle cx="${x}" cy="${y}" r="22" ${W}/>`;
 }
 function char(o) {
@@ -159,9 +161,15 @@ function char(o) {
     h += `<line x1="200" y1="256" x2="200" y2="416" stroke="${INK}" stroke-width="4"/>`;
     h += `<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"/><text x="168" y="318" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="18" fill="${MINT}">00</text>`;
   }
-  h += `<g stroke="${INK}" stroke-width="${10 * lw}" stroke-linecap="round" stroke-linejoin="round" fill="none"><polyline points="${p.armL.map(q => q.map(f1).join(',')).join(' ')}"/><polyline points="${p.armR.map(q => q.map(f1).join(',')).join(' ')}"/></g>`;
+  if (o.crossArms) { // 팔짱(막대 인물 방식): 팔꿈치는 몸 옆으로 나오고 앞팔 두 개가 가슴 앞에서 X로 겹친다. 손끝은 반대쪽 겨드랑이 밑으로 숨김
+    const ln = q => `<polyline points="${q.map(v => v.join(',')).join(' ')}" fill="none" stroke="${INK}" stroke-width="${11 * lw}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    h += ln([[148, 285], [124, 338], [246, 304]]) + ln([[252, 285], [276, 338], [154, 304]]);
+    p = Object.assign({}, p, { armL: [[148, 285], [124, 338], [114, 338]], armR: [[252, 285], [276, 338], [286, 338]] }); }
+  else h += `<g stroke="${INK}" stroke-width="${10 * lw}" stroke-linecap="round" stroke-linejoin="round" fill="none"><polyline points="${p.armL.map(q => q.map(f1).join(',')).join(' ')}"/><polyline points="${p.armR.map(q => q.map(f1).join(',')).join(' ')}"/></g>`;
   if (o.tee) { // short t-shirt sleeves over the arm roots
-    const sl = a => { const [x0, y0] = a[0], [x1, y1] = a[1]; const ang = Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI; const cx = x0 + (x1 - x0) * 0.22, cy = y0 + (y1 - y0) * 0.22;
+    const sl = a => { const [x0, y0] = a[0], [x1, y1] = a[1]; let ang = Math.atan2(y1 - y0, x1 - x0) * 180 / Math.PI; let cx = x0 + (x1 - x0) * 0.22, cy = y0 + (y1 - y0) * 0.22;
+      // 팔을 들면 소매가 머리 뒤로 숨지 않게: 소매 각도를 수평 위 35도까지만, 위치는 어깨 바깥쪽
+      const out = x0 < 200 ? -1 : 1; if (!o.robe && y1 < y0 - 4) { let am = Math.atan2(y1 - y0, (x1 - x0) * out) * 180 / Math.PI; am = am >= -90 ? Math.max(am, -35) : Math.min(am, -145); ang = out > 0 ? am : 180 - am; const r = ang * Math.PI / 180; cx = x0 + Math.cos(r) * 14; cy = y0 + Math.sin(r) * 14 + 2; }
       if (o.robe) { const rx = x0 + (x1 - x0) * 0.4, ry = y0 + (y1 - y0) * 0.4; return `<g transform="translate(${f1(rx)} ${f1(ry)}) rotate(${f1(ang)})"><path d="M-40 -24 L30 -34 Q42 0 30 34 L-40 24 Z" fill="${vest}"/><path d="M-40 -24 L30 -34 Q42 0 30 34 L-40 24" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`; }
       return `<g transform="translate(${f1(cx)} ${f1(cy)}) rotate(${f1(ang)})"><path d="M-30 -21 L16 -18 Q24 0 16 18 L-30 21 Z" fill="${vest}"/><path d="M-30 -21 L16 -18 Q24 0 16 18 L-30 21" fill="none" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`; };
     h += sl(p.armL) + sl(p.armR);
@@ -193,6 +201,8 @@ function char(o) {
   }
   if (o.guan) h += `<path d="M154 74 L156 18 Q200 0 244 18 L246 74 Q200 64 154 74 Z" fill="${o.guan === true ? '#1E1E24' : o.guan}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><line x1="128" y1="44" x2="272" y2="44" stroke="#C9A04A" stroke-width="7" stroke-linecap="round"/><circle cx="200" cy="44" r="9" fill="#5FB08A" stroke="${INK}" stroke-width="3"/>`; // official's cap
   if (o.ribbon) h +=`<g transform="translate(272 84) rotate(18)"><path d="M0 0 L-34 -22 L-34 22 Z M0 0 L34 -22 L34 22 Z" fill="${o.ribbon}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><circle r="10" fill="${o.ribbon}" stroke="${INK}" stroke-width="5"/></g>`;
+  // 머리 윤곽 층(고개 돌림에 밀리지 않음): 볼 부풀림·집중선·땀처럼 머리 모양에 붙는 것. 표정의 fxHead 또는 o.headFx
+  { const hf = e.fxHead || o.headFx; if (hf) h += typeof hf === 'function' ? hf(t, o.look) : hf; }
   const turn = o.turn || 0; // 3/4 머리 돌리기(-1 왼쪽 ~ 1 오른쪽): 얼굴 부위가 옆으로 옮겨 간다
   h += `<g transform="translate(${f1(turn * 26)} 0)">`;
   if (o.beard) h += `<path d="M90 176 Q94 300 200 322 Q306 300 310 176 Q296 236 252 252 Q226 262 200 262 Q174 262 148 252 Q104 236 90 176 Z" fill="${o.beard}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M176 248 Q200 240 224 248" fill="none" stroke="${o.beard}" stroke-width="12" stroke-linecap="round"/>`;
@@ -246,7 +256,11 @@ function char(o) {
   const fa = arm => { const q0 = arm[arm.length - 2], q1 = arm[arm.length - 1]; return Math.atan2(q1[1] - q0[1], q1[0] - q0[0]) * 180 / Math.PI; };
   const hold = (q, ang, pr) => !pr ? '' : typeof pr === 'string' ? `<g transform="translate(${f1(q[0])} ${f1(q[1])})">${pr}</g>` : `<g transform="translate(${f1(q[0])} ${f1(q[1])}) rotate(${f1(pr.follow ? ang : (pr.rot || 0))})">${pr.svg}</g>`;
   h += hold(p.hL, fa(p.armL), o.holdL) + hold(p.hR, fa(p.armR), o.holdR);
-  h += (o.handL ? handShape(o.handL, p.hL, fa(p.armL), -1) : hand(p.hL)) + (o.handR ? handShape(o.handR, p.hR, fa(p.armR), 1) : hand(p.hR));
+  // o.armFront = 'L'|'R'|'LR': 손이 얼굴에 닿는 동안 그 팔의 앞팔(팔꿈치→손)을 머리 앞에 다시 그린다(이마 닦기·턱 괴기·입 가리기)
+  if (o.armFront) for (const k of ['L', 'R']) if (o.armFront.includes(k)) { const a = p['arm' + k]; h += `<polyline points="${a.slice(-2).map(q => q.map(f1).join(',')).join(' ')}" fill="none" stroke="${INK}" stroke-width="${10 * lw}" stroke-linecap="round"/>`; }
+  // o.handRotL/o.handRotR: 손 모양 각도를 팔 방향 대신 직접 지정(도: 0=오른쪽, -90=위). 흔드는 손·내미는 손은 손가락이 위를 보게
+  const hrL = o.handRotL != null ? o.handRotL : fa(p.armL), hrR = o.handRotR != null ? o.handRotR : fa(p.armR);
+  if (!o.crossArms) h += (o.handL ? handShape(o.handL, p.hL, hrL, -1) : hand(p.hL)) + (o.handR ? handShape(o.handR, p.hR, hrR, 1) : hand(p.hR));
   h += `</g></g></g>`;
   return h;
 }

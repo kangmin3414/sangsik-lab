@@ -23,7 +23,14 @@ A2.pose = o => {
   const st = P['서기'], hL = o.hL || st.hL, hR = o.hR || st.hR, fL = o.fL || st.fL, fR = o.fR || st.fR;
   // 발은 땅에 그대로(dy로 몸 전체가 내려가도 발은 같은 자리): local 발 목표에서 dy를 뺀다
   const ankle = (f, side) => [f[0] - side * 12, f[1] - 12 - (keep ? dy : 0)];
-  const armL = A2.ik(A2.SH.L, hL, A2.ARM[0], A2.ARM[1], b.aL), armR = A2.ik(A2.SH.R, hR, A2.ARM[0], A2.ARM[1], b.aR);
+  // 팔꿈치 방향: bend를 안 주면 두 해 중 머리(200,170)에서 더 먼 쪽 — 팔을 들어도 팔꿈치가 머리 뒤로 숨지 않는다
+  // o.reach = {L:1.35} 처럼 주면 그 팔만 길어진다(손을 얼굴에 가져가는 동작 전용, 만화식 늘이기)
+  const rk = o.reach || {}, ob = o.bend || {}, vis = q => ((q[0] - 200) / 130) ** 2 + ((q[1] - 170) / 125) ** 2;
+  const arm = (side, tgt) => { const sh = A2.SH[side], k = rk[side] || 1, L1 = A2.ARM[0] * k, L2 = A2.ARM[1] * k, key = 'a' + side;
+    if (ob[key] != null) return A2.ik(sh, tgt, L1, L2, ob[key]);
+    const p1 = A2.ik(sh, tgt, L1, L2, 1), p2 = A2.ik(sh, tgt, L1, L2, -1), d = side === 'L' ? 1 : -1;
+    const pick = Math.abs(vis(p1[1]) - vis(p2[1])) < 0.05 ? (d > 0 ? p1 : p2) : (vis(p1[1]) > vis(p2[1]) ? p1 : p2); return pick; };
+  const armL = arm('L', hL), armR = arm('R', hR);
   const legL = A2.ik(A2.HIP.L, ankle(fL, -1), A2.LEG[0], A2.LEG[1], b.lL), legR = A2.ik(A2.HIP.R, ankle(fR, 1), A2.LEG[0], A2.LEG[1], b.lR);
   return { armL, armR, legL, legR, hL: armL[2], hR: armR[2], fL: [legL[2][0] - 12, legL[2][1] + 12, fL[2] || 0], fR: [legR[2][0] + 12, legR[2][1] + 12, fR[2] || 0], dy, bend: o.bend };
 };

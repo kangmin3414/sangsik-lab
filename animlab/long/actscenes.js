@@ -4,7 +4,7 @@ const AC = { XL: 480, XR: 1440, CS: 2.2, CY: 1500, FS: 1.3, GY: 1010 };
 const acBg = (title, ground) => `<rect x="-300" y="-200" width="2600" height="1500" fill="#F3EEE4"/>` +
   (ground ? `<rect x="-300" y="${AC.GY}" width="2600" height="400" fill="#E2D8C6"/><line x1="-300" y1="${AC.GY}" x2="2300" y2="${AC.GY}" stroke="${INK}" stroke-width="6"/>`
     : `<ellipse cx="480" cy="700" rx="400" ry="330" fill="#fff" opacity=".45"/><ellipse cx="1440" cy="700" rx="400" ry="330" fill="#fff" opacity=".45"/>`) +
-  `<line x1="960" y1="-200" x2="960" y2="1300" stroke="${INK}" stroke-width="5" stroke-dasharray="18 14" opacity=".35"/>` +
+  `<line x1="960" y1="230" x2="960" y2="930" stroke="${INK}" stroke-width="5" stroke-dasharray="18 14" opacity=".35"/>` +
   label(480, 70, '지금', { size: 44, bg: '#fff' }) + label(1440, 70, '개선', { size: 44, bg: YEL }) + fT(960, 150, title, 40, INK);
 const acAmp = t => { const A = TL.amp; if (!A) return 0; return A.v[Math.floor((t - A.t0) / A.dt)] || 0; };
 let AC_TR = null; const acTrack = () => AC_TR || (AC_TR = ACT.lipTrack(TL.say.text, TL.say.words, TL.say.t0, TL.say.t1, tt => acAmp(tt) > 0.12 ? 1 : 0));
@@ -30,13 +30,13 @@ function act1Scene(t, lt, a) {
   tr.forEach((s, i) => { if (s.first) { nod += ACT.pulse(t, s.a - 0.05, 0.28); bro += ACT.pulse(t, s.a - 0.07, 0.32); }
     if (s.q) { const nx = tr.slice(i + 1).find(z => z.first), qe = nx ? nx.a - 0.08 : 99; q = Math.max(q, A2.spring(t, s.a - 0.05, 1.7, 0.38) * (t < qe ? 1 : Math.exp(-(t - qe) * 5))); } });
   const LK = [[0, [0, 0.15]], [0.35, [0.62, 0.05]], [2.0, [0.15, 0.45]], [2.75, [0.64, 0.0]]], look = ACT.saccade(lt, LK, 0.06, 3);
-  const sp = ACT.pulse(lt, 0.5, 0.9), worry = clamp((lt - 3.6) / 0.4, 0, 1) * 0.45, after = lt > 4.95;
+  const sp = ACT.pulse(lt, 0.5, 0.75), worry = clamp((lt - 3.6) / 0.4, 0, 1) * 0.45, after = lt > 4.95;
   const bl = Math.max(ACT.blinks(lt, ACT.saccadeBlinks(LK, 0.5).concat([1.78, 3.62]), 0.17), ACT.blinks(lt, [5.45], 0.42));
   const mouth = lp.s ? { v: lp.v, o: lp.o, c: 1.5 } : { v: ACT.VIS.M, o: 0, c: after ? 3.5 : 2 };
   const st = A2.pose({}), g = A2.actK(lt, 2.8, 0.32, { anticAmt: 0.15 }) * (1 - A2.actK(lt, 4.4, 0.45, { antic: 0.05, anticAmt: 0, over: 0 }));
-  const pose = A2.blend(st, A2.pose({ hR: [322, 300] }), clamp(g, -0.2, 1.15), 0.3);
-  w += acZ('_a1R', { eyes: { open: 1 - bl, size: 1 + 0.14 * sp, squint: after ? 0.25 : 0.05 }, brow: { raise: bro * 4 + q * 9 + sp * 8, worry }, mouth, blush: 0.4,
-    fx: tt => ACT.sym('?', 330, 30, lt, 5.05, 9) }, { x: AC.XR, y: AC.CY, s: AC.CS, t, pose, look, tilt: q * 8 - nod * 1.5, headDy: nod * 5, headSq: [1 - 0.03 * sp, 1 + 0.05 * sp], handR: g > 0.3 ? 'open' : null, turn: 0.25 });
+  const pose = A2.blend(st, A2.pose({ hR: [322, 304] }), clamp(g, -0.2, 1.15), 0.3);
+  w += acZ('_a1R', { eyes: { open: 1 - bl, size: 1 + 0.24 * sp, squint: after ? 0.25 : 0.05 }, brow: { raise: bro * 4 + q * 9 + sp * 12, worry }, mouth: !lp.s && sp > 0.25 ? { v: ACT.VIS.O, o: 0.45 * sp } : mouth, blush: 0.4,
+    fx: tt => ACT.sym('?', 330, 30, lt, 5.05, 9) }, { x: AC.XR, y: AC.CY, s: AC.CS, t, pose, look, tilt: q * 8 - nod * 1.5, headDy: nod * 5, headSq: [1 - 0.03 * sp, 1 + 0.05 * sp], handR: g > 0.3 ? 'open' : null, handRotR: -55, turn: 0.25 });
   return w;
 }
 
@@ -52,15 +52,16 @@ function act2Scene(t, lt, a) {
   const bl = Math.max(ACT.blinks(lt, ACT.saccadeBlinks(LK, 0.9), 0.17), squeeze, ACT.natBlink(lt, 4) * (lt > 3.9 ? 1 : 0));
   const tilt = A2.follow(tt => ACT.saccade(tt, LK, 0.06, 5)[0] * -7 * (tt > 0.7 && tt < idea ? 1 : 0), lt, 2.2, 0.4, 0.8, 18);
   const turn = A2.follow(tt => ACT.saccade(tt, LK, 0.06, 5)[0] * 0.55, lt, 2.6, 0.45, 0.8, 18);
-  const st = A2.pose({}), chin = A2.pose({ hR: [224, 264], dy: 3 }), up = A2.pose({ hR: [326, 214], hL: [150, 412], dy: 0, bend: { aR: 1 } });
+  // 생각하는 자세: 오른손은 턱, 왼손은 오른 팔꿈치를 받침
+  const st = A2.pose({}), chin = A2.pose({ hR: [226, 288], hL: [236, 374], dy: 3, reach: { R: 1.15 }, bend: { aR: -1 } }), up = A2.pose({ hR: [326, 214], hL: [150, 412], dy: 0, bend: { aR: 1 } });
   let pose = A2.blend(st, chin, th, 0.2);
   if (on) pose = A2.blend(chin, up, clamp(A2.actK(lt, idea + 0.02, 0.22, { antic: 0.06, anticAmt: 0.15, over: 0.12 }), -0.2, 1.15), 0.3);
-  else if (squeeze > 0) pose = A2.pose({ hR: [224, 264], dy: 3 + 8 * squeeze });
+  else if (squeeze > 0) pose = A2.pose({ hR: [226, 288], hL: [236, 374], dy: 3 + 8 * squeeze, reach: { R: 1.15 }, bend: { aR: -1 } });
   const mouth = on ? (lt < idea + 0.3 ? { v: ACT.VIS.O, o: 0.95, c: 0 } : { v: ACT.VIS.E, o: 0.55, c: 5 }) : { v: ACT.VIS.U, o: 0.42 * th, c: -1 };
   w += acZ('_a2R', { eyes: { squeeze: squeeze > 0.35 ? 1 : 0, open: 1 - bl, size: 1 + 0.13 * p, squint: on ? 0.1 : 0.25 * th + 0.6 * squeeze, sparkle: on ? clamp(p, 0, 1) * (0.35 + 0.65 * Math.exp(-(lt - idea) * 2)) : 0 },
     brow: { raise: on ? 12 * p : 0, asymL: 7 * th, asymR: -4 * th, angry: 0.18 * th + 0.5 * squeeze }, mouth, blush: on ? 0.6 : 0.35,
-    fx: tt => ACT.sym('dots', 300, 18, lt, 1.0, idea - 0.15) + ACT.sym('burst', 0, 0, lt, idea, idea + 0.35) + ACT.sym('bulb', 330, 44, lt, idea + 0.05, 99) },
-    { x: AC.XR, y: AC.CY, s: AC.CS, t, pose, look, tilt: tilt - 3 * th, turn, headDy: 5 * squeeze - 4 * pu, headSq: [1 - 0.05 * pu, 1 + 0.08 * pu], handR: on ? 'point' : (th > 0.4 ? 'fist' : null) });
+    fx: tt => ACT.sym('dots', 300, 18, lt, 1.0, idea - 0.15) + ACT.sym('bulb', 330, 44, lt, idea + 0.05, 99), hfx: tt => ACT.sym('burst', 0, 0, lt, idea, idea + 0.35) },
+    { x: AC.XR, y: AC.CY, s: AC.CS, t, pose, look, tilt: tilt - 3 * th, turn, headDy: 5 * squeeze - 4 * pu, headSq: [1 - 0.05 * pu, 1 + 0.08 * pu], handR: on ? 'point' : (th > 0.4 ? 'fist' : null), handRotR: on ? -90 : null, armFront: !on && th > 0.4 ? 'R' : null });
   return w;
 }
 
@@ -71,14 +72,14 @@ function act3Scene(t, lt, a) {
   w += Z({ x: AC.XL, y: AC.CY, s: AC.CS, t, ex: exprAt([[0, 'z기본'], [1.0, 'z빵긋']], lt), look: lt > 0.65 ? [0.6, -0.3] : [0, 0] });
   const LK = [[0, [0, 0.1]], [0.65, [0.7, -0.35]], [1.45, [0.15, -0.05]]], look = ACT.saccade(lt, LK, 0.06, 7);
   const bl = Math.max(ACT.blinks(lt, [0.76, 0.98], 0.15), lt > 3.9 && lt < 4.8 ? 1 : 0, ACT.blinkK(lt, 4.8, 0.25) * 0 + (lt > 4.8 && lt < 4.95 ? 1 - prog(lt, 4.8, 4.95) : 0));
-  const sq = 0.85 * easeInOut(prog(lt, 1.1, 1.5)), brR = 6 * A2.spring(lt, 1.0, 2.2, 0.35), c = lerp(2, 6, easeInOut(prog(lt, 1.15, 1.4)));
+  const sq = 0.85 * easeInOut(prog(lt, 1.1, 1.5)), brR = 6 * A2.spring(lt, 1.0, 2.2, 0.35), c = lerp(0, 6, easeInOut(prog(lt, 1.15, 1.4)));
   const mo = 0.55 * A2.spring(lt, 1.35, 2.4, 0.35) + (lt > 3.9 && lt < 4.8 ? 0.3 * Math.sin(prog(lt, 3.9, 4.8) * Math.PI) : 0);
-  const blush = lerp(0.35, 1, easeInOut(prog(lt, 1.2, 1.8))), pu = ACT.pulse(lt, 1.35, 0.42), hk = clamp((lt - 1.8) / 0.5, 0, 1);
+  const blush = lerp(0.15, 1, easeInOut(prog(lt, 1.2, 1.8))), pu = ACT.pulse(lt, 1.35, 0.42), hk = clamp((lt - 1.8) / 0.5, 0, 1);
   const st = A2.pose({}), clap = A2.pose({ hL: [182, 338], hR: [218, 338], dy: 2 }), k = clamp(A2.actK(lt, 1.3, 0.3, { anticAmt: 0.12 }), -0.2, 1.12);
   const sw = Math.sin((lt - 1.8) * 4.6) * hk;
   w += acZ('_a3R', { eyes: { open: 1 - bl, size: 1 + 0.08 * ACT.pulse(lt, 0.7, 0.4), squint: sq + (lt > 3.9 ? 0.15 : 0), sparkle: 0.3 * hk }, brow: { raise: brR }, blush, lines: clamp((lt - 1.6) / 0.3, 0, 1),
     mouth: mo > 0.05 ? { v: lt > 3.9 && lt < 4.8 ? ACT.VIS.A : ACT.VIS.E, o: Math.min(mo, 1), c } : { v: ACT.VIS.M, o: 0, c },
-    fx: tt => ACT.sym('spark', 342, 170, lt, 1.6, 99) + ACT.sym('heart', 66, 36, lt, 1.75, 99) },
+    fx: tt => ACT.sym('spark', 330, 262, lt, 1.6, 99) + ACT.sym('heart', 50, 210, lt, 1.75, 99) },
     { x: AC.XR, y: AC.CY, s: AC.CS, t, pose: A2.blend(st, clap, k, 0.25), look, rot: sw * 3, tilt: A2.follow(tt => Math.sin((tt - 1.8) * 4.6) * clamp((tt - 1.8) / 0.5, 0, 1) * 7, lt, 2, 0.4, 0.8, 16),
       headDy: 7 * easeInOut(prog(lt, 1.3, 1.6)), headSq: [1 + 0.05 * pu, 1 - 0.06 * pu], handL: null, handR: null });
   return w;
@@ -96,18 +97,18 @@ function act4Scene(t, lt, a) {
   const closed = (lt < 0.85 || (lt > 1.25 && lt < 1.5)) ? 1 : 0, beat = lt >= 1.5 && lt < tp;
   const p = ACT.pop(lt, tp, 2.6, 0.3), pu = ACT.pulse(lt, tp, 0.4);
   const crouch = lt > tp - 0.14 && lt < tp ? Math.sin(prog(lt, tp - 0.14, tp) * Math.PI / 2) : 0, air = lt >= tp && lt < tp + 0.38, u = prog(lt, tp, tp + 0.38);
-  const yJ = air ? Math.sin(u * Math.PI) * 80 : 0, [qx, qy] = A2.squash(lt, tp + 0.38, 0.16, 0.3);
+  const yJ = air ? Math.sin(u * Math.PI) * 60 : 0, [qx, qy] = A2.squash(lt, tp + 0.38, 0.16, 0.3);
   const sx = qx * (air ? 1 / Math.sqrt(1 + 0.1 * Math.sin(u * Math.PI)) : 1), sy = qy * (air ? 1 + 0.1 * Math.sin(u * Math.PI) : 1);
   const st = A2.pose({}), hum0 = A2.pose({ hL: [160, 404], hR: [240, 404] }), yikes = A2.pose({ hL: [72, 236], hR: [328, 236], dy: crouch * 12 }), scared = A2.pose({ hL: [184, 318], hR: [216, 318] });
   let pose = hum0; if (crouch > 0) pose = A2.pose({ hL: [150, 420], hR: [250, 420], dy: crouch * 14 }); if (lt >= tp) pose = A2.blend(hum0, yikes, clamp(A2.actK(lt, tp, 0.16, { antic: 0, over: 0.15 }), 0, 1.15), 0.2);
   if (lt >= 2.4) pose = A2.blend(yikes, scared, clamp(A2.actK(lt, 2.4, 0.3, { antic: 0.05 }), 0, 1.1), 0.2);
   const turn = lerp(0, 0.9, A2.spring(lt, tp, 2.8, 0.4)) * (1 - A2.spring(lt, 3.3, 1.8, 0.6));
   const sway = hum ? Math.sin(lt * 3.2) : 0, shiver = lt > 2.4 && lt < 3.1;
-  const eyesO = { open: closed ? 0 : 1 - ACT.blinks(lt, [3.25], 0.17), squint: closed ? 0.7 : (lt < 1.5 ? 0.35 : 0), size: lt >= tp ? 1 + 0.3 * p - 0.18 * clamp((lt - 2.4) / 0.6, 0, 1) : (beat ? 1.05 : 1) };
-  const mouth = hum ? { v: ACT.VIS.U, o: 0.45, c: 1 } : beat ? { v: ACT.VIS.M, o: 0, c: 0 } : lt < 2.4 ? { v: ACT.VIS.A, o: 1, c: -3 } : lt < 3.3 ? null : { v: ACT.VIS.EU, o: 0.55, c: -1 };
+  const eyesO = { open: closed ? 0 : 1 - ACT.blinks(lt, [3.25], 0.17), squint: closed ? 0.7 : (lt < 1.5 ? 0.35 : 0), size: lt >= tp ? 1 + 0.3 * p - 0.18 * clamp((lt - 2.4) / 0.6, 0, 1) : (beat ? 1.2 : 1) };
+  const mouth = hum ? { v: ACT.VIS.U, o: 0.45, c: 1 } : beat ? { v: ACT.VIS.M, o: 0, c: 0 } : lt < 2.4 ? { v: ACT.VIS.A, o: 1, c: -3 } : lt < 3.3 ? null : { v: ACT.VIS.E, o: 0.45, c: [-1, 2.5], wob: 0.3 };
   w += acShadow(AC.XR, yl, 70 * (1 - yJ / 300)) + `<g transform="translate(${AC.XR} ${yl}) scale(${f1(sx * 1000) / 1000} ${f1(sy * 1000) / 1000}) translate(${-AC.XR} ${-yl})">` +
-    acZ('_a4R', { base: lt >= 2.4 ? 'z당황' : 'z기본', eyes: eyesO, brow: { raise: beat ? 4 : lt >= tp ? 10 * p * (lt < 2.4 ? 1 : 0.4) : 0, worry: lt >= 2.4 ? 0.9 : 0 }, mouth, blush: lt >= 2.4 ? 0.2 : 0.4,
-      fx: tt => ACT.sym('note', 330, 40, lt, 0.1, 1.45) + ACT.sym('!', 338, 70, lt, tp + 0.02, 3.1) + ACT.sym('burst', 0, 0, lt, tp, tp + 0.4) + ACT.sym('sweat', 312, 90, lt, 2.35, 99) + ACT.sym('gloom', 0, 0, lt, 3.6, 99) },
+    acZ('_a4R', { base: lt >= 2.4 ? 'z당황' : 'z기본', eyes: eyesO, brow: { raise: beat ? 9 : lt >= tp ? 10 * p * (lt < 2.4 ? 1 : 0.4) : 0, worry: lt >= 3.3 ? 0.6 : lt >= 2.4 ? 0.9 : 0 }, mouth, blush: lt >= 2.4 ? 0.2 : 0.4,
+      fx: tt => ACT.sym('note', 330, 40, lt, 0.1, 1.45), hfx: tt => ACT.sym('!', 338, 70, lt, tp + 0.02, 3.1) + ACT.sym('burst', 0, 0, lt, tp, tp + 0.4) + ACT.sym('sweat', 280, 100, lt, 2.35, 99) },
       { x: AC.XR, y: yl - yJ, s: AC.FS, t, pose, look, rot: sway * 3, tilt: sway * 5 + (lt >= tp && lt < 2.4 ? -4 : 0), turn, headSq: [1 - 0.08 * pu, 1 + 0.14 * pu], headDy: crouch * 6, shiver, handL: null, handR: null }) + `</g>`;
   if (lt > tp + 0.38 && lt < tp + 0.75) w += puff(AC.XR, yl, t, t - lt + tp + 0.38, 0.8);
   return w;
