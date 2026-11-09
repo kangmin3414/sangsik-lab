@@ -29,6 +29,9 @@ E1 = lambda k: L[k]['t1']
 # ---------- 배경음 ----------
 place('bgm/calc2.mp3', 0.2, T0('sd') - 0.05, 0.30, fin=0.8, fout=0.12, off=0)        # 훅·재미 (어이없음 직전에 뚝)
 place('bgm/calc2.mp3', T0('n3') - 0.35, E1('b3') + 0.25, 0.27, fin=0.5, fout=0.6, off=34)  # 정보 → 도장
+if 'n4' in L:   # 전체판: 깨달음(실험실 음악) → 감동·여운(피아노)
+    place('bgm/lab.mp3', T0('n4') - 0.3, T0('s3') - 0.1, 0.27, fin=1.2, fout=1.2, off=0)
+    place('bgm/memory.mp3', T0('s3') - 0.4, DUR, 0.33, fin=1.5, fout=3.0, off=0)
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -142,6 +145,37 @@ tB2 = W('b3', '금지', 2.9); put(tB2 - 0.02, mx(thud(0.45, 55) * 1.3, clank() *
 for x in (0.15, 0.27, 0.39, 0.51, 0.63): put(A('s2') + x, beep(), 0.8)
 put(A('s2') + 1.85, heartbeat(), 0.6); put(A('s2') + 2.55, heartbeat(), 0.7)
 put(A('s2') + 3.0, tape_stop(0.6), 0.5)
+# ================= 전체판: 깨달음 → 감동 → 여운 =================
+def chirp(f0=3200): t = np.arange(int(0.12 * SR)) / SR; return np.sin(2 * np.pi * np.cumsum(f0 + 1800 * np.sin(np.pi * t / 0.12)) / SR) * env(len(t), 0.005, 0.05) * 0.25
+def scrape(d=0.5): return lp(noise(d), 700) * np.sin(np.linspace(0, np.pi, int(d * SR))) * 0.6
+def murmur(d): t = np.arange(int(d * SR)) / SR; return bp(noise(d), 250, 1200) * (0.6 + 0.4 * np.sin(2 * np.pi * 0.7 * t) * np.sin(2 * np.pi * 1.9 * t)) * 0.18
+if 'n4' in L:
+    put(W('n4', '딱', 1.48) + 0.05, mx(clink(), snap()), 0.6); put(W('n4', '사라지는', 3.02), chime(), 0.25)
+    put(A('n5') + 0.15, pop_(1000), 0.3)
+    tH = W('n5', '도와주면', 6.42)
+    for k in range(3): put(tH - 0.2 + k * 0.17, whoosh(0.18), 0.25)
+    put(W('n5', '고맙다고만', 8.02) - 0.05, rip(0.25), 0.3); put(W('n5', '갚았습니다', 10.16) - 0.1, clink(), 0.5)
+    tA = W('n6', '갚을', 2.82) - 0.4; put(tA, whoosh(0.3), 0.3); put(tA + 0.5, clink(), 0.45); put(tA + 0.55, ding(), 0.4)
+    tB = W('n7', '바로', 2.46) - 0.3; put(tB, whoosh(0.3), 0.3); put(tB + 0.5, clink(), 0.45); put(W('n7', '떨어졌습니다', 4.84) - 0.2, slide_down(0.8), 0.5)
+    put(A('b4') - 0.3, mx(pop_(700), bwoop()), 0.5)
+    put(A('n8') + 0.4, mx(thud(0.25, 90), whoosh(0.4)), 0.45); put(W('n8', '신호', 3.5) - 0.6, mx(rattle(0.9), scribble(0.9)) * 0.6, 0.35)
+    tN = W('n8', '가까운', 4.98); put(tN - 0.2, slide_down(0.5), 0.4)
+    tF = W('n8', '필요할', 7.96); put(tF - 1.0, whoosh(0.4), 0.3); put(tF - 0.45, thud(0.15, 160), 0.45); put(tF + 0.1, chime(), 0.3)
+    for k, f in enumerate([3400, 2900, 3600]): put(A('s3') + 0.25 + k * 0.32, chirp(f), 0.5)
+    put(W('n9', '서랍을', 5.04) - 0.1, scrape(0.55), 0.6)
+    put(W('n10', '밑에', 0.4) - 0.25, rip(0.35), 0.3); put(W('n10', '쪽지', 2.24), chime(), 0.25)
+    put(A('m1') + 0.05, rip(0.3), 0.25)
+    put(A('n11'), lp(noise(E1('n11') - A('n11')), 300) * 0.25, 0.5); put(W('n11', '음료', 6.04) + 0.3, mx(clink(), thud(0.1, 300) * 0.4), 0.4)
+    B5 = L['b5']; tW = W('b5', '천', 2.76)
+    for x in (-0.3, -0.12, 0.05, 0.22, 0.55): put(tW + x, beep(), 0.7)
+    put(T0('s4') + 0.05, tone(880, 1.0, 0.9, (1, 0.3)) * 0.35, 0.6)
+    put(A('n13') + 1.0, mx(whoosh(0.4), thud(0.15, 200)), 0.5)
+    tPr = W('n13', '나를', 2.24); put(tPr + 0.6, thud(0.2, 120), 0.45)
+    tBu = W('n13', '다만', 4.78); put(tBu + 0.75, mx(snap(), pop_(1300)), 0.4)
+    put(A('n14') + 1.55, creak(0.6), 0.5); tE = W('n14', '봉투에', 3.14); put(tE + 0.3, rip(0.35), 0.3); put(tE + 1.1, rip(0.25), 0.25)
+    for k in range(7): put(A('s5') + 0.1 + k * 0.27, step(), 0.18)
+    put(A('s5'), murmur(E1('s6') - A('s5')), 0.6)
+    put(T0('n15') + 0.73, mx(whoosh(0.3), chime()), 0.35); put(A('s6') + 1.15, chime(), 0.25)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write(f'mix_raw_gf{TAG}.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f'mix_raw_gf{TAG}.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), f'mix_gf{TAG}.wav'], check=True)

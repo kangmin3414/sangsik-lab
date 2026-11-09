@@ -41,14 +41,14 @@ function gfDesk() {
   const T = GF.DT;
   return `<rect x="150" y="${T - 16}" width="1640" height="22" rx="6" fill="#C99566" stroke="${INK}" stroke-width="7"/>` +
     `<rect x="170" y="${T + 6}" width="1600" height="480" fill="#9C6A3F" stroke="${INK}" stroke-width="7"/><rect x="170" y="${T + 6}" width="1600" height="480" fill="url(#gfGrain)"/>` +
-    `<rect x="1180" y="${T + 40}" width="460" height="120" rx="10" fill="#A8774B" stroke="${INK}" stroke-width="6"/><rect x="1370" y="${T + 88}" width="80" height="18" rx="9" fill="#5B4636" stroke="${INK}" stroke-width="4"/>`;
+    '';
 }
 // 스탠드(켜짐)
-function gfLampSvg() { const x = GF.LAMP, T = GF.DT - 10;
-  return `<path d="M${x + 120} 600 L${x + 330} ${T} L${x - 20} ${T} Z" fill="#FFF0B8" opacity=".16"/>` +
+function gfLampSvg(on = true) { const x = GF.LAMP, T = GF.DT - 10;
+  return (on ? `<path d="M${x + 120} 600 L${x + 330} ${T} L${x - 20} ${T} Z" fill="#FFF0B8" opacity=".16"/>` : '') +
     `<ellipse cx="${x}" cy="${T}" rx="64" ry="14" fill="#55627A" stroke="${INK}" stroke-width="6"/><path d="M${x} ${T - 6} L${x - 24} 640 L${x + 70} 560" fill="none" stroke="${INK}" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/><path d="M${x} ${T - 6} L${x - 24} 640 L${x + 70} 560" fill="none" stroke="#7C8AA3" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>` +
     `<circle cx="${x - 24}" cy="640" r="11" fill="#7C8AA3" stroke="${INK}" stroke-width="4"/><path d="M${x + 44} 540 L${x + 124} 520 L${x + 160} 610 L${x + 76} 628 Z" fill="#5D6E8A" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
-    `<ellipse cx="${x + 118}" cy="619" rx="40" ry="11" transform="rotate(-12 ${x + 118} 619)" fill="#FFF3C4" stroke="${INK}" stroke-width="4"/>`; }
+    `<ellipse cx="${x + 118}" cy="619" rx="40" ry="11" transform="rotate(-12 ${x + 118} 619)" fill="${on ? '#FFF3C4' : '#D8DCE3'}" stroke="${INK}" stroke-width="4"/>`; }
 // 청첩장(세워 둔 카드, 작게)
 const gfInvSmall = (x = GF.INV, rot = -3) => `<g transform="translate(${x} ${GF.DT - 8}) rotate(${rot})"><path d="M40 -60 L78 2 L56 2 Z" fill="#8A6A50" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><rect x="-82" y="-118" width="164" height="118" rx="6" fill="#FFF8EC" stroke="${INK}" stroke-width="6"/>` +
   `<rect x="-82" y="-118" width="164" height="22" rx="6" fill="#F2B8C6" stroke="${INK}" stroke-width="5"/><path d="${zHeartP(0, -60, 0.55)}" fill="#E8637F" stroke="${INK}" stroke-width="3.5"/><rect x="-46" y="-30" width="92" height="7" rx="3" fill="#D8CDBB"/></g>`;
@@ -125,7 +125,8 @@ const gfDeskTop = () => `<rect x="-300" y="-200" width="2600" height="1500" fill
   `<g transform="translate(1760 230) rotate(12)"><rect x="-170" y="-110" width="340" height="220" rx="26" fill="url(#gfLeather)" stroke="${INK}" stroke-width="8"/></g></g>` +
   `<circle cx="120" cy="40" r="900" fill="url(#gfLamp)" opacity=".55"/><rect x="-300" y="760" width="2600" height="500" fill="url(#gfBody)"/>`;
 // 손(제로 스타일 동그란 흰 손) + 주황 소매. (sx,sy)=소매 시작(화면 밖), (hx,hy)=손 가운데, r=손 크기
-const gfPovHand = (sx, sy, hx, hy, r = 66) => `<path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="${f1(r * 1.75)}" stroke-linecap="round"/><path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${TEE}" stroke-width="${f1(r * 1.5)}" stroke-linecap="round"/>` +
+let GF_SLEEVE = null; // 1인칭 소매 색(잠옷·정장이면 바꿔 둔다)
+const gfPovHand = (sx, sy, hx, hy, r = 66) => `<path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="${f1(r * 1.75)}" stroke-linecap="round"/><path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${GF_SLEEVE || TEE}" stroke-width="${f1(r * 1.5)}" stroke-linecap="round"/>` +
   `<circle cx="${f1(hx)}" cy="${f1(hy)}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="9"/>`;
 // 손가락(캡슐): 손 가운데 근처 → 끝(fx,fy)
 const gfPovFinger = (hx, hy, fx, fy, w = 44) => `<path d="M${f1(hx)} ${f1(hy)} L${f1(fx)} ${f1(fy)}" stroke="${INK}" stroke-width="${w + 14}" stroke-linecap="round"/><path d="M${f1(hx)} ${f1(hy)} L${f1(fx)} ${f1(fy)}" stroke="#fff" stroke-width="${w}" stroke-linecap="round"/>` +
@@ -135,7 +136,7 @@ const GF_PC = { x: 960, y: 470, s: 5.0, r: -5 };
 const gfPcPt = (x, y) => { const c = Math.cos(GF_PC.r * Math.PI / 180), sn = Math.sin(GF_PC.r * Math.PI / 180); return [GF_PC.x + GF_PC.s * (x * c - y * sn), GF_PC.y + GF_PC.s * (x * sn + y * c)]; };
 const gfKey = k => gfPcPt(-29 + (k % 4) * 19, -5.5 + Math.floor(k / 4) * 18);   // 키: 7 8 9 ÷ / 4 5 6 × / 1 2 3 − / 0 . = +
 function gfPovCalc(o) {
-  let g = gfDeskTop();
+  GF_SLEEVE = null; let g = gfDeskTop();
   g += `<g transform="translate(${GF_PC.x + 22} ${GF_PC.y + 30}) rotate(${GF_PC.r}) scale(${GF_PC.s})"><rect x="-46" y="-62" width="92" height="124" rx="11" fill="#000" opacity=".25"/></g>` +
     `<g transform="translate(${GF_PC.x} ${GF_PC.y}) rotate(${GF_PC.r}) scale(${GF_PC.s})">${gfCalcSvg(o.top, o.big, { red: o.red, on: o.on, press: o.key, size: 17, topSize: 7.5 })}</g>`;
   if (o.drop) { const [dx, dy] = gfPcPt(8, -38), k = o.drop; g += k < 1 ? `<g transform="translate(${f1(dx)} ${f1(lerp(-120, dy, easeIn(k)))})">${zDrop(0, 0, 2.6)}</g>` : `<g opacity="${f1(clamp(2 - k, 0, 1) * 100) / 100}"><ellipse cx="${f1(dx)}" cy="${f1(dy)}" rx="${f1(26 + 30 * (k - 1))}" ry="${f1(10 + 10 * (k - 1))}" fill="#BFE6FF" stroke="${INK}" stroke-width="4"/></g>`; }
@@ -383,6 +384,7 @@ function gfinfoScene(t, lt, a) {
 
 /* =========== 8. 도장 쾅 + 송금 망설임(샘플 끝) =========== */
 function gfPhoneTop(t, lt, o) {
+  GF_SLEEVE = null;
   // 폰 인서트: 송금 화면(상표 없음) + 손(왼손 원형 손, 엄지 캡슐)
   const cx = 960, cy = 560;
   let g = gfDeskTop() + `<g transform="translate(${cx + 24} ${cy + 30}) rotate(-4)"><rect x="-250" y="-470" width="500" height="940" rx="56" fill="#000" opacity=".25"/></g>`;

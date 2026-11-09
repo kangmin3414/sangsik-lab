@@ -9,5 +9,5 @@ with sync_playwright() as p:
     if not ts:
         for L in TL['lines']: ts += [L['t0'] + (L['t1'] - L['t0']) * f for f in (0.15, 0.5, 0.85)]
     for tt in ts:
-        pg.evaluate(f'render({tt})'); pg.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'); pg.screenshot(path=f"chk/t{tt:07.2f}.jpg", type='jpeg', quality=70)
+        pg.evaluate(f'render({tt})'); pg.evaluate('new Promise(r=>{requestAnimationFrame(()=>requestAnimationFrame(r)); setTimeout(r, 250);})'); pg.screenshot(path=f"chk/t{tt:07.2f}.jpg", type='jpeg', quality=70)
     br.close(); print('errors', errs[:5])
