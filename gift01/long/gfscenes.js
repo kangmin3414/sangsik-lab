@@ -11,6 +11,7 @@ const gfDefs = () => `<defs><radialGradient id="gfCoinG" cx=".38" cy=".32" r=".8
 <radialGradient id="gfLamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD58A" stop-opacity=".7"/><stop offset="1" stop-color="#FFD58A" stop-opacity="0"/></radialGradient>
 <radialGradient id="gfPool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".75"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
 <linearGradient id="gfLeather" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A4A26"/><stop offset="1" stop-color="#5E3519"/></linearGradient>
+<filter id="gfBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="16"/></filter><linearGradient id="gfBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A1020" stop-opacity="0"/><stop offset="1" stop-color="#1A1020" stop-opacity=".55"/></linearGradient>
 <pattern id="gfGrain" width="320" height="60" patternUnits="userSpaceOnUse"><path d="M0 18 Q80 8 160 20 T320 16 M0 44 Q90 36 170 48 T320 42" fill="none" stroke="#7A4A22" stroke-width="3" opacity=".25"/></pattern></defs>`;
 // 단어 시각(장면 lt 기준). keys는 문자열 또는 배열(음성 인식이 숫자로 적는 경우 대비)
 const gfW = (a, keys, fb) => { const ks = Array.isArray(keys) ? keys : [keys]; for (const w of (a._words || [])) { const s = w.w.replace(/\s/g, ''); if (ks.some(k => s.includes(k))) return w.t + 0.15; } return fb; };
@@ -26,7 +27,7 @@ const gfNight = (k = 1) => fFull('#0A1238', 0.2 * k) + `<circle cx="${GF.LAMP + 
 // 계산기(로컬, 가운데 0,0, 92x124). top: 윗줄 작은 글, big: 큰 숫자, red: 빨간 숫자, on: 깜빡임(0이면 숫자 안 보임), press: 눌린 키 번호
 function gfCalcSvg(top, big, o = {}) {
   let g = (o.stand ? `<path d="M30 20 L70 62 L52 62 Z" fill="#5A6070" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>` : '') + `<rect x="-46" y="-62" width="92" height="124" rx="11" fill="#3A4150" stroke="${INK}" stroke-width="5"/><rect x="-38" y="-54" width="76" height="34" rx="4" fill="#CFE3C2" stroke="${INK}" stroke-width="3"/>`;
-  if (top) g += `<text x="34" y="-42" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="8.5" fill="#55634C">${esc(top)}</text>`;
+  if (top) g += `<text x="34" y="-42" text-anchor="end" font-family="${FONT}" font-weight="700" font-size="${o.topSize || 8.5}" fill="#55634C">${esc(top)}</text>`;
   if (big) g += `<text x="34" y="-25" text-anchor="end" font-family="${FONT}" font-weight="900" font-size="${o.size || 18}" fill="${o.red ? (o.on === 0 ? '#8E1B1B' : '#E03131') : '#1E2A1A'}">${esc(big)}</text>`;
   for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) { const k = r * 4 + c, pr = o.press === k ? 2 : 0;
     g += `<rect x="${-37 + c * 19}" y="${-12 + r * 18 + pr}" width="16" height="13" rx="3" fill="${c === 3 ? '#FF9F43' : '#D8DCE3'}" stroke="${INK}" stroke-width="2.2"/>`; }
@@ -60,6 +61,12 @@ function gfWallet(x, open = 0, jig = 0) { const T = GF.DT - 6, w = 190, h = 112,
     `<g transform="translate(0 ${f1(-6 * clamp(open, 0, 1))})"><path d="M${x - w / 2} ${top + 2} L${x + w / 2} ${top + 2} L${x + w / 2} ${top + 46} Q${x} ${top + 66} ${x - w / 2} ${top + 46} Z" fill="#8B5A2B" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
     `<circle cx="${x}" cy="${top + 44}" r="9" fill="#E8C873" stroke="${INK}" stroke-width="4"/></g></g>`; }
 const GF_WTOP = GF.DT - 6 - 112;
+// 책상 위 계산기: 눕혀 둔 모습(앞에서 보면 얇은 판 + 윗면 키 줄). 화면은 위를 향해 카메라에서 안 보인다. pr: 눌린 깊이
+const GF_CTOP = GF.DT - 27;
+const GF_PHBACK = `<g transform="translate(0 -50)"><rect x="-25" y="-44" width="50" height="88" rx="9" fill="#2B2F3A" stroke="${INK}" stroke-width="5"/><rect x="-18" y="-37" width="17" height="24" rx="5" fill="#454B58" stroke="${INK}" stroke-width="2.5"/><circle cx="-9.5" cy="-31" r="3.6" fill="#111"/><circle cx="-9.5" cy="-20" r="3.6" fill="#111"/></g>`;
+const gfCalcFlat = (x, pr = 0) => `<g transform="translate(${x} ${GF.DT - 6})"><path d="M-70 -12 L-60 -24 L60 -24 L70 -12 Z" fill="#5A6272" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>` +
+  [0, 1, 2, 3].map(i => `<rect x="${-44 + i * 23}" y="${f1(-20 + pr)}" width="17" height="5" rx="2" fill="${i === 3 ? '#FF9F43' : '#D8DCE3'}" stroke="${INK}" stroke-width="1.5"/>`).join('') +
+  `<rect x="-74" y="-12" width="148" height="13" rx="4" fill="#3A4150" stroke="${INK}" stroke-width="5"/></g>`;
 
 /* ---------- 본전이 ---------- */
 // (x,y)=발 바닥, s: 크기. o: { t, look:[x,y], eyes:'norm'|'wide'|'happy'|'smug'|'dead'|'shut', brow:'up'|'angry'|'worry'|'smug', mouth:'smile'|'grin'|'O'|'flat'|'frown'|'talk', talk(0~1),
@@ -111,38 +118,81 @@ const gfMouth = (t, rest = { v: ACT.VIS.M, o: 0, c: 2 }, c = 1.5) => { const lp 
 // 계산기를 든 제로 포즈: 왼손에 계산기, 오른손 검지로 누름
 const gfCalcPose = (tap = 0) => A2.pose({ hL: [154, 372 + 3 * tap], hR: [252, 372 + 3 * tap], elbowL: [122, 352], elbowR: [278, 352] });
 
+/* =========== 공통: 제로 시점(POV) 인서트 =========== */
+// 내려다본 책상(나무) + 흐린 소품(청첩장·지갑) + 몸 그림자. 기기 화면은 제로 쪽을 보고 있으니 이 시점에서만 화면이 보인다
+const gfDeskTop = () => `<rect x="-300" y="-200" width="2600" height="1500" fill="#B98552"/><rect x="-300" y="-200" width="2600" height="1500" fill="url(#gfGrain)" transform="scale(1 3)"/>` +
+  `<g filter="url(#gfBlur)"><g transform="translate(250 200) rotate(-14)"><rect x="-240" y="-170" width="480" height="340" rx="14" fill="#FFF8EC" stroke="${INK}" stroke-width="8"/><path d="${zHeartP(0, -60, 1.1)}" fill="#E8637F" stroke="${INK}" stroke-width="5"/><rect x="-140" y="20" width="280" height="22" rx="10" fill="#D8CDBB"/></g>` +
+  `<g transform="translate(1760 230) rotate(12)"><rect x="-170" y="-110" width="340" height="220" rx="26" fill="url(#gfLeather)" stroke="${INK}" stroke-width="8"/></g></g>` +
+  `<circle cx="120" cy="40" r="900" fill="url(#gfLamp)" opacity=".55"/><rect x="-300" y="760" width="2600" height="500" fill="url(#gfBody)"/>`;
+// 손(제로 스타일 동그란 흰 손) + 주황 소매. (sx,sy)=소매 시작(화면 밖), (hx,hy)=손 가운데, r=손 크기
+const gfPovHand = (sx, sy, hx, hy, r = 66) => `<path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="${f1(r * 1.75)}" stroke-linecap="round"/><path d="M${f1(sx)} ${f1(sy)} L${f1(hx)} ${f1(hy)}" stroke="${TEE}" stroke-width="${f1(r * 1.5)}" stroke-linecap="round"/>` +
+  `<circle cx="${f1(hx)}" cy="${f1(hy)}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="9"/>`;
+// 손가락(캡슐): 손 가운데 근처 → 끝(fx,fy)
+const gfPovFinger = (hx, hy, fx, fy, w = 44) => `<path d="M${f1(hx)} ${f1(hy)} L${f1(fx)} ${f1(fy)}" stroke="${INK}" stroke-width="${w + 14}" stroke-linecap="round"/><path d="M${f1(hx)} ${f1(hy)} L${f1(fx)} ${f1(fy)}" stroke="#fff" stroke-width="${w}" stroke-linecap="round"/>` +
+  `<ellipse cx="${f1(fx + 4)}" cy="${f1(fy + 5)}" rx="${f1(w * 0.32)}" ry="${f1(w * 0.24)}" transform="rotate(35 ${f1(fx + 4)} ${f1(fy + 5)})" fill="#EEF1F5" stroke="#C3CCD6" stroke-width="3"/>`;
+// 계산기 POV: 왼손이 왼쪽 아래를 쥐고, 오른손 검지가 누른다
+const GF_PC = { x: 960, y: 470, s: 5.0, r: -5 };
+const gfPcPt = (x, y) => { const c = Math.cos(GF_PC.r * Math.PI / 180), sn = Math.sin(GF_PC.r * Math.PI / 180); return [GF_PC.x + GF_PC.s * (x * c - y * sn), GF_PC.y + GF_PC.s * (x * sn + y * c)]; };
+const gfKey = k => gfPcPt(-29 + (k % 4) * 19, -5.5 + Math.floor(k / 4) * 18);   // 키: 7 8 9 ÷ / 4 5 6 × / 1 2 3 − / 0 . = +
+function gfPovCalc(o) {
+  let g = gfDeskTop();
+  g += `<g transform="translate(${GF_PC.x + 22} ${GF_PC.y + 30}) rotate(${GF_PC.r}) scale(${GF_PC.s})"><rect x="-46" y="-62" width="92" height="124" rx="11" fill="#000" opacity=".25"/></g>` +
+    `<g transform="translate(${GF_PC.x} ${GF_PC.y}) rotate(${GF_PC.r}) scale(${GF_PC.s})">${gfCalcSvg(o.top, o.big, { red: o.red, on: o.on, press: o.key, size: 17, topSize: 7.5 })}</g>`;
+  if (o.drop) { const [dx, dy] = gfPcPt(8, -38), k = o.drop; g += k < 1 ? `<g transform="translate(${f1(dx)} ${f1(lerp(-120, dy, easeIn(k)))})">${zDrop(0, 0, 2.6)}</g>` : `<g opacity="${f1(clamp(2 - k, 0, 1) * 100) / 100}"><ellipse cx="${f1(dx)}" cy="${f1(dy)}" rx="${f1(26 + 30 * (k - 1))}" ry="${f1(10 + 10 * (k - 1))}" fill="#BFE6FF" stroke="${INK}" stroke-width="4"/></g>`; }
+  const [lx, ly] = gfPcPt(-50, 40);
+  g += gfPovHand(-160, 1320, lx - 10, ly + 30, 68) + gfPovFinger(lx + 10, ly, lx + 46, ly - 34, 46);   // 왼손: 엄지가 테두리를 누름
+  const [fx, fy] = o.tip, hx = fx + 78, hy = fy + 122;
+  g += gfPovHand(1780, 1400, hx, hy, 70) + gfPovFinger(hx - 22, hy - 40, fx, fy, 46);
+  return g;
+}
+const gfCalcBack = `<rect x="-46" y="-62" width="92" height="124" rx="11" fill="#4A5262" stroke="${INK}" stroke-width="5"/><rect x="-30" y="-6" width="60" height="44" rx="5" fill="none" stroke="#2E3440" stroke-width="3"/>` +
+  [[-34, -50], [34, -50], [-34, 50], [34, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.5" fill="#2E3440"/>`).join('');
+
 /* =========== 1. 훅: 계산기 =========== */
-// ph0(s0): 어둠 → 스탠드 불빛, 7·5·0·0·0 입력 / ph1(z1): "식대 7만 5천… 5만 원 내고 가면, 마이너스 2만 5천." 인서트 → '마이너스'에서 얼굴 클로즈업
+// s0: 어둠 → 스탠드 불빛, (POV) 5·0·0·0·0 입력
+// z1 "식대가 7만 5천 원…": (POV) '−' 누르고 7·5·0·0·0 → "5만 원 내고 가면,": 제로 얼굴(계산기 뒷면, 망설임) → "마이너스 2만 5천": (POV) '=' → 빨간 −25,000, 땀 한 방울이 화면에 뚝
 function gfcalcScene(t, lt, a) {
   const run = a._run, ph = a.ph;
-  // 입력 시각(장면 run 기준). s0 줄의 run = lt
-  const s0d = ph === 0 ? 0 : TL.lines.find(l => l.id === 'z1').t0 - TL.lines.find(l => l.id === 's0').t0; // run - lt
-  const tFive = ph === 1 ? gfW(a, ['오만', '5만', '50'], 2.7) : 99, tMinus = ph === 1 ? gfW(a, ['마이너스'], 2.6) : 99;
-  const taps1 = [0.55, 0.7, 0.85, 1.0, 1.12].map(x => x), taps2 = [tFive - 0.1, tFive + 0.04, tFive + 0.17, tFive + 0.3, tFive + 0.43].map(x => x + s0d), tEq = tMinus - 0.12 + s0d;
-  const taps = taps1.concat(taps2, [tEq]);
-  const n1 = taps1.filter(x => run >= x).length, n2 = taps2.filter(x => run >= x).length, eq = run >= tEq;
-  const seq1 = ['', '7', '75', '750', '7,500', '75,000'], seq2 = ['', '5', '50', '500', '5,000', '50,000'];
+  const s0 = TL.lines.find(l => l.id === 's0'), z1 = TL.lines.find(l => l.id === 'z1'), off = z1.t0 - s0.t0; // z1의 lt + off = run
+  const tFive = ph === 1 ? gfW(a, ['오만', '5만', '50'], 2.79) : 99, tMinus = ph === 1 ? gfW(a, ['마이너스'], 5.23) : 99, tTwo = ph === 1 ? gfW(a, ['25', '이만'], 6.09) : 99;
+  const L = run - off; // z1 기준 시각
+  const T1 = [0.55, 0.7, 0.85, 1.0, 1.12], K1 = [5, 12, 12, 12, 12];                 // s0: 50000
+  const T2 = [0.12, 0.55, 0.7, 0.85, 1.0, 1.12].map(x => x + off), K2 = [11, 0, 5, 12, 12, 12]; // z1: − 75000
+  const T3 = [tMinus - 0.05 + off], K3 = [14];                                         // '='
+  const taps = T1.concat(T2, T3), keys = K1.concat(K2, K3);
+  const n = taps.filter(x => run >= x).length;
   let top = '', big = '0', red = false;
-  if (n1) big = seq1[n1];
-  if (n2) { top = '식대 7.5만'; big = seq2[n2]; }
-  if (eq) { top = '5만 − 7.5만 ='; big = '−25,000'; red = true; }
-  const blink = eq ? ((run - tEq) % 0.5 < 0.32 ? 1 : 0) : 1;
-  const press = (() => { let p = -1; taps.forEach((x, i) => { if (run >= x && run < x + 0.09) p = i === taps.length - 1 ? 15 : [6, 9, 12, 12, 12, 9, 12, 12, 12, 12][i % 10]; }); return p; })();
-  const tapK = taps.reduce((m, x) => Math.max(m, ACT.pulse(run, x - 0.06, 0.16)), 0);
-  const cu = ph === 1 && lt >= tMinus - 0.12;
-  const calc = { svg: `<g transform="translate(49 -26)">${gfCalcSvg(top, big, { red, on: blink, press })}</g>`, rot: 0 };
-  // 얼굴: 인서트 동안은 아래(계산기)를 봄. 클로즈업: 걱정 눈썹 → 마지막에 작은 한숨
-  const u = cu ? lt - tMinus : 0, sg = cu ? ACT.sigh(lt, a._dur - 0.55, 0.3, 0.7) : 0;
-  const mouth0 = gfMouth(t, { v: ACT.VIS.M, o: 0, c: -2 }, -3), mouth = Object.assign({}, mouth0, { o: (mouth0.o || 0) * (cu ? 1 : 0.7) });
-  const look = cu ? ACT.saccade(u, [[0, [0.05, 0.75]], [0.55, [0.1, 0.35]], [1.2, [0, 0.7]]], 0.06, 41) : [0.05, 0.85];
-  const face = { eyes: { open: 1 - ACT.blinks(lt, [cu ? tMinus + 0.62 : 0.4], 0.17), flat: cu ? 0.12 : 0.3, size: cu ? 1 + 0.12 * ACT.pulse(u, 0.0, 0.4) : 0.95 }, brow: { worry: cu ? lerp(0.5, 0.9, gfK(u, 0, 0.4)) : 0.5, knit: cu ? 0 : 0.25 }, mouth, blush: 0.3,
-    hfx: tt => cu ? ACT.sym('sweat', 282, 102, lt, tMinus + 0.35, 99) : '' };
-  const zero = gfZero('_gf1', face, { t, pose: gfCalcPose(tapK), look, holdL: calc, handL: 'grip', handR: 'grip', handRotL: 90, handRotR: 90, headDy: cu ? -3 * sg + 2 * ACT.pulse(u, 0, 0.35) : 4, tilt: cu ? -3 : 0 });
-  const cam = cu ? qLerpCam(u / 2.5, [960, 575, 2.15], [960, 568, 2.28]) : qLerpCam(run / 3.2, [978, 712, 3.25], [978, 708, 3.45]);
-  const dark = ph === 0 ? 1 - easeInOut(gfK(lt, 0.25, 0.75)) : 0;
-  let w = qPlate('room', cam, 0.45, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + gfWallet(GF.WAL)) + gfNight(1);
-  if (dark > 0) w += fFull('#000', dark);
-  return gfDefs() + qDefs() + w;
+  const s1 = ['0', '5', '50', '500', '5,000', '50,000'], s2 = ['7', '75', '750', '7,500', '75,000'];
+  if (n >= 1) big = s1[Math.min(5, n)];
+  if (n >= 6) { top = '50,000 −'; big = '50,000'; }
+  if (n >= 7) big = s2[Math.min(4, n - 7)];
+  if (n >= 12) { top = '50,000−75,000='; big = '−25,000'; red = true; }
+  const on = red ? ((run - taps[11]) % 0.5 < 0.32 ? 1 : 0) : 1;
+  const press = taps.findIndex(x => run >= x && run < x + 0.09), key = press >= 0 ? keys[press] : -1;
+  // 손가락 끝: 다음(또는 방금) 누를 키 위, 누를 때만 닿고 아니면 살짝 들림. '=' 앞에서는 머뭇거림(떨림)
+  let ti = taps.findIndex(x => run < x + 0.1); if (ti < 0) ti = taps.length - 1;
+  const [kx, ky] = gfKey(keys[ti]), dip = taps.reduce((m, x) => Math.max(m, ACT.pulse(run, x - 0.05, 0.13)), 0);
+  const hes = ti === 11 && run < taps[11] - 0.06 ? Math.sin(run * 37) * 6 : 0, after = run > taps[11] + 0.12 ? easeOut(gfK(run, taps[11] + 0.12, taps[11] + 0.5)) : 0;
+  const tip = [kx + 34 * (1 - dip) + hes + 90 * after, ky + 46 * (1 - dip) + 120 * after];
+  // 샷: POV(s0~'오만') → 얼굴('오만'~'마이너스' 직전) → POV(끝까지)
+  const face = ph === 1 && L >= tFive - 0.15 && L < tMinus - 0.25;
+  let w;
+  if (!face) {
+    const drop = ph === 1 && L > tTwo - 0.1 ? clamp((L - (tTwo - 0.1)) / 0.35, 0, 2) : 0;
+    const cam = ph === 1 && L >= tMinus - 0.25 ? qLerpCam((L - tMinus + 0.25) / 2, [960, 500, 1.12], [960, 480, 1.2]) : qLerpCam(run / 3.8, [960, 540, 1.02], [960, 520, 1.1]);
+    w = gfDefs() + qCam(cam, gfPovCalc({ top, big, red, on, key, tip, drop }));
+    const dark = ph === 0 ? 1 - easeInOut(gfK(lt, 0.2, 0.7)) : 0;
+    if (dark > 0) w += fFull('#000', dark);
+    return w + fFull('#0A1238', 0.1);
+  }
+  // 얼굴: 계산기 뒷면이 보이게 들고 내려다봄. 망설임(입술 깨물기·미간) → 숨 들이쉼
+  const u = L - (tFive - 0.15), mouth = gfMouth(t, { style: 'bite', c: 0 }, -2.5);
+  const look = ACT.saccade(u, [[0, [0.05, 0.9]], [1.1, [-0.25, 0.75]], [1.6, [0.05, 0.9]]], 0.06, 41);
+  const zf = { eyes: { open: 1 - ACT.blinks(u, [0.9], 0.17), flat: 0.2, size: 0.98 }, brow: { worry: 0.8, knit: 0.35 }, mouth, blush: 0.3, hfx: tt => ACT.sym('sweat', 282, 102, u, 0.9, 99) };
+  const tap = taps.reduce((m, x) => Math.max(m, ACT.pulse(run, x - 0.06, 0.16)), 0);
+  const zero = gfZero('_gf1', zf, { t, pose: gfCalcPose(tap), look, holdL: { svg: `<g transform="translate(49 -26)">${gfCalcBack}</g>`, rot: 0 }, handL: 'grip', handR: 'grip', handRotL: 90, handRotR: 90, headDy: 3, tilt: -3 });
+  const cam = qLerpCam(u / 2.6, [960, 575, 2.1], [960, 568, 2.22]);
+  return gfDefs() + qDefs() + qPlate('room', cam, 0.45, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + gfWallet(GF.WAL)) + gfNight(1);
 }
 
 /* =========== 2. 청첩장 + 마지막 대화(위에서 본 인서트) =========== */
@@ -214,7 +264,7 @@ function gfpopScene(t, lt, a) {
   if (ph === 0 && run > 0.76 && run < 1.5) fx += `<g opacity="${f1((1 - gfK(run, 1.2, 1.5)) * 100) / 100}">${[0, 1, 2, 3, 4].map(i => { const an = -Math.PI / 2 + (i - 2) * 0.45, r = 60 + 90 * gfK(run, 0.76, 1.05); return `<line x1="${f1(wx + Math.cos(an) * r)}" y1="${f1(GF_WTOP + Math.sin(an) * r)}" x2="${f1(wx + Math.cos(an) * (r + 34))}" y2="${f1(GF_WTOP + Math.sin(an) * (r + 34))}" stroke="#FFE34D" stroke-width="9" stroke-linecap="round"/>`; }).join('')}</g>`;
   const dim = spot * 0.35;
   const lit = spot > 0;
-  return gfDefs() + qDefs() + qPlate('room', cam, 0.5) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + `<g transform="translate(${GF.CALC} ${GF.DT - 6}) rotate(-8) scale(1.25) translate(0 -62)">${gfCalcSvg('5만 − 7.5만 =', '−25,000', { red: true, stand: true })}</g>` + gfWallet(wx, open, jig) + shadow + fx + (lit ? '' : coin)) +
+  return gfDefs() + qDefs() + qPlate('room', cam, 0.5) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + gfCalcFlat(GF.CALC) + gfWallet(wx, open, jig) + shadow + fx + (lit ? '' : coin)) +
     gfNight(1) + (dim > 0 ? fFull('#05081A', dim) : '') + (lit ? qCam(cam, spotSvg + coin) : '');
 }
 
@@ -253,19 +303,19 @@ function gfwalletScene(t, lt, a) {
 function gfpieScene(t, lt, a) {
   const tOne = gfW(a, ['하나'], 0.6), tProb = gfW(a, ['확률'], 2.3), tYou = gfW(a, ['넌'], 3.7), tPlan = gfW(a, ['계획'], 4.7);
   const cam = qLerpCam(lt / 1.5, [1275, 560, 1.55], [1270, 555, 1.6]);
-  // 본전이: 계산기 옆 책상 위. '하나'에 검지 하나(점프), 확률 앞에서 계산기 키를 주먹으로 쾅쾅쾅, '계획'에서 제로 쪽으로 돌아 위아래 훑기
-  const bx = 1345, by = GF.DT - 16, hop = ACT.pulse(lt, tOne - 0.1, 0.32), turnK = lt > tYou - 0.1;
-  const punch = [tProb - 0.75, tProb - 0.5, tProb - 0.25].reduce((m, x) => Math.max(m, ACT.pulse(lt, x, 0.18)), 0), punching = lt > tProb - 0.85 && lt < tProb;
+  // 본전이: 눕혀 둔 계산기 위. '하나'에 검지 하나(깡충), '확률' 앞에서 키를 쿵쿵쿵 밟아 계산, '넌'에서 제로 쪽으로 돌아 위아래 훑기
+  const bx = GF.CALC, by = GF_CTOP, hop = ACT.pulse(lt, tOne - 0.1, 0.32), turnK = lt > tYou - 0.1;
+  const ST = [tProb - 0.8, tProb - 0.52, tProb - 0.24];
+  let air = 0, land = 0; ST.forEach(x => { const u = (lt - x) / 0.22; if (u > 0 && u < 1) air = Math.max(air, Math.sin(u * Math.PI)); const v = lt - x - 0.22; if (v > 0 && v < 0.12) land = Math.max(land, 1 - v / 0.12); });
+  const stomping = lt > ST[0] - 0.05 && lt < ST[2] + 0.36;
   const scan = turnK ? Math.sin(gfK(lt, tYou + 0.1, tYou + 1.3) * Math.PI * 2) : 0;
   let co;
   if (turnK) co = { t, eyes: 'smug', brow: 'smug', mouth: 'smirk', talk: gfTalk(t), look: [-0.9, scan * 0.9], hL: [-58, -40], hR: [56, -36], legs: 'stand' };
-  else if (punching) co = { t, eyes: 'norm', brow: 'angry', mouth: 'grin', talk: gfTalk(t), look: [-0.8, 0.6], hL: [-62, -44], hR: [lerp(60, 92, punch), lerp(-60, -20, punch)], legs: 'stand' };
-  else co = { t, eyes: 'wide', brow: 'up', mouth: 'grin', talk: gfTalk(t), look: [-0.4, -0.3], hL: [-62, -44], hR: [52, -150], holdR: lt > tOne - 0.2 ? `<path d="M-3 -6 L-3 -28" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>` : '', legs: hop > 0.2 ? 'jump' : 'stand' };
-  co.sy = 1 + 0.08 * hop; co.sx = 1 - 0.04 * hop;
-  const coin = qShadow(bx, by, 46, 0.8) + gfCoin(bx, by - 60 * hop, 1.1, co);
-  // 계산기 화면: 주먹질마다 숫자, 끝에 '?%'
-  const n = [tProb - 0.75, tProb - 0.5, tProb - 0.25].filter(x => lt >= x).length, disp = turnK ? '?%' : ['−25,000', '0.', '0.0', '0.00'][n];
-  const calc = `<g transform="translate(${GF.CALC} ${GF.DT - 6}) rotate(-8) scale(1.25) translate(0 -62)">${gfCalcSvg(n ? '확률' : '5만 − 7.5만 =', disp, { red: n === 0 && !turnK, press: punch > 0.4 ? 3 : -1, stand: true })}</g>`;
+  else if (stomping) co = { t, eyes: air > 0.2 ? 'shut' : 'norm', brow: 'angry', mouth: 'grin', talk: gfTalk(t), look: [-0.3, 0.6], hL: [-74, -130], hR: [74, -130], legs: air > 0.15 ? 'jump' : 'stand', sy: 1 - 0.14 * land, sx: 1 + 0.1 * land };
+  else co = { t, eyes: 'wide', brow: 'up', mouth: 'grin', talk: gfTalk(t), look: [-0.4, -0.3], hL: [-62, -44], hR: [52, -150], holdR: lt > tOne - 0.2 ? `<path d="M-3 -6 L-3 -28" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>` : '', legs: hop > 0.2 ? 'jump' : 'stand', sy: 1 + 0.08 * hop, sx: 1 - 0.04 * hop };
+  const lift = 60 * hop + 64 * air;
+  const coin = qShadow(bx, by, 46 * (1 - 0.3 * air), 0.8) + gfCoin(bx, by - lift, 1.1, co);
+  const calc = gfCalcFlat(GF.CALC, land > 0 ? 3 : 0);
   // 원그래프: '확률'에 등장해 룰렛처럼 돎 → '계획'에서 회색 + '?'
   const pk = ACT.symK(lt, tProb - 0.1, 99), spin = lt * 520, grey = easeInOut(gfK(lt, tPlan, tPlan + 0.4));
   let pie = '';
@@ -274,8 +324,8 @@ function gfpieScene(t, lt, a) {
     pie = `<g transform="translate(${cx} ${cy}) scale(${f1(pk * 100) / 100})"><circle r="${R}" fill="${grey > 0.5 ? '#D5D9E0' : '#FFB4C2'}" stroke="${INK}" stroke-width="7"/><g transform="rotate(${f1(rot % 360)})">${sl}</g>` +
       (grey > 0.3 ? `<text y="44" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="130" fill="#fff" stroke="${INK}" stroke-width="10" paint-order="stroke" opacity="${f1(grey * 100) / 100}">?</text>` : '') + `</g>` + label(cx, cy - 160, '민재가 제로 결혼식에 올 확률', { size: 30, bg: '#fff' }) +
       (grey < 0.5 ? `<g transform="translate(${cx + 140} ${cy - 30})"><rect x="0" y="-14" width="26" height="26" rx="5" fill="#4CC38A" stroke="${INK}" stroke-width="4"/>${fT(36, 9, '온다', 28, '#fff', { anchor: 'start', stroke: INK })}<rect x="0" y="30" width="26" height="26" rx="5" fill="#FFB4C2" stroke="${INK}" stroke-width="4"/>${fT(36, 53, '안 온다', 28, '#fff', { anchor: 'start', stroke: INK })}</g>` : ''); }
-  // 제로: 원그래프를 올려다봄 → '계획'에 본전이를 봄, 얼굴이 굳기 시작
-  const LK = [[0, [0.75, 0.2]], [tProb, [0.5, -0.6]], [tYou, [0.85, 0.25]]], look = ACT.saccade(lt, LK, 0.06, 43);
+  // 제로: 본전이를 내려다봄 → 원그래프를 올려다봄 → '넌'에 본전이를 봄, 얼굴이 굳기 시작
+  const LK = [[0, [0.75, 0.35]], [tProb, [0.5, -0.6]], [tYou, [0.85, 0.3]]], look = ACT.saccade(lt, LK, 0.06, 43);
   const freeze = gfK(lt, tPlan + 0.2, tPlan + 0.7);
   const zero = gfZero('_gf5', { eyes: { open: 1 - ACT.blinks(lt, ACT.saccadeBlinks(LK, 0.7), 0.15), flat: 0.4 * freeze, hl: freeze < 0.5 }, brow: { raise: 6 * (1 - freeze), worry: 0.15 }, mouth: { v: ACT.VIS.M, o: 0, c: lerp(1, 0, freeze) }, blush: 0.25 },
     { t, pose: A2.pose({ hL: [168, 392], hR: [236, 392] }), look, tilt: 3 * (1 - freeze) });
@@ -294,8 +344,8 @@ function gfdeadScene(t, lt, a) {
   const zero = gfZero('_gf6', face, { t, pose: A2.pose({ hL: [168, 392], hR: [236, 392] }), look, headDy: speaking ? 3 * ACT.pulse(lt, 0.3, 0.4) : 0, tilt: speaking ? -3 : 0 });
   const cam = qLerpCam(run / 4, [980, 590, 1.85], [975, 585, 1.95]);
   // 본전이: 오른쪽 끝에서 흐리게(어깨 너머 느낌), 원그래프 '?'
-  const coin = qShadow(1345, GF.DT - 16, 46, 0.8) + gfCoin(1345, GF.DT - 16, 1.1, { t, eyes: 'smug', brow: 'smug', mouth: 'smirk', look: [-0.9, -0.2], hL: [-60, -40], hR: [58, -40] });
-  const calc = `<g transform="translate(${GF.CALC} ${GF.DT - 6}) rotate(-8) scale(1.25) translate(0 -62)">${gfCalcSvg('확률', '?%', { stand: true })}</g>`;
+  const coin = qShadow(GF.CALC, GF_CTOP, 46, 0.8) + gfCoin(GF.CALC, GF_CTOP, 1.1, { t, eyes: 'smug', brow: 'smug', mouth: 'smirk', look: [-0.9, -0.2], hL: [-60, -40], hR: [58, -40] });
+  const calc = gfCalcFlat(GF.CALC);
   return gfDefs() + qDefs() + qPlate('room', cam, 0.4, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + calc + gfWallet(GF.WAL) + coin) + gfNight(1);
 }
 
@@ -334,18 +384,19 @@ function gfinfoScene(t, lt, a) {
 function gfPhoneTop(t, lt, o) {
   // 폰 인서트: 송금 화면(상표 없음) + 손(왼손 원형 손, 엄지 캡슐)
   const cx = 960, cy = 560;
-  let g = `<rect x="-300" y="-200" width="2600" height="1500" fill="#1C2340"/><circle cx="960" cy="560" r="760" fill="url(#gfLamp)" opacity=".35"/>`;
+  let g = gfDeskTop() + `<g transform="translate(${cx + 24} ${cy + 30}) rotate(-4)"><rect x="-250" y="-470" width="500" height="940" rx="56" fill="#000" opacity=".25"/></g>`;
   g += `<g transform="translate(${cx} ${cy}) rotate(-4)"><rect x="-250" y="-470" width="500" height="940" rx="56" fill="#22262E" stroke="${INK}" stroke-width="10"/><rect x="-222" y="-440" width="444" height="880" rx="34" fill="#F4F6FA"/>` +
     fT(0, -370, '송금', 40, INK) + fT(0, -290, '받는 사람  김민재', 32, '#5A6270') +
     `<rect x="-180" y="-240" width="360" height="110" rx="18" fill="#fff" stroke="#C9CED6" stroke-width="4"/>` + fT(0, -165, o.amount ? o.amount + '원' : '금액 입력', o.amount ? 64 : 40, o.amount ? INK : '#A0A6B0');
   for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) { const k = r * 3 + c, lab = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '0', '←'][k], pr = o.press === k;
     g += `<rect x="${-170 + c * 120}" y="${-90 + r * 88}" width="100" height="70" rx="14" fill="${pr ? '#D8DCE3' : '#fff'}" stroke="#C9CED6" stroke-width="3"/>` + fT(-120 + c * 120, -42 + r * 88, lab, 34, INK); }
   g += `<rect x="-180" y="290" width="360" height="100" rx="24" fill="#3D7BF7" stroke="${INK}" stroke-width="5"/>` + fT(0, 356, '보내기', 44, '#fff') + `</g>`;
+  { const [lx, ly] = gfPh(-262, 250); g += gfPovHand(-200, 1350, lx - 30, ly + 40, 92) + gfPovFinger(lx, ly, lx + 50, ly - 40, 60); }
   // 손: 주황 소매 + 둥근 손 + 엄지(o.thumb = 엄지 끝)
-  const [tx, ty] = o.thumb, hx = tx + 250, hy = ty + 200;
+  const [tx, ty] = o.thumb, hx = tx + 120, hy = ty + 140;
   g += `<path d="M1950 1450 L${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="170" stroke-linecap="round"/><path d="M1950 1450 L${f1(hx)} ${f1(hy)}" stroke="${TEE}" stroke-width="150" stroke-linecap="round"/>` +
     `<circle cx="${f1(hx)}" cy="${f1(hy)}" r="104" fill="#fff" stroke="${INK}" stroke-width="10"/>` +
-    `<path d="M${f1(hx - 40)} ${f1(hy - 50)} L${f1(tx + 14)} ${f1(ty + 12)}" stroke="${INK}" stroke-width="80" stroke-linecap="round"/><path d="M${f1(hx - 40)} ${f1(hy - 50)} L${f1(tx + 14)} ${f1(ty + 12)}" stroke="#fff" stroke-width="62" stroke-linecap="round"/>` +
+    `<path d="M${f1(hx - 50)} ${f1(hy - 50)} L${f1(tx + 14)} ${f1(ty + 12)}" stroke="${INK}" stroke-width="80" stroke-linecap="round"/><path d="M${f1(hx - 50)} ${f1(hy - 50)} L${f1(tx + 14)} ${f1(ty + 12)}" stroke="#fff" stroke-width="62" stroke-linecap="round"/>` +
     `<ellipse cx="${f1(tx + 18)}" cy="${f1(ty + 14)}" rx="19" ry="14" transform="rotate(40 ${f1(tx + 18)} ${f1(ty + 14)})" fill="#EEF1F5" stroke="#C3CCD6" stroke-width="3"/>`;
   return g;
 }
@@ -357,8 +408,8 @@ function gfstampScene(t, lt, a) {
     const tCon = gfW(a, ['결론'], 0.2), tLoss = gfW(a, ['손해'], 1.6), tBan = gfW(a, ['금지'], 2.6);
     if (lt < tLoss - 0.12) {
       // 판사처럼 도장을 치켜든 본전이(책상 위)
-      const up = easeOutBack(gfK(lt, tCon - 0.1, tCon + 0.25)), cam = qLerpCam(lt / 1.2, [1300, 610, 1.9], [1310, 600, 2.0]);
-      const coin = qShadow(1345, GF.DT - 16, 46, 0.8) + gfCoin(1345, GF.DT - 16, 1.15, { t, eyes: 'norm', brow: 'angry', mouth: 'O', talk: gfTalk(t), look: [-0.3, -0.2],
+      const up = easeOutBack(gfK(lt, tCon - 0.1, tCon + 0.25)), cam = qLerpCam(lt / 1.2, [1160, 600, 1.9], [1170, 590, 2.0]);
+      const coin = gfCalcFlat(GF.CALC) + qShadow(GF.CALC, GF_CTOP, 46, 0.8) + gfCoin(GF.CALC, GF_CTOP, 1.15, { t, eyes: 'norm', brow: 'angry', mouth: 'O', talk: gfTalk(t), look: [-0.3, -0.2],
         hL: [-16, lerp(-60, -178, up)], hR: [16, lerp(-60, -178, up)], holdR: `<g transform="translate(-16 32) rotate(${f1(-8 * up)})">${gfStampSvg()}</g>`, sy: 1 + 0.06 * up });
       const zero = gfZero('_gf8', { eyes: { flat: 0.35, open: 1 - ACT.natBlink(lt, 8) }, brow: { worry: 0.3 }, mouth: { v: ACT.VIS.M, o: 0, c: -1 }, blush: 0.2 }, { t, pose: A2.pose({ hL: [168, 392], hR: [236, 392] }), look: [0.9, 0.1] });
       return gfDefs() + qDefs() + qPlate('room', cam, 0.5) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + gfWallet(GF.WAL) + coin) + gfNight(1);
@@ -392,11 +443,11 @@ function gfstampScene(t, lt, a) {
   } else {
     const u = L - 1.75, LK = [[0, [0.3, 0.8]], [0.35, [-0.7, 0.4]], [0.7, [0.3, 0.8]], [1.0, [-0.6, 0.5]]], look = ACT.saccade(u, LK, 0.05, 45);
     const zero = gfZero('_gf9', { eyes: { open: 1 - ACT.blinks(u, ACT.saccadeBlinks(LK, 0.9), 0.15), size: 1.04 }, brow: { knit: 0.4, worry: 0.75 }, mouth: { style: 'bite', c: 0 }, blush: 0.35,
-      hfx: tt => ACT.sym('sweat', 282, 102, u, 0.1, 99) }, { t, pose: A2.pose({ hL: [180, 360], hR: [220, 372] }), look, holdL: { svg: cxPhone, rot: -10 }, handL: 'grip', tilt: -3 + Math.sin(u * 6) * 1.5 });
-    const cam = qLerpCam(u / 1.3, [960, 600, 1.75], [960, 590, 1.9]);
-    const coin = qShadow(1345, GF.DT - 16, 46, 0.8) + gfCoin(1345, GF.DT - 16, 1.1, { t, eyes: 'norm', brow: 'angry', mouth: 'grin', look: [-0.9, 0.1], hL: [-34, -58], hR: [34, -58] });
-    const calc = `<g transform="translate(${GF.CALC} ${GF.DT - 6}) rotate(-8) scale(1.25) translate(0 -62)">${gfCalcSvg('확률', '?%', { stand: true })}</g>`;
-    w = gfDefs() + qDefs() + qPlate('room', cam, 0.45, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + calc + gfWallet(GF.WAL) + coin) + gfNight(1);
+      hfx: tt => ACT.sym('sweat', 282, 102, u, 0.1, 99) }, { t, pose: A2.pose({ hL: [180, 360], hR: [220, 372] }), look, holdL: { svg: GF_PHBACK, rot: -10 }, handL: 'grip', tilt: -3 + Math.sin(u * 6) * 1.5 });
+    const cam = qLerpCam(u / 1.3, [960, 600, 1.75], [960, 590, 1.9]), glow = `<ellipse cx="948" cy="640" rx="190" ry="175" fill="#9FDCFF" opacity=".3" filter="url(#gfBlur)" style="mix-blend-mode:screen"/>`;
+    const coin = qShadow(GF.CALC, GF_CTOP, 46, 0.8) + gfCoin(GF.CALC, GF_CTOP, 1.1, { t, eyes: 'norm', brow: 'angry', mouth: 'grin', look: [-0.9, 0.1], hL: [-34, -58], hR: [34, -58] });
+    const calc = gfCalcFlat(GF.CALC);
+    w = gfDefs() + qDefs() + qPlate('room', cam, 0.45, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + calc + gfWallet(GF.WAL) + coin) + gfNight(1) + qCam(cam, glow);
   }
   if (sep > 0) w += `<rect x="-300" y="-200" width="2600" height="1500" fill="#7A5A30" style="mix-blend-mode:color" opacity="${f1(sep * 92) / 100}"/><rect x="-300" y="-200" width="2600" height="1500" fill="#F3DFB8" opacity="${f1(sep * 18) / 100}"/>`;
   return w;
