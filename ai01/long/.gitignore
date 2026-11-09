@@ -1,0 +1,9 @@
+fr/
+chk/
+takes/
+*.wav
+*.log
+*.mp4
+*.mp3
+__pycache__/
+ai/
