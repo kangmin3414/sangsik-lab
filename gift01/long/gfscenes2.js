@@ -366,9 +366,21 @@ function gfhallScene(t, lt, a) {
   const tSee = N15.t0 - 0.55, see = T > tSee, pop = ACT.pop(T, tSee + 0.2, 2.6, 0.32), wave = easeOutBack(gfK(T, tSee + 0.25, tSee + 0.75));
   const bow = !see ? ACT.pulse(T, s5.t0 + 0.4, 0.9) : 0;
   const mj = qShadow(GF_H.MX, GF_H.FY, 72) + gfP('_gh2', { eyes: { open: 1, size: 1 + 0.25 * clamp(pop, 0, 1.3), squint: wave > 0.6 ? 0.4 : 0 }, brow: { raise: 10 * clamp(pop, 0, 1) }, mouth: see ? { v: ACT.VIS.A, o: 0.8 * clamp(wave, 0, 1), c: 6 } : { v: ACT.VIS.E, o: 0.2, c: 4 }, blush: 0.55 },
-    { x: GF_H.MX, y: GF_H.FY, s: 1.02, t: T, seed: 98, vest: '#22252C', vshade: 'rgba(0,0,0,0.3)', hair: '#2A2420', collar: true, tie: '#2E8B57', look: see ? [-0.9, 0.05] : [0.7, 0.2], headDy: 14 * bow, tilt: 6 * bow,
+    { x: GF_H.MX, y: GF_H.FY, s: 1.02, t: T, seed: 98, vest: '#22252C', vshade: 'rgba(0,0,0,0.3)', hair: '#2A2420', collar: true, tie: '#2E8B57', look: see ? [-0.9, 0.05] : [0.8, 0.1], headDy: 0, tilt: see ? 0 : 4,
       pose: A2.blend(A2.pose({}), A2.pose({ hL: [40, 196], bend: { aL: -1 } }), clamp(wave, 0, 1.1), 0.2), handL: wave > 0.4 ? 'open' : null, handRotL: -100, armFront: wave > 0.3 ? 'L' : undefined, sy: 1 + 0.03 * clamp(pop, 0, 1) });
-  const guest = qShadow(GF_H.GX, GF_H.FY, 72) + gfP('_gh3', { eyes: { open: 1, squint: 0.3 }, mouth: { v: ACT.VIS.M, o: 0, c: 4 }, blush: 0.3 }, { x: GF_H.GX, y: GF_H.FY, s: 1.0, t: T, seed: 99, vest: '#B9A27E', hair: '#6B5A4A', pose: A2.pose({}), look: [-0.8, 0.1], headDy: 10 * bow });
+  // 신부(이수아): 흰 드레스·베일·부케. 처음엔 민재와 마주 보고 웃다가, 민재가 제로를 보면 같이 돌아봄
+  const bLook = see && T > tSee + 0.35 ? [-0.9, 0.05] : [-0.7, 0.1], bs = 1.0, bx = GF_H.GX, by = GF_H.FY;
+  const HAIR = '#3A2A20';
+  const veil = `<path d="M110 120 Q60 260 70 470 L330 470 Q340 260 290 120 Z" fill="#FFFFFF" opacity=".55" stroke="#D9DDE6" stroke-width="4"/>`;
+  const bride = qShadow(bx, by, 80) + gfP('_gh3', { eyes: { open: 1 - ACT.natBlink(T, 99), squint: 0.45 }, brow: { raise: 2 }, mouth: { v: ACT.VIS.E, o: see ? 0.3 : 0.15, c: 5 }, blush: 0.7 },
+    { x: bx, y: by, s: bs, t: T, seed: 99, vest: '#FFFFFF', vshade: 'rgba(120,130,150,0.18)', longHair: HAIR, lashes: true, look: bLook, pose: A2.pose({ hL: [186, 372], hR: [214, 372] }),
+      hairBack: veil, hairFront: `<path d="M86 156 Q90 60 200 54 Q310 60 314 156 Q292 104 244 98 Q206 126 156 100 Q112 106 86 156 Z" fill="${HAIR}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
+        [150, 175, 200, 225, 250].map((x, i) => `<circle cx="${x}" cy="${f1(66 - Math.sin(i / 4 * Math.PI) * 10)}" r="11" fill="${i % 2 ? '#FFD1DC' : '#FFFFFF'}" stroke="${INK}" stroke-width="3.5"/>`).join('') });
+  // 드레스 치마(허리 아래, 바닥까지) + 부케(두 손 위)
+  const gown = `<g transform="translate(${f1(bx - 200 * bs)} ${f1(by - 560 * bs)}) scale(${bs})"><path d="M130 388 L270 388 L330 556 Q200 574 70 556 Z" fill="#FFFFFF" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>` +
+    `<path d="M150 430 Q200 446 250 430 M120 500 Q200 520 280 500" fill="none" stroke="#D9DDE6" stroke-width="4"/>` +
+    `<g transform="translate(200 366)"><path d="M-8 10 L0 44 L8 10 Z" fill="#7BAE6E" stroke="${INK}" stroke-width="3.5"/>${[[-20, -4, '#FFB4C2'], [0, -14, '#FFFFFF'], [20, -4, '#FFD1DC'], [-10, 10, '#FFFFFF'], [12, 10, '#FFB4C2']].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="14" fill="${c}" stroke="${INK}" stroke-width="3.5"/>`).join('')}</g></g>`;
+  const guest = bride + gown;
   const cam = !see ? qLerpCam(r / 2.5, [900, 640, 1.08], [900, 630, 1.12]) : qLerpCam((t - tSee) / 6, [860, 620, 1.15], [800, 610, 1.25]);
   const frozen = t >= tFreeze;
   return gfDefs() + qDefs() + qPlate('hall', cam, 0.5) + qCam(cam, guest + mj + zero) + `<rect x="-300" y="-200" width="2600" height="1500" fill="#FFE2B0" opacity=".1"/>` +
