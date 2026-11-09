@@ -149,15 +149,15 @@ const gfCalcBack = `<rect x="-46" y="-62" width="92" height="124" rx="11" fill="
   [[-34, -50], [34, -50], [-34, 50], [34, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.5" fill="#2E3440"/>`).join('');
 
 /* =========== 1. 훅: 계산기 =========== */
-// s0: 어둠 → 스탠드 불빛, (POV) 5·0·0·0·0 입력
+// sc: 제로 얼굴(청첩장을 보다 계산기를 내려다보며 숨 들이쉼) → (POV) 5·0·0·0·0 입력
 // z1 "식대가 7만 5천 원…": (POV) '−' 누르고 7·5·0·0·0 → "5만 원 내고 가면,": 제로 얼굴(계산기 뒷면, 망설임) → "마이너스 2만 5천": (POV) '=' → 빨간 −25,000, 땀 한 방울이 화면에 뚝
 function gfcalcScene(t, lt, a) {
   const run = a._run, ph = a.ph;
-  const s0 = TL.lines.find(l => l.id === 's0'), z1 = TL.lines.find(l => l.id === 'z1'), off = z1.t0 - s0.t0; // z1의 lt + off = run
+  const s0 = TL.lines.find(l => l.id === 'sc'), z1 = TL.lines.find(l => l.id === 'z1'), off = z1.t0 - s0.t0; // z1의 lt + off = run
   const tFive = ph === 1 ? gfW(a, ['오만', '5만', '50'], 2.79) : 99, tMinus = ph === 1 ? gfW(a, ['마이너스'], 5.23) : 99, tTwo = ph === 1 ? gfW(a, ['25', '이만'], 6.09) : 99;
   const L = run - off; // z1 기준 시각
-  const T1 = [0.55, 0.7, 0.85, 1.0, 1.12], K1 = [5, 12, 12, 12, 12];                 // s0: 50000
-  const T2 = [0.12, 0.55, 0.7, 0.85, 1.0, 1.12].map(x => x + off), K2 = [11, 0, 5, 12, 12, 12]; // z1: − 75000
+  const T1 = [1.12, 1.27, 1.42, 1.57, 1.69], K1 = [5, 12, 12, 12, 12];               // sc: 50000
+  const T2 = [-0.02, 0.55, 0.7, 0.85, 1.0, 1.12].map(x => x + off), K2 = [11, 0, 5, 12, 12, 12]; // z1: − 75000
   const T3 = [tMinus - 0.05 + off], K3 = [14];                                         // '='
   const taps = T1.concat(T2, T3), keys = K1.concat(K2, K3);
   const n = taps.filter(x => run >= x).length;
@@ -175,23 +175,23 @@ function gfcalcScene(t, lt, a) {
   const hes = ti === 11 && run < taps[11] - 0.06 ? Math.sin(run * 37) * 6 : 0, after = run > taps[11] + 0.12 ? easeOut(gfK(run, taps[11] + 0.12, taps[11] + 0.5)) : 0;
   const tip = [kx + 34 * (1 - dip) + hes + 90 * after, ky + 46 * (1 - dip) + 120 * after];
   // 샷: POV(s0~'오만') → 얼굴('오만'~'마이너스' 직전) → POV(끝까지)
-  const face = ph === 1 && L >= tFive - 0.15 && L < tMinus - 0.25;
+  const face = (ph === 0 && run < 0.95) || (ph === 1 && L >= tFive - 0.15 && L < tMinus - 0.25);
   let w;
   if (!face) {
     const drop = ph === 1 && L > tTwo - 0.1 ? clamp((L - (tTwo - 0.1)) / 0.35, 0, 2) : 0;
-    const cam = ph === 1 && L >= tMinus - 0.25 ? qLerpCam((L - tMinus + 0.25) / 2, [960, 500, 1.12], [960, 480, 1.2]) : qLerpCam(run / 3.8, [960, 540, 1.02], [960, 520, 1.1]);
+    const cam = ph === 1 && L >= tMinus - 0.25 ? qLerpCam((L - tMinus + 0.25) / 2, [960, 500, 1.12], [960, 480, 1.2]) : qLerpCam((run - 0.95) / 3.4, [960, 540, 1.02], [960, 520, 1.1]);
     w = gfDefs() + qCam(cam, gfPovCalc({ top, big, red, on, key, tip, drop }));
-    const dark = ph === 0 ? 1 - easeInOut(gfK(lt, 0.2, 0.7)) : 0;
-    if (dark > 0) w += fFull('#000', dark);
     return w + fFull('#0A1238', 0.1);
   }
   // 얼굴: 계산기 뒷면이 보이게 들고 내려다봄. 망설임(입술 깨물기·미간) → 숨 들이쉼
-  const u = L - (tFive - 0.15), mouth = gfMouth(t, { style: 'bite', c: 0 }, -2.5);
-  const look = ACT.saccade(u, [[0, [0.05, 0.9]], [1.1, [-0.25, 0.75]], [1.6, [0.05, 0.9]]], 0.06, 41);
-  const zf = { eyes: { open: 1 - ACT.blinks(u, [0.9], 0.17), flat: 0.2, size: 0.98 }, brow: { worry: 0.8, knit: 0.35 }, mouth, blush: 0.3, hfx: tt => ACT.sym('sweat', 282, 102, u, 0.9, 99) };
+  const first = ph === 0, u = first ? run : L - (tFive - 0.15), inh = first ? ACT.sigh(run, 0.35, 0.35, 0.5) : 0;
+  const mouth = first ? { v: ACT.VIS.M, o: 0, c: -1 } : gfMouth(t, { style: 'bite', c: 0 }, -2.5);
+  const look = first ? ACT.saccade(u, [[0, [-0.75, 0.45]], [0.4, [0.05, 0.9]]], 0.06, 40) : ACT.saccade(u, [[0, [0.05, 0.9]], [1.1, [-0.25, 0.75]], [1.6, [0.05, 0.9]]], 0.06, 41);
+  const zf = first ? { eyes: { open: 1 - ACT.blinks(u, [0.37], 0.17), flat: 0.25, size: 0.98 }, brow: { worry: 0.6, knit: 0.2 }, mouth, blush: 0.3 }
+    : { eyes: { open: 1 - ACT.blinks(u, [0.9], 0.17), flat: 0.2, size: 0.98 }, brow: { worry: 0.8, knit: 0.35 }, mouth, blush: 0.3, hfx: tt => ACT.sym('sweat', 282, 102, u, 0.9, 99) };
   const tap = taps.reduce((m, x) => Math.max(m, ACT.pulse(run, x - 0.06, 0.16)), 0);
-  const zero = gfZero('_gf1', zf, { t, pose: gfCalcPose(tap), look, holdL: { svg: `<g transform="translate(49 -26)">${gfCalcBack}</g>`, rot: 0 }, handL: 'grip', handR: 'grip', handRotL: 90, handRotR: 90, headDy: 3, tilt: -3 });
-  const cam = qLerpCam(u / 2.6, [960, 575, 2.1], [960, 568, 2.22]);
+  const zero = gfZero('_gf1', zf, { t, pose: gfCalcPose(tap), look, holdL: { svg: `<g transform="translate(49 -26)">${gfCalcBack}</g>`, rot: 0 }, handL: 'grip', handR: 'grip', handRotL: 90, handRotR: 90, headDy: 3 - 4 * inh, tilt: -3, sy: 1 + 0.03 * Math.max(0, inh) });
+  const cam = first ? qLerpCam(u / 1.2, [960, 580, 2.0], [960, 575, 2.08]) : qLerpCam(u / 2.6, [960, 575, 2.1], [960, 568, 2.22]);
   return gfDefs() + qDefs() + qPlate('room', cam, 0.45, { blur: true }) + qCam(cam, gfLampSvg() + zero + gfDesk() + gfInvSmall() + gfWallet(GF.WAL)) + gfNight(1);
 }
 
@@ -219,11 +219,12 @@ function gfTopInv(t, lt, o = {}) {
   return g;
 }
 function gfinvScene(t, lt, a) {
-  const tMin = gfW(a, ['민재'], 0.75), tAgo = gfW(a, ['3년', '삼년', '년'], 2.9);
-  const mk = easeOut(gfK(lt, tMin - 0.05, tMin + 0.35)), cir = easeInOut(gfK(lt, tAgo - 0.1, tAgo + 0.45));
-  const tLast = gfW(a, ['마지막'], 2.8);
-  const cam = lt < tLast - 0.1 ? qLerpCam(lt / 2.6, [880, 570, 1.08], [840, 570, 1.16]) : qLerpCam((lt - tLast + 0.1) / 0.7, [1300, 520, 1.45], [1420, 470, 1.75]);
-  return gfDefs() + qCam(cam, gfTopInv(t, lt, { mark: mk, circle: cir })) + fFull('#0A1238', 0.12);
+  // s0(말 없음, 0.7초): 청첩장이 놓인 책상 → n1: '민재'에 형광펜, '마지막'부터 폰으로 다가가 '3년'에 빨간 동그라미
+  const isN = (a._words || []).length > 0, run = a._run, off = run - lt;
+  const tMin = isN ? gfW(a, ['민재'], 0.75) + off : 99, tLast = isN ? gfW(a, ['마지막'], 2.8) + off : 99, tAgo = isN ? gfW(a, ['3년', '삼년', '년'], 2.9) + off : 99;
+  const mk = easeOut(gfK(run, tMin - 0.05, tMin + 0.35)), cir = easeInOut(gfK(run, tAgo - 0.1, tAgo + 0.45));
+  const cam = run < tLast - 0.1 ? qLerpCam(run / 3.4, [880, 570, 1.06], [840, 570, 1.16]) : qLerpCam((run - tLast + 0.1) / 0.7, [1300, 520, 1.45], [1420, 470, 1.75]);
+  return gfDefs() + qCam(cam, gfTopInv(t, run, { mark: mk, circle: cir })) + fFull('#0A1238', 0.12);
 }
 
 /* =========== 3. 짤랑! 본전이 등장 + 햄릿 =========== */

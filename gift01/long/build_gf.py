@@ -27,7 +27,7 @@ T0 = lambda k: L[k]['t0']
 A = lambda k: L[k]['t0'] - 0.15
 E1 = lambda k: L[k]['t1']
 # ---------- 배경음 ----------
-place('bgm/calc2.mp3', 0.3, T0('sd') - 0.05, 0.30, fin=0.5, fout=0.12, off=0)        # 훅·재미 (어이없음 직전에 뚝)
+place('bgm/calc2.mp3', 0.2, T0('sd') - 0.05, 0.30, fin=0.8, fout=0.12, off=0)        # 훅·재미 (어이없음 직전에 뚝)
 place('bgm/calc2.mp3', T0('n3') - 0.35, E1('b3') + 0.25, 0.27, fin=0.5, fout=0.6, off=34)  # 정보 → 도장
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
@@ -100,9 +100,10 @@ def roll(d=1.0):
     for k in range(n): w = thud(0.12, 85) * (0.25 + 0.75 * k / n); i = int(k * 0.055 * SR); s[i:i + len(w)] += w[:len(s) - i]
     return s
 # ---------- 훅: 스탠드 딸깍, 계산기 ----------
-put(A('s0') + 0.48, click(), 0.5)
-for x in [0.55, 0.7, 0.85, 1.0, 1.12]: put(A('s0') + x, key_(), 0.7)
-for x in [0.12, 0.55, 0.7, 0.85, 1.0, 1.12]: put(A('z1') + x, key_(), 0.7)
+put(A('s0') + 0.15, bp(noise(0.5), 600, 5000) * env(int(0.5 * SR), 0.05, 0.18), 0.3)   # 청첩장 종이 스침
+for x in [1.12, 1.27, 1.42, 1.57, 1.69]: put(A('sc') + x, key_(), 0.7)
+put(A('z1') - 0.02, key_(), 0.6)
+for x in [0.55, 0.7, 0.85, 1.0, 1.12]: put(A('z1') + x, key_(), 0.35)   # 말 위로는 작게
 tM = W('z1', '마이너스', 5.08); put(tM - 0.05, key_(), 0.85); put(tM, bwoop(), 0.5)
 put(W('z1', '25', 5.94) + 0.25, mx(pop_(1800), bp(noise(0.12), 2000, 7000) * env(int(0.12 * SR), 0.002, 0.04)), 0.35)   # 땀 한 방울
 # 청첩장: 형광펜, 빨간 동그라미

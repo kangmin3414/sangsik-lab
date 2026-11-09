@@ -4,7 +4,7 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_gf import LINES, SAMPLE_END
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s0': 0.0, 'z1': 0.05, 'n1': 0.35, 's1': 0.25, 'b1': 0.0, 'n2': 0.4, 'b2': 0.35, 'sd': 0.15, 'z2': 0.0, 'n3': 0.5, 'b3': 0.4, 's2': 0.1,
+GAP = {'s0': 0.0, 'n1': 0.0, 'sc': 0.35, 'z1': 0.05, 's1': 0.3, 'b1': 0.0, 'n2': 0.4, 'b2': 0.35, 'sd': 0.15, 'z2': 0.0, 'n3': 0.5, 'b3': 0.4, 's2': 0.1,
        'n4': 0.2, 'n5': 0.35, 'n6': 0.45, 'n7': 0.4, 'b4': 0.2, 'n8': 0.45, 's3': 0.6, 'n9': 0.1, 'n10': 0.45, 'm1': 0.35, 'n11': 0.6, 'b5': 0.4, 's4': 0.1, 'n12': 0.2,
        'n13': 0.6, 'n14': 0.5, 's5': 0.4, 'n15': 0.2, 's6': 0.2}
 PITCH = {'B': 'asetrate=24000*1.22,aresample=24000,atempo=0.9'}
