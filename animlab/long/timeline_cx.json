@@ -1,0 +1,85 @@
+{
+ "duration": 44.0,
+ "lines": [
+  {
+   "id": "cx1",
+   "scene": "cx1",
+   "args": {},
+   "t0": 0.4,
+   "t1": 4.6,
+   "sub": null
+  },
+  {
+   "id": "cx2",
+   "scene": "cx2",
+   "args": {},
+   "t0": 4.9,
+   "t1": 8.5,
+   "sub": null
+  },
+  {
+   "id": "cx3",
+   "scene": "cx3",
+   "args": {},
+   "t0": 8.8,
+   "t1": 13.2,
+   "sub": null
+  },
+  {
+   "id": "cx4",
+   "scene": "cx4",
+   "args": {},
+   "t0": 13.5,
+   "t1": 17.5,
+   "sub": null
+  },
+  {
+   "id": "cx5",
+   "scene": "cx5",
+   "args": {},
+   "t0": 17.8,
+   "t1": 22.2,
+   "sub": null
+  },
+  {
+   "id": "cx6",
+   "scene": "cx6",
+   "args": {},
+   "t0": 22.5,
+   "t1": 26.5,
+   "sub": null
+  },
+  {
+   "id": "cx7",
+   "scene": "cx7",
+   "args": {},
+   "t0": 26.8,
+   "t1": 30.8,
+   "sub": null
+  },
+  {
+   "id": "cx8",
+   "scene": "cx8",
+   "args": {},
+   "t0": 31.1,
+   "t1": 35.3,
+   "sub": null
+  },
+  {
+   "id": "cx9",
+   "scene": "cx9",
+   "args": {},
+   "t0": 35.6,
+   "t1": 39.6,
+   "sub": null
+  },
+  {
+   "id": "cx10",
+   "scene": "cx10",
+   "args": {},
+   "t0": 39.9,
+   "t1": 43.7,
+   "sub": null
+  }
+ ]
+}
