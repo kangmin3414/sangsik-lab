@@ -46,6 +46,22 @@ J = {
              'Keep the bottom 15% of the frame calm and dark enough for subtitles.',
 }
 
+# 2차(운영자 "캐릭을 좀 더 매력적으로"): 공감되는 직장인은 유지하되 인기 웹툰 주인공처럼 호감 가는 얼굴.
+CHARM = (' Make him a genuinely appealing, charming protagonist like the lead of a popular Korean webtoon: good-looking but approachable, '
+         'clean balanced facial features, expressive eyes with small highlights, nicely styled hair, a stylish casual outfit with a strong, simple silhouette, '
+         'an appealing harmonious color palette. Keep him relatable as an ordinary office worker in his early thirties. '
+         'He keeps ONE signature cowlick strand on the crown that shows his mood (droops when sad, zigzags when annoyed, stands straight up when shocked). '
+         'No mole on the face, no pink skin. Layout: a character expression sheet on a plain warm off-white background. '
+         'Top row: five chest-up portraits of the SAME man, same size, evenly spaced: 1 neutral, 2 warm smile, 3 tired and drained, '
+         '4 annoyed, 5 shocked. Bottom row: one full-body front view, centered.')
+J['charmA'] = (STYLE + ' The character "Zero", warm boy-next-door type: soft handsome face, gentle slightly droopy eyes, a neat two-block haircut in dark brown-black '
+             'with a soft fringe, a calm kind expression. Outfit: a mustard-yellow hoodie over a white t-shirt, a blank white lanyard ID card, light grey wide trousers, white sneakers.' + CHARM)
+J['charmB'] = (STYLE + ' The character "Zero", cool deadpan type: sharp single-lidded eyes, straight eyebrows, a comma-shaped fringe hairstyle in jet black, '
+             'a dry, unbothered default face that makes his rare smile charming. Outfit: an oversized charcoal hoodie layered under an open light-grey work jacket, '
+             'a mustard-yellow lanyard with a blank ID card, black straight trousers, clean black-and-white sneakers.' + CHARM)
+J['charmC'] = (STYLE + ' The character "Zero", cute puppy-like type: big round eyes, a soft round face, fluffy messy dark hair, thin round glasses as a signature accessory, '
+             'a shy, earnest expression. Outfit: a cream knit cardigan over a mustard-yellow t-shirt, a blank white lanyard ID card, navy chinos, brown loafers.' + CHARM)
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 vx.token()
 for n, kk in enumerate(sys.argv[1:]):
