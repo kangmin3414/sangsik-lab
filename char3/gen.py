@@ -62,6 +62,23 @@ J['charmB'] = (STYLE + ' The character "Zero", cool deadpan type: sharp single-l
 J['charmC'] = (STYLE + ' The character "Zero", cute puppy-like type: big round eyes, a soft round face, fluffy messy dark hair, thin round glasses as a signature accessory, '
              'a shy, earnest expression. Outfit: a cream knit cardigan over a mustard-yellow t-shirt, a blank white lanyard ID card, navy chinos, brown loafers.' + CHARM)
 
+# 3차(운영자 "여자도 그려줘"): 여자 주인공 서윤, 같은 화풍·같은 상징색.
+FCHARM = (' Make her a genuinely appealing, charming female lead like in a popular Korean webtoon: pretty but approachable and natural, '
+          'not sexualized, modest everyday office clothes, clean balanced facial features, expressive eyes with small highlights, nicely styled hair, '
+          'a strong simple silhouette and an appealing harmonious color palette. She is an ordinary office worker around 29 years old. '
+          'Her signature is a small mustard-yellow hair clip she always wears. No mole on the face, no pink skin. '
+          'Layout: a character expression sheet on a plain warm off-white background. Top row: five chest-up portraits of the SAME woman, '
+          'same size, evenly spaced: 1 neutral, 2 bright smile, 3 tired and drained, 4 annoyed, 5 shocked. Bottom row: one full-body front view, centered.')
+J['womanA'] = (STYLE + ' The character "Seoyun", warm and kind coworker type: soft gentle eyes, a low loose ponytail with a few face-framing strands '
+               'in dark brown, a calm friendly face. Outfit: a cream knit cardigan over a light blouse, a blank white lanyard ID card, beige wide trousers, '
+               'white sneakers.' + FCHARM)
+J['womanB'] = (STYLE + ' The character "Seoyun", cool and competent career type: sharp clear eyes, a sleek jaw-length bob in black, a composed, '
+               'slightly dry expression that makes her smile special. Outfit: a charcoal oversized blazer over a white t-shirt, a blank white lanyard ID card, '
+               'black straight trousers, simple loafers.' + FCHARM)
+J['womanC'] = (STYLE + ' The character "Seoyun", bright and quirky type: big lively eyes, full see-through bangs, medium-length slightly wavy hair '
+               'in warm dark brown, a playful expression. Outfit: an oversized soft green sweater, a blank white lanyard ID card, light denim jeans, '
+               'chunky white sneakers.' + FCHARM)
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 vx.token()
 for n, kk in enumerate(sys.argv[1:]):
