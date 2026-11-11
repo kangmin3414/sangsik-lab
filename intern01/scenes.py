@@ -28,6 +28,8 @@ WINTER = ('Winter night clothes: Seoyun wears a long cream wool coat and a light
           'Zero wears a navy padded jacket and a mustard scarf over his cardigan, holding an identical grey laptop bag. ')
 THUGS = ('Two rude young men in their late 20s, a bit tipsy with slightly red faces: man A has short bleached hair, an ear piercing, '
          'an open black padded jacket, chewing gum; man B wears a backwards cap, hands in pockets, slouching. No weapons, no touching. ')
+SW = ('ALONE in the frame, no other people. Winter night clothes: long cream wool coat and a light-grey scarf over her cardigan, a grey laptop bag on her shoulder. ')
+ZW = ('ALONE in the frame, no other people. Winter night clothes: navy padded jacket and a mustard scarf over his cardigan. ')
 STOP = 'Background: a softly blurred realistic Seoul bus stop at night in front of an office building, warm street lamps, wet asphalt. '
 MEET = 'Background: a softly blurred realistic modern Korean office meeting room, glass wall, morning light. '
 OFFICE = 'Background: a softly blurred realistic Korean open-plan office, desk partitions, monitors, daytime. '
@@ -65,7 +67,7 @@ CUTS = {
             'Report pages are blank with faint grey lines only. Background: a softly blurred realistic office printer corner. '),
     'c10': (S, W16, 'Close-up insert of a young woman\'s hand with a pale sky-blue cardigan sleeve placing a small square yellow sticky note '
             '(completely blank) neatly on the margin of a printed report page with faint grey lines, precise and careful. '
-            'Background: softly blurred office printer and desk. '),
+            'Background: softly blurred office printer and desk. The image fills the whole frame edge to edge, no white border. '),
     'c11': (Z + S + B, W16, ZERO + SEO + BOSS + 'Line 43-46. Open-plan office. Seoyun sits at her desk reading a report, not looking up, calm deadpan face, '
             'holding a pen. The team leader walks behind her carrying a coffee mug, pausing and pointing at the report with his chin, a knowing small smirk. '
             'Over the desk partition, Zero peeks up holding a report with a yellow blank sticky note on it, serious and earnest. ' + OFFICE),
@@ -78,21 +80,21 @@ CUTS = {
             'her real face stays calm. Background: softly blurred realistic bus interior. '),
     # ── 서윤 감정 컷(쿨한 츤데레) ──
     'e_s1': (S, W11, SEO + 'Chest-up. Default cool face: neutral, composed, eyes looking slightly to the side, completely unimpressed. ' + MEET),
-    'e_s2': (S, W11, SEO + WINTER + 'Chest-up. Firm refusal: polite small bow of the head but eyes cold and steady, lips pressed, one hand raised slightly as a stop. ' + STOP),
-    'e_s3': (S, W11, SEO + WINTER + 'Chest-up. Seeing through a lie: looking straight at someone off-frame with calm half-lidded eyes, one eyebrow barely lifted, '
+    'e_s2': (S, W11, SEO + SW + 'Chest-up. Firm refusal: polite small bow of the head but eyes cold and steady, lips pressed, one hand raised slightly as a stop. ' + STOP),
+    'e_s3': (S, W11, SEO + SW + 'Chest-up. Seeing through a lie: looking straight at someone off-frame with calm half-lidded eyes, one eyebrow barely lifted, '
              'lips in a tiny flat line, as if saying "sure you are". ' + STOP),
-    'e_s4': (S, W11, SEO + WINTER + 'Chest-up. Looking up at the first snow, face softened and open, lips slightly parted, snowflakes, white breath. ' + STOP),
-    'e_s5': (S, W11, SEO + WINTER + 'Chest-up. Caught: head turned away abruptly, eyes wide for half a second, body frozen, composed but startled. ' + STOP),
+    'e_s4': (S, W11, SEO + SW + 'Chest-up. Looking up at the first snow, face softened and open, lips slightly parted, snowflakes, white breath. ' + STOP),
+    'e_s5': (S, W11, SEO + SW + 'Chest-up. Caught: head turned away abruptly, eyes wide for half a second, body frozen, composed but startled. ' + STOP),
     'e_s6': (S, W11, SEO + 'Chest-up. Grumbling while reading a paper: brows knitted, mouth pouting slightly, yet eyes fixed on the page. ' + OFFICE),
     'e_s7': (S, W11, SEO + 'Chest-up. Side-eye: face toward a monitor, eyes slid sideways toward someone, lips neutral, pretending not to look. ' + OFFICE),
-    'e_s8': (S, W11, SEO + WINTER + 'Chest-up by a dark bus window at night: a short breath out through the nose, the smallest hidden smile at one corner of '
+    'e_s8': (S, W11, SEO + SW + 'Chest-up by a dark bus window at night: a short breath out through the nose, the smallest hidden smile at one corner of '
              'her mouth, eyes lowered to her lap. Ambiguous between a sigh and a smile. Snow and blurred city lights outside. '),
     # ── 제로 감정 컷 ──
     'e_z1': (Z, W11, ZERO + 'Chest-up. Flustered apology: bowing slightly, hand on the back of his head, sweat drop, one curly strand flying up. ' + MEET),
     'e_z2': (Z, W11, ZERO + 'Chest-up. Quietly attentive: writing in a small notebook with a pen, eyes serious and focused. ' + MEET),
-    'e_z3': (Z, W11, ZERO + WINTER + 'Chest-up. Polite but unmoving: calm sincere face, holding up his grey laptop bag, standing his ground. ' + STOP),
-    'e_z4': (Z, W11, ZERO + WINTER + 'Chest-up. Awkward polite smile while pointing up with an open palm at something above, slightly nervous eyes. ' + STOP),
-    'e_z5': (Z, W11, ZERO + WINTER + 'Chest-up. Hiding the tremble: eyes averted to the side, hand going into his padded jacket pocket, '
+    'e_z3': (Z, W11, ZERO + ZW + 'Chest-up. Polite but unmoving: calm sincere face, holding up his grey laptop bag, standing his ground. ' + STOP),
+    'e_z4': (Z, W11, ZERO + ZW + 'Chest-up. Awkward polite smile while pointing up with an open palm at something above, slightly nervous eyes. ' + STOP),
+    'e_z5': (Z, W11, ZERO + ZW + 'Chest-up. Hiding the tremble: eyes averted to the side, hand going into his padded jacket pocket, '
              'lips pressed, embarrassed little pause. ' + STOP),
     'e_z6': (Z, W11, ZERO + 'Chest-up. Sincere thanks: small earnest bow, gentle grateful face, holding a report with a blank yellow sticky note. ' + OFFICE),
 }
