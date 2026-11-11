@@ -103,9 +103,9 @@ E = {
     'seoyun': (SEOYUN, OFFICE, [
         ('쿨한 기본', 'Default cool face: neutral, composed, eyes slightly to the side, unimpressed.'),
         ('"…그러시겠죠"', 'Seeing through a lie: calm half-lidded eyes, one eyebrow barely lifted, lips in a tiny flat line.'),
-        ('툴툴', 'Grumbling: brows knitted, slight pout, yet eyes fixed on a paper she holds.'),
+        ('툴툴', 'Clearly grumbling: brows knitted hard, lips pushed into a visible pout, a small huff of breath, yet her eyes stay glued to a paper she holds close.'),
         ('곁눈질', 'Side-eye: face toward a monitor, eyes slid sideways toward someone, pretending not to look.'),
-        ('"민준아"에 흔들림', 'Bothered: a tiny twitch at the corner of her mouth, fingers tightening on a pen, looking away with a cool face that is slightly cracking.'),
+        ('"민준아"에 흔들림', 'Visibly bothered but hiding it: eyes snapped sideways toward a voice off-frame, eyebrows pulled together, mouth pressed tight, gripping a pen so hard it bends slightly, a small anger-vein-free annoyed tension.'),
         ('부정하지 않는 한마디', 'Finally honest: looking straight ahead with a small, genuine, shy-but-steady smile, eyes soft.'),
     ]),
 }
@@ -114,7 +114,8 @@ for who, (desc, bg, emos) in E.items():
         CUTS[f'{who}{i}'] = (R[who], '1:1', EMO + desc + act + ' ' + (bg if 'Background:' not in act else ''))
 CUTS['lineup'] = (R['minjun'][:1] + R['seoyun'][:1] + R['doyun'] + R['harin'] + R['taeho'] + R['boss'], '16:9',
                   'Draw a cast lineup on a plain warm off-white background: six adults standing side by side, full body, front view, evenly spaced, '
-                  'left to right: Minjun, Seoyun, Doyun, Harin, Taeho, Team leader, matching the references exactly. ' + STY +
+                  'left to right: Minjun, Seoyun, Doyun, Harin, Taeho, Team leader, matching the references exactly. '
+                  'Seoyun wears a LONG grey pleated midi skirt well below the knee and white sneakers, an office-intern look, clearly an adult, NOT a school uniform, no knee socks, no loafers. ' + STY +
                   MINJUN + SEOYUN + DOYUN + HARIN + TAEHO + BOSS)
 
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
