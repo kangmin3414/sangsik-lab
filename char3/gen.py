@@ -127,6 +127,31 @@ J['uniC'] = (FSTYLE + ' The character "Seoyun", chic senior-student type: a laye
              'cool cat-like eyes, a composed look that melts into a charming smile. Outfit: a camel long trench coat over a black turtleneck, '
              'straight dark jeans, black ankle boots, wireless earbuds, a laptop held under one arm.' + UNIV)
 
+# 6차(운영자 "제로는 직장인"): 제로 = charmC(곱슬·안경, 31살 대리), 서윤 = uniA 얼굴(21살 대학교 4학년 겨울 인턴).
+# 둘 다 크림색이라 서윤 옷을 하늘색 인턴 복장으로. 참조 1 = 제로 시트, 참조 2 = 서윤 시트.
+REFSTYLE = ('Match the exact art style, line weight, coloring and face drawing of the two reference images: flat Korean webtoon look, '
+            'clean bold black outlines, flat cel colors with one soft shadow tone. Natural human skin tones. No animal parts, no mole on any face. '
+            'Absolutely no text, letters, numbers, speech bubbles, labels or logos anywhere. ')
+ZEROC = ('Zero (reference image 1): the same 31-year-old office worker with fluffy messy dark curly hair, thin round glasses, a cream knit cardigan '
+         'over a mustard-yellow t-shirt, a blank white lanyard ID card, navy chinos, brown loafers; same face exactly. ')
+SEOYUN = ('Seoyun (reference image 2): the same stunningly pretty young woman with long straight glossy black hair, soft see-through bangs '
+          'and a small mustard-yellow hair clip; same face exactly. She is now a 21-year-old university senior doing a winter internship, '
+          'clearly an adult, so her outfit changes to a modest intern office look: a pale sky-blue knit cardigan over a white blouse, '
+          'a long grey pleated skirt, white sneakers, a blank white lanyard ID card. ')
+J['lineup'] = (REFSTYLE + 'Draw a cast lineup on a plain warm off-white background: four adults standing side by side, full body, '
+               'natural relaxed poses, similar scale with realistic relative heights, each clearly distinct in silhouette and color. From left: '
+               '1 ' + ZEROC + '2 ' + SEOYUN +
+               '3 Taeho, Zero\'s best friend, 31, tall and broad-shouldered, short neat buzz-cut, a big easy grin, handsome in a sporty way, '
+               'black bomber jacket over a white t-shirt, grey joggers, white sneakers; '
+               '4 the team leader, a man of about 48, neat swept-back hair with a little grey at the temples, rectangular glasses, '
+               'beige knit vest over a light blue shirt, dark slacks, holding a smartphone, a stern face with a hint of hidden warmth.')
+J['duo'] = (REFSTYLE + 'Draw ONE 16:9 animation frame with ' + ZEROC + 'and ' + SEOYUN +
+            'Moment: late afternoon in the office. Zero sits at his desk, turned toward Seoyun, flustered, one sweat drop, a tuft of his curly hair '
+            'standing up. Seoyun stands beside his desk holding a document to her chest with a bright, polite smile. Both chest-up to waist-up. '
+            'Background: a softly blurred, realistic, photographic-looking Korean open-plan office with warm window light, shallow depth of field. '
+            'The flat cartoon characters stay crisp and flat against the realistic blurred background. '
+            'Keep the bottom 15% of the frame calm for subtitles.')
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 vx.token()
 for n, kk in enumerate(sys.argv[1:]):
@@ -136,8 +161,8 @@ for n, kk in enumerate(sys.argv[1:]):
     if n:
         time.sleep(6)
     p = []
-    if ref:
-        p.append({"inlineData": {"mimeType": "image/png", "data": b64(ref)}})
+    for rp in (ref.split('+') if ref else []):   # 참조 여러 장: a.png+b.png
+        p.append({"inlineData": {"mimeType": "image/png", "data": b64(rp)}})
     p.append({"text": J[k]})
     body = {"contents": [{"role": "user", "parts": p}],
             "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": "16:9", "imageSize": "2K"}}}
