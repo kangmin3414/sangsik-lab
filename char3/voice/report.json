@@ -1,0 +1,302 @@
+{
+ "제로/Puck/기본": {
+  "cer": 0.0,
+  "hyp": "아, 그 보고서요? 제가 어제 다 정리해뒀어요.",
+  "take": "takes/제로_Puck_기본_0.wav"
+ },
+ "제로/Puck/기쁨": {
+  "cer": 0.0,
+  "hyp": "어 저요? 아 네 같이 가요 점심",
+  "take": "takes/제로_Puck_기쁨_0.wav"
+ },
+ "제로/Puck/짜증": {
+  "cer": 0.056,
+  "hyp": "아니.. 왜 꼭 퇴근 5분 전에 일을 주시는 건데요",
+  "take": "takes/제로_Puck_짜증_0.wav"
+ },
+ "제로/Puck/놀람": {
+  "cer": 0.067,
+  "hyp": "잠깐만! 이거 전체공위로 보낸 거예요?",
+  "take": "takes/제로_Puck_놀람_0.wav"
+ },
+ "제로/Puck/지침": {
+  "cer": 0.0,
+  "hyp": "오늘도 고생 많았다 나",
+  "take": "takes/제로_Puck_지침_0.wav"
+ },
+ "제로/Achird/기본": {
+  "cer": 0.0,
+  "hyp": "아 그 보고서요? 제가 어제 다 정리해 뒀어요",
+  "take": "takes/제로_Achird_기본_0.wav"
+ },
+ "제로/Achird/기쁨": {
+  "cer": 0.0,
+  "hyp": "어? 저요? 아 네 같이 가요 점심",
+  "take": "takes/제로_Achird_기쁨_0.wav"
+ },
+ "제로/Achird/짜증": {
+  "cer": 0.056,
+  "hyp": "아니, 왜 꼭 퇴근 5분 전에 일을 주시는 건데요.",
+  "take": "takes/제로_Achird_짜증_0.wav"
+ },
+ "제로/Achird/놀람": {
+  "cer": 0.067,
+  "hyp": "잠깐만 이거 전체공위로 보낸 거예요?",
+  "take": "takes/제로_Achird_놀람_1.wav"
+ },
+ "제로/Achird/지침": {
+  "cer": 0.0,
+  "hyp": "오늘도 고생 많았다. 나",
+  "take": "takes/제로_Achird_지침_0.wav"
+ },
+ "제로/Enceladus/기본": {
+  "cer": 0.0,
+  "hyp": "아 그 보고서요? 제가 어제 다 정리해뒀어요",
+  "take": "takes/제로_Enceladus_기본_0.wav"
+ },
+ "제로/Enceladus/기쁨": {
+  "cer": 0.091,
+  "hyp": "어? 저요? 어 네 같이 가요 점심",
+  "take": "takes/제로_Enceladus_기쁨_0.wav"
+ },
+ "제로/Enceladus/짜증": {
+  "cer": 0.056,
+  "hyp": "아니, 왜 꼭 퇴근 5분 전에 일을 주시는 건데요",
+  "take": "takes/제로_Enceladus_짜증_1.wav"
+ },
+ "제로/Enceladus/놀람": {
+  "cer": 0.067,
+  "hyp": "잠깐만, 이거 전체 공위로 보낸 거예요?",
+  "take": "takes/제로_Enceladus_놀람_1.wav"
+ },
+ "제로/Enceladus/지침": {
+  "cer": 0.0,
+  "hyp": "오늘도 고생 많았다. 나",
+  "take": "takes/제로_Enceladus_지침_0.wav"
+ },
+ "서윤/Leda/기본": {
+  "cer": 0.0,
+  "hyp": "대리님 이거 검토 부탁드려도 될까요?",
+  "take": "takes/서윤_Leda_기본_0.wav"
+ },
+ "서윤/Leda/기쁨": {
+  "cer": 0.091,
+  "hyp": "우와! 진짜요? 대리님 최고예요!",
+  "take": "takes/서윤_Leda_기쁨_0.wav"
+ },
+ "서윤/Leda/짜증": {
+  "cer": 0.2,
+  "hyp": "쟤 저만 빼고 회식날짜 정화 신고예요?",
+  "take": "takes/서윤_Leda_짜증_1.wav"
+ },
+ "서윤/Leda/놀람": {
+  "cer": 0.0,
+  "hyp": "헐 이게 다 오늘까지라고요?",
+  "take": "takes/서윤_Leda_놀람_1.wav"
+ },
+ "서윤/Leda/지침": {
+  "cer": 0.0,
+  "hyp": "저 오늘은 진짜 좀 힘들었어요",
+  "take": "takes/서윤_Leda_지침_0.wav"
+ },
+ "서윤/Autonoe/기본": {
+  "cer": 0.0,
+  "hyp": "대리님 이거 검토 부탁드려도 될까요?",
+  "take": "takes/서윤_Autonoe_기본_0.wav"
+ },
+ "서윤/Autonoe/기쁨": {
+  "cer": 0.091,
+  "hyp": "우와! 진짜요? 대리님 최고예요!",
+  "take": "takes/서윤_Autonoe_기쁨_0.wav"
+ },
+ "서윤/Autonoe/짜증": {
+  "cer": 0.067,
+  "hyp": "침.. 저만 빼고 회식날짜 정하신 거예요?",
+  "take": "takes/서윤_Autonoe_짜증_0.wav"
+ },
+ "서윤/Autonoe/놀람": {
+  "cer": 0.0,
+  "hyp": "헐, 이게 다 오늘까지라고요?",
+  "take": "takes/서윤_Autonoe_놀람_0.wav"
+ },
+ "서윤/Autonoe/지침": {
+  "cer": 0.0,
+  "hyp": "저 오늘은 진짜 좀 힘들었어요",
+  "take": "takes/서윤_Autonoe_지침_0.wav"
+ },
+ "서윤/Aoede/기본": {
+  "cer": 0.0,
+  "hyp": "대리님 이거 검토 부탁드려도 될까요?",
+  "take": "takes/서윤_Aoede_기본_0.wav"
+ },
+ "서윤/Aoede/기쁨": {
+  "cer": 0.0,
+  "hyp": "와 진짜요? 대리님 최고예요!",
+  "take": "takes/서윤_Aoede_기쁨_0.wav"
+ },
+ "서윤/Aoede/짜증": {
+  "cer": 0.067,
+  "hyp": "저만 빼고 회식날짜 정하신 거예요?",
+  "take": "takes/서윤_Aoede_짜증_0.wav"
+ },
+ "서윤/Aoede/놀람": {
+  "cer": 0.0,
+  "hyp": "헐 이게 다 오늘까지라고요?",
+  "take": "takes/서윤_Aoede_놀람_0.wav"
+ },
+ "서윤/Aoede/지침": {
+  "cer": 0.0,
+  "hyp": "저 오늘은 진짜 좀 힘들었어요",
+  "take": "takes/서윤_Aoede_지침_0.wav"
+ },
+ "태호/Algenib/기본": {
+  "cer": 0.0,
+  "hyp": "야, 제로! 오늘 퇴근하고 치킨 어때?",
+  "take": "takes/태호_Algenib_기본_1.wav"
+ },
+ "태호/Algenib/기쁨": {
+  "cer": 0.077,
+  "hyp": "하하하, 그치? 그게 바로 내 친구지",
+  "take": "takes/태호_Algenib_기쁨_0.wav"
+ },
+ "태호/Algenib/짜증": {
+  "cer": 0.083,
+  "hyp": "아 진짜... 너는 왜 맨날 일 씹이냐?",
+  "take": "takes/태호_Algenib_짜증_0.wav"
+ },
+ "태호/Algenib/놀람": {
+  "cer": 0.0,
+  "hyp": "뭐? 인턴이 너한테 커피를 사줬다고?",
+  "take": "takes/태호_Algenib_놀람_0.wav"
+ },
+ "태호/Algenib/지침": {
+  "cer": 0.0,
+  "hyp": "괜찮아. 너 오늘 충분히 잘했어.",
+  "take": "takes/태호_Algenib_지침_0.wav"
+ },
+ "태호/Fenrir/기본": {
+  "cer": 0.0,
+  "hyp": "야 제로 오늘 퇴근하고 치킨 어때?",
+  "take": "takes/태호_Fenrir_기본_0.wav"
+ },
+ "태호/Fenrir/기쁨": {
+  "cer": 0.231,
+  "hyp": "그치? 그게 바로 내 친구지",
+  "take": "takes/태호_Fenrir_기쁨_0.wav"
+ },
+ "태호/Fenrir/짜증": {
+  "cer": 0.25,
+  "hyp": "하.. 진짜.. 너는 왜 맨날 20이냐?",
+  "take": "takes/태호_Fenrir_짜증_0.wav"
+ },
+ "태호/Fenrir/놀람": {
+  "cer": 0.0,
+  "hyp": "뭐? 인턴이 너한테 커피를 사줬다고?",
+  "take": "takes/태호_Fenrir_놀람_0.wav"
+ },
+ "태호/Fenrir/지침": {
+  "cer": 0.0,
+  "hyp": "괜찮아. 너 오늘 충분히 잘했어.",
+  "take": "takes/태호_Fenrir_지침_0.wav"
+ },
+ "태호/Sadachbia/기본": {
+  "cer": 0.0,
+  "hyp": "야, 제로! 오늘 퇴근하고 치킨 어때?",
+  "take": "takes/태호_Sadachbia_기본_0.wav"
+ },
+ "태호/Sadachbia/기쁨": {
+  "cer": 0.231,
+  "hyp": "그치? 그게 바로 내 친구지",
+  "take": "takes/태호_Sadachbia_기쁨_0.wav"
+ },
+ "태호/Sadachbia/짜증": {
+  "cer": 0.167,
+  "hyp": "아... 진짜... 너는 왜 맨날 익십이냐?",
+  "take": "takes/태호_Sadachbia_짜증_1.wav"
+ },
+ "태호/Sadachbia/놀람": {
+  "cer": 0.0,
+  "hyp": "뭐? 인턴이 너한테 커피를 사줬다고?",
+  "take": "takes/태호_Sadachbia_놀람_0.wav"
+ },
+ "태호/Sadachbia/지침": {
+  "cer": 0.0,
+  "hyp": "괜찮아. 너 오늘 충분히 잘했어.",
+  "take": "takes/태호_Sadachbia_지침_0.wav"
+ },
+ "팀장님/Charon/기본": {
+  "cer": 0.167,
+  "hyp": "제로들이 잠깐 회의실로 와봐",
+  "take": "takes/팀장님_Charon_기본_1.wav"
+ },
+ "팀장님/Charon/기쁨": {
+  "cer": 0.0,
+  "hyp": "음... 이번 건 꽤 괜찮네. 수고했어.",
+  "take": "takes/팀장님_Charon_기쁨_0.wav"
+ },
+ "팀장님/Charon/짜증": {
+  "cer": 0.0,
+  "hyp": "이걸 지금 보고서라고 가져온 건가?",
+  "take": "takes/팀장님_Charon_짜증_0.wav"
+ },
+ "팀장님/Charon/놀람": {
+  "cer": 0.071,
+  "hyp": "어? 이게 왜 단톡방에 올라가있지?",
+  "take": "takes/팀장님_Charon_놀람_0.wav"
+ },
+ "팀장님/Charon/지침": {
+  "cer": 0.0,
+  "hyp": "너무 무리하지 마 일은 내일도 있으니까",
+  "take": "takes/팀장님_Charon_지침_0.wav"
+ },
+ "팀장님/Alnilam/기본": {
+  "cer": 0.333,
+  "hyp": "재료들이 잠깐 회의실로 와봐.",
+  "take": "takes/팀장님_Alnilam_기본_0.wav"
+ },
+ "팀장님/Alnilam/기쁨": {
+  "cer": 0.0,
+  "hyp": "음... 이번 건 꽤 괜찮네 수고했어",
+  "take": "takes/팀장님_Alnilam_기쁨_0.wav"
+ },
+ "팀장님/Alnilam/짜증": {
+  "cer": 0.0,
+  "hyp": "이걸 지금 보고서라고 가져온 건가?",
+  "take": "takes/팀장님_Alnilam_짜증_0.wav"
+ },
+ "팀장님/Alnilam/놀람": {
+  "cer": 0.0,
+  "hyp": "어? 어? 이게 왜 단톡방에 올라가있지?",
+  "take": "takes/팀장님_Alnilam_놀람_0.wav"
+ },
+ "팀장님/Alnilam/지침": {
+  "cer": 0.0,
+  "hyp": "너무 무리하지 마. 일은 내일도 있으니까.",
+  "take": "takes/팀장님_Alnilam_지침_0.wav"
+ },
+ "팀장님/Orus/기본": {
+  "cer": 0.167,
+  "hyp": "제로들이 잠깐 회의실로 와봐",
+  "take": "takes/팀장님_Orus_기본_0.wav"
+ },
+ "팀장님/Orus/기쁨": {
+  "cer": 0.0,
+  "hyp": "음… 이번 건 꽤 괜찮네 수고했어",
+  "take": "takes/팀장님_Orus_기쁨_0.wav"
+ },
+ "팀장님/Orus/짜증": {
+  "cer": 0.0,
+  "hyp": "이걸 지금 보고서라고 가져온 건가?",
+  "take": "takes/팀장님_Orus_짜증_0.wav"
+ },
+ "팀장님/Orus/놀람": {
+  "cer": 0.0,
+  "hyp": "어? 어? 이게 왜 단톡방에 올라가있지?",
+  "take": "takes/팀장님_Orus_놀람_0.wav"
+ },
+ "팀장님/Orus/지침": {
+  "cer": 0.125,
+  "hyp": "너무 무리하지 마 이런 내일도 있으니까",
+  "take": "takes/팀장님_Orus_지침_0.wav"
+ }
+}
