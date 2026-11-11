@@ -106,6 +106,27 @@ FSTYLE = STYLE.replace('simple faces with expressive thick eyebrows, heavy upper
 for _k in ['prettyA', 'prettyB', 'prettyC']:
     J[_k + '2'] = J[_k].replace(STYLE, FSTYLE, 1)
 
+# 5차(운영자 "더 매력적으로 대학생"): 여자 주인공을 21~22살 대학생으로. 성인임이 분명하게, 단정한 옷.
+UNIV = (' She is a 21-year-old university student, clearly an adult in her early twenties with mature adult proportions. '
+        'Make her stunningly beautiful with an idol-like visual, the kind of girl everyone on campus notices: a small V-line face, '
+        'large sparkling eyes with long lashes, detailed irises and two catchlights, softly arched brows, a small refined nose, glossy rosy lips, '
+        'a natural blush, silky shiny hair with highlight streaks and flowing loose strands, slim balanced proportions about 7.5 heads tall, '
+        'a confident graceful posture. Trendy but modest Korean campus fashion. Tasteful and not sexualized. '
+        'She stays pretty and cute in EVERY expression (no wrinkles, no eye bags, no ugly distortion). '
+        'She always wears a small mustard-yellow hair clip as her signature. No lanyard, no mole on the face, no pink skin. '
+        'Layout: a character expression sheet on a plain warm off-white background. Top row: five chest-up portraits of the SAME woman, '
+        'same size, evenly spaced, fully inside the frame: 1 neutral with a faint smile, 2 bright smile, 3 sleepy, 4 annoyed pout with puffed cheeks, '
+        '5 surprised. Bottom row: one full-body front view, centered, natural relaxed pose.')
+J['uniA'] = (FSTYLE + ' The character "Seoyun", pure and elegant type: long straight glossy black hair with soft see-through bangs, '
+             'gentle doe eyes, a calm sweet smile. Outfit: an oversized cream cable-knit sweater, a long pleated light-grey skirt, '
+             'white sneakers, a canvas tote bag on one shoulder and two textbooks held to her chest.' + UNIV)
+J['uniB'] = (FSTYLE + ' The character "Seoyun", bright and lovely type: shoulder-length wavy chestnut-brown hair in a half-up style, '
+             'big lively eyes, a radiant smile. Outfit: a light-blue denim jacket over a white-and-navy striped long-sleeve top, '
+             'cream wide-leg trousers, white sneakers, a small backpack.' + UNIV)
+J['uniC'] = (FSTYLE + ' The character "Seoyun", chic senior-student type: a layered glossy black medium cut that frames her face, '
+             'cool cat-like eyes, a composed look that melts into a charming smile. Outfit: a camel long trench coat over a black turtleneck, '
+             'straight dark jeans, black ankle boots, wireless earbuds, a laptop held under one arm.' + UNIV)
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 vx.token()
 for n, kk in enumerate(sys.argv[1:]):
