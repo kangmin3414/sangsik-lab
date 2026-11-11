@@ -79,6 +79,33 @@ J['womanC'] = (STYLE + ' The character "Seoyun", bright and quirky type: big liv
                'in warm dark brown, a playful expression. Outfit: an oversized soft green sweater, a blank white lanyard ID card, light denim jeans, '
                'chunky white sneakers.' + FCHARM)
 
+# 4차(운영자 "여자는 더 매력적으로"): 인기 로맨스 웹툰 여주인공 수준의 미모. 노출·성적 표현 없이 얼굴·머릿결·옷 맵시로.
+FPRETTY = (' Make her truly beautiful and lovable, like the heroine of a hit Korean romance webtoon: a small V-line face, large sparkling eyes with '
+           'long lashes and two catchlights, softly arched brows, a small refined nose, glossy rosy lips, a light natural blush, '
+           'silky shiny hair with highlight streaks and a few flowing loose strands, slim balanced proportions about 7 heads tall, graceful posture. '
+           'Fashionable but modest, well-tailored modern office outfit and small delicate earrings. Tasteful and not sexualized. '
+           'She stays pretty and cute in EVERY expression (no wrinkles, no ugly distortion): even tired or annoyed faces look charming, '
+           'like a pout or a cute frown. She always wears a small mustard-yellow hair clip as her signature. No mole on the face, no pink skin. '
+           'Layout: a character expression sheet on a plain warm off-white background. Top row: five chest-up portraits of the SAME woman, '
+           'same size, evenly spaced: 1 neutral with a faint smile, 2 bright smile, 3 tired and sleepy, 4 annoyed pout, 5 surprised. '
+           'Bottom row: one full-body front view, centered.')
+J['prettyB'] = (STYLE + ' The character "Seoyun", 29, cool and competent career woman: a sleek glossy jaw-length bob in black with soft inward curls '
+                'and a side part, cat-like clear eyes, a composed expression that turns into a dazzling smile. Outfit: a cropped light-grey tailored blazer '
+                'over a white knit top, a thin gold necklace, a blank white lanyard ID card, black high-waisted slacks, black loafers.' + FPRETTY)
+J['prettyA'] = (STYLE + ' The character "Seoyun", 29, warm and kind: long glossy dark-brown hair in a loose low ponytail over one shoulder with soft '
+                'face-framing strands, gentle doe eyes, a sweet calm smile. Outfit: a soft butter-cream cardigan over a light blue collared blouse, '
+                'a blank white lanyard ID card, a long pleated beige skirt, white sneakers.' + FPRETTY)
+J['prettyC'] = (STYLE + ' The character "Seoyun", 29, bright and playful: medium-length wavy warm-brown hair with see-through bangs, big lively eyes, '
+                'a mischievous smile. Outfit: a sage-green knit vest over a white shirt with rolled sleeves, a blank white lanyard ID card, '
+                'straight light-blue jeans, white sneakers.' + FPRETTY)
+
+# 4차-2: 기본 STYLE의 '굵은 눈썹·무거운 눈꺼풀'이 미모를 누름 → 여자용 화풍(섬세한 얼굴)으로 교체.
+FSTYLE = STYLE.replace('simple faces with expressive thick eyebrows, heavy upper eyelids, a small nose and mouth shapes that read clearly at small size, light blush for emotion',
+                       'refined pretty faces with delicate thin eyebrows, clear eyes with detailed irises, long lashes and bright highlights, '
+                       'a small nose and mouth shapes that read clearly at small size, soft blush')
+for _k in ['prettyA', 'prettyB', 'prettyC']:
+    J[_k + '2'] = J[_k].replace(STYLE, FSTYLE, 1)
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 vx.token()
 for n, kk in enumerate(sys.argv[1:]):
