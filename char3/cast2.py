@@ -118,6 +118,26 @@ CUTS['lineup'] = (R['minjun'][:1] + R['seoyun'][:1] + R['doyun'] + R['harin'] + 
                   'Seoyun wears a LONG grey pleated midi skirt well below the knee and white sneakers, an office-intern look, clearly an adult, NOT a school uniform, no knee socks, no loafers. ' + STY +
                   MINJUN + SEOYUN + DOYUN + HARIN + TAEHO + BOSS)
 
+# ── 수영복 시안(2026-11-12 운영자 "여자 캐릭들의 비키니 스타일도") : 2시즌 여름 워크숍 가정 ──
+SWIM = ('Use the reference images ONLY for the character design (same face and hair). Full-body, standing, the character alone, '
+        'a natural relaxed everyday pose (no posing for the camera, no sexualized pose, no close-ups of the body). She is clearly an adult woman in her twenties '
+        'with adult proportions and a mature face. Tasteful, wholesome summer fashion-illustration feel. ' + STY)
+BEACH = 'Background: a softly blurred, realistic, photographic-looking resort beach on a bright summer day, turquoise sea. '
+POOL = 'Background: a softly blurred, realistic, photographic-looking hotel resort pool with palm trees, late afternoon light. '
+SEO_SW = SEOYUN.replace('pale sky-blue cardigan over a white blouse, lanyard with a blank ID card. ', '')
+HAR_SW = HARIN.replace('Olive-green knit sweater, ivory wide trousers, a plain black hair tie worn on her wrist, lanyard with a blank white ID card. ', 'A plain black hair tie on her wrist. ')
+CUTS['sw_seoyun1'] = (R['seoyun'], '3:4', SWIM + SEO_SW + 'Swimwear: a simple navy-blue bikini with clean lines, an open oversized white linen shirt worn over it, '
+                      'small mustard-yellow hair clip, white slides. Cool, composed face, one hand holding sunglasses, looking slightly off to the side. ' + BEACH)
+CUTS['sw_seoyun2'] = (R['seoyun'], '3:4', SWIM + SEO_SW + 'Swimwear: a sporty black bikini with a pale sky-blue cropped zip rash-guard jacket half open over it, '
+                      'small mustard-yellow hair clip, hair in a low ponytail. Cool unimpressed face, holding a cold drink, standing by the pool. ' + POOL)
+CUTS['sw_harin1'] = (R['harin'], '3:4', SWIM + HAR_SW + 'Swimwear: an olive-green bikini with a sheer ivory wrap sarong skirt tied at the waist, a wide-brim straw hat in her hand, '
+                     'wavy hair loose. Warm gentle smile, relaxed and elegant. ' + BEACH)
+CUTS['sw_harin2'] = (R['harin'], '3:4', SWIM + HAR_SW + 'Swimwear: a sage-green bikini under an open thin ivory knit cardigan, mint-green tumbler in hand, '
+                     'hair in a loose half-up style. Calm warm smile, standing by the pool. ' + POOL)
+CUTS['sw_duo'] = (R['seoyun'][:1] + R['harin'], '16:9', SWIM.replace('the character alone', 'the two women together, standing side by side with some space between them') +
+                  SEO_SW + HAR_SW + 'Seoyun (left) wears a navy-blue bikini with an open oversized white linen shirt over it; Harin (right) wears an olive-green bikini '
+                  'with a sheer ivory wrap sarong skirt. Seoyun looks cool and slightly guarded, glancing at Harin; Harin smiles warmly at her. ' + BEACH)
+
 b64 = lambda p: base64.b64encode(open(p, 'rb').read()).decode()
 out = lambda k: f'ai/cast2/{k}.png'
 args = sys.argv[1:]
