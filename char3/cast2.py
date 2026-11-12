@@ -121,7 +121,10 @@ CUTS['lineup'] = (R['minjun'][:1] + R['seoyun'][:1] + R['doyun'] + R['harin'] + 
 # ── 수영복 시안(2026-11-12 운영자 "여자 캐릭들의 비키니 스타일도") : 2시즌 여름 워크숍 가정 ──
 SWIM = ('Use the reference images ONLY for the character design (same face and hair). Full-body, standing, the character alone, '
         'a natural relaxed everyday pose (no posing for the camera, no sexualized pose, no close-ups of the body). She is clearly an adult woman in her twenties '
-        'with adult proportions and a mature face. Tasteful, wholesome summer fashion-illustration feel. ' + STY)
+        'with adult proportions and a mature face. Tasteful, wholesome summer fashion-illustration feel. ' + STY +
+        'BODY: elegant fashion-model proportions — tall, about 8.5 heads tall, small face, long slender legs, slim waist, toned healthy figure with '
+        'natural feminine adult curves, good straight posture, graceful neck and shoulders. Confident relaxed fashion-editorial stance '
+        '(weight on one leg, shoulders relaxed), like a summer swimwear catalogue illustration — stylish, not provocative. ')
 BEACH = 'Background: a softly blurred, realistic, photographic-looking resort beach on a bright summer day, turquoise sea. '
 POOL = 'Background: a softly blurred, realistic, photographic-looking hotel resort pool with palm trees, late afternoon light. '
 SEO_SW = SEOYUN.replace('pale sky-blue cardigan over a white blouse, lanyard with a blank ID card. ', '')
