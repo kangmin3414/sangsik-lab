@@ -191,7 +191,7 @@ function phbodyScene(t, lt, a) {
   if (ph >= 1) h += phBodyDots(t, ph === 1 ? 1 : 2, ph === 1 ? phK(0.3, 2.4, lt) : 1, ph === 2 ? phK(0.2, 1.0, lt) : 0);
   if (ph === 1) { const tY = fAt(a, '젊다', D * 0.7); if (lt > tY - 0.3) over += pop(t, t - lt + tY - 0.3, t + 99, 1380, 330, label(0, 0, '대부분 그 사람보다 젊다', { size: 46, bg: '#D8F5DC' }), { rot: -3, bob: 3 }); }
   let cam = [960, 540, 1.0];
-  if (ph === 2) { const tC = fAt(a, '대뇌', 2.4), zk = easeInOut(phK(tC - 0.3, tC + 1.0, lt)); const head = ptOf(PB.x, PB.y, PB.s, 200, 170);
+  if (ph === 2) { const tC = fAt(a, '피질', 3.2) - 0.5, zk = easeInOut(phK(tC - 0.3, tC + 1.0, lt)); const head = ptOf(PB.x, PB.y, PB.s, 200, 170);
     cam = [lerp(960, head[0] + 180, zk), lerp(540, head[1] + 60, zk), lerp(1.0, 1.9, zk)];
     if (lt > tC) h += `<circle cx="${f1(head[0])}" cy="${f1(head[1])}" r="${f1(220 + 10 * Math.sin(t * 4))}" fill="url(#phBrain)" opacity="${f1(phK(tC, tC + 0.8, lt) * 0.8 * 100) / 100}"/>`;
     const tA = fAt(a, '나이와', tC + 1.6); if (lt > tA) over += pop(t, t - lt + tA, t + 99, 1380, 300, label(0, 0, '제로와 같은 나이', { size: 54, bg: PH_GOLD }), { rot: -3, bob: 3 }); }

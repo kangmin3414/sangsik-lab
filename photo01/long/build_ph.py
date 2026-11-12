@@ -100,7 +100,7 @@ put(W('n4', '핵실험', 4.5) - 0.3, lp(noise(1.6), 120) * env(int(1.6 * SR), 0.
 for k in range(6): put(W('n4', '시계처럼', 7.0) - 0.1 + k * 0.22, tick_(1500, 0.7))
 put(W('n5', '젊다', 3.0) - 0.2, chime(), 0.3)
 put(W('n6', '그런데', 0.4) - 0.05, tone(110, 1.6, 1.0, (1, 0.5, 0.25)) * 0.35)                     # 음악이 멈춘 자리
-put(W('n6', '대뇌', 2.4) - 0.1, sparkle(), 0.3)
+put(W('n6', '피질', 4.3) - 0.6, sparkle(), 0.3)
 for k in range(int((E1('n7') - A('n7')) / 0.12)): put(A('n7') + 0.2 + k * 0.12, tick_(2200, 0.25))   # 필름 영사기
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_ph.wav', mix, SR)
