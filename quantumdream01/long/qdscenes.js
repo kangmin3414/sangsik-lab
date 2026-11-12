@@ -24,7 +24,7 @@ const qdPlate = (k, cam, depth = 0.6, extra = '') => {
 };
 // 우주 배경(별은 카메라보다 느리게)
 function qdSpace(t, cam, o = {}) {
-  let h = `<rect x="-4000" y="-3000" width="10000" height="7000" fill="#03050F"/><circle cx="960" cy="540" r="1700" fill="url(#qdVoid)"/>`;
+  let h = `<rect x="-4000" y="-3000" width="10000" height="7000" fill="#03050F"/><circle cx="960" cy="540" r="4200" fill="url(#qdVoid)"/>`;
   const [cx, cy] = cam, dep = 0.25;
   for (let i = 0; i < 170; i++) { const x = (hash(i * 3.7) * 6800 - 2400) + (cx - 960) * dep, y = (hash(i * 9.1) * 4600 - 1800) + (cy - 540) * dep, r = 1 + hash(i * 1.3) * 2.6;
     h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="#DDEBFF" opacity="${f1((0.25 + 0.55 * Math.abs(Math.sin(t * (0.6 + hash(i)) + i))) * (o.dim == null ? 1 : o.dim) * 100) / 100}"/>`; }
