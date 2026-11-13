@@ -27,7 +27,10 @@ E1 = lambda k: L[k]['t1']
 # ---------- 배경음 ----------
 place('bgm/night.mp3', 0, A('s2') + 0.6, 0.30, fin=1.0, fout=0.8, off=0)                    # 일요일 밤 책상
 place('bgm/vessel.mp3', A('s2') + 1.0, A('k0') + 0.1, 0.22, fin=0.3, fout=0.5, off=0)        # 걱정이 소동
-place('bgm/mystic.mp3', A('n2') - 0.2, DUR, 0.32, fin=1.2, fout=2.2, off=0)                  # 책 속 세계
+place('bgm/mystic.mp3', A('n2') - 0.2, A('s7') + 0.8, 0.32, fin=1.2, fout=1.6, off=0)       # 책 속 세계 ~ 그릇의 방
+place('bgm/mystic2.mp3', A('s7') - 0.2, A('z6') + 0.6, 0.30, fin=1.2, fout=2.0, off=0)       # 다리의 방 ~ 거울의 방
+place('bgm/tender.mp3', A('z6') + 3.6, A('n11') + 0.4, 0.34, fin=2.5, fout=2.4, off=0)       # 3막: 걱정이를 보듬다 ~ 경비 일지
+place('bgm/morning.mp3', A('n11') - 0.4, DUR, 0.34, fin=1.2, fout=2.6, off=0)                # 월요일 아침
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -111,6 +114,38 @@ bells(A('s4') + 0.5, A('s4') + 2.7, 0.14, 0.45)
 put(A('s5') + 0.8, pop_(520), 0.4); put(A('s5') + 0.85, tone(330, 1.6, 0.8, (1, 0.5, 0.25)) * 0.25)
 put(W('z3', '걸으니까', 2.0) + 0.5, pop_(520), 0.4)
 for k in range(3): put(A('s6') + 0.5 + k * 0.7, pop_(520 + k * 40), 0.35)
+# ---------- 다리의 방 ----------
+for k in range(7): put(A('s7') + 0.5 + k * 0.2, snap(), 0.07 + 0.03 * (k % 2))                # 멀리서 박수
+put(A('s7') + 2.15, thud(0.25, 120), 0.35)                                                    # 털썩
+tQ = W('n6', '상상하느냐고', 9.9) - 0.75
+put(tQ, pop_(700), 0.3); put(tQ + 0.25, pop_(900), 0.25); put(W('n6', '뒤', 12.4) - 0.3, ding(), 0.3)
+put(W('n6', '지원서를', 15.3) + 0.15, rip(0.3), 0.25); put(W('n6', '연봉도', 17.0) + 0.15, tick_(2200), 0.6); put(W('n6', '연봉도', 17.0) + 0.3, tick_(2500), 0.6)
+put(W('n7', '멈추는', 4.2) + 0.2, slide_down(0.8), 0.35)
+bells(A('w4') + 0.05, E1('w4'), 0.2, 0.2)
+for k in range(4): put(A('s8') + 0.15 + 0.5 + k * 0.6 + 0.2, mx(flap(), tone(660 + k * 80, 0.25, 0.1, (1, 0.3)) * 0.25), 0.6)   # 판자 탁
+put(A('z4') + 0.3, pop_(520), 0.25)
+# ---------- 거울의 방 ----------
+put(A('s9') + 0.65, thud(0.6, 48), 0.9); put(A('s9') + 0.65, tone(98, 1.6, 0.7, (1, 0.6, 0.4)) * 0.5, 0.6)   # 쿠구궁
+put(A('s9') + 1.6, clank(), 0.35); put(A('s9') + 1.62, bell(1480, 0.5), 0.5)                  # 종 쨍그랑
+tU = W('n8', '미국에서', 3.0)
+for k in range(10): put(tU + 0.15 + k * 0.55, rip(0.1), 0.1)                                   # 쪽지 사각
+put(W('n8', '91', 12.9) - 0.2, ding(), 0.35); put(W('n8', '않았습니다', 15.0) - 0.4, whoosh(1.3), 0.45)
+put(W('n8', '셋은', 18.2), sparkle(), 0.3)
+put(A('s10') + 0.15 + 0.7, suck(), 0.25); put(A('s10') + 0.15 + 1.3, slide_down(1.5), 0.5); put(A('s10') + 0.15 + 3.0, sparkle(), 0.3); put(A('s10') + 0.15 + 2.3, tick_(1800), 0.7)
+put(A('s11') + 0.45, slide_down(1.0), 0.3)
+# ---------- 3막 ----------
+put(W('w6', '그날부터', 3.5), tone(880, 1.4, 0.7, (1, 0.3)) * 0.4, 0.5); put(W('w6', '그날부터', 3.5) + 0.7, sparkle(), 0.2)
+for k in range(3): put(A('n9') + 0.35 + k * (E1('n9') - T0('n9')) * 0.2, pop_(620 + k * 60), 0.25)
+put(A('n10') + 0.15 + 0.35, pop_(700), 0.3); put(A('n10') + 0.15 + 1.0, thud(0.12, 240), 0.2)
+put(W('n10', '적어', 4.2) - 0.2, rip(0.5), 0.25); put(E1('n10') - 0.7, whoosh(0.8), 0.25)
+for k in range(9): put(A('s12') + 0.45 + k * 0.28, rip(0.12), 0.12)                            # 펜 사각
+put(A('s12') + 0.15 + 2.6, ding(), 0.3); put(A('s12') + 0.15 + 3.6, mx(thud(0.12, 300) * 0.5, bell(1320, 0.35) * 0.5), 0.5)   # 종 내려놓기
+# ---------- 열린 결말 ----------
+put(A('s13') + 0.15 + 0.25, bell(1568, 0.5), 0.4)                                              # 아주 작게 땡
+put(A('s13') + 0.15 + 1.0, step(), 0.6); put(A('s13') + 0.15 + 1.22, step(), 0.6)              # 톡톡
+put(A('s13') + 0.15 + 2.55, click(), 0.4)
+put(A('n12') + 0.15 + 0.5, creak(1.2), 0.5); put(A('n12') + 0.15 + 1.0, whoosh(1.6), 0.25)
+put(A('q1') + 0.3, chime(), 0.25)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_wr.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_wr.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_wr.wav'], check=True)

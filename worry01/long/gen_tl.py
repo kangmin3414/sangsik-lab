@@ -4,7 +4,8 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_wr import LINES
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s1': 0.1, 'v1': 0.35, 'z1': 0.3, 's2': 0.1, 'w1': 0.3, 'n1': 0.3, 'z2': 0.5, 'k0': 0.4, 'n2': 0.2, 's3': 0.3, 'n3': 0.3, 'w2': 0.35, 'n4': 0.4, 's4': 0.2, 'w3': 0.4, 'n5': 0.4, 's5': 0.2, 'z3': 0.3, 's6': 0.2}
+GAP = {'s1': 0.1, 'v1': 0.35, 'z1': 0.3, 's2': 0.1, 'w1': 0.3, 'n1': 0.3, 'z2': 0.5, 'k0': 0.4, 'n2': 0.2, 's3': 0.3, 'n3': 0.3, 'w2': 0.35, 'n4': 0.4, 's4': 0.2, 'w3': 0.4, 'n5': 0.4, 's5': 0.2, 'z3': 0.3, 's6': 0.2,
+       's7': 0.5, 'n6': 0.3, 'n7': 0.4, 'w4': 0.3, 's8': 0.15, 'z4': 0.3, 's9': 0.6, 'w5': 0.2, 'n8': 0.4, 's10': 0.4, 'z5': 0.3, 'z6': 0.6, 's11': 0.25, 'w6': 0.3, 'n9': 0.45, 'z7': 0.5, 'n10': 0.45, 's12': 0.3, 'n11': 0.7, 's13': 0.3, 'n12': 0.4, 'q1': 0.5}
 PITCH = {'W': 'asetrate=24000*1.15,aresample=24000,atempo=0.93', 'S': 'highpass=f=450,lowpass=f=3400,acompressor=threshold=-18dB:ratio=4,volume=0.9'}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)

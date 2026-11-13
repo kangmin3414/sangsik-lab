@@ -21,9 +21,11 @@ function qwGuard(x, y, s, t, o = {}) {
   h += `<line x1="-20" y1="-22" x2="-22" y2="-2" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><line x1="20" y1="-22" x2="22" y2="-2" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><ellipse cx="-26" cy="-2" rx="15" ry="8" fill="${QW_NAVY}" stroke="${INK}" stroke-width="5"/><ellipse cx="26" cy="-2" rx="15" ry="8" fill="${QW_NAVY}" stroke="${INK}" stroke-width="5"/>`;
   // 등불(왼손, 화면 왼쪽)
   const lx = o.hug ? -30 : -78, ly = lerp(-66, -170, up);
+  if (!o.noLantern) {
   h += `<circle cx="${lx}" cy="${f1(ly + 26)}" r="${f1(70 + 6 * Math.sin(t * 7))}" fill="url(#qwLamp)" opacity=".8"/>`;
   h += `<line x1="-44" y1="-78" x2="${lx}" y2="${f1(ly)}" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
   h += `<g transform="translate(${lx} ${f1(ly)})"><path d="M-6 0 Q0 -14 6 0" fill="none" stroke="${INK}" stroke-width="5"/><rect x="-17" y="2" width="34" height="42" rx="8" fill="#FFE27A" stroke="${INK}" stroke-width="5"/><rect x="-21" y="-2" width="42" height="9" rx="4" fill="${QW_NAVY}" stroke="${INK}" stroke-width="4"/><rect x="-21" y="41" width="42" height="9" rx="4" fill="${QW_NAVY}" stroke="${INK}" stroke-width="4"/><circle cx="0" cy="24" r="7" fill="#fff"/></g>`;
+  } else h += `<line x1="-44" y1="-78" x2="-70" y2="-52" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
   // 몸
   h += `<ellipse cx="0" cy="-74" rx="58" ry="60" fill="${QW_BODY}" stroke="${INK}" stroke-width="7"/><ellipse cx="-18" cy="-96" rx="20" ry="14" fill="#fff" opacity=".35"/>`;
   h += `<rect x="-30" y="-52" width="60" height="12" rx="5" fill="${QW_NAVY}" stroke="${INK}" stroke-width="4"/><circle cx="0" cy="-46" r="7" fill="${QW_BRASS}" stroke="${INK}" stroke-width="3"/>`;
@@ -82,6 +84,7 @@ function qwdeskScene(t, lt, a) {
   const ph = a.ph, D = a._dur || 3, s = QD0.s, y = qwSitY(), zx = QD0.zx, top = QD0.top;
   if (ph === 0 && lt < 1.7) return qwDefs() + qCam(qLerpCam(lt / 1.7, [960, 600, 1.0], [980, 640, 1.12]), qwNotePage(lt)) + fFull('#0A1238', 0.12)
     + pop(t, t - lt + 0.1, t + 99, 330, 150, label(0, 0, '일요일 밤 11:40', { size: 44, bg: '#BFE6FF' }), { rot: -4, bob: 2 });
+  if (ph === 7 && lt < 3.5) return qwDefs() + qCam(qLerpCam(lt / 3.5, [960, 560, 1.0], [960, 580, 1.08]), qwJournalPage(lt)) + warm(0.12);
   E['_qwz'] = qTalk('z당황', env(t)); E['_qwz2'] = qTalk('z졸음', env(t) * 0.7);
   const WRITE = Object.assign({}, P['f앉기'], { armR: [[252, 285], [300, 330], [336, 334]], hR: [340, 332] });
   const EARS = Object.assign({}, P['f앉기'], { armL: [[148, 285], [104, 236], [128, 184]], hL: [134, 176], armR: [[252, 285], [296, 236], [272, 184]], hR: [266, 176] });
@@ -120,6 +123,10 @@ function qwdeskScene(t, lt, a) {
     guard = qwGuard(QD0.gx, top, 0.95, t, { eyes: 'wide', look: [-0.8, 0], ring: qwBellRing(t, lt % 0.9 < 0.45), talk: 0 });
     if (lt % 0.9 < 0.45) rings = qwRings(QD0.gx + 76, top - 92, t, { n: 2, speed: 2.2, R: 260 });
     if (lt > 0.55 && lt < 1.2) over += qdFx(t, lt, 0.55, 1.2, 1100, 420, '쿵', '#fff', { size: 58 }); }
+  if (ph === 7) { const k = lt - 3.5; cam = qLerpCam(k / 1.5, [1060, 700, 1.45], [1040, 700, 1.3]); ex = fEx('z빵긋'); look = [0.8, 0.4];
+    pose = Object.assign({}, WRITE, { hR: [340 + Math.sin(lt * 16) * 4, 332] });
+    guard = qwGuard(QD0.gx, top, 0.95, t, { eyes: 'shut', calm: true, noBell: true, look: [0, 0] }) + qwBellObj(QD0.gx + 120, top, 0.95);
+    for (let i = 0; i < 2; i++) { const kk = (lt * 0.6 + i / 2) % 1; over += `<g opacity="${f1(Math.sin(kk * Math.PI) * 100) / 100}">${fT(1560 + kk * 40, 420 - kk * 80, 'z', 40 + i * 8, '#fff', { stroke: INK, sw: 6 })}</g>`; } }
   let w = qwFurniture() + Z({ x: zx, y, s, t, pose, ex, look, tilt, seed: 3 }) + chest + qwDesk(t, { phoneOn }) + (guard || '') + rings;
   return qwDefs() + qdPlate('desknight', cam, 0.6) + qCam(cam, w) + fFull('#0A1238', 0.04) + warm(0.1) + over;
 }
