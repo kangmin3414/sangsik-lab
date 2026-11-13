@@ -2,12 +2,14 @@
    물리 규칙: 앉은 제로는 의자 좌판 위 · 노트·폰·걱정이는 책상 윗면 위 · 종소리 고리는 종에서 퍼진다 · 원인 다음 결과. */
 Object.assign(QBG, { desknight: 'ai/desknight.png' });
 ['qwdesk', 'qwbook', 'qwfall', 'qwdoors', 'qwnet'].forEach(k => CAMS[k] = 'fixed');
-const QW_GOLD = '#F5C451', QW_GOLD2 = '#FFE9A8', QW_NAVY = '#27365E', QW_BODY = '#BFD4EE', QW_BRASS = '#D9A441';
+const QW_GOLD = '#FFD86B', QW_GOLD2 = '#FFE9A8', QW_NAVY = '#27365E', QW_BODY = '#BFD4EE', QW_BRASS = '#D9A441';
 const qwDefs = () => `<defs>
 <radialGradient id="qwLamp" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".95"/><stop offset=".5" stop-color="#FFD36B" stop-opacity=".35"/><stop offset="1" stop-color="#FFD36B" stop-opacity="0"/></radialGradient>
-<radialGradient id="qwDark" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#151B36"/><stop offset="1" stop-color="#04060F"/></radialGradient>
+<radialGradient id="qwDark" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#7C8BE0"/><stop offset="1" stop-color="#4450A8"/></radialGradient>
+<linearGradient id="qwSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B63C4"/><stop offset=".55" stop-color="#9A8FD8"/><stop offset=".85" stop-color="#F2B8A0"/><stop offset="1" stop-color="#FFE3A8"/></linearGradient>
+<linearGradient id="qwSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8E86D6"/><stop offset=".25" stop-color="#5E66C2"/><stop offset="1" stop-color="#3F4AA6"/></linearGradient>
 <radialGradient id="qwGoldGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".8"/><stop offset="1" stop-color="#F5C451" stop-opacity="0"/></radialGradient>
-<linearGradient id="qwFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04060F" stop-opacity="1"/><stop offset=".35" stop-color="#04060F" stop-opacity="0"/></linearGradient>
+<linearGradient id="qwFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3A8" stop-opacity=".85"/><stop offset=".5" stop-color="#FFE3A8" stop-opacity="0"/></linearGradient>
 </defs>`;
 /* ---------- 걱정이: 꼬마 야간 경비원. 원점 = 발. o: ring(종 흔들림 -1~1), talk(0~1), eyes('wide'|'normal'|'shut'), look[-1~1], shrink, lanternUp(0~1), hug ---------- */
 function qwGuard(x, y, s, t, o = {}) {
@@ -119,7 +121,7 @@ function qwdeskScene(t, lt, a) {
     if (lt % 0.9 < 0.45) rings = qwRings(QD0.gx + 76, top - 92, t, { n: 2, speed: 2.2, R: 260 });
     if (lt > 0.55 && lt < 1.2) over += qdFx(t, lt, 0.55, 1.2, 1100, 420, '쿵', '#fff', { size: 58 }); }
   let w = qwFurniture() + Z({ x: zx, y, s, t, pose, ex, look, tilt, seed: 3 }) + chest + qwDesk(t, { phoneOn }) + (guard || '') + rings;
-  return qwDefs() + qdPlate('desknight', cam, 0.6) + qCam(cam, w) + fFull('#0A1238', 0.16) + over;
+  return qwDefs() + qdPlate('desknight', cam, 0.6) + qCam(cam, w) + fFull('#0A1238', 0.04) + warm(0.1) + over;
 }
 
 /* ---------- 2. 책이 떠오른다 → 글자가 금빛 실로 풀리고, 바닥이 넘어간다 ---------- */
@@ -145,20 +147,20 @@ function qwbookScene(t, lt, a) {
   if (ph === 1) { const g = qdK(0.2, 1.6, lt); // 노트 글자가 금빛 실로 풀려 방을 채운다
     for (let i = 0; i < 26; i++) { const an = -Math.PI + (i / 26) * Math.PI * 2 + Math.sin(i) * 0.3, L = g * (500 + hash(i * 3.3) * 900), x0 = QD0.nb[0], y0 = QD0.nb[1] - 10, x1 = x0 + Math.cos(an) * L, y1 = y0 + Math.sin(an) * L * 0.7, wob = Math.sin(t * 3 + i) * 60;
       threads += `<path d="M${x0} ${y0} Q${f1((x0 + x1) / 2 + wob)} ${f1((y0 + y1) / 2 - 80)} ${f1(x1)} ${f1(y1)}" fill="none" stroke="${i % 3 ? QW_GOLD : QW_GOLD2}" stroke-width="${f1(3 + hash(i) * 3)}" stroke-linecap="round" opacity="${f1(g * 0.9 * 100) / 100}"/><circle cx="${f1(x1)}" cy="${f1(y1)}" r="6" fill="${QW_GOLD2}" opacity="${f1(g * 100) / 100}"/>`; }
-    over += `<rect x="-100" y="-100" width="2200" height="1400" fill="#04060F" opacity="${f1(qdK(1.9, 2.55, lt) * 100) / 100}"/>`; }
-  return qwDefs() + qdPlate('desknight', cam, 0.6) + qCam(cam, w + threads) + fFull('#0A1238', 0.16 + (ph === 1 ? qdK(0.2, 1.6, lt) * 0.3 : 0)) + over;
+    over += `<rect x="-100" y="-100" width="2200" height="1400" fill="#FFE9A8" opacity="${f1(qdK(1.9, 2.55, lt) * 100) / 100}"/>`; }
+  return qwDefs() + qdPlate('desknight', cam, 0.6) + qCam(cam, w + threads) + fFull('#0A1238', 0.04) + warm(0.1) + over;
 }
 
 /* ---------- 3. 떨어지며 보는 세 낱말 ---------- */
 function qwWeb(t, speed, op = 0.5) { // 위로 흘러가는 금빛 그물(떨어지는 느낌)
   let h = `<rect x="-400" y="-300" width="2800" height="1700" fill="url(#qwDark)"/>`;
-  for (let i = 0; i < 16; i++) { const x = -200 + i * 150; h += `<path d="M${x} -200 Q${f1(x + Math.sin(t * 0.8 + i) * 50)} 540 ${x} 1300" fill="none" stroke="${QW_GOLD}" stroke-width="3" opacity="${op}"/>`; }
+  for (let i = 0; i < 16; i++) { const x = -200 + i * 150; h += `<path d="M${x} -200 Q${f1(x + Math.sin(t * 0.8 + i) * 50)} 540 ${x} 1300" fill="none" stroke="${QW_GOLD}" stroke-width="4" opacity="${op}"/>`; }
   for (let i = 0; i < 12; i++) { const y = ((i * 130 - t * speed) % 1560 + 1560) % 1560 - 200; h += `<path d="M-300 ${f1(y)} Q960 ${f1(y + Math.sin(t + i) * 40)} 2300 ${f1(y)}" fill="none" stroke="${QW_GOLD}" stroke-width="3" opacity="${op}"/>`; }
   return h;
 }
 function qwfallScene(t, lt, a) {
   const ph = a.ph, D = a._dur || 10;
-  let h = qwWeb(t, ph === 0 ? 520 : 200, 0.4), over = '';
+  let h = qwWeb(t, ph === 0 ? 520 : 200, 0.7), over = '';
   if (ph === 1) { // 걱정이 클로즈업: 종을 끌어안고 떤다
     E['_qwg'] = 0; const sh = Math.sin(t * 46) * 5;
     h += `<g transform="translate(${f1(960 + sh)} 760)">${qwGuard(0, 0, 3.0, t, { eyes: 'wide', look: [0, -0.5], hug: true, talk: env(t), sweat: true, ring: Math.sin(t * 46) * 0.15 })}</g>`;
@@ -185,12 +187,12 @@ function qwfallScene(t, lt, a) {
 const QN = { hy: 430, vx: 960 };
 const qwFloorY = d => QN.hy + 640 / (d + 0.9);          // d: 0(가까움)~ 큼(멂)
 function qwNetSea(t, o = {}) {
-  let h = `<rect x="-2000" y="-1500" width="6000" height="4000" fill="#04060F"/><rect x="-2000" y="-1500" width="6000" height="${1500 + QN.hy}" fill="url(#qwDark)"/>`;
-  for (let i = 0; i < 70; i++) h += `<circle cx="${f1(-600 + hash(i * 3.7) * 3100)}" cy="${f1(-300 + hash(i * 9.1) * 700)}" r="${f1(1 + hash(i) * 2.4)}" fill="#DDE6FF" opacity="${f1((0.2 + 0.5 * Math.abs(Math.sin(t * (0.5 + hash(i)) + i))) * 100) / 100}"/>`;
+  let h = `<rect x="-2000" y="${QN.hy}" width="6000" height="2600" fill="#3F4AA6"/><rect x="-2000" y="${QN.hy}" width="6000" height="980" fill="url(#qwSea)"/><rect x="-2000" y="-1500" width="6000" height="${1500 + QN.hy}" fill="#5B63C4"/><rect x="-2000" y="${QN.hy - 900}" width="6000" height="900" fill="url(#qwSky)"/>`;
+  for (let i = 0; i < 70; i++) h += `<circle cx="${f1(-600 + hash(i * 3.7) * 3100)}" cy="${f1(-300 + hash(i * 9.1) * 700)}" r="${f1(1 + hash(i) * 2.4)}" fill="#FFFFFF" opacity="${f1((0.35 + 0.5 * Math.abs(Math.sin(t * (0.5 + hash(i)) + i))) * 100) / 100}"/>`;
   h += `<ellipse cx="${QN.vx}" cy="${QN.hy}" rx="1500" ry="60" fill="url(#qwGoldGlow)" opacity=".5"/>`;
   const col = o.color || QW_GOLD;
-  for (let i = -18; i <= 18; i++) { const xb = QN.vx + i * 230; h += `<line x1="${QN.vx + i * 14}" y1="${QN.hy}" x2="${xb}" y2="1400" stroke="${col}" stroke-width="3" opacity=".55"/>`; }
-  for (let j = 0; j < 14; j++) { const d = j * 0.55 - ((t * (o.flow || 0)) % 0.55), y = qwFloorY(d); if (y > 1400 || d < -0.6) continue; h += `<line x1="-2000" y1="${f1(y)}" x2="4000" y2="${f1(y)}" stroke="${col}" stroke-width="${f1(clamp(4 - d * 0.4, 1, 4))}" opacity="${f1(clamp(0.7 - d * 0.07, 0.15, 0.7) * 100) / 100}"/>`; }
+  for (let i = -18; i <= 18; i++) { const xb = QN.vx + i * 230; h += `<line x1="${QN.vx + i * 14}" y1="${QN.hy}" x2="${xb}" y2="1400" stroke="${col}" stroke-width="4" opacity=".8"/>`; }
+  for (let j = 0; j < 14; j++) { const d = j * 0.55 - ((t * (o.flow || 0)) % 0.55), y = qwFloorY(d); if (y > 1400 || d < -0.6) continue; h += `<line x1="-2000" y1="${f1(y)}" x2="4000" y2="${f1(y)}" stroke="${col}" stroke-width="${f1(clamp(4 - d * 0.4, 1, 4))}" opacity="${f1(clamp(0.9 - d * 0.06, 0.35, 0.9) * 100) / 100}"/>`; }
   for (let i = 0; i < 30; i++) { const d = hash(i * 5.1) * 6, ix = Math.round((hash(i * 2.3) - 0.5) * 20), y = qwFloorY(Math.round(d / 0.55) * 0.55), k = (y - QN.hy) / (1400 - QN.hy), x = QN.vx + ix * (14 + (230 - 14) * k);
     h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1((2 + 5 * k) * (0.6 + 0.4 * Math.abs(Math.sin(t * 2 + i))))}" fill="${QW_GOLD2}"/>`; }
   return h + `<rect x="-2000" y="${QN.hy - 4}" width="6000" height="300" fill="url(#qwFade)" opacity=".7"/>`;
@@ -207,7 +209,7 @@ function qwdoorsScene(t, lt, a) {
   const cam = qLerpCam(lt / D, [960, 620, 1.0], [960, 600, 1.12]);
   let w = qwNetSea(t), over = '';
   ['그릇', '다리', '거울'].forEach((nm, i) => { const x = 620 + i * 340, y = 700, open = i === 0 ? easeInOut(qdK(tW, tW + 0.9, lt)) : 0;
-    w += `<g transform="translate(${x} ${y})"><circle cy="-150" r="${f1(230 + open * 120)}" fill="url(#qwGoldGlow)" opacity="${f1((0.35 + open * 0.5) * 100) / 100}"/><rect x="-82" y="-300" width="164" height="300" rx="80" fill="#FFF3C4" opacity="${f1(open * 100) / 100}"/><g transform="translate(-82 0) scale(${f1(1 - open * 0.8)} 1)"><rect x="0" y="-300" width="164" height="300" rx="80" fill="#1A2244" stroke="${QW_GOLD}" stroke-width="9"/><circle cx="134" cy="-140" r="9" fill="${QW_GOLD2}"/></g>${outlined(0, -340, [nm], { size: 54, sw: 12, fill: QW_GOLD2 })}</g>`; });
+    w += `<g transform="translate(${x} ${y})"><circle cy="-150" r="${f1(230 + open * 120)}" fill="url(#qwGoldGlow)" opacity="${f1((0.35 + open * 0.5) * 100) / 100}"/><rect x="-82" y="-300" width="164" height="300" rx="80" fill="#FFF3C4" opacity="${f1(open * 100) / 100}"/><g transform="translate(-82 0) scale(${f1(1 - open * 0.8)} 1)"><rect x="0" y="-300" width="164" height="300" rx="80" fill="#4B3FA0" stroke="${QW_GOLD}" stroke-width="9"/><circle cx="134" cy="-140" r="9" fill="${QW_GOLD2}"/></g>${outlined(0, -340, [nm], { size: 54, sw: 12, fill: QW_GOLD2 })}</g>`; });
   const zy = lerp(300, 980, land), sq = land >= 1 ? 1 - 0.1 * Math.exp(-(lt - 0.8) * 8) * Math.cos((lt - 0.8) * 26) : 1;
   w += qwRipple(900, 985, lt - 0.8) + qwRipple(1085, 990, lt - 0.9, { v: 220 });
   w += `<g transform="translate(900 ${f1(zy)}) scale(1 ${f1(sq * 1000) / 1000})">${Z({ x: 0, y: 0, s: 0.72, t, pose: land < 1 ? '허우적' : '서기', ex: fEx(land < 1 ? 'z충격' : lt > tW ? 'z반짝' : 'z멍'), look: [lt > tW ? -0.5 : 0, -0.3], seed: 3 })}</g>`;
@@ -247,7 +249,7 @@ function qwnetScene(t, lt, a) {
     for (let i = 0; i <= n; i++) rip += qwRipple(900 + (i + 1) * 70 + 10, FY + 6, lt - i * 0.7 - 0.5, { v: 520, life: 2.0 });
     ex = fEx('z빵긋'); look = [0.8, 0.2]; g = { eyes: 'normal', look: [0.5, 0.3], ring: 0, calm: true }; }
   w += rip + qwGuard(gx, FY + 10, 0.85, t, g) + rings;
-  w += `<ellipse cx="${f1(zx)}" cy="${FY + 8}" rx="80" ry="14" fill="#000" opacity=".35"/>` + Z({ x: zx, y: FY + zdy, s: 0.8, t, pose, ex, look, seed: 3 });
+  w += `<ellipse cx="${f1(zx)}" cy="${FY + 8}" rx="80" ry="14" fill="#1B2260" opacity=".4"/>` + Z({ x: zx, y: FY + zdy, s: 0.8, t, pose, ex, look, seed: 3 });
   const fade = ph === 5 ? qdK(1.7, 2.4, lt) : 0;
-  return qwDefs() + qCam(cam, w) + over + `<rect x="-100" y="-100" width="2200" height="1400" fill="#04060F" opacity="${f1(fade * 100) / 100}"/>`;
+  return qwDefs() + qCam(cam, w) + over + `<rect x="-100" y="-100" width="2200" height="1400" fill="#FFE9A8" opacity="${f1(fade * 100) / 100}"/>`;
 }
