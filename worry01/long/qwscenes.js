@@ -167,7 +167,7 @@ function qwfallScene(t, lt, a) {
   const zx = 520 + Math.sin(lt * 0.9) * 30, zy = 620 + Math.cos(lt * 0.7) * 30;
   h += `<g transform="translate(${f1(zx)} ${f1(zy)}) rotate(${f1(Math.sin(lt * 0.8) * 16)})">${Z({ x: 0, y: 190, s: 0.7, t, pose: lt < 2 ? '허우적' : '둥둥', ex: exprAt([[0, 'z충격'], [2, 'z멍'], [5, 'z반짝']], lt), look: [0.9, -0.2], seed: 3 })}</g>`;
   h += `<g transform="translate(${f1(zx + 190)} ${f1(zy + 150 + Math.sin(lt * 1.3) * 20)}) rotate(${f1(Math.sin(lt * 1.1 + 1) * 20)})">${qwGuard(0, 60, 0.8, t, { eyes: 'wide', look: [0.6, -0.3], hug: true })}</g>`;
-  const tW = [fAt(a, '그릇이자', 5.2), fAt(a, '다리이자', 6.2), fAt(a, '거울이라고', 7.2)], tF = fAt(a, '느낌이', 8.6), tN = fAt(a, '그물로', 2.6);
+  const tW = [fAt(a, '그물은', 8.0) + 0.8, fAt(a, '다리이자', 10.6), fAt(a, '거울이라고', 11.9)], tF = fAt(a, '느낌이', 14.0), tN = fAt(a, '그물로', 5.3);
   if (lt > tN - 0.3 && lt < tW[0] - 0.2) over += pop(t, t - lt + tN - 0.3, t - lt + tW[0] - 0.2, 1340, 430, outlined(0, 0, ['보이지 않는 그물'], { size: 72, sw: 15, fill: QW_GOLD2 }), { rot: -3, bob: 3 });
   const icons = [
     `<path d="M-110 -40 Q0 130 110 -40" fill="none" stroke="${QW_GOLD}" stroke-width="10" stroke-linecap="round"/>` + [-70, -35, 0, 35, 70].map(x => `<path d="M${x} ${-40 + Math.abs(x) * 0.25} Q${x * 0.7} 40 ${x * 0.3} ${72 - Math.abs(x) * 0.2}" fill="none" stroke="${QW_GOLD}" stroke-width="4"/>`).join('') + `<path d="M-84 0 Q0 30 84 0 M-56 34 Q0 56 56 34" fill="none" stroke="${QW_GOLD}" stroke-width="4"/><circle cx="-20" cy="-6" r="9" fill="${QW_GOLD2}"/><circle cx="26" cy="10" r="7" fill="#fff"/>`,
