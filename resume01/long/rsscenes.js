@@ -42,9 +42,9 @@ function rsLaptop(t, inner, o = {}) { // 화면 안쪽은 x 250~1670, y 40~820
   for (let r = 0; r < 3; r++) for (let c = 0; c < 13; c++) { const y = 898 + r * 58, k = (y - 866) / 454, x0 = lerp(190, 20, k) + 70, x1 = lerp(1730, 1900, k) - 70, w = (x1 - x0) / 13; g += `<rect x="${f1(x0 + c * w + 6)}" y="${y}" width="${f1(w - 12)}" height="42" rx="8" fill="#E6EAF0" stroke="#9AA3B4" stroke-width="3"/>`; }
   g += `<rect x="222" y="844" width="1476" height="26" rx="10" fill="#9AA3B4" stroke="${INK}" stroke-width="6"/><rect x="222" y="14" width="1476" height="834" rx="26" fill="#2B303B" stroke="${INK}" stroke-width="8"/>`;
   g += `<g clip-path="url(#rsScr)">${inner}</g>`;
-  if (!o.noHands) { const b = Math.sin(t * 1.7) * 3, lx = o.lx == null ? 560 : o.lx, rx = o.rx == null ? 1360 : o.rx;
-    g += `<path d="M${lx} ${f1(968 + b)} L${lx - 190} 1340" stroke="${INK}" stroke-width="30" stroke-linecap="round"/>` + hand(lx, 962 + b, 2.6);
-    if (!o.noRight) g += `<path d="M${rx} ${f1(968 - b)} L${rx + 190} 1340" stroke="${INK}" stroke-width="30" stroke-linecap="round"/>` + hand(rx, 962 - b, 2.6); }
+  if (!o.noHands) { const b = Math.sin(t * 1.7) * 3, hy = o.hy || 0, lx = o.lx == null ? 560 : o.lx, rx = o.rx == null ? 1360 : o.rx;
+    g += `<path d="M${lx} ${f1(968 + b + hy)} L${lx - 190} 1340" stroke="${INK}" stroke-width="30" stroke-linecap="round"/>` + hand(lx, 962 + b + hy, 2.6);
+    if (!o.noRight) g += `<path d="M${rx} ${f1(968 - b + hy)} L${rx + 190} 1340" stroke="${INK}" stroke-width="30" stroke-linecap="round"/>` + hand(rx, 962 - b + hy, 2.6); }
   return g;
 }
 const rsZoom = (inner, z, cx, cy) => `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(${f1(z * 1000) / 1000}) translate(${f1(-cx)} ${f1(-cy)})">${inner}</g>`;
@@ -52,11 +52,12 @@ function rsForm(o = {}) { // 지원서 화면(지어낸 채용 페이지)
   const tab = o.tab || 3; let g = `<rect x="250" y="40" width="1420" height="780" fill="#F4F6FA"/>`;
   g += `<rect x="250" y="40" width="1420" height="58" fill="#DDE2EA"/>` + [0, 1, 2].map(i => `<circle cx="${286 + i * 30}" cy="69" r="9" fill="${['#F08A6B', '#F5C451', '#7FD8B0'][i]}"/>`).join('') + `<rect x="400" y="50" width="760" height="38" rx="19" fill="#fff"/>` + fT(428, 79, '신입 공개채용 · 입사지원', 26, '#5B6478', { anchor: 'start', w: 700 }) + fT(1640, 80, o.clock || '오전 2:02', 28, '#3A4252', { anchor: 'end', w: 700 });
   g += fT(300, 166, '입사지원서', 48, NAVY, { anchor: 'start' });
-  g += `<g transform="translate(1466 148) scale(${f1((1 + 0.08 * (o.pill || 0)) * 100) / 100})"><rect x="-164" y="-34" width="328" height="68" rx="34" fill="#FFE9DF" stroke="#F08A6B" stroke-width="5"/>${fT(0, 13, '마감까지 ' + (o.mins == null ? 58 : o.mins) + '분', 36, '#B23A1E')}</g>`;
+  g += `<g transform="translate(1466 148) scale(${f1((1 + 0.08 * (o.pill || 0)) * 100) / 100})"><rect x="-164" y="-34" width="328" height="68" rx="34" fill="#FFE9DF" stroke="#F08A6B" stroke-width="5"/>${fT(0, 13, o.pillText || '마감까지 ' + (o.mins == null ? 58 : o.mins) + '분', 36, '#B23A1E')}</g>`;
   let sx = 300; ['인적사항', '학력·경력', '자기소개서'].forEach((nm, i) => { const act = i + 1 === tab, done = !act && i < 2, w = 50 + rsTw(nm, 30);
     g += `<circle cx="${sx + 18}" cy="228" r="18" fill="${act ? RS.BLUE : done ? '#7FD8B0' : '#C9CED8'}"/>` + (done ? rsCheck(sx + 18, 228, 0.9, '#fff', 5) : fT(sx + 18, 238, String(i + 1), 24, '#fff')) + fT(sx + 46, 239, nm, 30, act ? NAVY : '#7A8394', { anchor: 'start', w: act ? 900 : 700 });
     if (act) g += `<rect x="${sx}" y="254" width="${f1(w)}" height="7" rx="3" fill="${RS.BLUE}"/>`; sx += w + 56; });
   g += `<line x1="300" y1="261" x2="1620" y2="261" stroke="#D5DAE3" stroke-width="3"/>` + (o.body || '');
+  if (o.noBtn) return g;
   g += `<rect x="1180" y="748" width="200" height="60" rx="12" fill="#fff" stroke="#B8BECB" stroke-width="4"/>` + fT(1280, 789, '임시 저장', 30, '#5B6478', { w: 700 });
   const pr = o.press || 0;
   g += `<g transform="translate(1510 778) scale(${f1((1 - 0.07 * pr) * 100) / 100})">${pr > 0 ? `<rect x="-122" y="-42" width="244" height="84" rx="20" fill="none" stroke="${RS.BLUE}" stroke-width="6" opacity="${rsOp(pr * 0.7)}"/>` : ''}<rect x="-110" y="-30" width="220" height="60" rx="12" fill="${pr > 0.3 ? '#2B3F7E' : RS.BLUE}" stroke="${INK}" stroke-width="4"/>${fT(0, 12, '제출하기', 32, '#fff')}</g>`;
@@ -68,11 +69,12 @@ function rsEssay(t, o = {}) { // 자기소개서 입력칸. o.shown 본문 글�
   g += `<rect x="300" y="326" width="${pw - 300}" height="400" rx="12" fill="#fff" stroke="#B8BECB" stroke-width="4"/>`;
   let left = o.shown || 0, cx = 334, cy = 392, n = 0;
   if (o.draft) { g += fT(330, 392, o.draft, 34, '#2B3445', { anchor: 'start', w: 700 }); cx = 334 + rsTw(o.draft, 34); n = o.draft.length; }
-  RS_ESSAY.forEach((ln, i) => { if (left <= 0) return; const s = ln.slice(0, left); left -= ln.length; n += s.length; g += fT(330, 392 + i * 58, s, 34, '#2B3445', { anchor: 'start', w: 700 }); cx = 334 + rsTw(s, 34); cy = 392 + i * 58; });
+  (o.lines || RS_ESSAY).forEach((ln, i) => { if (left <= 0) return; const s = ln.slice(0, left); left -= ln.length; n += s.length; g += fT(330, 392 + i * 58, s, 34, '#2B3445', { anchor: 'start', w: 700 }); cx = 334 + rsTw(s, 34); cy = 392 + i * 58; });
   if (o.bracket) g += `<g opacity="${rsOp(o.bracket)}"><rect x="310" y="352" width="8" height="${f1(172 * o.bracket)}" rx="4" fill="#3CC79A"/></g><g transform="translate(492 568) scale(${rsSc(o.bracket)})">${label(0, 0, '여기까지는 해 본 일', { size: 30 })}</g>`;
   if (o.yl != null && o.yl >= 0) { const s = RS.LINE.slice(0, o.yl), w = rsTw(s, 38); n += s.length;
     if (o.yl > 0) g += (o.ylGlow ? `<rect x="312" y="614" width="${f1(w + 44)}" height="76" rx="14" fill="none" stroke="${RS.YL}" stroke-width="10" opacity="${rsOp(o.ylGlow)}"/>` : '') + `<rect x="322" y="624" width="${f1(w + 24)}" height="56" rx="8" fill="${RS.YL}"/>` + fT(334, 666, s, 38, NAVY, { anchor: 'start' });
     cx = 340 + w; cy = 666; }
+  if (o.plain) { g += fT(330, 666, o.plain, 34, '#2B3445', { anchor: 'start', w: 700 }); cx = 334 + rsTw(o.plain, 34); cy = 666; n += o.plain.length; }
   if (o.cursor !== false && Math.floor(t * 2.2) % 2 === 0) g += `<rect x="${f1(cx + 4)}" y="${cy - 32}" width="4" height="40" fill="${INK}"/>`;
   const cp = o.cntPulse || 0;
   g += (cp > 0 ? `<ellipse cx="${pw - 96}" cy="696" rx="${f1(96 + 26 * cp)}" ry="${f1(30 + 12 * cp)}" fill="none" stroke="#F08A6B" stroke-width="5" opacity="${rsOp(1 - cp)}"/>` : '') + fT(pw - 24, 706, n + ' / 700자', 28, cp > 0 || o.cntHot ? '#C4472A' : '#8B93A3', { anchor: 'end', w: 700 });
@@ -121,7 +123,7 @@ function rsFaceShot(t, cam, o = {}) {
   const tz = o.tz == null ? t : o.tz, g = o.ghost || 0;
   const zo = Object.assign({ x: 960, y: RS.ZY, s: RS.ZS, t: tz, pose: Object.assign({}, P['서기'], rsArmType), ex: fEx('z멍'), look: [0, 0.5], seed: 3 }, o.z || {});
   let zs = '';
-  if (g > 0) { const d = 44 * g + (o.shake || 0); zs += `<g opacity="${rsOp(0.5 * g * (o.ghostL == null ? 1 : o.ghostL))}" transform="translate(${f1(-d - (o.drift || 0))} 0)">${Z(zo)}</g><g opacity="${rsOp(0.5 * g)}" transform="translate(${f1(d)} 0)">${Z(zo)}</g>`; }
+  if (g > 0) { const d = 44 * g + (o.shake || 0); zs += `<g opacity="${rsOp(0.5 * g * (o.ghostL == null ? 1 : o.ghostL))}" transform="translate(${f1(-d - (o.drift || 0))} 0)">${Z(zo)}</g><g opacity="${rsOp(0.5 * g * (o.ghostR == null ? 1 : o.ghostR))}" transform="translate(${f1(d + (o.driftR || 0))} 0)">${Z(zo)}</g>`; }
   let w = `<g clip-path="url(#rsAbove)">${zs + Z(zo)}</g><ellipse cx="960" cy="780" rx="340" ry="260" fill="url(#rsGlow)" opacity="${rsOp(o.glow == null ? 0.6 : o.glow)}"/>` + rsLid() + rsDeskClock(1320, 1002, o.clock || '2:02');
   if (o.tag) w += `<g transform="translate(580 846) scale(${rsSc(o.tagK == null ? 1 : o.tagK)})"><line x1="140" y1="10" x2="182" y2="26" stroke="${INK}" stroke-width="5"/>${label(0, 0, o.tag, { size: 34, bg: '#FFE9DF', color: '#B23A1E' })}</g>`;
   if (o.extra) w += o.extra;
@@ -131,16 +133,16 @@ function rsStripAir(k, o = {}) { // 노트북에서 떠올라 머리 위에 서�
   if (k <= 0) return ''; const e = easeOut(clamp(k, 0, 1)), x = 960, y = lerp(800, 322, e), s = lerp(0.25, 0.7, e), d = (o.dbl || 0) * 20 + (o.shake || 0);
   return (d ? rsStrip(x - d * 0.8, y - d, s, { op: 0.45 }) + rsStrip(x + d * 0.8, y + d, s, { op: 0.45 }) : '') + rsStrip(x, y, s, { op: d ? 0.9 : 1 });
 }
-function rsInsetWare(t, k, cnt) { // 회상 창: 창고에서 재고를 세는 제로
+function rsInsetWare(t, k, cnt, o = {}) { // 회상 창: 창고에서 재고를 세는 제로
   if (k <= 0) return '';
-  let g = `<g transform="translate(1570 330) scale(${rsSc(k)})"><rect x="-260" y="-170" width="520" height="340" rx="32" fill="${INK}"/><g clip-path="url(#rsInset)"><rect x="-250" y="-160" width="500" height="320" fill="#E6ECF5"/><rect x="-250" y="92" width="500" height="80" fill="#C5CBD6"/><line x1="-250" y1="92" x2="250" y2="92" stroke="${INK}" stroke-width="4" opacity=".5"/>`;
+  let g = `<g transform="translate(${o.x || 1570} ${o.y || 330}) scale(${rsSc(k)})"><rect x="-260" y="-170" width="520" height="340" rx="32" fill="${INK}"/><g clip-path="url(#rsInset)"><rect x="-250" y="-160" width="500" height="320" fill="#E6ECF5"/><rect x="-250" y="92" width="500" height="80" fill="#C5CBD6"/><line x1="-250" y1="92" x2="250" y2="92" stroke="${INK}" stroke-width="4" opacity=".5"/>`;
   g += `<rect x="-236" y="-132" width="12" height="226" fill="#7A8394"/><rect x="48" y="-132" width="12" height="226" fill="#7A8394"/>` + [-34, 82].map(y => `<rect x="-240" y="${y}" width="304" height="12" rx="4" fill="#7A8394" stroke="${INK}" stroke-width="3"/>`).join('');
   let n = 0; for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { const bx = -220 + c * 68, by = r ? 24 : -92, done = n < cnt, pk = rsK(0, 0.2, cnt - n); n++;
     g += `<rect x="${bx}" y="${by}" width="60" height="58" rx="5" fill="#DDAE74" stroke="${INK}" stroke-width="4"/><line x1="${bx + 30}" y1="${by}" x2="${bx + 30}" y2="${by + 22}" stroke="#B98950" stroke-width="6"/>` + (done ? `<g transform="translate(${bx + 30} ${by + 38}) scale(${rsSc(pk)})"><circle r="15" fill="#3CC79A" stroke="${INK}" stroke-width="3"/>${rsCheck(0, 0, 0.75, '#fff', 4)}</g>` : ''); }
   const x = 150, y = 236, s = 0.56, pose = Object.assign({}, P['서기'], { armL: [[148, 285], [118, 336], [150, 356]], hL: [158, 358], armR: [[252, 285], [226, 330], [186, 322]], hR: [178, 320] }), hp = [x + (158 - 200) * s, y + (358 - 560) * s];
   g += Z({ x, y, s, t, pose, vest: '#7FD8B0', vshade: 'rgba(0,80,60,0.18)', ex: fEx('z기본'), look: [-0.7, 0.1 + 0.25 * Math.sin(cnt * 2.2)], seed: 5 });
   g += `<g transform="translate(${f1(hp[0] - 4)} ${f1(hp[1] - 18)}) rotate(-8) scale(.5)"><rect x="-44" y="-62" width="88" height="118" rx="8" fill="#B9895A" stroke="${INK}" stroke-width="7"/><rect x="-36" y="-50" width="72" height="98" rx="4" fill="#fff" stroke="${INK}" stroke-width="4"/></g>` + hand(hp[0], hp[1], 0.42);
-  return g + `</g><g transform="translate(0 196)">${label(0, 0, '석 달 동안 한 일', { size: 30 })}</g></g>`;
+  return g + (o.night ? `<rect x="-250" y="-160" width="500" height="320" fill="#22306B" opacity=".3"/><circle cx="196" cy="-112" r="22" fill="#FFF6CF"/>` : '') + `</g><g transform="translate(0 196)">${label(0, 0, o.label || '석 달 동안 한 일', { size: 30 })}</g></g>`;
 }
 
 /* ---------- 1번: 빈 지원서 ---------- */
@@ -245,7 +247,7 @@ function rsfaceScene(t, lt, a) {
 }
 /* ---------- 8번: 다시 움직인다 → 제출 완료(첫 번째 세계) ---------- */
 function rsRibbon(k, tag, text) { if (k <= 0) return ''; const e = easeOut(clamp(k, 0, 1));
-  return `<g transform="translate(${f1(lerp(-1100, -60, e))} 98)"><rect x="6" y="-38" width="900" height="84" rx="16" fill="${INK}" opacity=".2"/><rect x="0" y="-44" width="900" height="84" rx="16" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="0" y="-44" width="340" height="84" rx="16" fill="#D9482B" stroke="${INK}" stroke-width="6"/>${fT(170, 14, tag, 42, '#fff')}${fT(620, 11, text, 32, NAVY, { w: 700 })}</g>`; }
+  return `<g transform="translate(${f1(lerp(-1100, -60, e))} 58)"><rect x="6" y="-38" width="900" height="84" rx="16" fill="${INK}" opacity=".2"/><rect x="0" y="-44" width="900" height="84" rx="16" fill="#fff" stroke="${INK}" stroke-width="6"/><rect x="0" y="-44" width="340" height="84" rx="16" fill="#D9482B" stroke="${INK}" stroke-width="6"/>${fT(170, 14, tag, 42, '#fff')}${fT(620, 11, text, 32, NAVY, { w: 700 })}</g>`; }
 function rssubmitScene(t, lt, a) {
   const TF = rsL('s2').t0 - 0.15, tC = 1.35;
   if (lt < tC) { const g = 1 - easeInOut(rsK(0.15, 0.95, lt)), ex = rsK(0.75, 1.3, lt);

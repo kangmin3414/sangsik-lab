@@ -4,7 +4,9 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_rs import LINES
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s1': 0.1, 'n1': 0.2, 'f1': 0.7, 'n2': 0.8, 'z1': 0.8, 's2': 0.25, 'n3': 0.3, 's3': 0.5, 'k0': 0.7}
+GAP = {'s1': 0.1, 'n1': 0.2, 'f1': 0.7, 'n2': 0.8, 'z1': 0.8, 's2': 0.25, 'n3': 0.3, 's3': 0.5, 'k0': 0.7,
+       'n4': 0.8, 'n5': 0.7, 'b1': 0.6, 's4': 0.35, 'n6': 0.5, 'n7': 0.7, 'c1': 0.9, 's5': 0.3, 'n8': 0.6, 'h1': 0.7, 's6': 0.6, 'n9': 0.5, 'i1': 0.8, 's7': 0.7, 'n10': 0.3, 's8': 0.5,
+       'n11': 0.3, 's9': 0.5, 'n12': 0.6, 'z2': 0.8, 'n13': 0.9, 'i2': 0.8, 'z3': 0.6, 'n14': 0.8, 'n15': 0.8, 's10': 0.9, 'n16': 0.5, 's11': 0.4, 'n17': 0.7, 's12': 0.8, 'n18': 0.6, 'n19': 0.9}
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)

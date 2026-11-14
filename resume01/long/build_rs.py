@@ -24,10 +24,16 @@ def place(fn, t0, t1, g, fin=1.5, fout=2.5, off=0.0):
 T0 = lambda k: L[k]['t0']
 A = lambda k: L[k]['t0'] - 0.15
 E1 = lambda k: L[k]['t1']
-B = '../../spinoza01/long/bgm/'   # 샘플용 임시 배경음(스피노자 편의 곡을 빌림). 본편에서는 Lyria로 새로 만든다.
-place(B + 'moon.mp3', 0, A('s2') + 0.25, 0.32, fin=1.2, fout=0.5, off=0)             # 새벽의 책상. 멈춤에서 음악이 멎는다
-place(B + 'lens.mp3', A('n3') + 0.5, A('s3') + 0.4, 0.26, fin=1.5, fout=1.2, off=0)   # 다세계 해석 두 줄
-place(B + 'moon.mp3', A('s3') + 0.1, DUR, 0.32, fin=0.8, fout=1.6, off=30)            # 다시 움직인다
+B = 'bgm/'   # Lyria 3 Pro로 만든 네 곡(gen_bgm.py, 노래 목소리 검사 통과: VAD 구간 0)
+place(B + 'night.mp3', 0, A('s2') + 0.25, 0.32, fin=1.2, fout=0.5, off=0)              # 1막: 새벽의 책상. 멈춤에서 음악이 멎는다
+place(B + 'night.mp3', A('n3') + 0.5, A('s3') + 0.4, 0.22, fin=1.5, fout=1.2, off=44)   # 다세계 해석 두 줄
+place(B + 'night.mp3', A('s3') + 0.1, A('k0') + 2.2, 0.32, fin=0.8, fout=1.2, off=18)   # 다시 움직인다 → 타이틀
+place(B + 'first.mp3', A('n4') - 0.3, A('s5') + 0.3, 0.3, fin=1.5, fout=0.6, off=0)     # 2막: 첫 번째 세계. 16번에서 음악이 멎는다
+place(B + 'first.mp3', A('n8') - 0.2, A('s7') + 0.6, 0.28, fin=2.0, fout=2.0, off=56)   # 인사팀 메일 → 반납 → 면접
+place(B + 'night.mp3', A('s7') - 0.2, A('s8') + 0.5, 0.3, fin=1.5, fout=0.8, off=8)     # 그해 겨울, 같은 새벽
+place(B + 'second.mp3', A('n11') - 0.2, A('s10') + 0.8, 0.3, fin=1.5, fout=2.2, off=0)  # 3막: 두 번째 세계
+place(B + 'seven.mp3', A('s10') - 0.2, A('s12') + 0.3, 0.3, fin=1.5, fout=0.7, off=0)   # 4막: 7년 뒤. 38번에서 음악이 멎는다
+place(B + 'seven.mp3', A('n18') - 0.3, DUR, 0.3, fin=2.0, fout=2.2, off=46)             # 그 밤을 아는 사람
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -148,6 +154,63 @@ tT = W('n3', '오늘은', 21.08); put(tT + 0.4, whoosh(2.0), 0.16)
 put(A('s3') + 0.75, breath(0.55, False), 0.45)
 tC8 = A('s3') + 1.35; put(tC8 + 0.35, click(), 0.4); put(tC8 + 0.8, ding(), 0.3); put(tC8 + 1.25, whoosh(0.4), 0.14)
 put(A('k0') + 0.05, zap(), 0.12)
+
+def stepsg(t0, t1, iv=0.5, g=0.3):
+    k = 0
+    while t0 + k * iv < t1: put(t0 + k * iv, step(), g); k += 1
+def rewind(d=1.3):
+    n = int(d * SR); t = np.arange(n) / SR; f = 500 + 1900 * (t / d); w = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.5 + 0.5 * np.sign(np.sin(2 * np.pi * 22 * t))) * 0.12
+    return w * np.sin(np.linspace(0, np.pi, n)) ** 0.6 + bp(noise(d), 1500, 6000)[:n] * 0.06
+line_motif = lambda: mx(soft(220, 2.4), soft(277, 2.4))                          # 그 한 줄의 소리
+# ---- 2막: 첫 번째 세계 ----
+tM = W('n4', '달', 5.04) - 0.75; put(tM - 0.05, rustle(0.3), 0.4); tH = W('n4', '최종', 6.9); put(tH, pop_(820), 0.28); put(tH + 0.05, ding(), 0.22); put(W('n4', '합격', 8.24) + 0.15, sparkle(), 0.14)
+put(W('n5', '사원증', 0.72), rustle(0.25), 0.4); tG = W('n5', '걸었', 1.98); put(tG, click(), 0.3); put(tG + 0.05, sparkle(), 0.14)
+tW = W('n5', '세상', 3.4); put(tW, mx(soft(523, 1.8), soft(659, 1.8)), 0.3); put(tW + 1.05, whoosh(0.7), 0.1)
+stepsg(A('b1') + 0.1, A('b1') + 0.6, 0.25, 0.32); put(W('b1', '시연', 4.28) + 0.75, pop_(700), 0.26)
+put(A('s4') + 0.35, whoosh(0.4), 0.1); put(A('s4') + 0.8, soft(196, 2.2), 0.4)
+for k in range(4): keys(A('n6') + 0.25 + k * 1.1, A('n6') + 0.82 + k * 1.1, 0.07, 0.18)
+tC = W('n6', '동료', 5.22) - 0.4; put(tC - 0.05, whoosh(0.3), 0.1); stepsg(tC + 0.1, tC + 0.7, 0.26, 0.28)
+tHb = W('n6', '가슴', 6.84)
+for k in range(3): put(tHb + k * 0.74, heartbeat(), 0.5)
+for k in range(3): put(A('n7') + 0.2 + k * 0.22, pop_(700 + 60 * k), 0.2)
+put(W('n7', '가짜', 2.18), pop_(600), 0.22); put(W('n7', '가면', 3.64), pop_(760), 0.24)
+tZ = W('n7', '제로는', 7.14) - 0.35; put(tZ, whoosh(0.4), 0.1); put(tZ + 0.05, pop_(640), 0.22); put(tZ + 0.95, line_motif(), 0.3)
+put(W('n7', '아니었', 9.32), scribble(0.5), 0.5); put(W('n7', '지어낸', 11.48), pop_(600), 0.24)
+put(W('c1', '맞죠', 2.46) + 0.75, pop_(700), 0.26)
+i = int((A('s5') + 0.2) * SR); h = hum(3.6) * 0.9 + lp(noise(3.6), 700)[:int(3.6 * SR)] * 0.012; k = int(0.5 * SR); h[-k:] *= np.linspace(1, 0, k); sfx[i:i + len(h)] += h[:N - i]   # 에어컨 소리만
+put(A('s5') + 2.35, flap(), 0.45); put(A('s5') + 0.3, soft(147, 3.2), 0.4)
+tI = W('n8', '인사팀', 0.58); put(tI, pop_(820), 0.26); put(tI + 0.05, ding(), 0.18); put(W('n8', '지원서', 4.67) - 0.45, click(), 0.25); put(W('n8', '경력', 5.56), pop_(640), 0.22); put(W('n8', '낼', 10.13) - 0.45, soft(196, 2.6), 0.36)
+put(A('h1') + 0.25, rustle(0.3), 0.4); put(W('h1', '확인이', 2.32), scribble(0.9), 0.6)
+put(A('s6') + 1.3, rip(0.22), 0.1); put(A('s6') + 1.97, clank(), 0.42); put(A('s6') + 1.9, whoosh(1.1), 0.1); put(A('s6') + 3.05, pop_(560), 0.26); put(A('s6') + 3.1, line_motif(), 0.3)
+tB = W('n9', '그런데', 3.34); stepsg(A('n9') + 0.2, tB + 0.6, 0.56, 0.26); put(tB - 0.1, whoosh(1.2), 0.08); put(tB + 0.2, line_motif(), 0.34)
+put(A('i1') + 0.3, rustle(0.3), 0.35); tS = W('i1', '석', 2.1); put(tS, whoosh(0.6), 0.1); put(tS + 0.6, soft(196, 2.2), 0.38); put(tS + 1.3, pop_(700), 0.26)
+for k in range(6): put(A('s7') + 0.35 + k * 0.6, tick_(900, 0.7), 0.28)
+keys(A('s7') + 1.2, A('s7') + 2.0, 0.16, 0.24); keys(A('s7') + 2.5, A('s7') + 2.95, 0.09, 0.16)
+put(W('n10', '지어낸', 0.86), pop_(640), 0.22); put(W('n10', '값으로', 1.48), whoosh(0.4), 0.08); put(W('n10', '지울', 1.96), thud(0.25, 90), 0.4); put(W('n10', '세계는', 7.14) - 0.45, tape_stop(0.6), 0.45)
+put(A('s8') + 0.7, rewind(1.3), 0.9); put(A('s8') + 2.1, whoosh(0.8), 0.1); put(A('s8') + 2.9, pop_(760), 0.26); put(A('s8') + 2.95, sparkle(), 0.12)
+# ---- 3막: 두 번째 세계 ----
+put(W('n11', '지운', 2.1) - 0.5, whoosh(2.0), 0.14)
+put(A('s9') + 0.7, breath(0.5, False), 0.4); keys(A('s9') + 1.05, A('s9') + 1.75, 0.045, 0.14); keys(A('s9') + 1.85, A('s9') + 2.8, 0.07, 0.2); put(A('s9') + 2.95, click(), 0.38); put(A('s9') + 3.35, ding(), 0.28); put(A('s9') + 3.7, whoosh(0.4), 0.12)
+tB = W('n12', '불합격', 2.8); tS2 = W('n12', '세', 5.1)
+for tt in (tB, min(tS2 - 0.75, tB + 1.2), tS2 + 0.1): put(tt, pop_(520), 0.26)
+put(W('n12', '통', 5.58) + 0.4, soft(294, 2.2), 0.26)
+put(W('n13', '네', 0.72), pop_(760), 0.24); tJ = W('n13', '재고', 4.06); keys(tJ, W('n13', '그대로', 10.34) - 0.5, 0.12, 0.15)
+tB = W('n13', '밤새', 5.7); put(tB, pop_(700), 0.22)
+for k in range(8): put(tB + 0.4 + k * 0.3, tick_(1200, 0.7), 0.2)
+put(A('i2') + 0.3, rustle(0.3), 0.35); put(W('i2', '맞았', 4.84) + 0.9, pop_(700), 0.26)
+put(A('z3') + 0.25, pop_(640), 0.22); tB = W('z3', '뒤로는', 4.48) - 0.3; put(tB, whoosh(0.8), 0.1); put(tB + 0.55, pop_(760), 0.22); put(tB + 0.7, pop_(860), 0.22)
+tQ = W('n14', '질문이', 1.96)
+for k in range(3): put(tQ + k * 0.25, pop_(700), 0.22)
+put(W('n14', '숨을', 5.2), slide_down(0.7), 0.3); put(W('n14', '할', 8.26) + 0.5, ding(), 0.22)
+put(W('n15', '모르는', 8.88) + 0.15, pop_(700), 0.24); put(W('n15', '말할', 11.44) + 0.2, pop_(820), 0.24)
+# ---- 4막: 7년 뒤 ----
+put(A('s10') + 0.1, whoosh(0.4), 0.12); put(A('s10') + 0.5, pop_(700), 0.24); stepsg(A('s10') + 0.35, A('s10') + 1.5, 0.28, 0.3); put(A('s10') + 1.45, pop_(820), 0.24); put(A('s10') + 1.7, whoosh(0.5), 0.14); put(A('s10') + 2.8, thud(0.18, 110), 0.25); put(A('s10') + 3.2, thud(0.22, 130), 0.4)
+for k, tt in enumerate((0.7, 1.7, 2.7)): put(A('n16') + tt, click(), 0.26); put(A('n16') + tt + 0.3, rustle(0.25), 0.3)
+put(A('s11') + 0.05, rustle(0.5), 0.25); put(A('s11') + 0.9, whoosh(0.6), 0.08); put(A('s11') + 1.75, pop_(600), 0.24); put(A('s11') + 1.8, line_motif(), 0.42)
+put(A('n17') + 0.3, pop_(640), 0.2); put(W('n17', '아는', 5.51), soft(392, 2.2), 0.2); put(W('n17', '모르는', 7.62), soft(440, 2.2), 0.2); put(W('n17', '그것이', 10.5), mx(soft(523, 3.0), soft(659, 3.0)), 0.2)
+for k in range(5): put(A('s12') + 0.3 + k * 0.62, tick_(900, 0.7), 0.3)          # 음악이 멎고 시계 소리만
+put(W('n18', '줄이', 1.54), whoosh(0.5), 0.08); tN = W('n18', '밤이', 5.48) - 0.6; put(tN, pop_(640), 0.22); put(tN + 0.05, soft(330, 2.6), 0.24)
+for k in range(4): put(A('n19') + 0.5 + k * 1.0, tick_(900, 0.7), 0.2)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('/dev/shm/rs/mix_raw.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', '/dev/shm/rs/mix_raw.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), '/dev/shm/rs/mix.wav'], check=True)
