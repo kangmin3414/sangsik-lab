@@ -134,24 +134,25 @@ function spTheater(t, screen, o = {}) {
     for (let i = 0; i < 4; i++) h += `<path d="M${960 + sd * (700 + i * 140)} -200 Q${960 + sd * (730 + i * 140)} 400 ${960 + sd * (690 + i * 140)} 900" fill="none" stroke="#8E2A3E" stroke-width="7"/>`; });
   h += `<rect x="404" y="92" width="1112" height="618" rx="26" fill="${SP_GOLD}" stroke="${INK}" stroke-width="9"/><rect x="430" y="118" width="1060" height="566" rx="14" fill="#FFF8E7" stroke="${INK}" stroke-width="7"/>`;
   h += `<g clip-path="url(#spScr)">${screen || ''}<rect x="430" y="118" width="1060" height="566" fill="#3A2F44" opacity="${spOp(0.72 * (1 - (o.on == null ? 1 : o.on)))}"/></g>`;
-  h += label(960, 52, '오늘의 상영: 작년 겨울', { size: 40, bg: '#FFF2C2' });
+  h += label(960, 52, o.sign || '오늘의 상영: 작년 겨울', { size: 40, bg: '#FFF2C2' });
+  if (o.mid) h += o.mid;
   for (let i = 0; i < 9; i++) h += spSeat(240 + i * 180, 860, 0.8);
   // 가운데 자리의 제로(뒷모습) + 앞줄 좌석
   const zx = 960, zy = 1240, s = 1.0, hd = spPt(zx, zy, s, 200, 170);
-  h += QZ({ x: zx, y: zy, s, t, pose: '서기', ex: fEx('z멍'), seed: 3, still: true }) + `<ellipse cx="${hd[0]}" cy="${hd[1]}" rx="111" ry="105" fill="#fff"/>`;
+  if (!o.noZero) h += QZ({ x: zx, y: zy - (o.rise || 0), s, t, pose: '서기', ex: fEx('z멍'), seed: 3, still: true }) + `<ellipse cx="${hd[0]}" cy="${hd[1] - (o.rise || 0)}" rx="111" ry="105" fill="#fff"/>`;
   for (let i = 0; i < 7; i++) h += spSeat(120 + i * 280, 1130, 1.25);
   return h; }
 const spScreenFilm = (inner) => `<g transform="translate(430 118) scale(0.5521)">${inner}</g>`;
-function spBooth(t, lt) { // 영사실: 필름을 되감아 다시 거는 제로, 쌓인 필름 통
+function spBooth(t, lt, o = {}) { // 영사실: 필름을 되감아 다시 거는 제로, 쌓인 필름 통
   let h = `<rect x="-400" y="-300" width="2800" height="1700" fill="#B98A6A"/><rect x="-400" y="900" width="2800" height="600" fill="#8E6448"/><line x1="-400" y1="900" x2="2400" y2="900" stroke="${INK}" stroke-width="8"/>`;
-  h += `<rect x="150" y="330" width="250" height="150" rx="10" fill="#FFF6DC" stroke="${INK}" stroke-width="9"/><path d="M400 370 L1010 500 L1010 600 L400 440 Z" fill="#FFF6DC" opacity=".35"/>`;
+  h += `<rect x="150" y="330" width="250" height="150" rx="10" fill="#FFF6DC" stroke="${INK}" stroke-width="9"/><path d="M400 370 L1010 500 L1010 600 L400 440 Z" fill="#FFF6DC" opacity="${spOp(0.35 * (o.beam == null ? 1 : o.beam))}"/>`;
   h += `<rect x="1010" y="640" width="60" height="260" fill="#6B5A52" stroke="${INK}" stroke-width="7"/><rect x="900" y="470" width="300" height="180" rx="20" fill="#5E6B8C" stroke="${INK}" stroke-width="9"/><rect x="860" y="520" width="50" height="70" rx="8" fill="#3A4466" stroke="${INK}" stroke-width="7"/>`;
-  [[980, 400, 1], [1130, 400, -1]].forEach(([x, y, d]) => { h += `<g transform="translate(${x} ${y}) rotate(${f1(t * 140 * d)})"><circle r="78" fill="#2F3550" stroke="${INK}" stroke-width="8"/><circle r="16" fill="#C9CCD8"/>${[0, 120, 240].map(r => `<circle cx="${f1(44 * Math.cos(r * Math.PI / 180))}" cy="${f1(44 * Math.sin(r * Math.PI / 180))}" r="15" fill="#B98A6A"/>`).join('')}</g>`; });
-  const cr = t * 6, hx = 67 + Math.cos(cr) * 14, hy = 238 + Math.sin(cr) * 14, cw = spPt(1330, 930, 0.9, hx, hy);
+  [[980, 400, 1], [1130, 400, -1]].forEach(([x, y, d]) => { h += `<g transform="translate(${x} ${y}) rotate(${f1((o.rot == null ? t * 140 : o.rot) * d)})"><circle r="78" fill="#2F3550" stroke="${INK}" stroke-width="8"/><circle r="16" fill="#C9CCD8"/>${[0, 120, 240].map(r => `<circle cx="${f1(44 * Math.cos(r * Math.PI / 180))}" cy="${f1(44 * Math.sin(r * Math.PI / 180))}" r="15" fill="#B98A6A"/>`).join('')}</g>`; });
+  const off = o.off || 0, cr = o.rot == null ? t * 6 : o.rot / 23, cx0 = 67 + Math.cos(cr) * 14, cy0 = 238 + Math.sin(cr) * 14, hx = lerp(cx0, 116, off), hy = lerp(cy0, 398, off), cw = spPt(1330, 930, 0.9, cx0, cy0);
   h += `<circle cx="1210" cy="640" r="12" fill="#C9CCD8" stroke="${INK}" stroke-width="5"/><line x1="1210" y1="640" x2="${f1(cw[0])}" y2="${f1(cw[1])}" stroke="${INK}" stroke-width="8" stroke-linecap="round"/>`;
-  h += QZ({ x: 1330, y: 930, s: 0.9, t, pose: Object.assign({}, P['서기'], { armL: [[148, 285], [104, 276], [hx, hy]], hL: [hx - 4, hy] }), ex: { expr: 'z멍', prev: 'z멍', k: 1, blink: 0.5 }, look: [-0.8, -0.2], seed: 3 });
+  h += QZ({ x: 1330, y: 930, s: 0.9, t, pose: Object.assign({}, P['서기'], { armL: [[148, 285], [lerp(104, 122, off), lerp(276, 345, off)], [hx, hy]], hL: [hx - 4, hy] }), ex: o.ex || { expr: 'z멍', prev: 'z멍', k: 1, blink: 0.5 }, look: o.look || [-0.8, -0.2], seed: 3 });
   // 필름 통 탑(날짜가 다 다르다)
-  ['12.14', '1.03', '2.11', '3.27', '5.09', '6.30', '8.18', '9.02', '10.25', '11.13'].forEach((d, i) => { const k = qdK(0.2 + i * 0.16, 0.45 + i * 0.16, lt); if (k <= 0) return; const y = 880 - i * 52, x = 560 + (i % 2 ? 10 : -10);
+  ['12.14', '1.03', '2.11', '3.27', '5.09', '6.30', '8.18', '9.02', '10.25', '11.13'].forEach((d, i) => { const k = o.full ? 1 : qdK(0.2 + i * 0.16, 0.45 + i * 0.16, lt); if (k <= 0) return; const y = 880 - i * 52, x = 560 + (i % 2 ? 10 : -10);
     h += `<g transform="translate(${x} ${f1(y - (1 - easeOut(k)) * 200)})" opacity="${spOp(k * 2)}"><ellipse cx="0" cy="0" rx="130" ry="30" fill="#D8DCEA" stroke="${INK}" stroke-width="7"/><rect x="-130" y="-34" width="260" height="34" fill="#C2C7DA"/><ellipse cx="0" cy="-34" rx="130" ry="30" fill="#E9ECF6" stroke="${INK}" stroke-width="7"/><line x1="-130" y1="-34" x2="-130" y2="0" stroke="${INK}" stroke-width="7"/><line x1="130" y1="-34" x2="130" y2="0" stroke="${INK}" stroke-width="7"/>${fT(0, -22, d, 30, SP_INKBLUE)}</g>`; });
   return h; }
 function spPub(t, lt, tB) { // 요즘의 제로와 태호: 둘 사이 탁자 위에, 둘 다 보지 않는 작은 검은 상자

@@ -26,7 +26,9 @@ A = lambda k: L[k]['t0'] - 0.15
 E1 = lambda k: L[k]['t1']
 # ---------- 배경음 ----------
 place('bgm/moon.mp3', 0, A('n3') + 2.6, 0.36, fin=1.5, fout=3.0, off=0)        # 새벽 방 ~ 머릿속 극장
-place('bgm/lens.mp3', A('n3') - 0.4, DUR, 0.29, fin=2.5, fout=2.2, off=0)      # 스피노자의 작업대 ~
+place('bgm/lens.mp3', A('n3') - 0.4, A('n9') + 2.2, 0.29, fin=2.5, fout=2.6, off=0)   # 스피노자의 작업대 ~ 2막
+place('bgm/rain.mp3', A('n9') - 0.3, A('n14') + 2.0, 0.30, fin=2.5, fout=2.6, off=0)  # 3막: 그날의 날씨
+place('bgm/dawn.mp3', A('n14') - 0.3, DUR, 0.32, fin=2.5, fout=3.0, off=0)            # 4막: 영사기를 끄고 ~ 끝
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)   # hold 0.5 s after speech, lead 0.15 s
@@ -119,6 +121,38 @@ tK = W('n8', '쫓겨난', 6.8) + 0.5
 k = 0
 while tK + k * 0.507 < E1('n8') + 0.3: put(tK + k * 0.507, step(), 0.5 * (1 - 0.06 * k)); k += 1   # 멀어지는 발소리
 put(W('n8', '이해였습니다', 10.9) - 0.3, sparkle(), 0.22)
+# ---------- 3막 ----------
+def rainfx(d, g=1.0):
+    n = int(d * SR); x = bp(noise(d), 1500, 6000)[:n] * 0.25 * g; k = int(min(0.8, d / 3) * SR); x[:k] *= np.linspace(0, 1, k); x[-k:] *= np.linspace(1, 0, k); return x
+put(W('n9', '폭풍이나', 2.6) - 0.2, whoosh(1.6), 0.12)
+put(W('n9', '옵니다', 13.1) - 0.2, rainfx(2.4), 0.5)
+put(A('s5') + 0.6, rip(0.4), 0.14)
+for i, (w, fb) in enumerate([('오픈', 5.1), ('처음', 7.9), ('친구의', 14.3)]): put(W('n10', w, fb) - 0.25 + 0.5, pop_(560 + i * 90), 0.22)
+tR = W('n11', '비가', 2.0) - 0.5 if any('비가' in x['w'] for x in L['n11']['words']) else T0('n11') + 1.6
+put(tR, rainfx(6.0), 0.45)
+tK = W('n12', '너그러운', 11.1) - 0.3
+for i in range(3): put(tK + i * 0.2, pop_(700 + i * 80), 0.2)
+tI = W('n12', '나아지고', 17.6) - 0.2
+for i in range(3): put(tI + i * 0.18, soft([523, 659, 784][i], 1.0), 0.3)
+put(W('n13', '다만', 4.6) - 0.2, mx(soft(392, 2.0), soft(494, 2.0)), 0.35)
+put(A('s6') + 0.15, proj(3.6), 0.12)
+for k in range(5): put(A('s6') + 0.15 + 1.55 + k * 0.483, step(), 0.4)
+put(A('s6') + 0.15 + 4.3, mx(soft(523, 2.4), soft(659, 2.4), soft(784, 2.4)), 0.45)                 # 어깨에 손
+# ---------- 4막 ----------
+tS = W('n14', '멈춥니다', 1.7) - 0.4
+put(A('n14') + 0.1, proj(tS - A('n14') + 0.3), 0.14); put(tS + 0.5, tick_(700, 1.0), 0.4)          # 영사기가 멈춤
+for k in range(26): put(A('s7') + 0.15 + 0.6 + k * 0.142 + 0.03 * (k % 3), tick_(1700 + 200 * (k % 2), 0.4), 0.16)   # 글자
+put(A('s7') + 0.15 + 4.9, mx(whoosh(0.35) * 0.4, pop_(880)), 0.3)                                   # 보냄
+put(A('s8') + 0.15 + 0.5, whoosh(1.4), 0.1); put(A('s8') + 0.15 + 2.3, soft(330, 2.0), 0.35)       # 막이 내림
+put(A('s9') + 0.15 + 0.45, mx(tone(1568, 0.5, 0.25, (1, 0.3)) * 0.4, tone(2093, 0.45, 0.2, (1,)) * 0.25), 0.5)   # 알림
+put(A('s9') + 0.15 + 1.6, whoosh(0.8), 0.1)
+put(A('n17') + 0.3, mx(soft(440, 2.0), soft(554, 2.0)), 0.35)
+k = 0
+while A('s10') + 0.15 + 1.95 + k * 0.52 < E1('s10') + 0.4: put(A('s10') + 0.15 + 1.95 + k * 0.52, step(), 0.45 * (1 - 0.1 * k)); put(A('s10') + 0.15 + 2.2 + k * 0.52, step(), 0.38 * (1 - 0.1 * k)); k += 1
+put(A('s10') + 0.15 + 3.5, thud(0.05, 300), 0.25)                                                   # 어깨 툭
+put(W('n18', '벌', 9.9) - 0.2, soft(523), 0.4); put(W('n18', '이해를', 11.2) - 0.2, mx(soft(784, 2.2), soft(523, 2.2), chime() * 0.4), 0.45)
+put(A('q1') + 0.4, mx(soft(392, 2.6), soft(587, 2.6)), 0.4)
+put(A('q2') + 0.4, soft(523, 2.4), 0.4); put(A('q2') + 1.6, mx(soft(659, 3.0), soft(784, 3.0)), 0.4)
 mix = voice * 1.0 + bed + sfx * 0.55
 sf.write('mix_raw_sp.wav', mix, SR)
 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', 'mix_raw_sp.wav', '-af', 'alimiter=limit=0.6:level=false,loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', str(SR), 'mix_sp.wav'], check=True)
