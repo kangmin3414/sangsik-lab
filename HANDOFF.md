@@ -3,6 +3,14 @@
 새 Claude 세션은 이 문서를 먼저 읽으세요. 이전 대화 내용은 이전되지 않습니다.
 
 - **운영자 결정(2026-11-14, 목소리 후보를 듣고): "일단 목소리는 구글로 가자."** → **그림은 xAI(`xai.image`), 목소리는 Google(Gemini TTS, 내레이션 Schedar·제로 Puck 등 기존 그대로), 배경음은 Lyria.** 아래 xAI 목소리 메모는 참고용으로만 둔다.
+- **자소서 편 v4 전편(2026-11-14~15, 운영자 "ㅇㅋ" 뒤 제작) — `resume01/v4/`**
+  - 대본은 `resume01/대본_v4.md`(57줄: 대사 30줄, 내레이션 37%). 훅(h1~h2) → 타이틀 → 1막(a1~a7) → 2막(b1~b7, 회의 m0~m7, c1~c9) → 3막(d1~d14) → 4막(e1~e9). 약 4분 31초.
+  - 파일: `lines_v4.py`(줄·목소리·연기 지시) → `voice_v4.py [id…]` → `gen_tl.py`(쉬는 간격 GAP) → `timeline_v4.json` → `anim_v4.html`(`v4lib.js` 공통 도구, `v4meet.js` 회의+훅, `v4a.js` 1막·합격, `v4b.js` 사무실·인사팀·반납·면접, `v4c.js` 3·4막) → `build_v4.py`(믹스. 효과음 합성 함수는 `../long/build_rs.py`에서 함수 정의만 읽어 온다) → `qa_mix.py` → `render_range.py a b`.
+  - **장면 짜는 법(이번 편에서 굳힌 것):** 대화 장면마다 상태 함수 하나(`vmState`·`voState`·`vhState`·`viState`·`vjState`·`vsState`)가 끊기지 않는 시계 T로 인물별 char 옵션을 만들고, `v4Shots(T, [[시작 T, (T, 시작, 끝) => SVG], …])`가 컷(카메라)만 바꾼다. 말하는 입은 `v4Say(key, 표정, 줄 id, t)`(발음에 맞춘 입), 고개는 `v4Bob`. 어깨의 한 줄은 `v4Yoke`(k를 0 → 1로 올리면 입을 덮는다).
+  - v3 장면을 그대로 쓰되 때만 새 줄에 맞추는 법: 낱말 시각을 지어 넘긴다(`v4worldsScene`·`v4fourthScene`이 `{ _words: [...] }`를 만들어 `rsWorlds`·`rsfourthScene`에 줌). 장면을 덮어쓸 때는 `rsknowScene = function…`, `rsquoteScene = function…`, `mtmeetScene = function…`처럼 다시 대입한다.
+  - 미리보기(`zw/preview.py … --step 3`)로 막마다 연속 프레임 시트를 보고 고친 것: 회의 '모두가 본다' 전체 샷이 2초 굳음(→ 천천히 다가감), 다세계 그림 3초 굳음(→ 장면 전체를 `rsZoom`으로 천천히), 면접관이 든 서류가 얼굴을 가림(→ 손 위치를 낮춤), 듣는 얼굴에 `rs담담`을 쓰면 노려보는 것처럼 보임(→ `rs평온`), 합격 전화 장면의 창밖이 밤인데 시계가 오전(→ 오후 9시로), 반납 장면에서 손이 화면 밖으로 나감, c8 내레이션 8초 동안 전체 샷이 굳음(→ 이력서 인서트 `viInsert`: 회색 한 줄을 지우개로 문질러도 그대로).
+  - 녹음에서 걸린 줄: c4 "지어냈습니다"가 세 번 다 "지원했습니다"로 인식됨 → 연기 지시에서 "목이 멘다"를 빼고 "한 글자씩 또렷하게"를 넣어 다시 녹음(CER 0). d2 "박스 센"은 "박스쌘"으로 인식(발음은 같음). 운영자가 귀로 확인할 줄: a5 "붙기만", d2 "박스 센", d4 "부풀리랬지", d10 "세기 싫어서요", e2 "기여요".
+  - `/dev/shm/v4`는 대화가 멈추면 지워진다. 디스크에 남는 것: 코드, `timeline_v4.json`, `takes.json`, `words.json`, `voice_v4.opus`(목소리 전체, .gitignore). 다시 렌더하려면 `voice_v4.opus`를 wav로 풀어 `/dev/shm/v4/voice_v4.wav`에 두고 `build_v4.py` → `render_range.py`.
 - **연기 층과 움직임 미리보기(2026-11-14, 운영자 "ㅇㅋ")**
   - `zw/act.js`(새 이름은 act 접두사, 기존 엔진은 그대로): `actTrack`(값의 길, 키마다 예비 동작과 탄력), `actPose`(자세의 길, 어깨 → 팔꿈치 → 손 순서로 뒤따름), `actGaze`(눈이 먼저 가고 머리가 따라 돈다 → look·turn·tilt), `actHit`(움찔), `actNod`, `actInhale`, `actTalk`(목소리에 머리와 손이 실림), `actSway`, `actMul`. 페이지에서 장면 파일보다 먼저 불러온다.
   - **연기는 끊기지 않는 시계 T로 한 번만 정하고 컷은 카메라만 바꾼다.** 장면 함수의 네 번째 인자 `runLt`가 T다(같은 scene 이름이 이어지는 동안 끊기지 않음). `resume01/meet/mtscenes2.js`의 `maState(t, T)`(인물마다 char 옵션) → `maRoom` → `maShot(…, cam, {depth, blur, noPpl})`.

@@ -60,3 +60,28 @@ const actTalk = e => ({ headDy: -5 * e, hand: -9 * e });
 const actSway = (t, seed = 1, amp = 5) => ({ dx: Math.sin(t * 0.7 + seed * 2.1) * amp, rot: Math.sin(t * 0.7 + seed * 2.1) * 0.5 });
 /* { sx, sy } 여러 개 곱하기 */
 const actMul = (...xs) => xs.reduce((a, b) => ({ sx: a.sx * (b.sx == null ? 1 : b.sx), sy: a.sy * (b.sy == null ? 1 : b.sy) }), { sx: 1, sy: 1 });
+
+/* ---------- 입 모양(발음에 맞춤) ---------- */
+/* 한글 음절의 모음에 따라 입 모양을 고른다. 음성 인식이 준 단어 시각(words: [{w, t}], t는 줄 시작부터의 초)을 음절 수로 나눠 쓴다.
+   [가로 반지름, 세로 반지름]: 아(크게) · 어 · 에/애(옆으로) · 오(동그랗게) · 우(작게) · 으(납작) · 이(옆으로 얇게). ㅁ·ㅂ·ㅍ으로 시작하면 음절 앞에서 입을 다문다. */
+const ACT_VOW = [[13, 15], [15, 9], [13, 15], [15, 9], [11, 12], [15, 9], [11, 12], [15, 9], [8, 10], [12, 13], [14, 10], [12, 9], [8, 10], [6, 7], [10, 10], [13, 9], [9, 6], [6, 7], [13, 4], [13, 5], [15, 5]];
+const actSyl = w => { const out = []; for (const ch of String(w)) { const c = ch.charCodeAt(0); if (c >= 0xAC00 && c <= 0xD7A3) { const k = c - 0xAC00, cho = Math.floor(k / 588), jung = Math.floor((k % 588) / 28); out.push({ v: ACT_VOW[jung], lip: cho === 6 || cho === 7 || cho === 8 || cho === 17 }); } else if (/[0-9]/.test(ch)) { out.push({ v: [12, 11], lip: false }); out.push({ v: [11, 8], lip: false }); } else if (/[A-Za-z]/.test(ch)) out.push({ v: [12, 10], lip: false }); } return out; };
+function actMouthShape(words, u, e) { // u: 줄 시작부터의 초, e: 목소리 크기(0~1). 돌려주는 값 [rx, ry] 또는 null(다문 입)
+  if (!words || !words.length || e < 0.05) return null;
+  let i = -1; for (let k = 0; k < words.length; k++) if (u >= words[k].t - 0.03) i = k; if (i < 0) return null;
+  const syl = actSyl(words[i].w); if (!syl.length) return null;
+  const nxt = i + 1 < words.length ? words[i + 1].t : words[i].t + 0.2 * syl.length + 0.25, d = Math.max(0.12, Math.min(nxt - words[i].t, 0.24 * syl.length + 0.1));
+  const p = (u - words[i].t) / d * syl.length; if (p >= syl.length + 0.35) return null;
+  const j = clamp(Math.floor(p), 0, syl.length - 1), f = p - j, cur = syl[j], prev = j > 0 ? syl[j - 1].v : [9, 3], nx = j + 1 < syl.length ? syl[j + 1].v : [9, 3];
+  let rx = cur.v[0], ry = cur.v[1];
+  if (f < 0.3) { const k = f / 0.3 * 0.5 + 0.5; rx = lerp(prev[0], rx, k); ry = lerp(cur.lip ? 1.5 : prev[1], ry, k); } else if (f > 0.7) { const k = (f - 0.7) / 0.3 * 0.5; rx = lerp(rx, nx[0], k); ry = lerp(ry, nx[1], k); }
+  const g = 0.55 + 0.6 * Math.min(1, e * 1.6); return [rx, Math.max(2, ry * g)];
+}
+/* 표정 base에 지금 발음의 입을 얹은 표정을 E[key]에 넣고 fEx(key)를 돌려준다. line: 타임라인의 줄({t0, words}), t: 지금 시각 */
+function actSay(key, base, line, t, e) {
+  const m = line ? actMouthShape(line.words, t - line.t0, e) : null;
+  E[key] = m ? Object.assign({}, E[base], { mouth: ell(200, 238, f1(m[0]), f1(m[1])), mouthFill: '#5A1E2A' }) : E[base];
+  return fEx(key);
+}
+/* 지금 시각에 말하고 있는 줄(없으면 null). 줄 끝난 뒤 0.15초까지는 그 줄로 본다 */
+const actLineAt = t => ((window.TL && TL.lines) || []).find(l => l.words && l.words.length && t >= l.t0 - 0.05 && t < l.t1 + 0.15) || null;
