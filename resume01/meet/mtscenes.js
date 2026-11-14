@@ -28,7 +28,7 @@ function mtRoom(t, S) { // 회의실 전체(세계 좌표). S: 인물·한 줄·
   let ppl = RSC({ x: 1170, y: sit, s: 1, t, pose: cp, ex: c.ex || fEx('rs평온'), look: c.look || [-0.75, -0.5], tilt: c.tilt || 0, seed: 51 }) + (c.pen ? `<g transform="translate(${f1(chp[0])} ${f1(chp[1])}) rotate(-24)"><rect x="-5" y="-62" width="10" height="64" rx="4" fill="${RS.BLUE}" stroke="${INK}" stroke-width="3"/></g>` + hand(chp[0], chp[1], 0.7) : '');
   ppl += RSX('#B7C9A8', '#5A3A22')({ x: 1440, y: sit, s: 1, t, pose: rsSitPose(), ex: x2.ex || fEx('rs평온'), look: x2.look || [-0.75, -0.5], seed: 52 });
   const bpose = st > 0.5 && b.reach ? Object.assign({}, rsSitPose(), { armL: [[148, 285], [104, 300], [72, 290]], hL: [64, 288] }) : rsSitPose();
-  ppl += RSB({ x: 1710, y: lerp(sit, GY - 78, easeInOut(st)), s: 1, t, pose: bpose, ex: b.ex || fEx('rs평온'), look: b.look || [-0.75, -0.5], seed: 21 });
+  ppl += RSB({ x: 1710, y: lerp(sit, GY - 22, easeInOut(st)), s: 1, t, pose: bpose, ex: b.ex || fEx('rs평온'), look: b.look || [-0.75, -0.5], seed: 21 });
   w += (S.noPpl ? '' : `<g clip-path="url(#rsT)">${ppl}</g>`) + rsTable(960, 2010, TY, GY);
   w += `<rect x="1196" y="${TY - 10}" width="96" height="10" rx="3" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="1392" y="${TY - 12}" width="96" height="12" rx="4" fill="#8E97A6" stroke="${INK}" stroke-width="4"/><rect x="1300" y="${TY - 44}" width="30" height="44" rx="6" fill="#DDEBFA" stroke="${INK}" stroke-width="4"/>`;
   const fold = b.fold || 0;
