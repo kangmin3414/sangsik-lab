@@ -14,7 +14,7 @@ window.TL = window.TL || { duration: 10, lines: [] };
 const TEE = '#FF9A55';
 // ZERO, new look: no goggles, no vest — a plain orange t-shirt
 let STACHE = false, COSTUME = false; // ep.008: Zero wears a topknot + robe while enjoying uselessness
-const HALO = g => `<g filter="url(#halo)">${g}</g>`;
+const HALO = g => window.PV ? g : `<g filter="url(#halo)">${g}</g>`;
 const Z = o => HALO(char(Object.assign({ goggles: 'none', vest: TEE, patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)', topknot: false, robe: false }, o)));
 // Zhuangzi: white topknot, long white beard, pale green robe; Huizi: black topknot, small beard, blue robe
 const ZH = o => HALO(char(Object.assign({ goggles: 'none', vest: '#CFDCC8', patch: false, tee: true, vshade: 'rgba(0,0,0,0.15)', topknot: '#D9D9D9', longBeard: '#F4F4F4', robe: '#4E6E58' }, o)));
@@ -605,7 +605,7 @@ function render(t) {
   const cut = prog(t, line.t0 - 0.15, line.t0 + 0.05);
   const flash = i > 0 && L[i - 1].scene !== line.scene && cut < 1 ? (1 - cut) * 0.14 : 0;
   document.getElementById('v').innerHTML = defs(t) +
-    `<g filter="url(#boil)"><g transform="translate(960 100) scale(.88) translate(-960 -100)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g></g>` +
+    `<g${window.PV ? '' : ' filter="url(#boil)"'}><g transform="translate(960 100) scale(.88) translate(-960 -100)"><g transform="${camT(cam[0], cam[1], cam[2])}">${scene}</g></g></g>` +
     `<rect width="${W}" height="${H}" fill="url(#vig)"/>` +
     `<rect x="0" y="880" width="${W}" height="200" fill="#000" opacity=".18"/>` +
     over + subtitle(t) +
