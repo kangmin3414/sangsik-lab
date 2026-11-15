@@ -1,4 +1,4 @@
-/* ---------- 엔진 인물: 제로(Puck)와 채점이(Laomedeia, 임시) ----------
+/* ---------- 엔진 인물: 제로(Puck)와 채점이(Sadachbia) ----------
    종이 위에 서 있는 작은 인형처럼: 엔진 char()로 그리고, 연기는 zw/act.js(예비 동작·탄력·시선·입 모양).
    마커 문법은 그대로: 빨강은 답(종이에 저절로 그려짐), 인물은 그 답을 보고 반응한다. 채점이의 빨간 색연필은 소품. */
 const SV = document.getElementById('v'), TX = document.getElementById('top').getContext('2d');

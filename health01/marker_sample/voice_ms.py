@@ -3,12 +3,13 @@ import json, os, re, sys, time
 import numpy as np, requests, soundfile as sf
 from scipy.signal import resample_poly
 sys.path.insert(0, '/home/claude/sangsik-lab/gtts'); import vx
-HERE = os.path.dirname(os.path.abspath(__file__)); OUT = '/dev/shm/op/ms_takes'
+HERE = os.path.dirname(os.path.abspath(__file__)); OUT = '/dev/shm/op/ms_takes2'
 URL = f'https://aiplatform.googleapis.com/v1beta1/projects/{vx.PROJECT}/locations/global/publishers/google/models/gemini-3.8-flash-tts:generateContent'
-VO = {'N': 'Schedar', 'Z': 'Puck', 'C': 'Laomedeia'}   # 채점이 목소리는 임시
-ST = {'N': '자연스러운 한국어 내레이터. 따뜻하지만 템포는 빠르게, 쉼은 짧게. 경쾌하게 이야기를 끌고 간다. 숫자는 또렷하게.',
-      'Z': '서른 살 직장인 남자. 담백한 혼잣말 말투, 템포는 빠르게.',
-      'C': '엄지만 한 꼬마 캐릭터. 또박또박한 아이 말투, 빠르고 똑 부러지게. 자기 기준표를 읽다가 놀라는 대목은 살짝 당황해서.'}
+VO = {'N': 'Schedar', 'Z': 'Puck', 'C': 'Sadachbia'}   # 채점이: 남자 목소리(운영자 2026-11-15 "여자 목소리인데 캐릭터가 남자")
+# 운영자 2026-11-15 "AI 같은 기계음, 더 자연스럽게 템포를": 속도는 나중에 늘이지 않고(rubberband 뺌) 말투 지시로만 빠르게
+ST = {'N': '유튜브 진행자가 친구에게 재밌는 얘기를 들려주듯 자연스러운 구어체. 원고를 읽는 느낌 없이 가볍고 빠르게, 문장 사이 쉼은 짧게. 숫자는 또렷하지만 끊어 읽지 않는다.',
+      'Z': '서른 살 직장인 남자. 혼잣말하듯 툭 던지는 자연스러운 말투. 가볍고 빠르게.',
+      'C': '엄지만 한 꼬마 남자아이. 자기가 다 안다고 믿는 깐깐한 채점관. 성격이 급해서 말이 빠르고, 쉼 없이 다다다 이어 말한다. 실제 아이가 말하듯 자연스럽게.'}
 LINES = [  # id, 목소리, 자막, 읽을 문장, 줄 연기
  ('m8', 'Z', '근데 만 보는… 누가 정한 거야?', '근데 만 보는... 누가 정한 거야?', '문득 궁금해서.'),
  ('m9', 'C', '원래 그런 거야. 기준표에 다 있어. 봐, 1965년 일본, 걸음 세는 기계가 나왔고 이름이 만보계… 어? 이름에서 온 거네?', '원래 그런 거야. 기준표에 다 있어. 봐, 천구백육십오 년 일본, 걸음 세는 기계가 나왔고, 이름이 만보계... 어? 이름에서 온 거네?', '처음엔 자신만만하게 읽다가 끝에서 김이 샌다.'),
@@ -17,7 +18,7 @@ LINES = [  # id, 목소리, 자막, 읽을 문장, 줄 연기
  ('m12b', 'Z', '나 오늘 9,400인데.', '나 오늘 구천사백인데.', '손목을 보며 피식.'),
  ('m15', 'C', '그럼 물. 2리터 중에 900. 이건 못 빠져나가.', '그럼 물. 2리터 중에 구백. 이건 못 빠져나가.', '다시 기운을 차리고 단호하게.'),
  ('m17', 'N', '2002년, 미국의 한 생리학자가 하루 여덟 잔의 근거를 찾아봤습니다. 찾지 못했습니다.', '이천이 년, 미국의 한 생리학자가 하루 여덟 잔의 근거를 찾아봤습니다. 찾지 못했습니다.', '마지막 문장은 한 박자 쉬고 짧게.'),
- ('m18', 'C', "그럴 리가. 기준표에… 옛날 권고문, 하루 2리터 남짓. 거봐. 어, 다음 줄이 있네. '대부분은 음식에 들어 있다.'", '그럴 리가. 기준표에... 옛날 권고문, 하루 2리터 남짓. 거봐. 어, 다음 줄이 있네. 대부분은 음식에 들어 있다.', '의기양양하다가 마지막 문장은 천천히 읽으며 당황.'),
+ ('m18', 'C', "그럴 리가. 기준표에… 옛날 권고문, 하루 2리터 남짓. 거봐. 어, 다음 줄이 있네. '대부분은 음식에 들어 있다.'", '그럴 리가. 기준표에... 옛날 권고문, 하루 2리터 남짓. 거봐. 어, 다음 줄이 있네. 대부분은 음식에 들어 있다.', '의기양양하다가 마지막 문장은 읽으면서 목소리가 작아지며 당황.'),
  ('m22', 'C', '오늘 앉은 시간, 열 시간. 이건 진짜 큰일이야.', '오늘 앉은 시간, 열 시간. 이건 진짜 큰일이야.', '호들갑스럽게.'),
  ('m24', 'N', '2016년, 백만 명이 넘는 사람의 자료를 모았습니다. 하루 여덟 시간 넘게 앉아 있어도, 60분에서 75분쯤 움직인 사람들에게서는 그 위험이 보이지 않았습니다.', '이천십육 년, 백만 명이 넘는 사람의 자료를 모았습니다. 하루 여덟 시간 넘게 앉아 있어도, 육십 분에서 칠십오 분쯤 움직인 사람들에게서는, 그 위험이 보이지 않았습니다.', ''),
  ('m25', 'Z', '한 시간…? 그건 좀 많은데.', '한 시간...? 그건 좀 많은데.', '난감해서.'),
@@ -52,8 +53,8 @@ rep = json.load(open(os.path.join(HERE, 'takes_ms.json'))) if os.path.exists(os.
 only = sys.argv[1:]
 for lid, v, sub, sp, ls in LINES:
     if (lid in rep and lid not in only) or (only and lid not in only): continue
-    best = None; ok = 0.25 if re.search(r'\d', sub) else 0.08
-    for k in range(5 if lid in MUST else 3):
+    takes = []; ok = 0.25 if re.search(r'\d', sub) else 0.08
+    for k in range(5 if lid in MUST else 4):
         path = f'{OUT}/{lid}_{k}.wav'; synth(sp, VO[v], ST[v] + (' ' + ls if ls else ''), path)
         w, sr = sf.read(path, dtype='float32')
         seg, _ = asr.transcribe(resample_poly(w, 2, 3).astype(np.float32), language='ko', beam_size=5, word_timestamps=True, condition_on_previous_text=False)
@@ -61,8 +62,9 @@ for lid, v, sub, sp, ls in LINES:
         if lid in MUST and not re.search(MUST[lid], hyp): c = max(c, 0.9)   # 숫자가 틀리게 들리면 다시
         words = [{'w': x.word.strip(), 't': round(float(x.start), 2)} for s in seg for x in s.words]
         print(lid, k, round(c, 3), round(len(w) / sr, 2), hyp[:90], flush=True)
-        if best is None or c < best[0]: best = (c, path, hyp, words, len(w) / sr)
-        if c < ok: break
+        takes.append((c, path, hyp, words, len(w) / sr))
+        if sum(1 for x in takes if x[0] < ok) >= 2: break   # 통과한 테이크 둘 중 더 빠른 것
+    good = [x for x in takes if x[0] < ok]; best = min(good, key=lambda x: x[4]) if good else min(takes)
     rep[lid] = {'take': best[1], 'cer': round(best[0], 3), 'hyp': best[2], 'words': best[3], 'dur': round(best[4], 2), 'sub': sub, 'voice': VO[v], 'who': v}
     json.dump(rep, open(os.path.join(HERE, 'takes_ms.json'), 'w'), ensure_ascii=False, indent=1)
 print('done')

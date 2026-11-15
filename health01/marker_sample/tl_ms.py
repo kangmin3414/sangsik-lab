@@ -5,9 +5,9 @@ import json, os, subprocess, numpy as np, soundfile as sf
 HERE = os.path.dirname(os.path.abspath(__file__))
 TK = json.load(open(os.path.join(HERE, 'takes_ms.json')))
 SHEETS = [['m8', 'm9'], ['m11', 'm12a', 'm12b'], ['m15', 'm17', 'm18'], ['m22', 'm24', 'm25', 'm26'], ['m32', 'm33']]
-LEAD, GAP, SHEET_GAP, TAIL, SR = 0.45, 0.2, 1.15, 2.2, 24000
+LEAD, GAP, SHEET_GAP, TAIL, SR = 0.45, 0.15, 1.15, 2.2, 24000
 FR = int(0.01 * SR)
-SPEED = {'C': 1.12, 'N': 1.05, 'Z': 1.0}   # 채점이 목소리가 느려서 조금 당긴다(rubberband, 음높이 그대로)
+SPEED = {'C': 1.0, 'N': 1.0, 'Z': 1.0}   # 늘이기·당기기 없음: rubberband로 당긴 소리가 기계음처럼 들렸다(운영자 2026-11-15). 빠르기는 녹음 말투 + 긴 쉼 줄이기로만
 
 def faster(path, k):
     if k == 1.0: return sf.read(path, dtype='float32')[0]
