@@ -4,7 +4,7 @@
 import json, os, subprocess, numpy as np, soundfile as sf
 HERE = os.path.dirname(os.path.abspath(__file__))
 TK = json.load(open(os.path.join(HERE, 'takes_ms.json')))
-SHEETS = [['m8', 'm9'], ['m11', 'm12a', 'm12b'], ['m15', 'm17', 'm18'], ['m22', 'm24', 'm25', 'm26'], ['m32', 'm33']]
+SHEETS = [['m8', 'm9'], ['m11', 'm12a', 'm12b'], ['m15', 'm17', 'm18'], ['m18b', 'm18c', 'm19', 'm20', 'm21'], ['m22', 'm24', 'm25', 'm26'], ['m32', 'm33']]
 LEAD, GAP, SHEET_GAP, TAIL, SR = 0.45, 0.15, 1.15, 2.2, 24000
 FR = int(0.01 * SR)
 SPEED = {'C': 1.0, 'N': 1.0, 'Z': 1.0}   # 늘이기·당기기 없음: rubberband로 당긴 소리가 기계음처럼 들렸다(운영자 2026-11-15). 빠르기는 녹음 말투 + 긴 쉼 줄이기로만
