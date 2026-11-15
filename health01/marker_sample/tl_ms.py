@@ -59,5 +59,8 @@ for si, sh in enumerate(SHEETS):
         voice.append(y); t += d
 voice.append(np.zeros(int(TAIL * SR), np.float32)); t += TAIL
 v = np.concatenate(voice); sf.write('/dev/shm/op/ms_voice.wav', v, SR)
-json.dump({'dur': round(t, 3), 'lines': lines}, open('/dev/shm/op/web/ms_tl.json', 'w'), ensure_ascii=False)
+# 입 모양용 목소리 크기(24fps, 0~1): 엔진의 env(t)와 같은 꼴
+hop = SR // 24; rms = np.array([np.sqrt(np.mean(v[i:i + hop] ** 2)) for i in range(0, len(v) - hop + 1, hop)])
+env = np.clip(rms / (np.percentile(rms[rms > 1e-4], 95) + 1e-9), 0, 1)
+json.dump({'dur': round(t, 3), 'lines': lines, 'env': [round(float(x), 3) for x in env]}, open('/dev/shm/op/web/ms_tl.json', 'w'), ensure_ascii=False)
 print('dur', round(t, 2))

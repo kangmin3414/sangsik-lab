@@ -1,0 +1,250 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/gaegu/700.css"><link rel="stylesheet" href="node_modules/@fontsource/gaegu/400.css">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas,svg{display:block;position:absolute;left:0;top:0}</style><script src="repo/shorts/engine.js"></script><script src="repo/zw/act.js"></script></head><body><canvas id="c" width="1920" height="1080"></canvas><svg id="v" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"></svg><canvas id="top" width="1920" height="1080"></canvas>
+<script>
+/* 건강 편 연구 네 컷 — Marker on Paper(Lemo-Opuscar STYLE.md 문법), 빠른 템포판.
+   종이 한 장 = 질문 하나. 검정은 뼈대, 파랑은 아는 것(연구 숫자), 빨강은 답(그 장의 마지막 획). 장이 끝나면 종이를 걷어 낸다. */
+const W = 1920, H = 1080, cv = document.getElementById('c'); let X = cv.getContext('2d');
+const TL = (() => { const x = new XMLHttpRequest(); x.open('GET', 'ms_tl.json', false); x.send(); return JSON.parse(x.responseText); })(); window.DUR = TL.dur;
+const LN = id => TL.lines.find(l => l.id === id);
+const WT = (id, key, frac) => { const l = LN(id); let w = null; for (const k of (key || '').split('|')) { w = k && l.words.find(x => x.w.includes(k)); if (w) break; } return l.t0 + (w ? w.t : frac * (l.t1 - l.t0)); };
+const END = id => LN(id).t1;
+const mC = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), mL = (a, b, k) => a + (b - a) * k, K = (a, b, t) => mC((t - a) / (b - a)), mE = k => k * k * (3 - 2 * k);
+const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; };
+const comma = n => Math.round(n).toLocaleString('en-US');
+const INKC = { k: 'rgba(27,28,32,0.97)', b: 'rgba(36,86,214,0.9)', r: 'rgba(226,59,46,0.9)' };
+/* ---------- 종이 ---------- */
+const PAPER = (() => { const c = document.createElement('canvas'); c.width = 2400; c.height = 1500; const g = c.getContext('2d'), R = rng(3);
+  g.fillStyle = '#FAF9F5'; g.fillRect(0, 0, c.width, c.height); const im = g.getImageData(0, 0, c.width, c.height), d = im.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (R() - 0.5) * 3.2; d[i] += n; d[i + 1] += n; d[i + 2] += n; } g.putImageData(im, 0, 0);
+  g.strokeStyle = 'rgba(120,110,95,0.06)'; g.lineWidth = 1; for (let i = 0; i < 420; i++) { const x = R() * c.width, y = R() * c.height, a = R() * 6.28; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * 14, y + Math.sin(a) * 14); g.stroke(); }
+  const gr = g.createRadialGradient(200, 100, 100, 200, 100, 2600); gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(60,50,30,0.035)'); g.fillStyle = gr; g.fillRect(0, 0, c.width, c.height); return c; })();
+/* ---------- 마커 ---------- */
+const EV = []; const ev = (id, t, type, dur) => { if (!EV.find(e => e.id === id)) EV.push({ id, t, type, dur }); };
+function resample(pts, step = 5) { const out = [pts[0]]; let carry = 0;
+  for (let i = 1; i < pts.length; i++) { const [ax, ay] = pts[i - 1], [bx, by] = pts[i], L = Math.hypot(bx - ax, by - ay); let d = step - carry;
+    while (d <= L) { out.push([ax + (bx - ax) * d / L, ay + (by - ay) * d / L]); d += step; } carry = L - (d - step); } out.push(pts[pts.length - 1]); return out; }
+function stroke(id, pts, col, w, t, t0, dur) {
+  if (t < t0) return; ev(id, t0, 'stroke', dur);
+  const P = resample(pts), p = mC((t - t0) / dur), n = Math.max(2, Math.floor(P.length * mE(p))), boil = Math.floor(t * 12) % 3, sd = id.length * 7.3 + id.charCodeAt(0);
+  X.beginPath();
+  for (let i = 0; i < n; i++) { const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)], nx = -(b[1] - a[1]), ny = b[0] - a[0], L = Math.hypot(nx, ny) || 1, s = i * 5;
+    const o = 1.6 * Math.sin(s / 95 + sd) + 0.5 * Math.sin(s / 7 + sd * 3) + (p >= 1 ? 0.55 * Math.sin(s / 13 + boil * 2.1 + sd) : 0);
+    const x = P[i][0] + nx / L * o, y = P[i][1] + ny / L * o; i ? X.lineTo(x, y) : X.moveTo(x, y); }
+  X.strokeStyle = INKC[col]; X.lineWidth = w; X.lineCap = 'round'; X.lineJoin = 'round'; X.globalCompositeOperation = 'multiply'; X.stroke(); X.globalCompositeOperation = 'source-over';
+}
+function write(id, s, x, y, px, col, t, t0, cps = 14, bold = true) {
+  if (t < t0) return x; ev(id, t0, 'write', s.length / cps);
+  const n = (t - t0) * cps, R = rng(id.length * 131 + s.length + id.charCodeAt(0)); X.font = `${bold ? 700 : 400} ${px}px "Gaegu"`; X.textBaseline = 'alphabetic'; let cx = x;
+  X.globalCompositeOperation = 'multiply'; X.fillStyle = INKC[col];
+  for (let i = 0; i < s.length; i++) { const ch = s[i], w = X.measureText(ch).width, rot = (R() - 0.5) * 0.045, dy = (R() - 0.5) * px * 0.035, sc = 1 + (R() - 0.5) * 0.04, part = mC(n - i);
+    if (part > 0) { X.save(); X.beginPath(); X.rect(cx - 2, y - px * 1.1, (w + 4) * part, px * 1.5); X.clip(); X.translate(cx + w / 2, y + dy); X.rotate(rot); X.scale(sc, sc); X.fillText(ch, -w / 2, 0); X.restore(); } cx += w; }
+  X.globalCompositeOperation = 'source-over'; return cx;
+}
+const tw = (s, px) => { X.font = `700 ${px}px "Gaegu"`; return X.measureText(s).width; };
+function dashes(id, a, b, col, w, t, t0, n = 10, each = 0.05) { for (let i = 0; i < n; i++) { const u0 = i / n, u1 = u0 + 0.55 / n; stroke(id + i, [[mL(a[0], b[0], u0), mL(a[1], b[1], u0)], [mL(a[0], b[0], u1), mL(a[1], b[1], u1)]], col, w, t, t0 + i * each, each * 0.8); } }
+function circle(id, cx, cy, rx, ry, col, w, t, t0, dur) { const pts = []; for (let i = 0; i <= 44; i++) { const a = -2.2 + i / 44 * 6.6; pts.push([cx + Math.cos(a) * rx * (1 + 0.04 * Math.sin(i)), cy + Math.sin(a) * ry]); } stroke(id, pts, col, w, t, t0, dur); }
+function rect(id, x0, y0, x1, y1, col, w, t, t0, dur) { stroke(id, [[x0, y0 + 2], [x1 + 4, y0], [x1, y1 + 3], [x0 - 2, y1], [x0, y0 - 6]], col, w, t, t0, dur); }
+function arrow(id, a, b, col, w, t, t0, dur) { stroke(id, [a, b], col, w, t, t0, dur); const an = Math.atan2(b[1] - a[1], b[0] - a[0]), L = 26;
+  stroke(id + 'h', [[b[0] - L * Math.cos(an - 0.5), b[1] - L * Math.sin(an - 0.5)], b, [b[0] - L * Math.cos(an + 0.5), b[1] - L * Math.sin(an + 0.5)]], col, w, t, t0 + dur, 0.12); }
+function stickman(id, x, y, s, t, t0, col = 'k') {
+  circle(id + 'h', x, y - 70 * s, 14 * s, 14 * s, col, 6, t, t0, 0.15); stroke(id + 'b', [[x, y - 56 * s], [x, y - 18 * s]], col, 6, t, t0 + 0.15, 0.08);
+  stroke(id + 'l', [[x - 14 * s, y + 10 * s], [x, y - 18 * s], [x + 14 * s, y + 10 * s]], col, 6, t, t0 + 0.23, 0.1); stroke(id + 'a', [[x - 16 * s, y - 30 * s], [x, y - 44 * s], [x + 16 * s, y - 30 * s]], col, 6, t, t0 + 0.33, 0.1); }
+function pageNo(n, t, t0) { circle('pg' + n, 1780, 140, 36, 36, 'k', 7, t, t0, 0.25); write('pgn' + n, String(n), 1768, 162, 56, 'k', t, t0 + 0.25, 10); }
+/* ---------- 장 1: 만 보는 누가 정했을까 ---------- */
+function sheet1(t) {
+  const a = LN('m8').t0, b = LN('m9').t0;
+  write('q1', '만 보는 누가 정했을까?', 130, 200, 96, 'k', t, a + 0.05, 18); pageNo(1, t, a + 0.1);
+  const t9 = LN('m9').t0;   // '기준표에 다 있어': 채점이의 기준표(검정 = 뼈대)
+  rect('cl', 1180, 290, 1650, 470, 'k', 7, t, t9 - 0.6, 0.4); stroke('clc', [[1360, 278], [1470, 278]], 'k', 10, t, t9 - 0.2, 0.1);
+  write('clh', '기준표', 1210, 352, 50, 'k', t, WT('m9', '기준표', 0.12), 14); write('clr', '걸음 … 10,000보', 1210, 432, 46, 'k', t, WT('m9', '있어', 0.17) + 0.1, 16);
+  const tb = WT('m9', '기계', 0.5) - 0.5;   // 걸음 세는 기계(지어낸 모양, 상표 없음)
+  stroke('pd', [[560, 360], [840, 356], [880, 400], [884, 700], [840, 744], [560, 748], [520, 704], [516, 404], [560, 360]], 'k', 9, t, tb, 0.55);
+  circle('pdd', 700, 520, 105, 105, 'k', 8, t, tb + 0.55, 0.35); stroke('pdn', [[700, 520], [760, 470]], 'k', 8, t, tb + 0.9, 0.12);
+  for (let i = 0; i < 7; i++) { const an = Math.PI * (0.8 + i * 0.233); stroke('pdt' + i, [[700 + Math.cos(an) * 80, 520 + Math.sin(an) * 80], [700 + Math.cos(an) * 96, 520 + Math.sin(an) * 96]], 'k', 6, t, tb + 1.0 + i * 0.03, 0.04); }
+  stroke('pdb', [[640, 330], [760, 330]], 'k', 10, t, tb + 1.2, 0.12);
+  write('y1965', '1965 · 일본', 980, 575, 60, 'b', t, WT('m9', '1965', 0.32), 14);
+  const tn = WT('m9', '만보계|만보게|맘복|만복', 0.68); write('name', '만보계', 590, 852, 72, 'k', t, tn, 10);
+  const TR = WT('m9', '이름에서', 0.82);   // 답(빨강)은 '이름에서'에 맞춰 마지막에
+  circle('rc1', 680, 830, 150, 62, 'r', 8, t, TR - 0.25, 0.35); write('ans1', '숫자는 이름에서 왔다', 990, 720, 64, 'r', t, TR + 0.2, 16);
+}
+const cam1 = t => { const a = LN('m8').t0; return [[a, [640, 560, 1.2]], [LN('m9').t0 - 0.55, [960, 520, 1.0]]]; };
+/* ---------- 장 2: 걸음 수와 사망률 ---------- */
+const GX = s => 340 + (s - 2000) / 8000 * 1300, GY = s => s < 7500 ? 380 + 310 * (1 - Math.pow(1 - (s - 2000) / 5500, 2)) : 690;
+const curve = (a, b) => { const pts = []; for (let s = a; s <= b; s += 100) pts.push([GX(s), GY(s)]); return pts; };
+function sheet2(t) {
+  const a = LN('m11').t0, T72 = WT('m11', '72', 0.12), T16 = WT('m11', '16', 0.2), T4Y = WT('m11', '4년', 0.3), TH = WT('m11', '하루', 0.45), T44 = WT('m11', '400', 0.52), T27 = WT('m11', '700', 0.66), T41 = WT('m11', '41', 0.86);
+  write('q2', '그럼 몇 보면 될까?', 130, 200, 96, 'k', t, a - 0.1, 18); pageNo(2, t, a);
+  stickman('m1', 1190, 300, 0.9, t, T72 - 0.1); stickman('m2', 1260, 300, 0.9, t, T72 + 0.1); stickman('m3', 1330, 300, 0.9, t, T72 + 0.3);
+  write('n1', '평균 72세 여성', 1400, 250, 50, 'k', t, T72, 14); write('n2', '16,741명', 1400, 315, 64, 'b', t, T16, 12); write('n3', '4년 남짓 지켜봄 (2019)', 1400, 372, 40, 'k', t, T4Y, 16, false);
+  stroke('ay', [[260, 300], [262, 800]], 'k', 8, t, TH - 0.35, 0.3); stroke('ax', [[255, 800], [1720, 798]], 'k', 8, t, TH - 0.05, 0.4);
+  stroke('axh', [[1690, 782], [1722, 798], [1690, 816]], 'k', 8, t, TH + 0.35, 0.12); write('axl', '하루 걸음 수', 1745, 812, 40, 'k', t, TH + 0.45, 14); write('ayl', '사망률', 150, 282, 44, 'k', t, TH, 14);
+  for (const [s, t0] of [[4400, T44], [2700, T27]]) { stroke('tk' + s, [[GX(s), 784], [GX(s), 816]], 'b', 8, t, t0, 0.1); write('tl' + s, comma(s), GX(s) - 48, 865, 44, 'b', t, t0 + 0.08, 14); }
+  stroke('c1', curve(2000, 4400), 'k', 8, t, T27 + 0.35, 0.9);
+  stroke('dt27', [[GX(2700) - 4, GY(2700)], [GX(2700) + 4, GY(2700) + 1]], 'b', 22, t, T27 + 0.5, 0.08); stroke('dt44', [[GX(4400) - 4, GY(4400)], [GX(4400) + 4, GY(4400) + 1]], 'b', 22, t, T27 + 1.25, 0.08);
+  stroke('gd', [[GX(2700), GY(2700)], [GX(4400) + 70, GY(2700)]], 'b', 4, t, T41 - 0.45, 0.2);
+  stroke('br', [[GX(4400) + 70, GY(2700)], [GX(4400) + 90, GY(2700)], [GX(4400) + 90, GY(4400)], [GX(4400) + 70, GY(4400)]], 'b', 8, t, T41 - 0.25, 0.35);
+  write('p41', '−41%', GX(4400) + 115, (GY(2700) + GY(4400)) / 2 + 28, 84, 'b', t, T41 + 0.1, 10);
+  const c = LN('m12a').t0, TF = WT('m12a', '더', 0.5), z = LN('m12b').t0, T94 = WT('m12b', '인데', 0.4);
+  stroke('c2', curve(4400, 10000), 'k', 8, t, c - 0.35, 1.2); write('apx', '곡선은 대략의 모양', 360, 762, 34, 'k', t, c + 0.9, 18, false);
+  stroke('tk75', [[GX(7500), 784], [GX(7500), 816]], 'k', 8, t, c, 0.1); write('tl75', '7,500', GX(7500) - 48, 865, 44, 'k', t, c + 0.08, 14);
+  dashes('rd', [GX(7500), 360], [GX(7500), 780], 'r', 8, t, c + 0.2, 9, 0.05); write('rl', '여기서부터 평평', GX(7500) + 24, 470, 60, 'r', t, TF - 0.25, 13);
+  stroke('tk94', [[GX(9400), 784], [GX(9400), 816]], 'b', 8, t, z, 0.1); write('tl94', '9,400', GX(9400) - 48, 865, 44, 'b', t, z + 0.08, 14);
+  stroke('dz', [[GX(9400) - 4, GY(9400)], [GX(9400) + 4, GY(9400) + 1]], 'b', 24, t, T94, 0.08); 
+  write('zl', '오늘의 제로', GX(9400) + 82, 612, 46, 'b', t, T94 + 0.3, 14);
+  arrow('ra2', [GX(7500) + 14, 745], [GX(9400) + 10, 745], 'r', 8, t, T94 + 0.35, 0.3);   // 같은 빨강 묶음: 평평한 구간에 이미 들어와 있다
+}
+const cam2 = t => [[LN('m11').t0 - 0.2, [900, 470, 1.08]], [WT('m11', '하루', 0.45) - 0.4, [960, 520, 1.0]], [WT('m11', '41', 0.86) - 0.3, [640, 640, 1.3]], [LN('m12a').t0 - 0.2, [1000, 520, 1.05]], [LN('m12b').t0 - 0.1, [1420, 620, 1.35]], [END('m12b') + 0.6, [960, 520, 1.0]]];
+/* ---------- 장 3: 물 2리터 ---------- */
+function sheet3(t) {
+  const a = LN('m15').t0; write('q3', '물 2리터, 꼭?', 130, 200, 96, 'k', t, a - 0.1, 18); pageNo(3, t, a);
+  stroke('bt', [[380, 300], [440, 300], [442, 360], [500, 420], [502, 800], [318, 802], [320, 420], [378, 360], [380, 300]], 'k', 9, t, a + 0.25, 0.6);
+  const T9 = WT('m15', '900', 0.45); for (let i = 0; i < 9; i++) stroke('bh' + i, [[332, 790 - i * 20], [490, 784 - i * 20]], 'b', 6, t, T9 + i * 0.03, 0.06);
+  write('bl', '900 / 2,000 mL', 270, 875, 46, 'b', t, T9 + 0.2, 16);
+  const b = LN('m17').t0, T8 = WT('m17', '여덟', 0.4), TF = WT('m17', '찾지', 0.85);
+  write('y02', '2002 · 미국 생리학자', 900, 330, 54, 'b', t, b + 0.05, 16);
+  for (let i = 0; i < 8; i++) { const x = 900 + i * 100; stroke('cup' + i, [[x, 410], [x + 10, 500], [x + 60, 500], [x + 70, 410]], 'k', 7, t, T8 - 0.2 + i * 0.07, 0.1); }
+  write('f1', '“하루 여덟 잔” 근거 → 못 찾음', 900, 590, 52, 'k', t, TF, 16);
+  const c = LN('m18').t0, TK = WT('m18', '권고문', 0.22), T2 = WT('m18', '리터', 0.35), TD = WT('m18', '대부분', 0.75);
+  rect('box', 880, 640, 1780, 900, 'k', 7, t, TK - 0.3, 0.45); write('k1', '옛날 권고문', 910, 700, 44, 'k', t, TK, 16);
+  write('k2', '하루 2리터 남짓', 910, 770, 56, 'b', t, T2, 14);
+  write('k3', '대부분은 음식에 들어 있다', 910, 850, 64, 'r', t, TD, 9); stroke('k3u', [[905, 868], [905 + tw('대부분은 음식에 들어 있다', 64), 864]], 'r', 7, t, END('m18') + 0.05, 0.35);
+}
+const cam3 = t => [[LN('m15').t0 - 0.2, [700, 520, 1.15]], [LN('m17').t0, [960, 520, 1.0]], [WT('m18', '대부분', 0.75) - 0.2, [1330, 760, 1.35]], [END('m18') + 0.6, [960, 540, 1.0]]];
+/* ---------- 장 4: 앉아 있는 시간 ---------- */
+function sheet4(t) {
+  const a = LN('m22').t0; write('q4', '10시간 앉았다면?', 130, 200, 96, 'k', t, a - 0.1, 18); pageNo(4, t, a);
+  stroke('ch1', [[230, 640], [240, 380]], 'k', 9, t, a + 0.2, 0.15); stroke('ch2', [[240, 520], [420, 520], [420, 640]], 'k', 9, t, a + 0.35, 0.2); stroke('ch3', [[240, 640], [242, 520]], 'k', 9, t, a + 0.55, 0.1);
+  write('h10', '10시간', 260, 720, 60, 'b', t, WT('m22', '열|10', 0.35), 12);
+  const b = LN('m24').t0, T8 = WT('m24', '여덟|8시간', 0.45), T60 = WT('m24', '60', 0.62), TB = WT('m24', '보이지', 0.88);
+  write('y16', '2016 · 100만 명+', 900, 330, 54, 'b', t, b + 0.05, 16);
+  const piv = [1250, 600], ang = (t < T8 ? 0 : -0.16 * mE(K(T8, T8 + 0.5, t))) + 0.16 * mE(K(TB, TB + 0.6, t)), rot = ([x, y]) => [piv[0] + (x - piv[0]) * Math.cos(ang) - (y - piv[1]) * Math.sin(ang), piv[1] + (x - piv[0]) * Math.sin(ang) + (y - piv[1]) * Math.cos(ang)];
+  stroke('sp', [[1250, 610], [1200, 790], [1300, 790], [1250, 610]], 'k', 8, t, b + 0.35, 0.3); stroke('sb', [rot([920, 600]), rot([1580, 600])], 'k', 9, t, b + 0.65, 0.3);
+  const pan = (id, x, t0) => { const p = rot([x, 600]); stroke(id + 'l', [p, [p[0] - 70, p[1] + 110]], 'k', 5, t, t0, 0.08); stroke(id + 'r', [p, [p[0] + 70, p[1] + 110]], 'k', 5, t, t0 + 0.08, 0.08); stroke(id + 'p', [[p[0] - 95, p[1] + 110], [p[0] - 60, p[1] + 145], [p[0] + 60, p[1] + 145], [p[0] + 95, p[1] + 110]], 'k', 7, t, t0 + 0.16, 0.15); return p; };
+  const pl = pan('pl', 960, b + 0.95), pr = pan('pr', 1540, b + 1.2);
+  write('wl', '앉은 8시간+', pl[0] - 110, pl[1] + 210, 46, 'k', t, T8, 14); write('wr', '움직임 60~75분', pr[0] - 150, pr[1] + 210, 46, 'b', t, T60, 14);
+  write('wr2', '빠르게 걷기 정도', pr[0] - 130, pr[1] + 262, 34, 'b', t, T60 + 0.9, 18, false);
+  write('z1', '1시간…?', 1600, 470, 50, 'k', t, LN('m25').t0 + 0.1, 14);
+  const c = LN('m26').t0, T3 = WT('m26', '셋', 0.15), TJ = WT('m26', '줄었어', 0.55);
+  for (let i = 0; i < 4; i++) stickman('st' + i, 180 + i * 80, 900, 0.75, t, c - 0.05 + i * 0.08);
+  for (let i = 1; i < 4; i++) stroke('sl' + i, [[180 + i * 80 - 26, 850], [180 + i * 80 + 26, 790]], 'k', 6, t, T3 + 0.1 + i * 0.07, 0.07);
+  write('nb', '넷 중 셋은 못 채움', 500, 880, 44, 'b', t, T3 + 0.3, 16);
+  write('ans4', '움직인 만큼 줄었다', 900, 470, 64, 'r', t, TJ, 12); arrow('ar4', [1250, 485], [pr[0] - 40, pr[1] - 30], 'r', 7, t, TJ + 0.9, 0.25);
+}
+const cam4 = t => [[LN('m22').t0 - 0.2, [600, 420, 1.2]], [LN('m24').t0, [1000, 540, 1.0]], [LN('m26').t0, [960, 560, 1.0]]];
+/* ---------- 장 5: 종합비타민 ---------- */
+function sheet5(t) {
+  const a = LN('m32').t0; write('q5', '종합비타민, 매일?', 130, 200, 96, 'k', t, a - 0.1, 18); pageNo(5, t, a);
+  stroke('pill', [[1450, 150], [1560, 150], [1590, 180], [1560, 210], [1450, 210], [1420, 180], [1450, 150]], 'k', 8, t, a + 0.1, 0.35); stroke('pillm', [[1505, 150], [1505, 210]], 'k', 6, t, a + 0.45, 0.08);
+  write('y24', '2024 · 건강한 성인 39만 명 · 20년+', 130, 330, 52, 'b', t, a + 0.25, 18);
+  const T20 = WT('m32', '20년', 0.4), TM = WT('m32', '종합', 0.55), TN = WT('m32', '낮아지지', 0.85);
+  write('ra', '매일 먹음', 130, 500, 50, 'k', t, TM, 14); write('rb', '안 먹음', 130, 700, 50, 'k', t, TM + 0.4, 14);
+  for (let i = 0; i < 5; i++) { stickman('ga' + i, 420 + i * 90, 520, 0.8, t, TM + 0.1 + i * 0.06); stickman('gb' + i, 420 + i * 90, 720, 0.8, t, TM + 0.5 + i * 0.06); }
+  arrow('tl', [880, 610], [1300, 610], 'k', 8, t, T20, 0.35); write('tl20', '20년+', 1020, 580, 46, 'k', t, T20 + 0.2, 14);
+  stroke('eq1', [[1380, 585], [1470, 583]], 'k', 10, t, TN - 0.1, 0.12); stroke('eq2', [[1380, 630], [1470, 628]], 'k', 10, t, TN + 0.05, 0.12);
+  write('nd', '사망 위험 차이 없음', 1500, 625, 50, 'b', t, TN + 0.2, 14);
+  const b = LN('m33').t0, TO = WT('m33', '종합', 0.35), TQ = WT('m33', '뭘로', 0.8);
+  write('c1', '모자란 사람은 따로', 1100, 760, 40, 'b', t, b + 0.05, 18, false); write('c2', '종합비타민만 본 연구', 1100, 815, 40, 'b', t, TO, 18, false);
+  rect('cb', 1560, 760, 1680, 880, 'k', 8, t, TQ - 0.5, 0.35); write('cq', '?', 1596, 850, 96, 'r', t, TQ + 0.1, 6);
+}
+const cam5 = t => [[LN('m32').t0 - 0.2, [800, 360, 1.15]], [WT('m32', '종합', 0.55) - 0.2, [960, 540, 1.0]], [WT('m33', '뭘로', 0.8) - 0.3, [1400, 720, 1.4]]];
+/* ---------- 장 순서와 걷어 내기 ---------- */
+const SHEETS = [[0, sheet1, cam1], [LN('m11').t0 - 0.45, sheet2, cam2], [LN('m15').t0 - 0.4, sheet3, cam3], [LN('m22').t0 - 0.4, sheet4, cam4], [LN('m32').t0 - 0.4, sheet5, cam5]];
+function camAt(i, t) { const keys = SHEETS[i][2](t); let c = keys[0][1]; for (let k = 1; k < keys.length; k++) { const u = mE(K(keys[k][0], keys[k][0] + 0.6, t)); c = c.map((v, j) => mL(v, keys[k][1][j], u)); } return c; }
+function drawSheet(g, i, t) { const keep = X; X = g; const [cx, cy, z] = camAt(i, t); X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = '#FAF9F5'; X.fillRect(0, 0, W, H);
+  X.setTransform(z, 0, 0, z, W / 2 - cx * z, H / 2 - cy * z); X.drawImage(PAPER, -240 - i * 37, -200 - i * 23); SHEETS[i][1](t); X.setTransform(1, 0, 0, 1, 0, 0); X = keep; }
+const BUF = document.createElement('canvas'); BUF.width = W; BUF.height = H; const BG = BUF.getContext('2d');
+function slip(t) { const l = TL.lines.find(l => t >= l.t0 - 0.05 && t < Math.max(l.t1 + 0.35, l.t0 + 1.6)); if (!l) return; X.font = '700 42px "Gaegu"';
+  let lines = [l.sub]; if (X.measureText(l.sub).width > 1380) { const s = l.sub, mid = s.length / 2; let best = -1; for (let i = 0; i < s.length; i++) if (s[i] === ' ' && (best < 0 || Math.abs(i - mid) < Math.abs(best - mid))) best = i; lines = [s.slice(0, best), s.slice(best + 1)]; }
+  const w = Math.max(...lines.map(s => X.measureText(s).width)) + 90, h = 22 + lines.length * 50, x0 = (W - w) / 2, y0 = H - 36 - h, R = rng(l.sub.length);
+  X.beginPath(); X.moveTo(x0, y0); X.lineTo(x0 + w, y0); for (let k = 0; k <= 8; k++) X.lineTo(x0 + w + (R() - 0.5) * 14, y0 + h * k / 8); X.lineTo(x0, y0 + h); for (let k = 8; k >= 0; k--) X.lineTo(x0 + (R() - 0.5) * 14, y0 + h * k / 8); X.closePath();
+  X.fillStyle = 'rgba(250,249,245,0.96)'; X.fill(); X.strokeStyle = 'rgba(40,40,40,0.25)'; X.lineWidth = 1; X.stroke(); X.fillStyle = 'rgba(27,28,32,0.82)'; X.textAlign = 'center'; lines.forEach((s, k) => X.fillText(s, W / 2, y0 + 50 + k * 50)); X.textAlign = 'left'; }
+/* ---------- 엔진 인물: 제로(Puck)와 채점이(Laomedeia, 임시) ----------
+   종이 위에 서 있는 작은 인형처럼: 엔진 char()로 그리고, 연기는 zw/act.js(예비 동작·탄력·시선·입 모양).
+   마커 문법은 그대로: 빨강은 답(종이에 저절로 그려짐), 인물은 그 답을 보고 반응한다. 채점이의 빨간 색연필은 소품. */
+const SV = document.getElementById('v'), TX = document.getElementById('top').getContext('2d');
+const WX = (id, word, frac) => { const l = LN(id), w = l.words.find(x => x.w.replace(/[?.!,…]/g, '') === word); return l.t0 + (w ? w.t : frac * (l.t1 - l.t0)); };   // 낱말이 정확히 같을 때만
+const fEx = k => ({ expr: k, prev: k, k: 1, blink: 0 });
+const env = t => (TL.env && TL.env[Math.floor(t * 24)]) || 0;
+const on = (id, t) => t >= LN(id).t0 - 0.05 && t < LN(id).t1 + 0.12;
+const sayAt = (key, base, ids, t) => { const id = ids.find(i => on(i, t)); return actSay(key, base, id ? LN(id) : null, t, env(t)); };
+const talk = (ids, t) => ids.some(i => on(i, t)) ? actTalk(env(t)).headDy : 0;
+const bk = k => k <= 0 ? 0 : k >= 1 ? 1 : 1 + 2.70158 * Math.pow(k - 1, 3) + 1.70158 * Math.pow(k - 1, 2);
+const ZERO = o => char(Object.assign({ goggles: 'none', vest: '#FF9A55', patch: false, tee: true, vshade: 'rgba(150,60,0,0.22)' }, o));
+const CJ = o => char(Object.assign({ goggles: 'none', vest: '#8CC7A1', patch: false, tee: true, vshade: 'rgba(0,60,30,0.2)', collar: true, tie: '#2B2B2B' }, o));
+const PENCIL = { svg: `<rect x="-6" y="-8" width="96" height="16" rx="4" fill="#E23B2E" stroke="${INK}" stroke-width="5"/><path d="M90 -8 L116 0 L90 8 Z" fill="#F3D3A6" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M108 -3 L116 0 L108 3 Z" fill="#E23B2E"/>`, follow: true };
+const LEGS0 = { legL: P['서기'].legL, legR: P['서기'].legR, fL: P['서기'].fL, fR: P['서기'].fR, dy: 0 };
+P['cj들기'] = Object.assign({ armL: P['서기'].armL, hL: P['서기'].hL, armR: [[252, 285], [292, 266], [306, 230]], hR: [308, 222] }, LEGS0);
+P['cj가리킴'] = Object.assign({ armL: [[148, 285], [102, 296], [62, 306]], hL: [54, 308], armR: [[252, 285], [292, 266], [306, 230]], hR: [308, 222] }, LEGS0);
+P['cj아래'] = Object.assign({ armL: [[148, 285], [112, 322], [90, 362]], hL: [86, 370], armR: [[252, 285], [292, 266], [306, 230]], hR: [308, 222] }, LEGS0);
+P['z허리'] = Object.assign({ armL: [[148, 285], [110, 332], [148, 372]], hL: [152, 376], armR: [[252, 285], [290, 332], [252, 372]], hR: [248, 376] }, LEGS0);
+function actor(kind, o, t) { // o.x·o.y 발 위치, o.gy 그림자 높이(뛰는 중엔 땅), o.pop 0~1 튀어나옴
+  const pop = o.pop == null ? 1 : o.pop; if (pop <= 0.001) return '';
+  const s = o.s * pop, h = o.hit || { sx: 1, sy: 1 }, gy = o.gy == null ? o.y : o.gy, lift = mC((gy - o.y) / 300);
+  const sh = `<ellipse cx="${f1(o.x)}" cy="${f1(gy)}" rx="${f1(92 * s * (1 - 0.4 * lift))}" ry="${f1(13 * s * (1 - 0.4 * lift))}" fill="#3a3326" opacity="${f1(0.18 * pop * (1 - 0.6 * lift) * 100) / 100}"/>`;
+  return sh + (kind === 'z' ? ZERO : CJ)(Object.assign({}, o, { s, sx: h.sx, sy: h.sy, t }));
+}
+/* 장 1: 제로는 왼쪽 아래에서 턱 괴고 묻는다. 채점이는 기준표 위로 튀어나와 읽다가 '어?'에서 놀란다 */
+function chars1(t) {
+  const a8 = LN('m8').t0, a9 = LN('m9').t0, e9 = END('m9'), tP = WT('m9', '봐|다', 0.22), tM = WT('m9', '기계', 0.45), tO = WX('m9', '어', 0.82), tR = WT('m9', '이름에서', 0.9);
+  const zp = actPose([[0, '서기'], [a8 + 0.1, '턱괴기', { ant: 0.12 }], [a9 + 0.5, '서기']], t);
+  const zg = actGaze([[0, 0.3, -0.5], [a9 - 0.1, 0.95, -0.7], [tM + 0.1, 0.8, 0], [tR, 0.6, 0.6], [e9 - 0.2, 0.9, -0.5]], t);
+  const zb = t < a9 ? '걱정' : t < tR + 0.4 ? '기본' : '뿌듯';
+  const Z1 = actor('z', { x: 300, y: 862, s: 0.6, pose: zp, look: zg.look, turn: zg.turn, tilt: zg.tilt, ex: sayAt('z1s', zb, ['m8'], t), pop: bk(K(0.1, 0.45, t)),
+    armFront: t > a8 && t < a9 + 0.45 ? 'R' : '', hit: actMul(actHit(t, tO, 0.05), { sy: actInhale(t, a8, 0.3) }), headDy: talk(['m8'], t) }, t);
+  const tc = a9 - 0.2;
+  const cp = actPose([[0, 'cj들기'], [tP, 'cj가리킴', { ant: 0.1 }], [tM + 0.9, 'cj들기'], [tR - 0.15, 'cj아래', { ant: 0.08 }]], t);
+  const cg = actGaze([[0, -0.6, 0.2], [tP, -0.9, 0.3], [tO, -0.5, 0.9], [e9 + 0.2, -0.7, 0.4]], t);
+  const cb = t < tO ? '결심' : t < tR + 0.2 ? '놀람' : '걱정';
+  const C1 = actor('c', { x: 1415, y: 292, s: 0.4, pose: cp, look: cg.look, turn: cg.turn, tilt: cg.tilt, ex: sayAt('c1s', cb, ['m9'], t), pop: bk(K(tc, tc + 0.3, t)), holdR: PENCIL,
+    handL: (t >= tP && t < tM + 0.9) || t >= tR - 0.15 ? 'point' : null, hit: actMul(actHit(t, tO, 0.14), actHit(t, tc + 0.3, 0.1)), headDy: talk(['m9'], t) }, t);
+  return Z1 + C1;
+}
+/* 장 2: 제로는 왼쪽 여백에서 그래프를 보다가 '나 오늘 9,400인데'에 맞춰 9,400 점으로 뛰어오른다. 채점이는 평평한 곡선 위에 선다 */
+const J2 = () => { const z = LN('m12b').t0; return { tj0: z - 0.62, tj1: z - 0.04 }; };
+function chars2(t) {
+  const s0 = SHEETS[1][0] + 0.38, T41 = WT('m11', '41', 0.86), c = LN('m12a').t0, TF = WT('m12a', '더', 0.5), T94 = WT('m12b', '인데', 0.4), { tj0, tj1 } = J2();
+  const fly = K(tj0, tj1, t), X0 = 150, Y0 = 700, X1 = GX(9400), Y1 = GY(9400) + 2, gy = mL(Y0, Y1, fly);
+  const zx = mL(X0, X1, mE(fly)), zy = gy - 430 * Math.sin(Math.PI * fly);
+  const zp = actPose([[0, '서기'], [tj0 - 0.22, '웅크림', { ant: 0, f: 6 }], [tj0, '점프', { ant: 0, f: 6 }], [tj1, '서기', { ant: 0, f: 5 }], [T94 + 0.15, 'z허리']], t);
+  const zg = actGaze([[0, 0.9, 0], [T41, 0.9, -0.2], [c, 0.95, -0.3], [tj1 + 0.1, -0.7, 0.1], [T94 + 0.4, -0.85, 0]], t);
+  const zb = t < T41 ? '기본' : t < T41 + 1.2 ? '놀람' : t < tj0 ? '기본' : '뿌듯';
+  const Z2 = actor('z', { x: zx, y: zy, gy, s: 0.4, pose: zp, look: zg.look, turn: zg.turn, tilt: zg.tilt, ex: sayAt('z2s', zb, ['m12b'], t), pop: bk(K(s0, s0 + 0.3, t)),
+    rot: fly > 0 && fly < 1 ? 12 * Math.sin(Math.PI * fly) : 0, hit: actMul(actHit(t, T41, 0.06), actHit(t, tj1, 0.18)), headDy: talk(['m12b'], t) }, t);
+  const tc = c - 0.3;
+  const cp = actPose([[0, 'cj들기'], [TF - 0.15, 'cj아래', { ant: 0.1 }], [tj1 + 0.3, 'cj들기']], t);
+  const cg = actGaze([[0, -0.5, 0.6], [TF - 0.15, -0.6, 0.8], [tj0 + 0.2, -0.4, -0.6], [tj1, 0.9, -0.1]], t);
+  const cb = t < tj1 ? '결심' : '놀람';
+  const C2 = actor('c', { x: 1330, y: GY(7500) + 2, s: 0.34, pose: cp, look: cg.look, turn: cg.turn, tilt: cg.tilt, ex: sayAt('c2s', cb, ['m12a'], t), pop: bk(K(tc, tc + 0.3, t)), holdR: PENCIL,
+    handL: t >= TF - 0.15 && t < tj1 + 0.3 ? 'point' : null, hit: actMul(actHit(t, tj1 + 0.03, 0.12), actHit(t, tc + 0.3, 0.1)), headDy: talk(['m12a'], t) }, t);
+  return C2 + Z2;
+}
+const CHARS = [chars1, chars2];
+function charEvents() {   // 효과음: 튀어나옴(pop), 뛰기(jump), 내려앉기(land)
+  ev('pz1', 0.1, 'pop', 0.3); ev('pc1', LN('m9').t0 - 0.2, 'pop', 0.3); ev('pz2', SHEETS[1][0] + 0.38, 'pop', 0.3); ev('pc2', LN('m12a').t0 - 0.3, 'pop', 0.3);
+  const { tj0, tj1 } = J2(); ev('jz2', tj0, 'jump', tj1 - tj0); ev('lz2', tj1, 'land', 0.3);
+}
+const svgCam = c => `translate(${W / 2} ${H / 2}) scale(${f1(c[2] * 1000) / 1000}) translate(${f1(-c[0])} ${f1(-c[1])})`;
+function drawChars(i, t, u, e) {
+  const one = k => CHARS[k] ? `<g transform="${svgCam(camAt(k, t))}">${CHARS[k](t)}</g>` : '';
+  let g = u >= 1 ? one(i) : '';   // 새 장의 인물은 종이를 다 걷은 뒤에 튀어나온다
+  if (u < 1 && i > 0) g += `<g transform="translate(${f1(-e * W * 1.15)} ${f1(-e * 260)}) rotate(${f1(-e * 0.12 * 180 / Math.PI)})">${one(i - 1)}</g>`;
+  const seed = Math.floor(t * 12) % 3 + 1;   // 마커 획과 같은 12fps 떨림
+  SV.innerHTML = `<defs><clipPath id="headClip"><ellipse cx="200" cy="170" rx="118" ry="112"/></clipPath><clipPath id="vestClip"><path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z"/></clipPath>`
+    + `<filter id="cb" x="0" y="0" width="${W}" height="${H}" filterUnits="userSpaceOnUse"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="1" seed="${seed}" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter></defs>`
+    + `<g filter="url(#cb)">${g}</g>`;
+}
+
+window.render = t => {
+  let i = 0; while (i + 1 < SHEETS.length && t >= SHEETS[i + 1][0]) i++;
+  drawSheet(X, i, t);
+  const u = i > 0 ? K(SHEETS[i][0], SHEETS[i][0] + 0.38, t) : 1;
+  if (u < 1) { drawSheet(BG, i - 1, t); const e = mE(u), dx = -e * W * 1.15, dy = -e * 260, rot = -e * 0.12;   // 앞 장을 왼쪽 위로 걷어 낸다
+    X.save(); X.translate(dx, dy); X.rotate(rot); const sg = X.createLinearGradient(W, 0, W + 34, 0); sg.addColorStop(0, 'rgba(70,63,51,0.15)'); sg.addColorStop(1, 'rgba(70,63,51,0)'); X.fillStyle = sg; X.fillRect(W, 0, 34, H); X.drawImage(BUF, 0, 0); X.restore(); ev('peel' + i, SHEETS[i][0], 'peel', 0.38); }
+  drawChars(i, t, u, mE(u));
+  TX.clearRect(0, 0, W, H); const keepX = X; X = TX; slip(t); X = keepX;
+};
+window.fillEV = () => { for (let i = 0; i < SHEETS.length; i++) { drawSheet(BG, i, DUR); if (i) ev('peel' + i, SHEETS[i][0], 'peel', 0.38); } charEvents(); };
+window.EV = EV; window.READY = false;
+document.fonts.load('700 100px "Gaegu"', '만보는누가정했을까?0123456789,.%−·…“”→+/~mL 그럼몇보면될까물리터꼭시간앉았다면종합비타민매일').then(() => document.fonts.load('400 100px "Gaegu"', '곡선은대략의모양년남짓지켜봄빠르게걷기정도모자란사람따로본연구')).then(() => document.fonts.ready).then(() => { window.READY = true; });
+</script></body></html>
