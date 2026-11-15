@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/black-han-sans/400.css"><link rel="stylesheet" href="node_modules/@fontsource/do-hyeon/400.css"><link rel="stylesheet" href="node_modules/@fontsource/ibm-plex-mono/500.css">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script src="common.js"></script>
+<script>
+/* 화풍: Pictogram Motion(Lemo-Opuscar의 STYLE.md 문법을 따름). 정사각 격자 무늬 + 둥근 막대 픽토그램 + 아래에서 밀려 올라오는 큰 글자 + 모서리 HUD. 컷은 박자(100bpm)에 맞춘다. */
+const cv = document.getElementById('c'), X = cv.getContext('2d'), CELL = 180, BEAT = 0.6;
+const HUE = { teal: ['#0D3B3A', '#14605C', '#1E8C85', '#62BDB4', '#BFE6E0'], coral: ['#5C2018', '#9A3A2C', '#DB5A41', '#EF9479', '#F9D0C3'],
+  gold: ['#4D390C', '#8C6614', '#D69E24', '#ECC76B', '#F7E5B5'], sky: ['#15294B', '#254C82', '#3F76C4', '#89B0E4', '#D0E1F7'] };
+const CREAM = '#F6F0E4', INK = '#15171A';
+const q = t => Math.round(t / BEAT) * BEAT;                       // 박자에 붙이기
+const T = { k1: q(1.8), k2: q(WT('n11', ',400', 9.8) - 0.3), k3: q(WT('n11', '41', 16.56) - 0.35), k4: q(LN('c12').t0 - 0.35) };
+const T_COUNT = WT('n11', '16', 4.04), T_72 = WT('n11', '72', 2.66), T_4Y = WT('n11', '4년', 5.94), T_2700 = WT('n11', ',700', 12.36), T_41 = WT('n11', '41', 16.56);
+const T_75 = LN('c12').t0, T_FLAT = WT('c12', '더', 2.26), T_Z = LN('z12').t0, T_94 = WT('z12', '94', 0.72);
+/* ---------- 격자 무늬(카드마다 씨앗 하나, 미리 그려 둔다) ---------- */
+const PAT = {};
+function pattern(hue, seed, low) {
+  const key = hue + seed + (low ? 'L' : 'F'); if (PAT[key]) return PAT[key];
+  const c = document.createElement('canvas'); c.width = W + CELL * 2; c.height = H; const g = c.getContext('2d'), P = HUE[hue], R = rng(seed);
+  g.fillStyle = P[1]; g.fillRect(0, 0, c.width, c.height);
+  const tone = () => P[[0, 2, 3, 4, 2][Math.floor(R() * 5)]];
+  for (let r = 0; r < 6; r++) for (let k = 0; k < c.width / CELL; k++) {
+    const x = k * CELL, y = r * CELL, cx = x + CELL / 2, cy = y + CELL / 2, p = R(); g.save(); g.beginPath(); g.rect(x, y, CELL, CELL); g.clip();
+    if (p < 0.38) { g.fillStyle = tone(); g.beginPath(); g.arc(cx, cy, CELL / 2, 0, 7); g.fill(); if (R() < .4) { g.fillStyle = tone(); g.beginPath(); g.arc(cx, cy, CELL / 4, 0, 7); g.fill(); } }
+    else if (p < 0.58) { const o = Math.floor(R() * 4) * Math.PI / 2; g.fillStyle = tone(); g.beginPath(); g.arc(cx + Math.cos(o) * CELL / 2, cy + Math.sin(o) * CELL / 2, CELL / 2, o + Math.PI / 2, o + Math.PI * 1.5); g.fill(); }
+    else if (p < 0.72) { const o = Math.floor(R() * 4); const ox = o & 1 ? x + CELL : x, oy = o & 2 ? y + CELL : y; g.fillStyle = tone(); g.beginPath(); g.arc(ox, oy, CELL, 0, 7); g.fill(); }
+    if (R() < 0.5) { const m = Math.floor(R() * 4); g.fillStyle = tone(); g.strokeStyle = tone(); g.lineWidth = 10;
+      if (m === 0) for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { g.beginPath(); g.arc(x + 30 + i * 60, y + 30 + j * 60, 9, 0, 7); g.fill(); }
+      else if (m === 1) for (let i = 1; i < 4; i++) { g.beginPath(); g.arc(x, y + CELL, i * 42, -Math.PI / 2, 0); g.stroke(); }
+      else if (m === 2) { g.fillRect(x, y, CELL / 2, CELL / 2); g.fillRect(x + CELL / 2, y + CELL / 2, CELL / 2, CELL / 2); }
+      else for (let i = 0; i < 3; i++) { g.beginPath(); g.moveTo(x + i * 60, y + CELL); g.lineTo(x + i * 60 + 30, y + CELL - 52); g.lineTo(x + i * 60 + 60, y + CELL); g.fill(); } }
+    g.restore();
+  }
+  if (low) { g.fillStyle = P[0]; g.globalAlpha = 0.72; g.fillRect(0, 0, c.width, c.height); g.globalAlpha = 1; }
+  return PAT[key] = c;
+}
+function drawPattern(g, hue, seed, low, t, stopAt) { // 줄마다 반대로 천천히 흐른다. stopAt 뒤로는 한 줄씩 멈춘다
+  const p = pattern(hue, seed, low);
+  for (let r = 0; r < 6; r++) { const tt = stopAt ? Math.min(t, stopAt + r * 0.25) : t, off = Math.sin(tt * 0.35 + r * 1.7) * CELL * 0.6 * (r % 2 ? 1 : -1);
+    g.drawImage(p, CELL + off, r * CELL, W, CELL, 0, r * CELL, W, CELL); }
+}
+/* ---------- 픽토그램 ---------- */
+function figure(g, x, y, h, ph, col, far, walk = 1) { // 엉덩이가 (x, y), 키 h. 얼굴 없음, 둥근 막대 + 원 머리
+  const lw = h * 0.12, L = h * 0.26, A = h * 0.2, sw = Math.sin(ph) * 0.55 * walk, sw2 = Math.sin(ph + Math.PI) * 0.55 * walk;
+  const neck = [x + h * 0.04, y - h * 0.4], leg = (a, c) => { const k = [x + Math.sin(a) * L, y + Math.cos(a) * L], b = a - Math.max(0, -Math.sin(a + 0.3)) * 0.9 * walk - 0.08; g.strokeStyle = c; g.beginPath(); g.moveTo(x, y); g.lineTo(...k); g.lineTo(k[0] + Math.sin(b) * L, k[1] + Math.cos(b) * L); g.stroke(); };
+  const arm = (a, c) => { const e = [neck[0] + Math.sin(a) * A, neck[1] + h * 0.04 + Math.cos(a) * A], b = a + 0.6; g.strokeStyle = c; g.beginPath(); g.moveTo(neck[0], neck[1] + h * 0.04); g.lineTo(...e); g.lineTo(e[0] + Math.sin(b) * A * 0.9, e[1] + Math.cos(b) * A * 0.9); g.stroke(); };
+  g.lineCap = 'round'; g.lineJoin = 'round'; g.lineWidth = lw;
+  leg(sw2, far); arm(sw, far);
+  g.strokeStyle = col; g.lineWidth = lw * 1.25; g.beginPath(); g.moveTo(x, y); g.lineTo(...neck); g.stroke(); g.lineWidth = lw;
+  leg(sw, col); arm(sw2, col);
+  g.fillStyle = col; g.beginPath(); g.arc(neck[0] + h * 0.03, neck[1] - h * 0.13, h * 0.11, 0, 7); g.fill();
+}
+function foot(g, x, y, s, col, flip) { g.fillStyle = col; g.save(); g.translate(x, y); g.rotate(flip ? 0.25 : -0.25); g.beginPath(); g.ellipse(0, 0, 10 * s, 18 * s, 0, 0, 7); g.fill(); g.beginPath(); g.arc(0, -26 * s, 7 * s, 0, 7); g.fill(); g.restore(); }
+function stage(g, x, y, r, col, t) { // 해 원판 + 희미한 빛줄기 하나
+  g.fillStyle = col; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.clip();
+  const a = t * 0.25, gr = g.createLinearGradient(x - r * Math.cos(a), y - r * Math.sin(a), x + r * Math.cos(a), y + r * Math.sin(a)); gr.addColorStop(0.35, 'rgba(255,255,255,0)'); gr.addColorStop(0.5, 'rgba(255,255,255,0.09)'); gr.addColorStop(0.65, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); g.restore();
+}
+function flag(g, x, y, h, col, cloth) { g.lineCap = 'round'; g.strokeStyle = col; g.lineWidth = h * 0.06; g.beginPath(); g.moveTo(x, y); g.lineTo(x, y - h); g.stroke(); g.fillStyle = cloth; g.beginPath(); g.moveTo(x, y - h); g.lineTo(x + h * 0.55, y - h * 0.82); g.lineTo(x, y - h * 0.64); g.fill(); }
+/* ---------- 글자: 가림막 위로 밀려 올라온다 ---------- */
+function mtext(g, s, x, y, font, px, col, u, align = 'left') {
+  if (u <= 0) return; g.save(); g.font = `${font.replace('PX', px)}`; g.textAlign = align; g.textBaseline = 'alphabetic';
+  const w = g.measureText(s).width, x0 = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
+  g.beginPath(); g.rect(x0 - 20, y - px * 1.02, w + 40, px * 1.3); g.clip(); g.fillStyle = col; g.fillText(s, x, y + (1 - expoOut(u)) * px * 1.15); g.restore();
+}
+const TITLE = '400 PXpx "Black Han Sans"', SUB = '400 PXpx "Do Hyeon"', MONO = '500 PXpx "IBM Plex Mono"';
+function fit(g, s, font, px, maxw) { g.font = font.replace('PX', px); const w = g.measureText(s).width; return w > maxw ? px * maxw / w : px; }
+function chip(g, s, x, y, col, bg, u) { if (u <= 0) return; g.save(); g.globalAlpha = clamp(u * 3); g.font = MONO.replace('PX', 26); const w = g.measureText(s).width + 36; g.fillStyle = bg; g.beginPath(); g.roundRect(x, y - 34, w, 46, 23); g.fill(); g.fillStyle = col; g.fillText(s, x + 18, y - 3); g.restore(); }
+/* ---------- 카드 ---------- */
+function k0(g, t) { // 첫 장: 무늬 전면 + 제목
+  drawPattern(g, 'teal', 11, false, t);
+  g.fillStyle = HUE.teal[0]; g.globalAlpha = 0.55; g.fillRect(0, 360, W, 360); g.globalAlpha = 1;
+  mtext(g, '걸음 수', 140, 610, TITLE, 250, CREAM, K(0.1, 0.55, t)); mtext(g, '하루 몇 보면 될까', 150, 690, SUB, 64, HUE.teal[4], K(0.2, 0.65, t));
+}
+function k1(g, t) { // 1만 6천여 명, 72세, 4년
+  drawPattern(g, 'teal', 12, true, t); stage(g, 520, 520, 330, HUE.teal[2], t);
+  const ph = t * 7.5; for (let i = 0; i < 6; i++) foot(g, 300 + i * 52, 760 + (i % 2) * 22, 1, HUE.teal[3], i % 2);
+  figure(g, 540, 560, 330, ph, CREAM, HUE.teal[3]);
+  mtext(g, '2019', 1000, 330, MONO, 46, HUE.teal[4], K(0.15, 0.6, t - T.k1));
+  const n = 16741 * expoOut(K(T_COUNT - 0.05, T_COUNT + 1.0, t)), s = t < T_COUNT - 0.05 ? '' : comma(n) + '명';
+  mtext(g, s, 990, 560, TITLE, fit(g, '16,741명', TITLE, 230, 860), CREAM, K(T_COUNT - 0.1, T_COUNT + 0.3, t));
+  mtext(g, '평균 72세 여성', 1000, 660, SUB, 76, HUE.teal[4], K(T_72, T_72 + 0.45, t));
+  chip(g, '4.3년 동안 지켜봄', 1004, 760, INK, HUE.teal[4], K(T_4Y, T_4Y + 0.4, t));
+}
+function half(g, t, side, hue, steps, t0, speed, seed) { // 나눈 화면의 한쪽
+  const x0 = side ? W / 2 : 0; g.save(); g.beginPath(); g.rect(x0, 0, W / 2, H); g.clip(); g.translate(x0, 0);
+  drawPattern(g, hue, seed, true, t); const on = K(t0 - 0.2, t0 + 0.3, t);
+  if (on > 0) { stage(g, 480, 360, 220 * expoOut(on), HUE[hue][2], t);   // 걷는 빠르기는 같게(연구는 걸음 '수'를 봤고, 걸음 수를 맞추면 세기는 뚜렷한 차이가 없었다)
+    const ph = t * 7.5; for (let i = 0; i < Math.round(steps / 450); i++) foot(g, 120 + i * 76, 590 + (i % 2) * 18, 0.85, HUE[hue][3], i % 2);
+    figure(g, 470, 390, 240 * expoOut(on), ph, CREAM, HUE[hue][3]); }
+  mtext(g, comma(steps) + '보', 480, 760, TITLE, 170, CREAM, K(t0, t0 + 0.4, t), 'center');
+  mtext(g, side ? '더 걷는 쪽' : '덜 걷는 쪽', 480, 834, SUB, 54, HUE[hue][4], K(t0 + 0.1, t0 + 0.5, t), 'center');
+  g.restore();
+}
+function k2(g, t) { half(g, t, 0, 'coral', 2700, T_2700, 6, 21); half(g, t, 1, 'teal', 4400, WT('n11', ',400', 9.8), 9, 22);
+  g.fillStyle = CREAM; g.fillRect(W / 2 - 3, 0, 6, H); }
+function k3(g, t) { // −41%
+  drawPattern(g, 'teal', 31, true, t); stage(g, 520, 520, 330, HUE.teal[2], t); figure(g, 540, 560, 330, t * 9, CREAM, HUE.teal[3]);
+  const n = 41 * expoOut(K(T_41 - 0.05, T_41 + 0.7, t));
+  mtext(g, '−' + Math.round(n) + '%', 990, 600, TITLE, 300, CREAM, K(T_41 - 0.1, T_41 + 0.25, t));
+  mtext(g, '사망률', 1000, 700, SUB, 80, HUE.teal[4], K(T_41 + 0.1, T_41 + 0.5, t));
+  chip(g, '4,400보 쪽 · 2,700보 쪽과 비교', 1004, 800, INK, HUE.teal[4], K(T_41 + 0.4, T_41 + 0.8, t));
+}
+const STN = [[2700, 'coral'], [4400, 'teal'], [7500, 'gold'], [9400, 'sky']];
+function k4(g, t) { // 발자국 길을 따라 정거장마다 휙
+  const pos = 1.7 + 0.3 * expoOut(K(T.k4, T.k4 + 0.6, t)) + expoInOut(K(T_Z - 0.2, T_Z + 0.3, t));   // 7,500 정거장에 내려앉았다가 9,400으로 휙
+  const camX = pos * W, hueNow = STN[Math.min(3, Math.round(pos))][1];
+  drawPattern(g, hueNow, 41 + Math.round(pos), true, t, T_Z + 1.2);
+  g.save(); g.translate(-camX, 0);
+  g.strokeStyle = HUE.gold[3]; g.lineWidth = 10; g.lineCap = 'round'; g.setLineDash([2, 30]); g.beginPath(); g.moveTo(-200, 700); g.lineTo(W * 3 + 900, 700); g.stroke(); g.setLineDash([]);
+  STN.forEach(([s, hue], i) => { const x = 960 + i * W, P = HUE[hue];
+    stage(g, x - 380, 470, 250, P[2], t);
+    if (i < 3) { figure(g, x - 380, 500, 250, t * (i === 0 ? 6 : 9), CREAM, P[3], i === 2 ? 0.25 : 1); if (i === 2) flag(g, x - 160, 690, 300, CREAM, P[4]); }
+    else figure(g, x - 380, 500, 250, 0, CREAM, P[3], 0);
+    const st = [T.k4 + 0.1, T.k4 + 0.7, T_75 + 0.2, T_94][i];
+    mtext(g, comma(s) + '보', x + 60, 560, TITLE, 230, CREAM, K(st, st + 0.4, t));
+    mtext(g, ['2,700보쯤', '4,400보쯤', '여기서부터는 더 안 낮아짐', '오늘의 제로 · 이미 평평한 구간'][i], x + 70, 650, SUB, 64, P[4], K(st + 0.1, st + 0.5, t));
+    if (i === 2) chip(g, '7,500보 언저리부터 평평', x + 74, 750, INK, P[4], K(T_FLAT, T_FLAT + 0.4, t)); });
+  g.restore();
+}
+/* ---------- 장면 전환(격자 줄 밀기, 기둥 떨어뜨리기) ---------- */
+const BUF = [0, 1].map(() => { const c = document.createElement('canvas'); c.width = W; c.height = H; return c; });
+const CARDS = [[0, k0], [T.k1, k1], [T.k2, k2], [T.k3, k3], [T.k4, k4]];
+function cardAt(t) { let i = 0; while (i + 1 < CARDS.length && t >= CARDS[i + 1][0]) i++; return i; }
+function trans(g, t, i, kind) {
+  const u = K(CARDS[i][0], CARDS[i][0] + 0.5, t), A = BUF[0], B = BUF[1]; A.getContext('2d').clearRect(0, 0, W, H); CARDS[i - 1][1](A.getContext('2d'), t); CARDS[i][1](B.getContext('2d'), t);
+  if (kind === 0) for (let r = 0; r < 6; r++) { const d = r % 2 ? 1 : -1, k = expoInOut(clamp((u - r * 0.05) / 0.7)); g.drawImage(A, 0, r * CELL, W, CELL, d * k * W, r * CELL, W, CELL); g.drawImage(B, 0, r * CELL, W, CELL, -d * (1 - k) * W, r * CELL, W, CELL); }
+  else for (let c = 0; c < W / CELL + 1; c++) { const k = expoInOut(clamp((u - c * 0.025) / 0.7)); g.drawImage(A, c * CELL, 0, CELL, H, c * CELL, k * H, CELL, H); g.drawImage(B, c * CELL, 0, CELL, H, c * CELL, -(1 - k) * H, CELL, H); }
+}
+/* ---------- HUD와 자막 ---------- */
+function hud(g, t) { const i = cardAt(t), P = HUE[['teal', 'teal', 'teal', 'teal', 'gold'][i]];
+  g.font = MONO.replace('PX', 22); g.fillStyle = CREAM; g.globalAlpha = 0.85; g.fillText('STEPS · JAMA INTERN MED 2019 · n = 16,741', 72, 70); g.globalAlpha = 1;
+  for (let k = 0; k < 4; k++) { const cur = k === i - 1, done = k < i - 1; g.fillStyle = CREAM; g.globalAlpha = cur ? 1 : done ? 0.55 : 0.22; g.fillRect(W - 72 - (4 - k) * 26, cur ? 44 : 54, 12, cur ? 34 : 24); } g.globalAlpha = 1;
+  g.font = MONO.replace('PX', 22); g.fillStyle = CREAM; g.textAlign = 'right'; g.fillText(`0${Math.max(1, i)} / 04`, W - 72, 110); g.textAlign = 'left';
+}
+function subs(g, t) { const c = cueAt(t); if (!c) return; const lines = c[2], P = HUE[cardAt(t) === 4 ? 'gold' : 'teal'];
+  g.font = SUB.replace('PX', 44); const w = Math.max(...lines.map(s => g.measureText(s).width)) + 64, h = 30 + lines.length * 56;
+  g.fillStyle = cardAt(t) === 4 ? INK : P[0]; g.globalAlpha = 0.94; g.fillRect(72, H - 60 - h, w, h); g.globalAlpha = 1; g.fillStyle = CREAM; lines.forEach((s, k) => g.fillText(s, 104, H - 60 - h + 64 + k * 56)); }
+window.render = t => {
+  const i = cardAt(t); X.fillStyle = INK; X.fillRect(0, 0, W, H);
+  if (i > 0 && t < CARDS[i][0] + 0.55) trans(X, t, i, i % 2 ? 0 : 1); else CARDS[i][1](X, t);
+  hud(X, t); subs(X, t);
+};
+window.EV = [...CARDS.slice(1).map(c => ({ t: c[0], type: 'cut' })), { t: T_COUNT, type: 'slam' }, { t: WT('n11', ',400', 9.8), type: 'slam' }, { t: T_2700, type: 'slam' }, { t: T_41, type: 'slam' }, { t: T_75 + 0.2, type: 'slam' }, { t: T_94, type: 'slam' }];
+</script></body></html>

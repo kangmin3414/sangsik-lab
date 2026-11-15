@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/gaegu/700.css"><link rel="stylesheet" href="node_modules/@fontsource/gaegu/400.css">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script src="common.js"></script>
+<script>
+/* 화풍: Marker on Paper(Lemo-Opuscar STYLE.md의 문법). 흰 종이 한 장, 굵은 마커 한 자루. 검정은 뼈대, 파랑은 아는 것, 빨강은 구하는 것과 답(빨강이 맨 마지막 획).
+   손과 펜은 보이지 않는다. 획과 글자는 그려진 길이만큼만 보이고, 다 그린 획은 두 장씩(12fps) 아주 조금 떤다. */
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+const INKC = { k: 'rgba(27,28,32,0.97)', b: 'rgba(36,86,214,0.9)', r: 'rgba(226,59,46,0.9)' };
+const T_COUNT = WT('n11', '16', 4.04), T_72 = WT('n11', '72', 2.66), T_4Y = WT('n11', '4년', 5.94), T_HARU = WT('n11', '하루', 9.46), T_4400 = WT('n11', ',400', 9.8), T_2700 = WT('n11', ',700', 12.36), T_41 = WT('n11', '41', 16.56);
+const T_75 = LN('c12').t0, T_FLAT = WT('c12', '더', 2.26), T_Z = LN('z12').t0, T_94 = WT('z12', '94', 0.72);
+/* ---------- 종이(카메라와 함께 움직인다) ---------- */
+const PAPER = (() => { const c = document.createElement('canvas'); c.width = 2400; c.height = 1500; const g = c.getContext('2d'), R = rng(3);
+  g.fillStyle = '#FAF9F5'; g.fillRect(0, 0, c.width, c.height); const im = g.getImageData(0, 0, c.width, c.height), d = im.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (R() - 0.5) * 3.2; d[i] += n; d[i + 1] += n; d[i + 2] += n; } g.putImageData(im, 0, 0);
+  g.strokeStyle = 'rgba(120,110,95,0.06)'; g.lineWidth = 1; for (let i = 0; i < 420; i++) { const x = R() * c.width, y = R() * c.height, a = R() * 6.28; g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * 14, y + Math.sin(a) * 14); g.stroke(); }
+  const gr = g.createRadialGradient(200, 100, 100, 200, 100, 2600); gr.addColorStop(0, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(60,50,30,0.035)'); g.fillStyle = gr; g.fillRect(0, 0, c.width, c.height); return c; })();
+/* ---------- 마커 획 ---------- */
+const EV = [];
+function resample(pts, step = 5) { const out = [pts[0]]; let carry = 0;
+  for (let i = 1; i < pts.length; i++) { const [ax, ay] = pts[i - 1], [bx, by] = pts[i], L = Math.hypot(bx - ax, by - ay); let d = step - carry;
+    while (d <= L) { out.push([ax + (bx - ax) * d / L, ay + (by - ay) * d / L]); d += step; } carry = L - (d - step); } out.push(pts[pts.length - 1]); return out; }
+function stroke(id, pts, col, w, t, t0, dur) { // t0부터 dur초 동안 한 획으로 그려진다
+  if (t < t0) return; EV.find(e => e.id === id) || EV.push({ id, t: t0, type: 'stroke', dur });
+  const P = resample(pts), p = clamp((t - t0) / dur), n = Math.max(2, Math.floor(P.length * easeInOut(p))), boil = Math.floor(t * 12) % 3, sd = id.length * 7.3;
+  X.beginPath();
+  for (let i = 0; i < n; i++) { const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)], nx = -(b[1] - a[1]), ny = b[0] - a[0], L = Math.hypot(nx, ny) || 1, s = i * 5;
+    const o = 1.7 * Math.sin(s / 95 + sd) + 0.5 * Math.sin(s / 7 + sd * 3) + (p >= 1 ? 0.55 * Math.sin(s / 13 + boil * 2.1 + sd) : 0);
+    const x = P[i][0] + nx / L * o, y = P[i][1] + ny / L * o; i ? X.lineTo(x, y) : X.moveTo(x, y); }
+  X.strokeStyle = INKC[col]; X.lineWidth = w; X.lineCap = 'round'; X.lineJoin = 'round'; X.globalCompositeOperation = 'multiply'; X.stroke(); X.globalCompositeOperation = 'source-over';
+}
+function write(id, s, x, y, px, col, t, t0, cps = 9, bold = true) { // 글자는 한 자씩 쓰인다(왼쪽부터 드러남). 글자마다 아주 조금 기울고 떠 있다
+  if (t < t0) return; EV.find(e => e.id === id) || EV.push({ id, t: t0, type: 'write', dur: s.length / cps });
+  const n = (t - t0) * cps, R = rng(id.length * 131 + s.length); X.font = `${bold ? 700 : 400} ${px}px "Gaegu"`; X.textBaseline = 'alphabetic'; let cx = x;
+  X.globalCompositeOperation = 'multiply'; X.fillStyle = INKC[col];
+  for (let i = 0; i < s.length && i < n; i++) { const ch = s[i], w = X.measureText(ch).width, rot = (R() - 0.5) * 0.045, dy = (R() - 0.5) * px * 0.035, sc = 1 + (R() - 0.5) * 0.04, part = clamp(n - i);
+    X.save(); X.beginPath(); X.rect(cx - 2, y - px * 1.1, (w + 4) * part, px * 1.5); X.clip(); X.translate(cx + w / 2, y + dy); X.rotate(rot); X.scale(sc, sc); X.fillText(ch, -w / 2, 0); X.restore(); cx += w; }
+  X.globalCompositeOperation = 'source-over'; return cx;
+}
+function dashes(id, a, b, col, w, t, t0, n = 10, each = 0.08) { for (let i = 0; i < n; i++) { const u0 = i / n, u1 = u0 + 0.55 / n; stroke(id + i, [[lerp(a[0], b[0], u0), lerp(a[1], b[1], u0)], [lerp(a[0], b[0], u1), lerp(a[1], b[1], u1)]], col, w, t, t0 + i * each, each * 0.8); } }
+function circle(id, cx, cy, rx, ry, col, w, t, t0, dur) { const pts = []; for (let i = 0; i <= 44; i++) { const a = -2.2 + i / 44 * 6.6; pts.push([cx + Math.cos(a) * rx * (1 + 0.04 * Math.sin(i)), cy + Math.sin(a) * ry]); } stroke(id, pts, col, w, t, t0, dur); }
+function stickman(id, x, y, s, t, t0, col = 'k') { // 채널의 막대 사람(작게)
+  circle(id + 'h', x, y - 70 * s, 14 * s, 14 * s, col, 6, t, t0, 0.25); stroke(id + 'b', [[x, y - 56 * s], [x, y - 18 * s]], col, 6, t, t0 + 0.25, 0.15);
+  stroke(id + 'l', [[x - 14 * s, y + 10 * s], [x, y - 18 * s], [x + 14 * s, y + 10 * s]], col, 6, t, t0 + 0.4, 0.2); stroke(id + 'a', [[x - 16 * s, y - 30 * s], [x, y - 44 * s], [x + 16 * s, y - 30 * s]], col, 6, t, t0 + 0.6, 0.2); }
+/* ---------- 그래프의 자리(그림은 대략의 모양) ---------- */
+const GX = s => 340 + (s - 2000) / 8000 * 1300, GY = s => s < 7500 ? 380 + 310 * (1 - Math.pow(1 - (s - 2000) / 5500, 2)) : 690;
+const curve = (a, b) => { const pts = []; for (let s = a; s <= b; s += 100) pts.push([GX(s), GY(s)]); return pts; };
+/* ---------- 카메라 ---------- */
+function cam(t) { const keys = [[0, [760, 420, 1.35]], [T_HARU - 0.4, [960, 520, 1.0]], [T_41 - 0.2, [700, 540, 1.35]], [T_75 - 0.3, [1000, 520, 1.05]], [T_Z - 0.1, [1420, 620, 1.4]], [T_94 + 1.6, [960, 520, 1.0]]];
+  let c = keys[0][1]; for (let i = 1; i < keys.length; i++) { const k = easeInOut(K(keys[i][0], keys[i][0] + 1.1, t)); c = c.map((v, j) => lerp(v, keys[i][1][j], k)); } return c; }
+function slip(t) { const c = cueAt(t); if (!c) return; const lines = c[2]; X.font = '700 42px "Gaegu"'; const w = Math.max(...lines.map(s => X.measureText(s).width)) + 90, h = 22 + lines.length * 50, x0 = (W - w) / 2, y0 = H - 40 - h, R = rng(lines[0].length);
+  X.beginPath(); X.moveTo(x0, y0); X.lineTo(x0 + w, y0); for (let k = 0; k <= 8; k++) X.lineTo(x0 + w + (R() - 0.5) * 14, y0 + h * k / 8); X.lineTo(x0, y0 + h); for (let k = 8; k >= 0; k--) X.lineTo(x0 + (R() - 0.5) * 14, y0 + h * k / 8); X.closePath();
+  X.fillStyle = 'rgba(250,249,245,0.96)'; X.fill(); X.strokeStyle = 'rgba(40,40,40,0.25)'; X.lineWidth = 1; X.stroke(); X.fillStyle = 'rgba(27,28,32,0.8)'; X.textAlign = 'center'; lines.forEach((s, k) => X.fillText(s, W / 2, y0 + 50 + k * 50)); X.textAlign = 'left'; }
+window.render = t => {
+  const [cx, cy, z] = cam(t); X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = '#FAF9F5'; X.fillRect(0, 0, W, H);
+  X.setTransform(z, 0, 0, z, W / 2 - cx * z, H / 2 - cy * z); X.drawImage(PAPER, -240, -200);
+  /* 1: 질문, 쪽 번호, 연구 메모 */
+  write('q', '만 보, 꼭 채워야 할까?', 130, 200, 96, 'k', t, 0.25, 12);
+  circle('pg', 1780, 140, 36, 36, 'k', 7, t, 0.2, 0.35); write('pgn', '1', 1768, 162, 56, 'k', t, 0.55, 8);
+  stickman('m1', 1190, 300, 0.9, t, T_72 - 0.2); stickman('m2', 1260, 300, 0.9, t, T_72 + 0.15); stickman('m3', 1330, 300, 0.9, t, T_72 + 0.5);
+  write('n1', '평균 72세 여성', 1400, 250, 50, 'k', t, T_72, 9); write('n2', '16,741명', 1400, 315, 64, 'b', t, T_COUNT, 8); write('n3', '4년 남짓 지켜봄 (2019)', 1400, 372, 40, 'k', t, T_4Y, 10, false);
+  /* 2: 축 → 파랑(아는 것) 4,400과 2,700 → 곡선 */
+  stroke('ay', [[260, 300], [262, 800]], 'k', 8, t, T_HARU - 0.3, 0.45); stroke('ax', [[255, 800], [1720, 798]], 'k', 8, t, T_HARU + 0.15, 0.6);
+  stroke('axh1', [[1690, 782], [1722, 798], [1690, 816]], 'k', 8, t, T_HARU + 0.75, 0.2); write('axl', '하루 걸음 수', 1745, 812, 40, 'k', t, T_HARU + 0.9, 9); write('ayl', '사망률', 150, 282, 44, 'k', t, T_HARU + 0.5, 9);
+  for (const [s, t0] of [[4400, T_4400], [2700, T_2700]]) { stroke('tk' + s, [[GX(s), 784], [GX(s), 816]], 'b', 8, t, t0, 0.15); write('tl' + s, comma(s), GX(s) - 48, 865, 44, 'b', t, t0 + 0.12, 10);
+    stroke('dt' + s, [[GX(s) - 4, GY(s)], [GX(s) + 4, GY(s) + 1]], 'b', 22, t, T_2700 + (s === 4400 ? 2.2 : 0.9), 0.1); }
+  stroke('c1', curve(2000, 4400), 'k', 8, t, T_2700 + 0.5, 1.6);
+  stroke('br', [[GX(4400) + 70, GY(2700)], [GX(4400) + 90, GY(2700)], [GX(4400) + 90, GY(4400)], [GX(4400) + 70, GY(4400)]], 'b', 8, t, T_41 - 0.25, 0.5);
+  write('p41', '−41%', GX(4400) + 115, (GY(2700) + GY(4400)) / 2 + 28, 84, 'b', t, T_41 + 0.25, 7);
+  stroke('gd1', [[GX(2700), GY(2700)], [GX(4400) + 70, GY(2700)]], 'b', 4, t, T_41 - 0.5, 0.25);
+  /* 3: 곡선이 이어지다 평평 → 빨강(답) */
+  stroke('c2', curve(4400, 10000), 'k', 8, t, T_75 - 0.4, 1.8); write('apx', '곡선은 대략의 모양', 900, 760, 34, 'k', t, T_75 + 1.4, 12, false);
+  stroke('tk75', [[GX(7500), 784], [GX(7500), 816]], 'k', 8, t, T_75, 0.15); write('tl75', '7,500', GX(7500) - 48, 865, 44, 'k', t, T_75 + 0.1, 10);
+  dashes('rd', [GX(7500), 360], [GX(7500), 780], 'r', 8, t, T_75 + 0.3, 9, 0.07);
+  write('rl', '여기서부터 평평', GX(7500) + 24, 470, 60, 'r', t, T_FLAT - 0.2, 9);
+  /* 4: 오늘의 제로(파랑) → 마지막 빨강: 이미 평평한 구간 */
+  stroke('tk94', [[GX(9400), 784], [GX(9400), 816]], 'b', 8, t, T_Z, 0.15); write('tl94', '9,400', GX(9400) - 48, 865, 44, 'b', t, T_Z + 0.1, 10);
+  stroke('dz', [[GX(9400) - 4, GY(9400)], [GX(9400) + 4, GY(9400) + 1]], 'b', 24, t, T_94, 0.1); stickman('zz', GX(9400), GY(9400) - 40, 0.8, t, T_94 + 0.1, 'b');
+  write('zl', '오늘의 제로', GX(9400) + 40, GY(9400) - 100, 46, 'b', t, T_94 + 0.5, 9);
+  circle('rc', GX(9400) + 70, GY(9400) - 60, 210, 130, 'r', 9, t, T_94 + 1.25, 0.6);
+  X.setTransform(1, 0, 0, 1, 0, 0); slip(t);
+};
+window.EV = EV;
+</script></body></html>

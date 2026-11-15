@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/black-han-sans/400.css"><link rel="stylesheet" href="node_modules/@fontsource/do-hyeon/400.css"><link rel="stylesheet" href="node_modules/@fontsource/ibm-plex-mono/500.css">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script src="common.js"></script>
+<script>
+/* 화풍: Risograph Print(Lemo-Opuscar STYLE.md의 문법). 한 프레임 = 판 세 장(R=청록, G=형광 주황, B=해바라기 노랑)의 농도. 인쇄 단계에서 판마다 어긋남, 망점, 잉크 결, 핀홀을 넣고 종이 위에 곱해 찍는다. */
+const out = document.getElementById('c'), O = out.getContext('2d');
+const PL = document.createElement('canvas'); PL.width = W; PL.height = H; const P = PL.getContext('2d', { willReadFrequently: true });
+const PAPER = [0xF4, 0xEE, 0xE2], INKS = [[0x00, 0x83, 0x8A], [0xFF, 0x74, 0x77], [0xFF, 0xB5, 0x11]], OPA = [0.93, 0.9, 0.88];
+const BEAT = 0.6, q = t => Math.round(t / BEAT) * BEAT;
+const T = { s2: q(WT('n11', ',400', 9.8) - 0.3), s3: q(WT('n11', '41', 16.56) - 0.35), s4: q(LN('c12').t0 - 0.35) };
+const T_COUNT = WT('n11', '16', 4.04), T_72 = WT('n11', '72', 2.66), T_4Y = WT('n11', '4년', 5.94), T_4400 = WT('n11', ',400', 9.8), T_2700 = WT('n11', ',700', 12.36), T_41 = WT('n11', '41', 16.56);
+const T_75 = LN('c12').t0, T_FLAT = WT('c12', '더', 2.26), T_Z = LN('z12').t0, T_94 = WT('z12', '94', 0.72);
+/* ---------- 판에 그리기 ---------- */
+const ink = (a, b, c) => `rgb(${Math.round(a * 255)},${Math.round(b * 255)},${Math.round(c * 255)})`;
+const over = () => P.globalCompositeOperation = 'lighter';        // 겹쳐 찍기(그 판에만 잉크를 더한다)
+const solid = () => P.globalCompositeOperation = 'source-over';   // 빼고 찍기(아래 판을 지운다)
+const TITLE = '400 PXpx "Black Han Sans"', SUB = '400 PXpx "Do Hyeon"', MONO = '500 PXpx "IBM Plex Mono"';
+function txt(s, x, y, font, px, col, align = 'left', wipe = 1) { // 롤러가 지나간 만큼만 찍힌다
+  if (wipe <= 0) return; P.save(); P.font = font.replace('PX', px); P.textAlign = align; const w = P.measureText(s).width, x0 = align === 'left' ? x : align === 'center' ? x - w / 2 : x - w;
+  P.beginPath(); P.rect(x0 - 10, y - px * 1.1, (w + 20) * clamp(wipe), px * 1.5); P.clip(); P.fillStyle = col; P.fillText(s, x, y); P.restore(); }
+function person(x, y, h, ph, col, halo = 9) { // 납작한 실루엣. 종이색 테두리로 떼어 낸 뒤 한 판으로 찍는다
+  const parts = c => { P.lineCap = 'round'; P.lineJoin = 'round'; const L = h * 0.27, s1 = Math.sin(ph) * 0.5, s2 = -s1, nk = [x + h * 0.03, y - h * 0.42];
+    P.strokeStyle = c; P.fillStyle = c;
+    for (const [a, w] of [[s1, 0.13], [s2, 0.13]]) { P.lineWidth = h * w + halo * 2 * (c === 'rgb(0,0,0)'); P.beginPath(); P.moveTo(x, y); P.lineTo(x + Math.sin(a) * L, y + Math.cos(a) * L); P.lineTo(x + Math.sin(a) * L + Math.sin(a - 0.2) * L * 0.9, y + Math.cos(a) * L + L * 0.9); P.stroke(); }
+    P.lineWidth = h * 0.2 + halo * 2 * (c === 'rgb(0,0,0)'); P.beginPath(); P.moveTo(x, y); P.lineTo(...nk); P.stroke();
+    P.lineWidth = h * 0.1 + halo * 2 * (c === 'rgb(0,0,0)'); for (const a of [s1, s2]) { P.beginPath(); P.moveTo(nk[0], nk[1] + h * 0.05); P.lineTo(nk[0] - Math.sin(a) * h * 0.22, nk[1] + h * 0.26); P.stroke(); }
+    P.beginPath(); P.arc(nk[0] + h * 0.02, nk[1] - h * 0.13, h * 0.12 + halo * (c === 'rgb(0,0,0)'), 0, 7); P.fill(); };
+  solid(); parts('rgb(0,0,0)'); parts(col); }
+const twos = t => Math.floor(t * 12) / 12;   // 인물은 두 장씩(12fps), 카메라는 매 장
+/* ---------- 장면 ---------- */
+function s1(t) { // 넓은 들판, 작은 사람들, 큰 해
+  const cx = -t * 22; solid(); P.fillStyle = '#000'; P.fillRect(0, 0, W, H); over();
+  P.fillStyle = ink(0, 0.12, 0.22); P.fillRect(0, 0, W, 520);                                          // 하늘: 노랑 22% + 주황 12%
+  P.fillStyle = ink(0, 0.35, 1); P.beginPath(); P.arc(1460 + cx * 0.3, 430, 230, 0, 7); P.fill();          // 해: 노랑 원 + 주황 35%
+  P.fillStyle = ink(0.4, 0, 0); P.beginPath(); P.moveTo(0, 560); for (let x = 0; x <= W; x += 40) P.lineTo(x, 540 - 60 * Math.sin((x - cx * 0.5) / 260)); P.lineTo(W, H); P.lineTo(0, H); P.fill();   // 먼 언덕: 청록 40%
+  P.fillStyle = ink(1, 0, 0); P.beginPath(); P.moveTo(0, 700); for (let x = 0; x <= W; x += 40) P.lineTo(x, 690 - 40 * Math.sin((x - cx) / 330)); P.lineTo(W, H); P.lineTo(0, H); P.fill();              // 가까운 들: 청록 꽉
+  solid(); P.fillStyle = '#000'; P.beginPath(); P.moveTo(-50, 860); P.bezierCurveTo(600, 760, 1300, 900, W + 60, 800); P.lineTo(W + 60, 850); P.bezierCurveTo(1300, 950, 600, 810, -50, 910); P.fill();   // 길: 종이
+  const tt = twos(t); for (let i = 0; i < 9; i++) { const x = ((i * 230 + tt * 40 + cx) % 2300 + 2300) % 2300 - 180, y = 845 - 30 * Math.sin(x / 600); person(x, y, 74, tt * 7 + i, 'rgb(255,0,0)', 6); }
+  const wipe = K(T_COUNT - 0.1, T_COUNT + 0.35, t); over();
+  txt('16,741명', 120, 330, TITLE, 190, 'rgb(255,0,0)', 'left', wipe);
+  txt('평균 72세 여성', 128, 420, SUB, 70, 'rgb(0,255,0)', 'left', K(T_72, T_72 + 0.35, t));
+  txt('4년 남짓 지켜봤다 · 2019', 132, 480, MONO, 30, 'rgb(255,0,0)', 'left', K(T_4Y, T_4Y + 0.4, t));
+}
+function lane(y, steps, chan, t0, t, label) { // 걸음 줄: 발자국이 찍혀 나간다
+  const n = Math.round(steps / 250), shown = Math.floor(n * K(t0, t0 + 2.2, t)), tt = twos(t);
+  solid(); P.fillStyle = '#000'; P.fillRect(0, y - 120, W, 240); over(); P.fillStyle = chan === 0 ? ink(0.18, 0, 0) : ink(0, 0.22, 0); P.fillRect(0, y - 120, W, 240);
+  for (let i = 0; i < shown; i++) { P.fillStyle = chan === 0 ? ink(1, 0, 0) : ink(0, 1, 0); P.beginPath(); P.ellipse(160 + i * 64, y + (i % 2 ? 26 : -26), 13, 22, 0, 0, 7); P.fill(); }
+  if (t > t0 - 0.2) person(170 + Math.max(0, shown - 1) * 64, y + 10, 150, tt * 8, chan === 0 ? 'rgb(255,0,0)' : 'rgb(0,255,0)', 7);
+  over(); txt(label, W - 90, y + 30, TITLE, 120, chan === 0 ? 'rgb(255,0,0)' : 'rgb(0,255,0)', 'right', K(t0, t0 + 0.4, t));
+}
+function s2(t) { solid(); P.fillStyle = '#000'; P.fillRect(0, 0, W, H);
+  lane(330, 4400, 0, T_4400, t, '4,400보'); lane(640, 2700, 1, T_2700, t, '2,700보');
+  over(); txt('더 걷는 쪽', 120, 190, SUB, 52, 'rgb(255,0,0)', 'left', K(T_4400, T_4400 + 0.4, t)); txt('덜 걷는 쪽', 120, 820, SUB, 52, 'rgb(0,255,0)', 'left', K(T_2700, T_2700 + 0.4, t)); }
+function s3(t) { // 두 잉크가 만나는 곳: −41%
+  solid(); P.fillStyle = '#000'; P.fillRect(0, 0, W, H); over();
+  P.fillStyle = ink(1, 0, 0); P.fillRect(0, 0, W, H);                                                    // 청록 바탕
+  const g = expoOut(K(T.s3, T.s3 + 0.6, t)); solid(); P.fillStyle = '#000'; P.beginPath(); P.arc(560, 520, 360 * g, 0, 7); P.fill(); over(); P.fillStyle = ink(0, 0.28, 0); P.beginPath(); P.arc(560, 520, 360 * g, 0, 7); P.fill();   // 종이로 뚫린 원판 + 주황 망점
+  solid(); P.fillStyle = '#000'; P.font = TITLE.replace('PX', 330); P.textAlign = 'left';
+  const k = K(T_41 - 0.1, T_41 + 0.3, t); if (k > 0) { P.save(); P.beginPath(); P.rect(900, 250, 1000 * k, 420); P.clip(); P.fillText('−41%', 940, 600); P.restore(); }   // 숫자는 종이색으로 빼고
+  over(); txt('−41%', 952, 590, TITLE, 330, 'rgb(0,0,255)', 'left', k);                                  // 노랑 판으로 한 번 더(일부러 어긋나게)
+  if (t > T_41 + 0.2) { solid(); P.fillStyle = '#000'; P.fillRect(946, 662, 640 * K(T_41 + 0.2, T_41 + 0.5, t), 96); } over(); txt('사망률 · 4,400보 쪽', 980, 735, SUB, 64, 'rgb(255,0,0)', 'left', K(T_41 + 0.2, T_41 + 0.6, t));
+  person(560, 560, 300, twos(t) * 8, 'rgb(255,0,0)', 10);
+}
+function ground(x) { // 길의 높이: 7,500보까지 내려가다 평평(그림은 대략의 모양)
+  const s = 2000 + x / 0.32; return s < 7500 ? 420 + 300 * (1 - Math.pow(1 - (s - 2000) / 5500, 2)) : 720; }
+function s4(t) { // 땅이 곧 그래프: 내려가다가 평지
+  const camX = lerp(884, 1500, easeInOut(K(T.s4 + 0.3, T_75 + 1.2, t))) + 520 * easeInOut(K(T_Z - 0.3, T_Z + 0.6, t)), toX = s => (s - 2000) * 0.32 - camX + 960;
+  solid(); P.fillStyle = '#000'; P.fillRect(0, 0, W, H); over(); P.fillStyle = ink(0, 0, 0.25); P.fillRect(0, 0, W, H);
+  P.fillStyle = ink(1, 0, 0); P.beginPath(); P.moveTo(0, H); for (let x = -40; x <= W + 40; x += 20) P.lineTo(x, ground(x + camX - 960)); P.lineTo(W, H); P.fill();
+  solid(); P.strokeStyle = '#000'; P.lineWidth = 16; P.beginPath(); for (let x = -40; x <= W + 40; x += 20) P.lineTo(x, ground(x + camX - 960) + 26); P.stroke();
+  for (const s of [2700, 4400, 7500, 9400, 10000]) { const x = toX(s); if (x < -200 || x > W + 200) continue; solid(); P.fillStyle = '#000'; P.font = MONO.replace('PX', 34); P.textAlign = 'center'; P.fillText(comma(s), x, ground(x + camX - 960) + 110);
+    solid(); P.fillStyle = '#000'; P.fillRect(x - 3, ground(x + camX - 960) + 30, 6, 40); }
+  const sx = toX(7500), gy = 720; solid(); P.fillStyle = '#000'; P.fillRect(sx - 8, gy - 230, 16, 230); over(); P.fillStyle = ink(0, 1, 0); P.fillRect(sx - 8, gy - 230, 16, 230);
+  P.fillStyle = ink(0, 1, 0); P.beginPath(); P.roundRect(sx - 30, gy - 330, 470, 120, 14); P.fill(); solid(); P.fillStyle = '#000'; P.font = SUB.replace('PX', 56); P.textAlign = 'left';
+  if (t > T_75) { P.save(); P.beginPath(); P.rect(sx - 30, gy - 330, 470 * K(T_75, T_75 + 0.4, t), 120); P.clip(); P.fillText('여기부터 평지', sx + 10, gy - 248); P.restore(); }
+  over(); txt('7,500보쯤부터 더 안 낮아짐', sx - 30, gy - 370, SUB, 44, 'rgb(255,0,0)', 'left', K(T_FLAT, T_FLAT + 0.4, t));
+  const zx = toX(9400); person(zx, gy - 70, 150, 0, 'rgb(255,0,0)', 8);
+  over(); txt('오늘의 제로', zx + 70, gy - 190, SUB, 52, 'rgb(0,255,0)', 'left', K(T_94, T_94 + 0.4, t)); txt('9,400보', zx + 70, gy - 110, TITLE, 76, 'rgb(0,255,0)', 'left', K(T_94 + 0.1, T_94 + 0.5, t));
+  txt('땅의 모양은 대략', 72, 120, MONO, 26, 'rgb(255,0,0)');
+  const tt = twos(t), wx = toX(2000 + 5500 * K(T.s4, T_75 + 1.5, t)); person(wx, ground(wx + camX - 960) - 70, 140, tt * 8, 'rgb(0,255,0)', 7);
+}
+const SHOTS = [[0, s1], [T.s2, s2], [T.s3, s3], [T.s4, s4]];
+/* ---------- 인쇄 ---------- */
+const N = W * H, NOISE = new Float32Array(N), SPOT = [0, 1, 2].map(() => new Float32Array(N)), ANG = [15, 75, 45].map(a => a * Math.PI / 180), PER = 7;
+(() => { const R = rng(7); for (let i = 0; i < N; i++) NOISE[i] = R();
+  for (let p = 0; p < 3; p++) { const c = Math.cos(ANG[p]), s = Math.sin(ANG[p]), S = SPOT[p]; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const u = (x * c + y * s) / PER, v = (-x * s + y * c) / PER; S[y * W + x] = (Math.cos(2 * Math.PI * u) + Math.cos(2 * Math.PI * v)) * 0.25 + 0.5; } } })();
+function regs(t) { const i = SHOTS.findIndex((s, k) => t >= s[0] && (k + 1 >= SHOTS.length || t < SHOTS[k + 1][0])), R = rng(100 + i);
+  const base = [[0, 0], [Math.round(R() * 6 - 3), Math.round(R() * 6 - 3)], [Math.round(R() * 6 - 3), Math.round(R() * 6 - 3)]];
+  let kick = 0; for (const a of [T_COUNT, T_4400, T_2700, T_41, T_75, T_94, ...SHOTS.map(s => s[0])]) { const u = t - a; if (u > 0 && u < 0.4) kick += Math.exp(-u * 14) * Math.cos(u * 40); }
+  const drift = t > T_94 + 0.6 ? 14 * easeInOut(K(T_94 + 0.6, DUR - 0.3, t)) : 0;
+  return { i, off: base.map(([x, y], p) => [Math.round(x + (p ? 11 * kick * (p === 1 ? 1 : -0.7) : 0) + (p === 1 ? drift : -drift * 0.5)), Math.round(y + (p ? 7 * kick : 0))]) }; }
+function print(t) {
+  const src = P.getImageData(0, 0, W, H).data, img = O.createImageData(W, H), d = img.data, r = regs(t), boil = (Math.floor(t * 24) % 3) * 104729, R = rng(500 + r.i);
+  const streak = [0, 1, 2].map(() => { const a = new Float32Array(W); let v = 1; for (let x = 0; x < W; x++) { if (x % 37 === 0) v = 0.94 + R() * 0.08; a[x] = v; } return a; });
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const idx = y * W + x; let cr = PAPER[0] * (1 - NOISE[idx] * 0.03), cg = PAPER[1] * (1 - NOISE[idx] * 0.03), cb = PAPER[2] * (1 - NOISE[idx] * 0.03);
+    for (let p = 0; p < 3; p++) { const sx = x - r.off[p][0], sy = y - r.off[p][1]; if (sx < 0 || sy < 0 || sx >= W || sy >= H) continue;
+      let dn = src[(sy * W + sx) * 4 + p] / 255; if (dn < 0.015) continue; dn *= streak[p][x];
+      let cov; const nz = NOISE[(idx + p * 7919 + boil) % N];
+      if (dn > 0.88) cov = nz < 0.006 ? 0.25 : 0.94 + nz * 0.06; else cov = clamp((SPOT[p][idx] - (1 - dn) + (nz - 0.5) * 0.16) * 5 + 0.5);
+      const a = cov * OPA[p], I = INKS[p]; cr *= 1 - a * (1 - I[0] / 255); cg *= 1 - a * (1 - I[1] / 255); cb *= 1 - a * (1 - I[2] / 255); }
+    const o = idx * 4; d[o] = cr; d[o + 1] = cg; d[o + 2] = cb; d[o + 3] = 255; }
+  O.putImageData(img, 0, 0);
+}
+function subs(t) { const c = cueAt(t); if (!c) return; P.font = SUB.replace('PX', 44); P.textAlign = 'left'; const lines = c[2], w = Math.max(...lines.map(s => P.measureText(s).width)) + 60, h = 26 + lines.length * 56;
+  solid(); P.fillStyle = '#000'; P.beginPath(); P.roundRect(72, H - 56 - h, w, h, 8); P.fill(); over(); P.fillStyle = 'rgb(255,0,0)'; lines.forEach((s, k) => P.fillText(s, 102, H - 56 - h + 60 + k * 56)); }
+window.render = t => { const i = regs(t).i; P.save(); SHOTS[i][1](t); P.restore(); P.save(); solid(); subs(t); P.restore(); solid(); print(t); };
+window.EV = [...SHOTS.slice(1).map(s => ({ t: s[0], type: 'cut' })), ...[T_COUNT, T_4400, T_2700, T_41, T_75, T_94].map(t => ({ t, type: 'plate' }))];
+</script></body></html>
