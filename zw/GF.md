@@ -29,7 +29,7 @@
 | 감정 기호 | `gfEmote(t, 시각, x, y, 종류)` — bang(!) q(?) dots(…) note(♪) sweat heart idea zzz spark gloom vein shock | 머리 위 |
 | 톡·반짝 | `gfPuff`(먼지) `gfRing` `gfStarBurst` `gfTwinkle` `gfConfetti` `gfPlus`("장착!") `gfRays`(햇살) | 일이 생긴 자리 |
 | 화면 표시 | `gfPanel` `gfChip`·`gfChipAt`(아이콘 꼬리표) `gfMood`(마음 게이지) `gfFace` `gfBar` `gfStamp`(도장 쾅) `gfQuest`(할 일 목록) `gfItem`(아이템 카드) `gfStage`(단계 카드) `gfBounceText`(글자가 하나씩 톡톡) | UI |
-| 아이콘 | `gfIcon(이름)` — heart star spark sun moon skull ghost ball check cross scroll book pin calendar eq flask rain flag bulb note family tie door building | 원점 가운데, 크기 약 52 |
+| 아이콘 | `gfIcon(이름)` — heart star spark sun moon skull ghost ball check cross scroll book pin calendar eq flask rain flag bulb note family tie door building clock letter fast chart hand | 원점 가운데, 크기 약 52 |
 | 전환 | `gfIris` `gfBands` `gfTransition(t, 표)` | 화면 좌표 |
 | 자막 | `gfSubtitle(t)` | 대사 상자 |
 | 무대 | `gfDefs` `gfRoom` `gfDoor` `gfWindow` `gfDesk` `gfPlant` `gfClock` / `gfClouds` `gfHill` `gfSun` `gfMoon` `gfTree` `gfPine` `gfGrass` / `gfLayer(cam, depth, 그림)` | 단순한 세트 |
@@ -43,6 +43,13 @@
 - 숫자가 없는 막대(맛·즐거움)는 크기 비교만 보여 주는 그림이다. 연구에 없는 숫자를 붙이지 않는다.
 - HUD는 카메라 밖(장면 뿌리)에 그린다. 인물과 소품은 `qCam(cam, …)`, 무대는 `gfLayer(cam, depth, …)`.
 - 실제 예: `wonhyo01/long/whgf.js`(장면), `build_wh2.py`(소리).
+
+## 한 편의 짜임 (운영자 2026-11-15: "이제부턴 이런 식으로 … 마지막엔 감동과 깨달음이 같이 있고")
+- 날마다(장마다) 같은 차례를 지킨다: 단계 카드 → 옛이야기 → 제로의 하루 → 연구 → 제로가 해 봄 → 도장. 시청자가 두 번째 날부터 다음에 무엇이 올지 안다.
+- **끝 장면은 깨달음과 감동을 같은 자리에 겹친다.** 깨달음은 앞에서 심은 물건이 다른 뜻으로 돌아오는 것(원효 편: 표주박의 물 — "그냥 물이네"), 감동은 그 깨달음을 **다른 사람에게 건네는 작은 행동**(이름표를 후배에게). 두 사람의 게이지가 같이 오르는 그림 위에 내레이션 한 줄로 묶는다.
+- 끝 장면 첫머리에서 게이지는 다시 낮게 시작한다(월요일은 여전히 월요일). 달라지는 것은 그다음 행동이다.
+- 마지막 카드는 시청자가 채울 빈칸을 남긴다(원효 편: "오늘의 ＿＿＿").
+- 실제 예: `wonhyo01/long/whgf2.js`의 `wgendScene`·`wgaskScene`, 대본은 `wonhyo01/대본_v2.md`.
 
 ## 아직 없는 것
 - 둥근 한글 글꼴(지금은 Noto Sans 굵은 글씨에 둥근 외곽선). 글꼴 파일을 내려받으려면 운영자 허락이 필요하다.

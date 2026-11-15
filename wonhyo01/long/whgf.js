@@ -1,11 +1,12 @@
 /* 원효 편 샘플 v2 — 게임 감각 층(zw/gf.js)으로 다시 연출. 대본·목소리·타임라인은 v1과 같고 장면 함수만 바꿔 끼운다(whscenes.js 뒤에 읽는다).
    한 편을 꿰는 표시 하나: '마음 게이지'(얼굴 + 막대). 같은 문·같은 자리·같은 와인에서 게이지만 달라진다 = 이 편이 하려는 말.
    새 이름은 wg 접두사. 무대는 AI 그림 판 대신 단순한 세트(gfRoom·gfHill…)를 쓴다. */
-window.GFR = { boil: false, vig: false, flash: false, study: false, sub: gfSubtitle, over: t => gfTransition(t, { k0: ['iris', 1014, 478, 960, 540], w1: 'bands', t1: 'bands', d1: ['iris', 960, 540], d5: 'bands' }) };
+Object.assign(GF.names, { M: ['민재', '#4E8FD9'], S: ['서윤', '#E8739A'] });
+window.GFR = { boil: false, vig: false, flash: false, study: false, sub: gfSubtitle, over: t => gfTransition(t, { k0: ['iris', 1014, 478, 960, 540], w1: 'bands', t1: 'bands', d1: ['iris', 960, 540], d5: 'bands', e1: ['iris', 960, 540], e6: 'bands', f1: ['iris', 960, 540], f6: 'bands', g1: ['iris', 960, 540], g5: 'bands', m1: 'bands', z1: ['iris', 960, 540], z7: 'bands' }) };
 const wgAt = (x, y, inner, sc = 1, rot = 0) => sc < 0.02 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${f1(sc * 1000) / 1000})">${inner}</g>`;
 const wgV = (keys, lt) => clamp(actTrack(keys.map(k => [k[0], k[1], { f: 2.4, z: 0.55, ant: 0 }]), lt), 0, 1);
 const wgMoodHud = (lt, v, o = {}) => wgAt(o.x || 1560, o.y || 128, gfMood(v, Object.assign({ t: lt }, o)), 1.28 * gfIn(lt, o.t0 == null ? -9 : o.t0, 3, 0.45));
-const wgDayChip = () => wgAt(230, 120, gfChip('1일 차', { icon: 'star', bg: GFC.sun, size: 44 }), 1, -3);
+const wgDayChip = (n = 1) => wgAt(230, 120, gfChip(`${n}일 차`, { icon: 'star', bg: GFC.sun, size: 44 }), 1, -3);
 const wgTint = (col, k) => k > 0.004 ? `<rect x="-600" y="-600" width="3120" height="2280" fill="${col}" opacity="${f1(k * 1000) / 1000}"/>` : '';
 const wgSleep = { expr: '잠', prev: '잠', k: 1, blink: 0 };
 
@@ -48,9 +49,9 @@ function wgPagoda(x, y, s) { let h = `<rect x="-130" y="-30" width="260" height=
     h += `<path d="M${-w / 2 - 34} ${yy} Q${-w / 2 - 6} ${yy - 8} ${-w / 2 + 6} ${yy - 30} L${w / 2 - 6} ${yy - 30} Q${w / 2 + 6} ${yy - 8} ${w / 2 + 34} ${yy} Z" fill="#9FB0C4" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`; yy -= 30; });
   h += `<rect x="-8" y="${yy - 56}" width="16" height="56" rx="6" fill="#9FB0C4" stroke="${INK}" stroke-width="6"/><circle cx="0" cy="${yy - 64}" r="13" fill="${GFC.sun}" stroke="${INK}" stroke-width="6"/>`;
   return wgAt(x, y, h, s); }
-function wgSilla(t, cam) {
+function wgSilla(t, cam, o = {}) { // o.pagodaX: 탑 자리(안 주면 980)
   let far = gfFull('url(#gfDawn)') + gfSun(1560, 250, 66, t) + gfClouds(t, 110, 3, 4, 12, 0.9) + gfHill(560, 170, 980, '#A9DCEB', 0) + gfHill(650, 130, 700, '#86CFC6', 300);
-  let mid = gfHill(780, 60, 820, '#8ADB6A', 120, '#4FA85A') + wgPagoda(980, 772, 0.95) + gfPine(230, 900, 1.25, t) + gfTree(1900, 900, 0.9, t);
+  let mid = gfHill(780, 60, 820, '#8ADB6A', 120, '#4FA85A') + wgPagoda(o.pagodaX == null ? 980 : o.pagodaX, 772, 0.95) + gfPine(230, 900, 1.25, t) + gfTree(1900, 900, 0.9, t);
   let near = `<path d="M-700 1500 L-700 905 Q300 880 960 898 Q1600 915 2700 890 L2700 1500 Z" fill="#F4DC9E" stroke="${INK}" stroke-width="7"/>` + [[420, 912, 1], [1180, 916, 0.9], [1700, 908, 1.1], [760, 1010, 1.2]].map(([x, y, s]) => gfGrass(x, y, s)).join('') + [[300, 1050], [900, 1080], [1500, 1040]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="90" ry="10" fill="#fff" opacity=".3"/>`).join('');
   return gfLayer(cam, 0.3, far) + gfLayer(cam, 0.6, mid) + gfLayer(cam, 1, near);
 }
@@ -178,12 +179,12 @@ whsplitScene = function (t, lt, a) {
 };
 
 /* ===== 9: 바닷가, 두 갈래 길 ===== */
-function wgCoast(t, cam) {
-  let far = gfFull('url(#gfDusk)') + gfSun(420, 330, 62, t) + gfClouds(t, 100, 3, 12, 10, 0.85) + gfHill(650, 80, 900, '#9AD4CC', 200);
+function wgCoast(t, cam, o = {}) { // o.shipX: 배 자리, o.rider: 배에 탄 사람(배 좌표, 갑판 y = -40), o.sky
+  let far = gfFull(`url(#${o.sky || 'gfDusk'})`) + gfSun(420, 330, 62, t) + gfClouds(t, 100, 3, 12, 10, 0.85) + gfHill(650, 80, 900, '#9AD4CC', 200);
   let sea = `<rect x="-700" y="640" width="3400" height="900" fill="#58C4EC"/>`;
   for (let i = 0; i < 4; i++) { let d = `M-700 ${690 + i * 62}`; for (let x = -700; x <= 2700; x += 50) d += ` L${x} ${f1(690 + i * 62 + Math.sin(x / 110 + t * (1.4 + i * 0.3) + i * 2) * 9)}`; sea += `<path d="${d}" fill="none" stroke="#fff" stroke-width="${7 - i}" stroke-linecap="round" opacity="${0.75 - i * 0.12}"/>`; }
   const bob = Math.sin(t * 1.6) * 8, rk = Math.sin(t * 1.6 + 1) * 2.2;
-  let ship = `<g transform="translate(1790 ${f1(820 + bob)}) rotate(${f1(rk)})"><path d="M-190 -40 L190 -40 Q170 40 110 50 L-110 50 Q-170 40 -190 -40 Z" fill="${GFC.wood}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-176 -12 H176" stroke="${INK}" stroke-width="5" opacity=".3"/><rect x="-8" y="-330" width="16" height="292" rx="6" fill="${GFC.wood2}" stroke="${INK}" stroke-width="6"/><path d="M14 -318 Q170 -250 160 -90 L14 -90 Z" fill="#FFF6DC" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-14 -300 Q-120 -230 -116 -110 L-14 -110 Z" fill="#FFE2A8" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M0 -330 L46 -350 L0 -372 Z" fill="${GFC.coral}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/></g>`;
+  let ship = `<g transform="translate(${f1(o.shipX == null ? 1790 : o.shipX)} ${f1(820 + bob)}) rotate(${f1(rk)})"><path d="M-190 -40 L190 -40 Q170 40 110 50 L-110 50 Q-170 40 -190 -40 Z" fill="${GFC.wood}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-176 -12 H176" stroke="${INK}" stroke-width="5" opacity=".3"/><rect x="-8" y="-330" width="16" height="292" rx="6" fill="${GFC.wood2}" stroke="${INK}" stroke-width="6"/><path d="M14 -318 Q170 -250 160 -90 L14 -90 Z" fill="#FFF6DC" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-14 -300 Q-120 -230 -116 -110 L-14 -110 Z" fill="#FFE2A8" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M0 -330 L46 -350 L0 -372 Z" fill="${GFC.coral}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>${o.rider || ''}</g>`;
   let land = `<ellipse cx="60" cy="860" rx="560" ry="120" fill="#8ADB6A" stroke="#4FA85A" stroke-width="7"/><path d="M-700 1600 L-700 800 Q200 770 820 868 Q1100 912 1330 904 L1330 1600 Z" fill="#F6DFA6" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>` + gfTree(120, 850, 0.9, t) + gfGrass(420, 890, 1.1) + gfGrass(700, 960, 1);
   let pier = [1380, 1500, 1620].map(x => `<rect x="${x}" y="900" width="26" height="150" rx="6" fill="${GFC.wood2}" stroke="${INK}" stroke-width="6"/>`).join('') + `<rect x="1300" y="892" width="370" height="30" rx="10" fill="${GFC.wood}" stroke="${INK}" stroke-width="7"/>` + [1370, 1450, 1530, 1610].map(x => `<line x1="${x}" y1="894" x2="${x}" y2="920" stroke="${INK}" stroke-width="4" opacity=".35"/>`).join('');
   return gfLayer(cam, 0.3, far) + gfLayer(cam, 0.7, sea + ship) + gfLayer(cam, 1, pier + land);
@@ -214,9 +215,9 @@ whtitleScene = function (t, lt, a) {
 };
 
 /* ===== 11~12: 표주박 장착 ===== */
-function wgOffice(t, cam) { let h = gfRoom({ wall: '#DDF1FF', wall2: '#BFE3FF', floor: '#F4D6A6', base: '#fff', fy: 900 });
+function wgOffice(t, cam, extra = '') { let h = gfRoom({ wall: '#DDF1FF', wall2: '#BFE3FF', floor: '#F4D6A6', base: '#fff', fy: 900 });
   h += gfWindow(500, 250, 520, 320, t) + gfClock(1230, 300, 58, 10, 10) + gfDesk(230, 900, 1.2) + gfDesk(1720, 900, 1.2, { screen: '#FFE9A8' }) + gfPlant(1410, 900, 0.95, t);
-  return gfLayer(cam, 0.9, h); }
+  return gfLayer(cam, 0.9, h + extra); }
 whgourdScene = function (t, lt, a) {
   const y = WH.GY, s = 0.95, zx = 760; let cam, w = '', ui = '', ex, look = [0.4, 0.3], pose = P['서기'], swing = 0, hip = true, m = {};
   if (a.shake) { // "이거 그냥 물통 아니야?"
@@ -266,7 +267,8 @@ whsignScene = function (t, lt, a) {
 };
 
 /* ===== 15~16, 20: 회의실 ===== */
-function wgMeetSet(t, cam) { let h = gfRoom({ wall: '#FFE9B8', wall2: '#FFD98F', floor: '#EFC08A', fy: 900 });
+function wgMeetSet(t, cam, o = {}) { let h = gfRoom({ wall: '#FFE9B8', wall2: '#FFD98F', floor: '#EFC08A', fy: 900 });
+  if (o.plain) return gfLayer(cam, 0.9, h + gfWindow(1420, 260, 330, 290, t) + gfPlant(130, 900, 1.05, t));   // 칠판·시계 없이(카드가 뜨는 장면)
   h += `<rect x="340" y="200" width="480" height="290" rx="20" fill="#fff" stroke="${INK}" stroke-width="8"/>` + [[420, 110, '#BFD7FF'], [505, 180, '#BDE7C9'], [590, 80, '#FFC6D9'], [675, 205, '#FFE27A']].map(([x, hh, c]) => `<rect x="${x}" y="${440 - hh}" width="58" height="${hh}" rx="8" fill="${c}" stroke="${INK}" stroke-width="5"/>`).join('') + `<path d="M390 440 H780" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>`;
   h += gfWindow(1420, 260, 330, 290, t) + gfPlant(130, 900, 1.05, t) + gfClock(1130, 300, 56, 9, 20);
   return gfLayer(cam, 0.9, h); }
@@ -335,7 +337,7 @@ statScene = function (t, lt, a) {
   if (parts.length === 2) { const k1 = gfIn(lt, 0.1, 3, 0.42), k2 = gfIn(lt, 0.7, 3, 0.4), ar = easeOut(gfK(0.35, 0.75, lt));
     h += wgAt(540, 440, `<g transform="scale(2.6)">${whTagPrice(0, 0, parts[0], 1, '#D7DDE6')}</g>`, k1, -4) + wgAt(1400, 440, `<g transform="scale(${f1(3.2 * gfBeat(lt, 0.95, 0.12, 3, 5) * 100) / 100})">${whTagPrice(0, 0, parts[1], 1, '#FFD27A')}</g>`, k2, 3);
     h += `<path d="M800 440 L${f1(800 + 250 * ar)} 440" stroke="${INK}" stroke-width="26" stroke-linecap="round"/>` + (ar > 0.9 ? `<path d="M1030 390 L1100 440 L1030 490 Z" fill="${INK}" stroke="${INK}" stroke-width="12" stroke-linejoin="round"/>` : '') + gfStarBurst(lt, 0.95, 1400, 440, { r0: 120, r1: 380, n: 9, size: 28 }) + gfRing(lt, 0.9, 1400, 440, 80, 380, GFC.sun, 16, 0.45);
-  } else h += gfBounceText(lt, 0.1, 960, 480, [[countUp(a.big, easeOut(gfK(0.1, 1.2, lt))), GFC.navy]], { size: 220, stroke: '#fff', sw: 30 });
+  } else h += gfBounceText(lt, 0.1, 960, 480, [[a.nocount ? a.big : countUp(a.big, easeOut(gfK(0.1, 1.2, lt))), GFC.navy]], { size: a.big.length > 6 ? 170 : 240, stroke: '#fff', sw: 30 }) + gfStarBurst(lt, 0.9, 960, 420, { r0: 200, r1: 520, n: 10, size: 28 });
   h += wgAt(960, 720, gfPanel(gfTextW(a.sub, 46, 900) + 110, 104, { r: 40 }) + gfT(0, 17, a.sub, 46, GFC.navy), gfIn(lt, 1.0, 3, 0.45)) + (lt > 1.2 ? gfT(960, 840, a.src, 28, '#8A7F6A', { wt: 600 }) : '');
   const hop = gfHop(lt, 1.05, 50, 0.4); h += gfActor(Z, { t, seed: 10, x: 1700, y: 1060, s: 0.5, ex: fEx(lt > 1.0 ? 'z충격' : 'z기본'), look: [-0.7, -0.5], pose: hop.air > 0.2 ? '만세' : '서기' }, hop) + gfEmote(lt, 1.05, 1730, 1060 - 300, 'bang', { hold: 1.2, s: 0.7 });
   return h;

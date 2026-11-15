@@ -4,7 +4,8 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_wh import LINES
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'h1': 0.1, 'h2': 0.15, 'h3': 0.25, 'k0': 0.35, 'w1': 0.45, 't1': 0.4, 'd1': 0.35, 's1': 0.25, 'd7': 0.25}
+GAP = {'h1': 0.1, 'h2': 0.15, 'h3': 0.25, 'k0': 0.35, 'w1': 0.45, 't1': 0.4, 'd1': 0.35, 's1': 0.25, 'd7': 0.25,
+       'e1': 0.9, 'e3': 1.5, 'f6': 1.2, 'f1': 0.9, 'g1': 0.9, 's2': 0.25, 'f8': 0.25, 's3': 0.25, 'g7': 0.3, 'm1': 0.9, 'm3': 0.4, 'z1': 0.6, 'z2': 0.2, 'z3': 0.45, 'z4': 0.35, 'z5': 0.35, 'z6': 0.5, 'z7': 0.6}   # 날이 바뀔 때는 도장·색종이를 볼 틈을 준다
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
@@ -32,7 +33,7 @@ for lid, scene, v, txt, sp, args in LINES:
                 'segs': [{'v': v, 'text': txt, 't0': round(t, 3), 't1': round(t + d, 3)}]})
     t += d; prev = scene
 json.dump(words, open('words.json', 'w'), ensure_ascii=False, indent=1)
-DUR = t + 1.2; N = int(DUR * SR); voice = np.zeros(N); chv = np.zeros(N)
+DUR = t + 1.6; N = int(DUR * SR); voice = np.zeros(N); chv = np.zeros(N)
 for st, w, v in clips:
     i = int(st * SR); voice[i:i + len(w)] += w[:N - i]
     if v != 'N': chv[i:i + len(w)] += w[:N - i]
