@@ -12,7 +12,7 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={'width': 1920, 'height': 1080}, device_scale_factor=1)
     errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('console', lambda m: m.type == 'error' and errs.append(m.text))
     pg.goto(f'http://127.0.0.1:8765/{page_name}'); pg.wait_for_function('window.READY === true', timeout=60000)
-    dur = pg.evaluate('window.DUR'); pg.evaluate(f'window.render({dur} - 0.01)')   # 획 소리용 사건 목록을 다 채운다
+    dur = pg.evaluate('window.DUR'); pg.evaluate(f'window.fillEV ? window.fillEV() : window.render({dur} - 0.01)')   # 획 소리용 사건 목록을 다 채운다(여러 장이면 fillEV)
     json.dump({'dur': dur, 'ev': pg.evaluate('window.EV || []')}, open(os.path.join(out, 'events.json'), 'w'))
     if stills: ts = stills
     else:
