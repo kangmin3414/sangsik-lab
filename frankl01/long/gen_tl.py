@@ -4,7 +4,7 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_fk import LINES, SAMPLE
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'o1': 0.1, 'o2': 0.35, 'o3': 0.45, 'o4': 0.3, 'o5': 0.45, 'k0': 0.35, 'f1': 0.4, 'f2': 0.35, 'f3': 0.4, 'f4': 0.45}
+GAP = {'o1': 0.1, 'o2': 0.35, 'o3': 0.45, 'o4': 0.3, 'o5': 0.45, 'k0': 0.35, 'f1': 0.4, 'f2': 0.35, 'f3': 0.4, 'f4': 0.45, 'a1': 0.55, 'a2': 0.35, 'a3': 0.35, 'a4': 0.3, 'a5': 0.5, 'a6': 0.45, 'a7': 0.45, 'b1': 1.9, 'b2': 0.5, 'b3': 0.3, 'b4': 0.45, 'c1': 0.5, 'c2': 0.3, 'c3': 0.45, 'c4': 1.9, 'c5': 0.45, 'c6': 0.3, 'd1': 1.9, 'd2': 0.3, 'd3': 0.3, 'd4': 0.45, 'd5': 0.45, 'd6': 0.3, 'e1': 1.9, 'e2': 0.3, 'e3': 0.5, 'e4': 0.3, 'e5': 0.3, 'z1': 2.4, 'z2': 0.3, 'z3': 0.45, 'z4': 0.45, 'z5': 0.3, 'z6': 0.45, 'z7': 0.3}
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
