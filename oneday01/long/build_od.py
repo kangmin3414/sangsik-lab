@@ -1,4 +1,4 @@
-"""하루는 작은 일생 편 샘플(1막): voice + BGM(morning·night·story, 덕킹) + 게임 감각 효과음(zw/gf_sfx.py) -> /dev/shm/od/mix.wav (loudnorm -14)
+"""하루는 작은 일생 편 전체: voice + BGM(morning·night·story, 덕킹) + 게임 감각 효과음(zw/gf_sfx.py) -> /dev/shm/od/mix.wav (loudnorm -14)
 효과음 시각은 odgf.js의 화면 반응과 같은 식(낱말 시각 또는 장면 시작 + 초). 낱말 위의 소리는 짧고 작게, 가락은 말이 끝난 뒤에."""
 import json, subprocess, sys, os, numpy as np, soundfile as sf
 os.chdir(os.path.dirname(os.path.abspath(__file__))); sys.path.insert(0, '../../zw')
@@ -29,7 +29,15 @@ def bg(name): return B + name + ('.mp3' if os.path.exists(B + name + '.mp3') els
 SEG = [('morning', 0, A('k0') + 0.5, 0.28, 0.3),
        ('night', A('n1') - 0.3, A('p1') + 0.5, 0.34, 0.5),
        ('story', A('p1') - 0.2, A('p5') + 0.5, 0.30, 0.4),
-       ('morning', A('p5') - 0.3, DUR, 0.28, 22)]
+       ('morning', A('p5') - 0.3, A('b1') + 0.6, 0.28, 22),
+       ('day', A('b1') - 0.2, A('c4') + 0.5, 0.28, 0.5),
+       ('story', A('c4') - 0.2, A('c7') + 0.5, 0.28, 30),
+       ('day', A('c7') - 0.2, A('d0') + 0.6, 0.26, 46),
+       ('night', A('d0') - 0.2, A('d2') + 0.5, 0.32, 20),
+       ('story', A('d2') - 0.2, A('d5') + 0.5, 0.28, 52),
+       ('night', A('d5') - 0.2, A('m1') + 0.6, 0.32, 40),
+       ('morning', A('m1') - 0.2, A('z1') + 0.8, 0.26, 44),
+       ('ending', A('z1') - 0.2, DUR, 0.38, 1.0)]
 for name, t0, t1, g, off in SEG: place(bg(name), t0, t1, g, fin=0.8, fout=1.2 if t1 < DUR - 0.1 else 2.4, off=off)
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
@@ -55,7 +63,7 @@ put(c + 1.12, S.boing(400, 900, 0.22), 0.35); put(c + 1.14, S.sparkle(6, 0.4), 0
 tU = W('h2', '다시', 1.4); hop(tU, 0.3, 0.32); put(tU + 0.05, S.sparkle(5, 0.35), 0.24); put(tU + 0.2, S.blip(1320), 0.18); put(tU + 0.62, S.blip(1560), 0.16)
 # ----- 3: 누운 채로 40분 -----
 put(W('h3', '태어나자마자', 0.5), S.bang(), 0.16); tL = W('h3', '누운', 1.5); put(tL, S.land(), 0.32)
-t40 = W('h3', '사십', 2.4); put(t40, S.whoosh(1.2, 900, 5000), 0.2)
+t40 = W('h3', '40', 2.4); put(t40, S.whoosh(1.2, 900, 5000), 0.2)
 for i in range(8): put(t40 + i * 0.15, S.tick(1500 - i * 40), 0.3)
 tO = W('h3', '남의', 3.3)
 for i in range(10): put(tO + i * 0.22, S.pop(700 + (i % 3) * 120), 0.12)
@@ -66,7 +74,7 @@ c = A('h4'); put(c + 0.08, S.bang(), 0.22); tGo = A('h4') + D('h4') - 0.15; put(
 c = A('k0'); put(c - 0.26, S.iris_close(), 0.65); put(c + 0.02, S.iris_open(), 0.5); put(c + 0.1, S.hum(1.6), 1.0)
 # ----- 5~6: 월요일 밤 -----
 c = A('n1'); put(c - 0.26, S.iris_close(), 0.45); put(c + 0.02, S.iris_open(), 0.4)
-tN = W('n1', '열', 1.0); put(tN, S.tick(1200), 0.3); put(tN + 0.35, S.seq([(0, S.note(S.N['G5'], 0.12, 0.08, 'sin')), (0.12, S.note(S.N['C6'], 0.2, 0.12, 'sin'))]), 0.22)
+tN = W('n1', '10시', 1.0); put(tN, S.tick(1200), 0.3); put(tN + 0.35, S.seq([(0, S.note(S.N['G5'], 0.12, 0.08, 'sin')), (0.12, S.note(S.N['C6'], 0.2, 0.12, 'sin'))]), 0.22)
 tD = W('n1', '끝났습니다', 3.8); put(tD + 0.1, S.sparkle(5, 0.4), 0.22); put(tD + 0.6, S.whoosh(0.9, 800, 5000), 0.16)
 c = A('n2'); put(c + 0.08, S.pop(600), 0.45)
 for i in range(4): put(c + 0.2 + i * 0.18, S.tick(1000 + i * 80), 0.35)
@@ -94,7 +102,74 @@ c = A('t1'); put(c - 0.26, S.bands(), 0.5); put(c + 0.05, S.letters(4, 0.04, 700
 put(E1('t1') + 0.02, S.boing(), 0.26)
 c = A('t2'); tT = W('t2', '화요일', 0.4); put(tT, S.pop(640), 0.3); hop(tT + 0.2, 0.2, 0.34)
 for i in range(4): put(tT + 0.45 + i * 0.3, S.tick(900 + i * 90), 0.35)
-put(W('t2', '과학', D('t2') - 1.0), S.question(), 0.22); put(E1('t2') + 0.05, S.stage(), 0.3)
+put(W('t2', '확인해', D('t2') - 1.6), S.question(), 0.2); put(E1('t2') + 0.05, S.stage(), 0.3)
+def chapter(lid, night=False):
+    c = A(lid); put(c - 0.26, S.iris_close(), 0.5); put(c + 0.02, S.iris_open(), 0.45); put(c + 0.25, S.pop(700), 0.35); put(c + 0.4, S.letters(5, 0.06, 760), 0.3)
+    put(c + 0.9, S.boing(), 0.2); put(E1(lid) + 0.05, S.arp(['C5', 'G5', 'C6'] if not night else ['G4', 'D5', 'G5'], 0.1, 0.4, 0.25), 0.3)
+# ----- 청춘 -----
+chapter('a1')
+c = A('a2'); tF = W('a2', '엎어', 1.6); put(tF + 0.25, S.land(), 0.3); put(tF + 0.3, S.tick(700), 0.3); tW = W('a2', '창문', 2.6); put(tW, S.whoosh(0.5, 600, 4000), 0.24); put(tW + 0.1, S.sparkle(5, 0.4), 0.18); hop(tW + 0.3, 0.16, 0.3)
+put(W('a2', '30', 4.4), S.pop(760), 0.24); tB = W('a2', '읽다', 6.0); put(tB - 0.3, S.land(), 0.24); put(tB, S.flip(), 0.22); put(E1('a2') + 0.05, S.morning(), 0.22)
+c = A('a3'); put(c - 0.26, S.bands(), 0.5); put(c + 0.3, S.pop(600), 0.3); put(c + 0.4, S.boing(300, 700, 0.3), 0.24); t84 = W('a3', '84', 2.2)
+for i in range(16): put(t84 + i * 0.12, S.pop(800 + (i % 4) * 90), 0.1)
+put(W('a3', '240', 3.2), S.pop(900), 0.24); put(W('a3', '시간대별', D('a3') - 1.6), S.whoosh(0.9, 500, 3500), 0.22)
+c = A('a4'); put(c + 0.1, S.pop(640), 0.3); tM = W('a4', '아침에', 1.0); put(tM + 0.2, S.sparkle(4, 0.3), 0.2); put(W('a4', '낮', 2.6), S.gauge(0.8, 0.3), 0.18); put(W('a4', '저녁에', 4.0), S.gauge(0.3, 0.75), 0.18)
+c = A('s1'); put(c + 0.1, S.pop(600), 0.5); put(c + 0.95, S.coin(), 0.5); put(c + 1.05, S.bang(), 0.3); hop(c + 1.05, 0.24, 0.4)
+put(E1('a5') + 0.05, S.arp(['E5', 'G5', 'C6'], 0.12, 0.35, 0.22), 0.26)
+# ----- 한창때 -----
+chapter('b1')
+c = A('b2'); put(c - 0.26, S.bands(), 0.5); put(c + 0.2, S.pop(560), 0.3); put(W('b2', '한', 2.0), S.coin(), 0.24); t18 = W('b2', '2018', 3.2); put(t18 - 0.3, S.whoosh(0.3), 0.24); put(t18, S.pop(700), 0.26)
+t4 = W('b2', '4주', 6.5)
+for i in range(6): put(t4 + i * 0.1, S.tick(1000 + i * 40), 0.25)
+tL = W('b2', '마지막', D('b2') - 2.6); put(tL, S.heart(), 0.22); hop(tL, 0.14, 0.3)
+c = A('b3'); put(c + 0.1, S.pop(600), 0.3); tB3 = W('b3', '행복감이', 1.6); put(tB3, S.gauge(0, 0.6), 0.2); put(W('b3', '작았지만요', D('b3') - 1.0), S.pop(820), 0.22)
+c = A('b4'); put(c - 0.26, S.bands(), 0.5); tLa = W('b4', '마지막인', 1.6); put(tLa - 0.1, S.pop(700), 0.26); put(tLa + 0.3, S.equip(), 0.3); put(tLa + 0.5, S.sparkle(6, 0.6), 0.2)
+c = A('b5'); put(c + 0.3, S.whoosh(0.3, 800, 4000), 0.24); put(c + 0.8, S.land(), 0.24); put(c + 0.9, S.heart(), 0.3); put(c + 0.95, S.sparkle(4, 0.3), 0.2)
+c = A('b6'); put(c + 0.1, S.bang(), 0.14); put(E1('b6') + 0.05, S.heart(), 0.26)
+# ----- 노년 -----
+chapter('c1')
+c = A('c2'); put(E1('c2') + 0.05, S.rustle(0.4), 0.3)
+c = A('c3'); put(E1('c3') + 0.05, S.hurt(), 0.24); put(E1('c3') + 0.2, S.pop(500), 0.22); put(E1('c3') + 0.3, S.low(175, 1.0), 0.16)
+c = A('c4'); put(c - 0.26, S.bands(), 0.5); put(c + 0.3, S.pop(600), 0.26); put(c + 0.6, S.pop(560), 0.26); put(c + 1.0, S.pop(660), 0.26); t14 = W('c4', '14', 4.4); put(t14, S.blip(1200), 0.24)
+put(t14 + 0.45, S.slosh(0.3), 0.32); tB4 = W('c4', '똑같이', 6.8); put(tB4 + 0.45, S.slosh(0.3), 0.3); put(W('c4', '덜', 8.6), S.gauge(0.1, 0.35), 0.18)
+c = A('c5'); put(c + 0.1, S.letters(8, 0.03, 700), 0.16); t22 = W('c5', '22', 3.0)
+for i in range(12): put(t22 + i * 0.09, S.pop(700 + (i % 3) * 120), 0.1)
+put(t22 + 1.3, S.coin(), 0.24); put(W('c5', '끝이', D('c5') - 1.6), S.heart(), 0.16)
+c = A('s2'); put(c + 0.1, S.pop(600), 0.5); put(c + 0.2, S.gauge(0, 0.7, 12), 0.28); put(c + 0.95, S.coin(), 0.5); put(c + 1.05, S.bang(), 0.3); hop(c + 1.05, 0.24, 0.4)
+c = A('c6'); put(c + 0.1, S.pop(600), 0.28); put(W('c6', '길이', 1.0) + 0.3, S.strike(0.4), 0.2); put(W('c6', '힘든', 2.0), S.pop(420), 0.24); put(W('c6', '끝으로', 3.2), S.coin(), 0.24); put(E1('c6') + 0.05, S.sparkle(5, 0.4), 0.2)
+c = A('c7'); put(c - 0.26, S.bands(), 0.5); steps(c + 0.2, E1('c7') - 0.4, 0.34, 0.16); put(W('c7', '10분', 0.9), S.pop(760), 0.24); put(W('c7', '장면', 3.6), S.pop(900), 0.24)
+c = A('c9'); put(c + 0.05, S.bang(), 0.16); put(c + 0.45, S.boing(), 0.18); put(c + 0.75, S.heart(), 0.26); put(E1('c9') + 0.05, S.clear(), 0.26)
+# ----- 작은 죽음 -----
+chapter('d0', night=True)
+c = A('d1'); tSt = W('d1', '멈춥니다', 2.4)
+for i in range(int((tSt - c) / 0.07)): put(c + 0.2 + i * 0.07, S.tick(1400 + (i % 5) * 60), 0.12)
+put(tSt + 0.1, S.low(196, 1.0), 0.2)
+c = A('d2'); put(c - 0.26, S.bands(), 0.5); put(c + 0.4, S.pop(560), 0.26); put(W('d2', '흐려지고', 3.8), S.whoosh(1.0, 200, 1500), 0.22); put(W('d2', '침대에서', 5.0), S.pop(480), 0.24); put(W('d2', '아침이', D('d2') - 1.6) + 0.2, S.morning(), 0.2)
+c = A('d3'); put(c - 0.26, S.bands(), 0.5); put(c + 0.3, S.pop(600), 0.26); t34 = W('d3', '34', 2.4)
+for i in range(12): put(t34 + i * 0.06, S.pop(760 + (i % 4) * 70), 0.08)
+put(W('d3', '150', 4.4), S.flip(), 0.26); t12 = W('d3', '12', 6.0); put(t12, S.pop(700), 0.24); put(t12 + 0.2, S.whoosh(1.2, 400, 3000), 0.18)
+c = A('d4'); tS4 = W('d4', '잠을', 0.6); put(tS4, S.breath(0.6), 0.4); put(W('d4', '덜', 2.6), S.gauge(0.9, 0.3), 0.18); put(W('d4', '수면', 5.0), S.pop(640), 0.22); put(W('d4', '치료', D('d4') - 1.2), S.coin(), 0.24)
+c = A('d5'); put(c - 0.26, S.iris_close(), 0.45); put(c + 0.02, S.iris_open(), 0.4); tB5 = W('d5', '아침의', 0.6); put(tB5 - 0.2, S.pop(700), 0.24); put(tB5 + 0.1, S.equip(), 0.26); put(tB5 + 0.9, S.sparkle(5, 0.4), 0.22); put(E1('d5') + 0.05, S.arp(['G5', 'C6'], 0.12, 0.35, 0.2), 0.24)
+# ----- 솔직한 대목 -----
+c = A('m1'); put(c - 0.26, S.bands(), 0.5); put(c + 0.3, S.pop(520), 0.3); put(c + 0.5, S.breath(0.8), 0.3); tT1 = W('m1', '지칩니다', D('m1') - 0.7); put(tT1, S.stamp(), 0.4); put(tT1 + 0.2, S.boing(), 0.18)
+c = A('m2'); put(c + 0.1, S.pop(600), 0.26); put(W('m2', '늦게', 3.8), S.whoosh(0.8, 500, 3000), 0.22); put(W('m2', '깬', D('m2') - 1.2), S.coin(), 0.24)
+c = A('m3'); put(c + 0.1, S.pop(600), 0.26)
+for i in range(3): put(c + 0.8 + i * 0.4, S.blip(1100 + i * 160), 0.24)
+put(W('m3', '정리할', D('m3') - 1.4), S.pop(760), 0.22)
+# ----- 끝 -----
+c = A('z1'); put(c - 0.26, S.iris_close(), 0.45); put(c + 0.02, S.iris_open(), 0.4)
+c = A('z2'); put(c + 0.3, S.question(), 0.2); put(c + 0.6, S.pop(600), 0.2)
+def buzz(d=0.9):
+    n = S._noise(d); t = S._t(d); return S._lp(n, 300)[:len(t)] * (S.np.sin(2 * S.np.pi * 7 * t) > 0) * 0.5
+c = A('z3'); put(c + 0.05, buzz(0.9), 0.5); put(c + 0.25, S.seq([(0, S.note(S.N['G5'], 0.12, 0.08, 'sin')), (0.12, S.note(S.N['C6'], 0.2, 0.12, 'sin'))]), 0.24)
+c = A('z4'); put(c + 0.3, S.pop(900), 0.26); put(c + 0.7, S.whoosh(D('z4') - 1.2, 1500, 6000), 0.12)
+c = A('z5'); put(c + 0.15, S.whoosh(0.8, 1500, 6000), 0.14); put(c + 0.4, S.pop(700), 0.22)
+c = A('z6')
+for i in range(17): put(c + 0.1 + i * (D('z6') - 0.6) / 17, S.tick(1500), 0.08)
+c = A('z7'); put(c + 0.02, S.whoosh(0.25, 1000, 6000), 0.22); put(c + 0.05, S.pop(800), 0.22); put(c + 0.55, S.coin(), 0.26); put(c + 0.6, S.sparkle(4, 0.3), 0.18)
+c = A('z8'); put(c + 0.05, S.blip(1100), 0.2); put(E1('z8') + 0.05, S.heart(), 0.24)
+c = A('z9'); put(c - 0.26, S.bands(), 0.4); tM9 = W('z9', '엄마의', 5.4); put(tM9, S.sparkle(6, 0.5), 0.2); put(tM9 + 0.3, S.heart(), 0.2); tW9 = W('z9', '써', D('z9') - 1.0); put(tW9 + 0.7, S.stamp(), 0.26); put(E1('z9') + 0.05, S.clear(), 0.26)
+c = A('z10'); put(c - 0.26, S.bands(), 0.4); put(c + 0.4, S.letters(12, 0.035, 700), 0.2); put(c + 0.9, S.letters(5, 0.04, 820), 0.2); put(E1('z10') + 0.3, S.sparkle(6, 0.6), 0.2)
 
 mixd = voice * 1.0 + bed + sfx * 0.6
 sf.write('/dev/shm/od/mix_raw.wav', mixd, SR)

@@ -51,7 +51,7 @@ function odHaru(x, y, s, t, o = {}) {
   return `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})">${sh}<g transform="translate(0 ${f1(-bob)}) rotate(${f1(o.rot || 0)}) scale(${f1((o.sx || 1) * 1000) / 1000} ${f1((o.sy || 1) * 1000) / 1000})">${h}</g></g>`;
 }
 /* ===== 일생 바(HUD): cur(지금 칸 0~4), k(나타남), gray(청춘 칸이 폰으로 먹힌 정도), tp(지금 칸이 바뀐 시각) ===== */
-const OD_SLOT = [['탄생', 'cradle'], ['청춘', 'sprout'], ['장년', 'sun'], ['노년', 'dusk'], ['잠', 'moon']];
+const OD_SLOT = [['탄생', 'cradle'], ['청춘', 'sprout'], ['한창', 'sun'], ['노년', 'dusk'], ['잠', 'moon']];
 function odSlotIcon(kind, t) {
   if (kind === 'cradle') return `<path d="M-30 -4 Q-30 24 0 24 Q30 24 30 -4 Z" fill="#FFC9D8" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M-34 30 Q0 44 34 30" fill="none" stroke="${GFC.wood2}" stroke-width="6" stroke-linecap="round"/><circle cx="-8" cy="-10" r="11" fill="#FFF07A" stroke="${INK}" stroke-width="4"/><path d="M-30 -4 Q-14 -12 2 -4 Q16 -12 30 -4" fill="#fff" stroke="${INK}" stroke-width="4"/>`;
   if (kind === 'sprout') { const sw = Math.sin(t * 3) * 6; return `<path d="M0 26 L0 -2" stroke="#4FA85A" stroke-width="7" stroke-linecap="round"/><g transform="rotate(${f1(sw)} 0 -2)"><path d="M0 -2 Q-30 -6 -30 -26 Q-6 -28 0 -2 Z" fill="#7BDA7F" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M0 -2 Q28 -10 30 -30 Q4 -30 0 -2 Z" fill="#5FC46E" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/></g><path d="M-20 26 L20 26" stroke="${GFC.wood2}" stroke-width="7" stroke-linecap="round"/>`; }
@@ -142,7 +142,7 @@ odbedScene = function (t, lt, a, run) {
     haru = odHaru(sill[0], sill[1], 1, t, { age: 0, mood: lt > tU ? 'happy' : 'wow', dy: -(hh.dy + hh2.dy) * -1 }) + gfEmote(lt, tU + 0.2, sill[0] + 30, sill[1] - 110, 'heart', { hold: 1.2, s: 0.8 });
     alarm = odAlarm(720, 650, t); hud = odLifeBar(t, { cur: 0, s: 1.2 });
   } else if (ph === 2) { // 누운 채로 40분: 폰 + 남의 아침 아이콘 + 시계가 휙휙
-    const tL = odW(a, '누운', 1.5), t40 = odW(a, '사십', 2.4), tO = odW(a, '남의', 3.3), tG = odW(a, '구경', 4.4), tA = odW(a, '태어나자마자', 0.5);
+    const tL = odW(a, '누운', 1.5), t40 = odW(a, '40', 2.4), tO = odW(a, '남의', 3.3), tG = odW(a, '구경', 4.4), tA = odW(a, '태어나자마자', 0.5);
     cam = qLerpCam(lt / (a._dur || 5), [940, 520, 1.6], [960, 500, 1.85]);
     const lean = easeInOut(gfK(tL - 0.1, tL + 0.25, lt)), zz = odZBed(t, { pose: lt < tL ? 'od기지개' : 'od폰', rot: -10 * lean, ex: fEx(lt > tO ? 'z멍' : 'z기본'), look: [0.15, 0.55], m: lt > tL ? gfJelly(lt, tL + 0.2, 0.08) : {} });
     zb = zz.body; const pk = gfK(tL, tL + 0.2, lt);
@@ -171,7 +171,7 @@ odbedScene = function (t, lt, a, run) {
 odnightScene = function (t, lt, a) {
   const ph = a.ph, sill = [440, 474]; let cam, h = '';
   if (ph === 0) {
-    const tN = odW(a, '열', 1.0), tE = odW(a, '이렇게', 3.0), tD = odW(a, '끝났습니다', 3.8); cam = qLerpCam(lt / (a._dur || 4.5), [920, 540, 1.5], [960, 520, 1.68]);
+    const tN = odW(a, '10시', 1.0), tE = odW(a, '이렇게', 3.0), tD = odW(a, '끝났습니다', 3.8); cam = qLerpCam(lt / (a._dur || 4.5), [920, 540, 1.5], [960, 520, 1.68]);
     const doze = gfK(tE - 0.2, tE + 0.5, lt), zz = odZBed(t, { pose: doze > 0.5 ? 'f앉기' : 'od폰', rot: -12, ex: doze > 0.5 ? odSleepEx : fEx('z멍'), noBlink: doze > 0.5, look: [0.15, 0.55], tilt: -14 * doze });
     let ph1 = doze > 0.5 ? odPhone(zz.hand[0] + 20, OD.MT - 30, 80, 0.9) : odPhone(zz.hand[0], zz.hand[1] - 18, -12, 0.9), gl = odGlow(zz.face[0], zz.face[1] + 6, 82, 1 - doze);
     const nk = gfIn(lt, tN + 0.35, 3.4, 0.45) * gfOut(lt, tN + 1.9, 0.3);
@@ -297,7 +297,7 @@ odquestScene = function (t, lt, a) {
   const x = 480, st = gfHop(lt, tT + 0.2, 34, 0.34), zw = gfActor(Z, { x, y: 900, s: 0.9, t, pose: lt > tT ? '만세' : '서기', ex: fEx(lt > tSc ? 'z의심' : 'z결심'), look: [0.6, -0.2], seed: 3 }, st);
   const top = gfAbove(x, 900, 0.9, 0, 0);
   let h = gfDefs() + world + qCam(cam, zw + odHaru(740, 780, 1.2, t, { age: 0, mood: 'happy', dy: gfHop(lt, tF, 40, 0.3).dy }) + gfEmote(lt, tSc, top[0] + 60, top[1] + 30, 'q', { hold: 2.5 }));
-  const items = [['청춘', '7:00'], ['장년', '12:00'], ['노년', '17:00'], ['작은 죽음', '22:00']].map(([tx, tg], i) => ({ text: tx, tag: tg, t0: tT + 0.45 + i * 0.3, tagBg: ['#D8F5C8', '#FFF0A6', '#FFD3B8', '#D5D9FF'][i] }));
+  const items = [['청춘', '7:00'], ['한창때', '12:00'], ['노년', '17:00'], ['작은 죽음', '22:00']].map(([tx, tg], i) => ({ text: tx, tag: tg, t0: tT + 0.45 + i * 0.3, tagBg: ['#D8F5C8', '#FFF0A6', '#FFD3B8', '#D5D9FF'][i] }));
   h += odAt(1320, 470, gfQuest(lt, items, { head: '화요일 · 작은 일생 하나', w: 660, rh: 92, size: 44 }), 1.15 * gfIn(lt, tT, 2.8, 0.5), 1) + odLifeBar(t, { cur: 0, k: gfIn(lt, tF - 0.3, 3, 0.45), tp: tF, s: 1.2 });
   return h;
 };
