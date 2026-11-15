@@ -2,13 +2,13 @@
 import json, os, sys
 from playwright.sync_api import sync_playwright
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
-TL = json.load(open('timeline_wh.json')); FPS = 24; FR = '/dev/shm/wh/fr'; os.makedirs(FR, exist_ok=True)
+TL = json.load(open('timeline_wh.json')); FPS = 24; FR = os.environ.get('WH_FR', '/dev/shm/wh/fr2'); PAGE = os.environ.get('WH_PAGE', 'anim_wh2.html'); os.makedirs(FR, exist_ok=True)   # v1을 다시 뽑으려면 WH_PAGE=anim_wh.html WH_FR=/dev/shm/wh/fr
 v = [int(x) for x in sys.argv[1:]]; todo = [i for a, b in zip(v[::2], v[1::2]) for i in range(a, b + 1)]
 todo = [i for i in todo if not (os.path.exists(f'{FR}/f{i:05d}.jpg') and os.path.getsize(f'{FR}/f{i:05d}.jpg') > 8000)]
 def run(chunk):
     with sync_playwright() as p:
         br = p.chromium.launch(args=['--disable-gpu']); pg = br.new_page(viewport={'width': 1920, 'height': 1080})
-        pg.goto('file://' + os.path.join(HERE, 'anim_wh.html')); pg.evaluate('(tl) => { window.TL = tl; }', TL); pg.evaluate('window.AI_READY')
+        pg.goto('file://' + os.path.join(HERE, PAGE)); pg.evaluate('(tl) => { window.TL = tl; }', TL); pg.evaluate('window.AI_READY')
         for i in chunk:
             pg.evaluate(f'render({i / FPS})'); pg.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'); pg.screenshot(path=f'{FR}/f{i:05d}.jpg', type='jpeg', quality=88)
         br.close()
