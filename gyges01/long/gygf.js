@@ -6,7 +6,7 @@ window.GFR = { boil: false, vig: false, flash: false, study: false, sub: gfSubti
   over: t => gfTransition(t, { k0: ['iris', 960, 520, 960, 540], g1: ['iris', 960, 540], g4: ['iris', 960, 560], g5: 'bands', g6: ['iris', 960, 500], g8: 'bands', g9: ['iris', 960, 540] }) };
 ['gyexam', 'gynews', 'gyplato', 'gyfield', 'gypalace', 'gyequal', 'gytempt'].forEach(k => CAMS[k] = 'fixed');
 const GY = { FY: 930, ZX: 960 };
-const gyW = (a, key, fb, n = 0) => { const m = (a._words || []).filter(x => x.w.replace(/\s/g, '').includes(key)); return m[n] ? m[n].t + 0.15 : fb; };
+const gyW = (a, key, fb, n = 0) => { const k = key.toLowerCase(), m = (a._words || []).filter(x => x.w.replace(/\s/g, '').toLowerCase().includes(k)); return m[n] ? m[n].t + 0.15 : fb; };
 const gyLegs = () => ({ legL: P['서기'].legL, legR: P['서기'].legR, fL: P['서기'].fL, fR: P['서기'].fR, dy: 0 });
 P['gy톡'] = Object.assign({ armL: [[148, 285], [146, 342], [178, 372]], hL: [182, 376], armR: [[252, 285], [322, 262], [338, 206]], hR: [340, 196] }, gyLegs());
 P['gy들기'] = Object.assign({ armL: [[148, 285], [138, 340], [168, 312]], hL: [172, 304], armR: [[252, 285], [262, 340], [232, 312]], hR: [228, 304] }, gyLegs());
@@ -116,6 +116,14 @@ function gyHud(lt, o = {}) {
   h += fkAt(356 + sh[0], 162 + sh[1], gfPanel(500, 80, { r: 32 }) + gfT(-222, 12, '멘탈 HP', 32, GFC.navy, { anchor: 'start' }) + `<g transform="translate(-72 0)">${gfBar(170, hp / 100, { col: hp < 30 ? '#FF5A5A' : GFC.mint, h: 26 })}</g>` + gfT(234, 12, `${Math.round(hp)}/100`, 32, hp < 30 ? '#E5484D' : GFC.navy, { anchor: 'end' }), (o.kH == null ? 1 : o.kH) * 1.2);
   const pulse = o.tT != null ? gfBeat(lt, o.tT, 0.2, 4, 7) : 1;
   h += fkAt(1630, 104, gfPanel(380, 120, { r: 34 }) + `<g transform="translate(-130 0)">${gfIcon('clock', 1.15, lt)}</g>` + gfT(-80, -14, '남은 시간', 26, '#6B7280', { anchor: 'start', wt: 800 }) + gfT(-80, 36, txt, 54, sec < 300 && sec % 2 ? '#E5484D' : '#E5484D', { anchor: 'start' }), (o.kT == null ? 1 : o.kT) * pulse * 1.2);
+  if (o.eyes != null) { // 한 편을 꿰는 표시: '보는 눈'(감시자) 수 → 마지막엔 '내 눈'
+    const n = o.eyes, me = o.myEye || 0, pe = o.eyeT != null ? gfBeat(lt, o.eyeT, 0.2, 4, 7) : 1;
+    let e = gfPanel(380, 84, { r: 32 }) + gfT(-166, 12, me > 0.5 ? '내 눈' : '보는 눈', 30, GFC.navy, { anchor: 'start', wt: 800 });
+    if (me > 0) e += `<g transform="translate(70 0) scale(${f1((0.5 + 0.5 * me) * 0.62 * 100) / 100})"><circle r="70" fill="url(#gyLensGlow)" opacity="${f1(me * 100) / 100}"/>${gyEye(1, 1)}<g transform="translate(0 2) scale(.5)">${GF_ICON.heart()}</g></g>`;
+    else if (n > 0) for (let i = 0; i < n; i++) e += `<g transform="translate(${50 + i * 70} 0) scale(.55)">${gyEye(1, 1)}</g>`;
+    else e += gfT(60, 14, '0', 40, '#E5484D');
+    h += fkAt(1630, 214, e, pe * 1.2);
+  }
   return h;
 }
 
@@ -202,7 +210,7 @@ const gyAR = (w, text, o = {}) => `<g><rect x="${-w / 2}" y="-44" width="${w}" h
 /* ---------- 오프닝 장면 ---------- */
 gyexamScene = function (t, lt, a, runLt) {
   const ph = a.ph, D = a._dur || 4, FY = GY.FY, ZX = GY.ZX, clock = runLt || lt;
-  let h = fkDefs() + GY_DEFS, hud = { clock }, w = '', cam = [960, 560, 1];
+  let h = fkDefs() + GY_DEFS, hud = { clock, eyes: 1 }, w = '', cam = [960, 560, 1];
   const room = (o = {}) => gyBackRoom(t, { clock }) + gyExaminees(t, o) + (o.proc || '');
   if (ph === 0) { // 시험 종료 5분 전
     const tT = gyW(a, '5분', 0.9);

@@ -5,7 +5,8 @@ HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_gy import LINES, SAMPLE
 takes = json.load(open('takes.json')); SR = 44100
 GAP = {"o1": 0.5, "o2": 0.45, "o3": 0.5, "o4": 0.3, "o5": 0.55, "o6": 0.35, "k0": 0.6, "g1": 0.4, "g2": 0.3, "g3": 0.45, "g4": 0.5, "g5": 0.55, "g6": 0.55, "g7": 0.35, "g8": 0.6, "g9": 0.55,
-       "c1": 0.6, "d1": 1.4, "e1": 0.9, "e5": 0.9}
+       "c1": 0.6, "c2": 0.7, "c3": 0.7, "c5": 0.45, "c7": 0.6, "c8": 0.5, "r0": 0.6, "d1": 0.3, "d2": 0.45, "d3": 1.3, "d4": 0.6, "d5": 0.7,
+       "e1": 1.0, "e2": 0.55, "e3": 0.7, "e4": 0.5, "e5": 0.9}
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)

@@ -8,6 +8,7 @@ NO = ' Instrumental only: no vocals, no choir, no humming, no spoken words, no w
 P = {
  'exam': 'Tense but cute exam-countdown theme for a retro 8-bit video game: original chiptune square-wave arpeggios, a pulsing synth bass on steady eighth notes, a soft ticking hi-hat like a clock, small rising tension every four bars, minor key, 120 BPM, about 50 seconds.',
  'myth': 'Rhythmic, playful detective-and-discovery theme for a cute cartoon storybook video game set in ancient Greece: plucked lyre-like harp and pizzicato strings over a light bouncy beat with woodblock and soft kick, a curious sneaky melody on clarinet, upbeat and clever, 108 BPM, about 80 seconds.',
+ 'crisis': 'Comic but tense emergency theme for a cute cartoon video game boss fight in an office: staccato strings, a wobbly synth bass, a ticking alarm-like woodblock, short brass hits, playful panic, minor key, 128 BPM, about 45 seconds.',
  'warm': 'Warm, tender piano theme for a healing cartoon: soft felt piano melody, gentle strings swelling slowly, light celesta sparkles, calm and hopeful, major key, 72 BPM, about 60 seconds.',
 }
 for k in sys.argv[1:] or P: l3.gen(P[k] + NO, f'{OUT}/{k}')
