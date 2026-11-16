@@ -144,3 +144,7 @@ ________________
 - 인지 혁명(약 7만 년 전) 요약: https://www.litcharts.com/lit/sapiens/chapter-2-the-tree-of-knowledge
 - 5장 "역사상 최대의 사기"(농업 혁명, 밀이 인간을 길들임) 요약: https://www.litcharts.com/lit/sapiens/chapter-5-history-s-biggest-fraud
 - "What do we want to want?" 인용: https://www.goodreads.com/quotes/11386391-the-only-thing-we-can-try-to-do-is-to
+
+### 운영자 결정(2026-11-16 14:20)
+- 1:10 장면 1 "당장 지갑 속 **만 원짜리** 지폐를 보세요" → 녹음·자막은 "**오만 원짜리**"로(화면 지폐를 5만 원권 느낌으로 바꾸면서). 위 본문은 받은 그대로 둔다.
+- "(나무위키)" 두 곳은 녹음·자막에서 뺌.

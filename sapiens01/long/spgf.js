@@ -6,6 +6,9 @@ window.GFR = { boil: false, vig: false, flash: false, study: false, sub: gfSubti
 ['sprun', 'spgame', 'sptop'].forEach(k => CAMS[k] = 'fixed');
 Object.assign(QBG, { savanna: 'ai/savanna.jpg' });
 const SP = { FY: 900, ZX: 640, V: 560, STOP: 0.85 }, SP_CAM = [880, 600, 1.16];
+/* 직장인 제로(운영자 2026-11-16 "회사 다니는 사람처럼"): 남색 정장 + 흰 셔츠 + 넥타이 + 사원증. 서류 가방은 SP_BAG(holdL) */
+const SPZW = o => Z(Object.assign({ vest: '#3D4F7A', vshade: 'rgba(0,0,0,0.2)', suit: true, collar: true, tie: '#E0574F', lanyard: true }, o));
+const SP_BAG = `<g transform="translate(0 30)"><path d="M-16 -22 Q-16 -36 0 -36 Q16 -36 16 -22" fill="none" stroke="${INK}" stroke-width="6"/><rect x="-44" y="-24" width="88" height="62" rx="10" fill="#8E5E3A" stroke="${INK}" stroke-width="6"/><path d="M-44 0 h88" stroke="${INK}" stroke-width="4" opacity=".5"/><rect x="-8" y="-6" width="16" height="12" rx="3" fill="#E8C66A" stroke="${INK}" stroke-width="3"/></g>`;
 const spW = (a, key, fb, n = 0) => { const m = (a._words || []).filter(x => x.w.replace(/\s/g, '').includes(key)); return m[n] ? m[n].t + 0.15 : fb; };
 
 /* ---------- 낮 거리(횡스크롤): off = 지금까지 흐른 거리 ---------- */
@@ -73,7 +76,7 @@ sprunScene = function (t, lt, a) {
     if (lt > tkHit + 0.3) { ex = 'z울먹'; }
     const wk = stopped ? null : gfWalk(off * 1.4, 1.0);
     if (lt > t1 && lt < t1 + 0.4) m = gfM(m, { rot: -8 });
-    w += gfActor(FKZW, { x: SP.ZX, y: SP.FY, s, t, pose: wk ? wk.pose : '서기', ex: fEx(ex), look: [0.7, 0], seed: 3 }, wk ? gfM({ sy: wk.sy, dy: wk.dy }, m) : m);
+    w += gfActor(SPZW, { x: SP.ZX, y: SP.FY, s, t, pose: wk ? wk.pose : '서기', ex: fEx(ex), look: [0.7, 0], seed: 3 }, wk ? gfM({ sy: wk.sy, dy: wk.dy }, m) : m);
     w += spikes;
     if (lt > t2 && lt < t2 + SP.STOP) { w += gfActor(o => FKV('#B9BEC9', o), { x: SP.ZX - 150, y: SP.FY, s: 0.9, t, pose: '서기', ex: fEx('z멍'), look: [0.5, 0], seed: 90 }) + gfActor(o => FKV('#C9B9C9', o), { x: SP.ZX + 150, y: SP.FY, s: 0.9, t, pose: '서기', ex: fEx('z멍'), look: [-0.5, 0], seed: 92 }); }
     const nH = 4 - [t1, t2, tkHit].filter(h => lt > h).length, lastH = [t1, t2, tkHit].filter(h => lt > h).pop();
@@ -89,7 +92,7 @@ sprunScene = function (t, lt, a) {
   }
   // s2: 영혼이 털리는 기분
   const tS = spW(a, '영혼', 1.2), tA = spW(a, '아시죠', 2.6), wob = Math.sin(t * 6) * 6;
-  let w = gfActor(FKZW, { x: SP.ZX + 40, y: SP.FY, s, t, pose: '서기', ex: fEx('z기절'), look: [0, 0], seed: 3 }, { rot: wob, sy: 0.97 });
+  let w = gfActor(SPZW, { x: SP.ZX + 40, y: SP.FY, s, t, pose: '서기', ex: fEx('z기절'), look: [0, 0], seed: 3 }, { rot: wob, sy: 0.97 });
   if (lt > tS) { const u = gfK(tS, tS + 1.6, lt); w += fkAt(SP.ZX + 40, SP.FY - 560 - 220 * easeOut(u), `<g transform="scale(2.2)">${GF_ICON.ghost(t)}</g>`, (1 - 0.4 * u), Math.sin(t * 4) * 8); }
   if (lt > tA) w += gfEmote(lt, tA, SP.ZX + 170, SP.FY - 520, 'sweat', { hold: 9 });
   let h = fkDefs() + qCam(SP_CAM, spStreet(t, 0) + w);
@@ -102,7 +105,7 @@ spgameScene = function (t, lt, a) {
   let bg = spStreet(t, 0), fg = '', hud = '', style = 'vector', mos = 0, cam = SP_CAM;
   if (ph === 0) {
     const tF = spW(a, '기를', 2.8), tM = spW(a, '돈', 3.6), tC = spW(a, '회사', 4.0), tR = spW(a, '직급', 4.4), t7 = spW(a, '7만', 6.4), tG = spW(a, '게임', 7.6);
-    fg += gfActor(FKZW, { x: zx, y: SP.FY, s, t, pose: lt > tF && lt < tM + 0.6 ? '주먹' : '서기', ex: fEx(lt > tG ? 'z당황' : lt > tF ? 'z결심' : 'z멍'), look: [0, -0.3], seed: 3 }, lt > tF && lt < tF + 0.5 ? gfJelly(lt, tF, 0.1, 5, 8) : {});
+    fg += gfActor(SPZW, { x: zx, y: SP.FY, s, t, pose: lt > tF && lt < tM + 0.6 ? '주먹' : '서기', ex: fEx(lt > tG ? 'z당황' : lt > tF ? 'z결심' : 'z멍'), look: [0, -0.3], seed: 3 }, lt > tF && lt < tF + 0.5 ? gfJelly(lt, tF, 0.1, 5, 8) : {});
     const IT = [[tM, 'star', '돈', 660, 360], [tC, 'building', '회사', 900, 290], [tR, 'tie', '직급', 1140, 360]];
     IT.forEach(([t0, ic, nm, x, y]) => { const k = gfIn(lt, t0, 3.4, 0.42); if (k > 0.02) fg += fkAt(x, y + Math.sin(t * 2 + x) * 8, `<circle r="70" fill="#fff" stroke="${INK}" stroke-width="7"/><g transform="translate(0 -6) scale(1.6)">${GF_ICON[ic](t)}</g>`, k); });
     IT.forEach(([t0, ic, nm, x, y]) => { hud += gfChipAt(lt, t0 + 0.1, x, y + 95, nm, { size: 32, bg: '#fff' }); });
@@ -113,7 +116,7 @@ spgameScene = function (t, lt, a) {
     const tR = spW(a, '규칙', 1.0), tL = spW(a, '가벼워', 4.2);
     style = lt < 0.2 ? 'pixel' : 'vector'; mos = gfStyleMosaic(lt, 0.2, 0.28);
     const happy = lt > tL;
-    fg += gfActor(FKZW, { x: zx, y: SP.FY, s, t, pose: happy ? '만세' : '서기', ex: fEx(happy ? 'z빵긋' : 'z반짝'), look: [0.3, -0.2], seed: 3 }, happy ? gfHop(lt, tL, 40, 0.4) : {});
+    fg += gfActor(SPZW, { x: zx, y: SP.FY, s, t, pose: happy ? '만세' : '서기', ex: fEx(happy ? 'z빵긋' : 'z반짝'), look: [0.3, -0.2], seed: 3 }, happy ? gfHop(lt, tL, 40, 0.4) : {});
     hud += spDashFrame(lt, -9, 1 - gfK(0.4, 1.0, lt));
     if (lt > tR - 0.1) hud += fkAt(1450, 470, gfQuest(lt, [{ text: '게임 규칙 이해하기', t0: tR, done: tL + 0.2 }], { head: '오늘의 퀘스트', headBg: GFC.sun, w: 560 }), gfIn(lt, tR - 0.1, 3, 0.45));
     if (happy) hud += gfStarBurst(lt, tL, zx, SP.FY - 300, { r1: 260, n: 10 }) + gfConfetti(lt, tL + 0.1, { n: 30, d: 1.6 });
@@ -164,8 +167,8 @@ sptopScene = function (t, lt, a) {
   if (ph <= 1) {
     const k = ph === 0 ? gfIn(lt, 0.2, 3, 0.45) : 1 - gfK(spW(a, '능력', 1.6) - 0.2, spW(a, '능력', 1.6) + 0.2, lt);
     const tH = ph === 0 ? spW(a, '하라리', 0.6) : -9, tS = ph === 0 ? spW(a, '호모', 3.2) : -9, tQ = ph === 0 ? spW(a, '비결', 5.0) : -9;
-    hud += SP_FURDEF + spInset(560, 470, 210, gfActor(spPrimZ, { x: -20, y: 196, s: 0.62, t, pose: '서기', ex: fEx(lt > tQ ? 'z의심' : 'z기본'), look: [0.5, 0], seed: 3 }), k, '원시인 제로', t, -1);
-    hud += spInset(1360, 470, 210, gfActor(spNean, { x: 20, y: 196, s: 0.64, t, pose: '서기', ex: fEx('z기본'), look: [-0.5, 0], sx: 1.14 }), k, '네안데르탈인 친구', t, 1);
+    hud += SP_FURDEF + spInset(540, 470, 275, gfActor(spPrimZ, { x: -30, y: 262, s: 0.8, t, pose: '서기', ex: fEx(lt > tQ ? 'z의심' : 'z기본'), look: [0.5, 0], seed: 3 }), k, '원시인 제로', t, -1);
+    hud += spInset(1380, 470, 275, gfActor(spNean, { x: 30, y: 262, s: 0.82, t, pose: '서기', ex: fEx('z기본'), look: [-0.5, 0], sx: 1.14 }), k, '네안데르탈인 친구', t, 1);
     if (ph === 0) { hud += gfChipAt(lt, tH, 960, 130, '『사피엔스』 · 유발 하라리', { size: 40, icon: 'book', bg: '#fff', rot: -2 }) + gfChipAt(lt, tS, 960, 800, '호모 사피엔스', { size: 40, bg: '#FFF3C4' });
       if (lt > tQ) hud += gfEmote(lt, tQ, 700, 260, 'q', { hold: 9 }); }
     else { const tI = spW(a, '능력', 1.6); hud += fkAt(960, 520, gfItem(lt, tI - 0.3, { name: '인지 혁명', sub: '눈앞에 없는 걸 함께 믿는 능력', w: 620, svg: `<g transform="translate(0 6) scale(1.3)">${fkCloud(0, 0, 0.9, t, { rain: 0, col: '#EDE8FF' })}</g>` }), 1); }
@@ -255,5 +258,6 @@ function spBridge(t, lt, a) {
       const op = a0 * Math.min(1, Math.min(ph, 1 - ph) * 8); if (op < 0.03) continue; w += `<g opacity="${f1(op * 100) / 100}">${spBean(B.x + (lane ? 36 : -36), y + Math.sin(t * 9 + i) * 2, 0.7, SP_TUNIC[i % 6], 0)}</g>`; }
     if (lt < tT + 1.0) w += gfBounceText(lt, tT + 0.05, B.x, B.yN - 70, [['완성!', GFC.sun]], { size: 70 }); }
   if (cheer) hud += gfChipAt(lt, tT, 960, 360, '수백만 명이 한 팀처럼', { size: 44, icon: 'family', bg: '#FFF3C4' }) + gfConfetti(lt, tT, { n: 30, d: 1.8 });
-  return { w, hud, cam: qLerpCam(gfK(0.5, 1.8, lt), [960, 560, 1.0], [960, 620, 1.04]) };
+  const c0 = qLerpCam(gfK(0.5, 1.8, lt), [960, 560, 1.0], [960, 620, 1.04]);
+  return { w, hud, cam: done ? qLerpCam(gfK(tT + 0.2, tT + 1.3, lt), c0, [960, 760, 1.55]) : c0 };
 }

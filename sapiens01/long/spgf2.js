@@ -14,10 +14,29 @@ const SP_P = {
     legL: [[180, 412], [140, 458], [108, 508]], fL: [96, 520, 18], legR: [[220, 412], [252, 464], [266, 518]], fR: [276, 530, -6], dy: 0 },
   strap: { armL: [[148, 285], [158, 342], [178, 384]], hL: [182, 392], armR: [[252, 285], [286, 214], [270, 138]], hR: [268, 128],
     legL: [[180, 412], [172, 470], [160, 520]], fL: [150, 532, 12], legR: [[220, 412], [230, 470], [244, 520]], fR: [254, 532, -12], dy: 0 },
+  brake: { armL: [[148, 285], [100, 232], [86, 170]], hL: [82, 160], armR: [[252, 285], [306, 246], [336, 196]], hR: [340, 186], legL: [[180, 412], [204, 466], [240, 510]], fL: [252, 520, -22], legR: [[220, 412], [254, 460], [296, 496]], fR: [308, 506, -26], dy: 6 },
   sit: { armL: [[148, 285], [118, 352], [104, 414]], hL: [100, 422], armR: [[252, 285], [282, 352], [296, 414]], hR: [300, 422],
     legL: [[180, 412], [120, 428], [62, 436]], fL: [50, 442, 0], legR: [[220, 412], [280, 428], [338, 436]], fR: [350, 442, 0], dy: 96 }
 };
-const spZero = (o, m) => gfActor(FKZW, Object.assign({ t: o.t, seed: 3, look: [0, 0], sweat: true }, o, { ex: fEx(o.ex || 'z기본') }), m || {});
+/* 승객·사람들 옷(운영자 2026-11-16 "정장이나 다른 옷들"): 정장(회색·검정·남색), 블라우스+치마, 후드티, 카디건, 정장 여성, 점퍼+모자, 숏컷, 단발 */
+const spHood = c => t => `<path d="M64 210 Q52 52 200 40 Q348 52 336 210 Q336 300 280 316 L120 316 Q64 300 64 210 Z" fill="${c}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+const spCap = c => `<path d="M88 120 Q90 40 200 36 Q310 40 312 120 Z" fill="${c}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M290 112 Q350 112 372 128 Q340 136 296 130 Z" fill="${c}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+const spMan = (o, d) => HALO(char(Object.assign({ goggles: 'none', patch: false, tee: true, vshade: 'rgba(0,0,0,0.18)' }, d, o)));
+const SP_PASS = [
+  o => spMan(o, { vest: '#4A4F5E', suit: true, collar: true, tie: '#6FA8DC', hair: '#2B2B2B' }),
+  o => zGirl(Object.assign({ hairStyle: 'long', hairArgs: ['#3A2E2A', '#9ED8FF'], top: '#F6E3EA', dress: '#5E6A8C' }, o)),
+  o => spMan(o, { vest: '#8FB8E8', hairBehind: spHood('#8FB8E8'), hair: '#5A3A2E' }),
+  o => spMan(o, { vest: '#C9A27A', suit: '#FFF6E6', hair: '#6E6A78' }),
+  o => zGirl(Object.assign({ hairStyle: 'pony', hairArgs: ['#2E2A33', '#FF8FB1'], top: '#2F3550', suit: true, collar: true }, o)),
+  o => spMan(o, { vest: '#2E3440', suit: true, collar: true, tie: '#C9A04A' }),
+  o => spMan(o, { vest: '#7FB069', hairFront: spCap('#E0574F') }),
+  o => zGirl(Object.assign({ hairStyle: 'short', top: '#FFD9A8' }, o)),
+  o => spMan(o, { vest: '#5B6B8C', suit: true, collar: true, tie: '#E8C66A', hair: '#7A4A32' }),
+  o => zGirl(Object.assign({ hairStyle: 'bob', top: '#B8E6A8', dress: '#E8B4C8' }, o)),
+];
+const spPass = i => SP_PASS[((i % SP_PASS.length) + SP_PASS.length) % SP_PASS.length];
+const SP_DIMDEF = `<defs><filter id="spDim" x="-20%" y="-20%" width="140%" height="140%"><feComponentTransfer><feFuncR type="linear" slope=".8"/><feFuncG type="linear" slope=".8"/><feFuncB type="linear" slope=".84"/></feComponentTransfer></filter><radialGradient id="spSpot" cx=".5" cy=".45" r=".5"><stop offset="0" stop-color="#FFF6D6" stop-opacity=".95"/><stop offset="1" stop-color="#FFF6D6" stop-opacity="0"/></radialGradient></defs>`;
+const spZero = (o, m) => gfActor(SPZW, Object.assign({ t: o.t, seed: 3, look: [0, 0], sweat: true }, o, { ex: fEx(o.ex || 'z기본') }), m || {});
 /* 숨 퍼프(입에서 나와 옆으로 흩어짐), 떨어지는 땀, 속도선 */
 function spBreath(lt, x, y, s, dir = 1, per = 0.36) {
   let h = ''; for (let k = 0; k < 4; k++) { const ph = ((lt / per) + k / 4) % 1, op = Math.sin(ph * Math.PI) * 0.85;
@@ -69,13 +88,14 @@ spcrossScene = function (t, lt, a) {
   const run0 = -1.3; let zx, pose = '서기', ex = 'z결심', m = {}, rot = 0;
   if (lt < tR) { zx = lerp(-260, 900, clamp((lt - run0) / (tR - run0), 0, 1)); const wk = gfWalk(zx, 1.3, 0.05); pose = wk.pose; m = { sy: wk.sy, dy: wk.dy }; ex = 'z코치지침'; }
   else zx = 900 + 56 * easeOut(gfK(tR, tR + 0.35, lt));
-  if (lt >= tR && lt < tR + 0.35) { pose = '미끄럼'; ex = 'z충격'; rot = -6; }
+  if (lt >= tR && lt < tR + 0.35) { pose = SP_P.brake; ex = 'z충격'; rot = -14 * Math.sin(Math.PI * gfK(tR, tR + 0.35, lt)); }
   else if (lt >= tR + 0.35 && lt < tBus + 0.12) { pose = '허우적'; ex = 'z충격'; rot = Math.sin((lt - tR) * 15) * 10 * Math.exp(-(lt - tR - 0.35) * 1.6); }
   else if (lt >= tBus + 0.12 && lt < tSlump) { pose = '허우적'; ex = 'z멘붕'; rot = 9 + Math.sin(lt * 34) * 3; m = { dx: 14 * gfK(tBus + 0.12, tBus + 0.4, lt) }; }
   else if (lt >= tSlump) { pose = SP_P.pant; ex = 'z코치지침'; m = gfM({ sy: 1 + 0.03 * Math.sin(lt * 14) }, gfJelly(lt, tSlump, 0.1, 4, 7)); }
   let w = `<g transform="translate(0 -160)">${spStreet(t, 0)}</g>` + spRoad() + fkAt(SPX.PX, FY - 10, spPedLight(lt, tR));
   if (lt < tR) w += spSpeed(lt, zx - 60, FY - 250, -1, 4);
-  w += spZero({ x: zx, y: FY, s, t, pose, ex, look: lt < tR ? [0.8, 0] : [0.4, -0.1], rot }, m);
+  if (lt > tR) { const k = gfK(tR, tR + 0.3, lt); w += [0, 1].map(j => `<path d="M${f1(900 + j * 34 - 10)} ${FY + 4 + j * 6} L${f1(900 + j * 34 + 50 * k)} ${FY + 4 + j * 6}" stroke="#3A3346" stroke-width="7" stroke-linecap="round" opacity=".55"/>`).join(''); }
+  w += spZero({ x: zx, y: FY, s, t, pose, ex, look: lt < tR ? [0.8, 0] : [0.4, -0.1], rot, holdL: SP_BAG }, m);
   w += gfPuff(lt, tR, zx + 50, FY, 1.0, '#EFE6D6') + gfPuff(lt, tR + 0.14, zx + 80, FY, 0.75, '#EFE6D6');
   w += gfEmote(lt, tR + 0.02, zx + 150, FY - 560 * s, 'bang', { hold: 0.7 });
   if (lt > tBus - 0.2 && lt < tSlump + 0.2) w += spDrops(lt, zx, FY - 400 * s, s, 4, 7);
@@ -115,20 +135,25 @@ spsubwayScene = function (t, lt, a) {
   let w = spCarIn(lt, lu);
   const R = lu + sway, DX = lu * 3;
   // 뒷줄(작게, 흐리게)
+  w += SP_DIMDEF + '<g filter="url(#spDim)">';
   [[330, '#CDD2DC', 'z멍'], [520, '#D5D0DC', '지침'], [700, '#CFD8D2', 'z코치지침'], [860, '#D8D2CB', 'z멍'], [1070, '#D2D6CC', '지침'], [1240, '#DCD2D2', 'z멍'], [1420, '#CED4DE', 'z코치지침'], [1600, '#D6D0C8', 'z멍']].forEach(([x, c, e], i) => {
-    w += gfActor(o => FKV(c, o), { x: x + DX * 0.7 + (i % 2 ? 12 : -12) * sq, y: FY - 36 - (i % 3) * 8, s: 0.8 + (i % 3) * 0.03, t, pose: i % 3 === 1 ? SP_P.strap : '서기', ex: fEx(e), look: [(i % 2 ? 0.4 : -0.4), -0.2], seed: 70 + i, rot: R * 0.8 }); });
+    w += gfActor(spPass(i + 3), { x: x + DX * 0.7 + (i % 2 ? 12 : -12) * sq, y: FY - 36 - (i % 3) * 8, s: 0.8 + (i % 3) * 0.03, t, pose: i % 3 === 1 ? SP_P.strap : '서기', ex: fEx(e), look: [(i % 2 ? 0.4 : -0.4), -0.2], seed: 70 + i, rot: R * 0.8 }); });
+  w += '</g>';
   // 제로: 손잡이에 매달려 찌부, 쏠릴 때 발이 뜸
   const zx = 960 + DX, zm = gfM({ sx: lerp(1, 0.6, sq), sy: lerp(1, 1.1, sq), dy: -46 * lift }, lt > tSq ? gfJelly(lt, tSq, 0.1, 5, 7) : {}, lt > tLu ? gfJelly(lt, tLu, 0.08, 6, 8) : {});
   const ex = lt < tSq ? 'z코치지침' : lt < tMiss ? 'z멘붕' : 'z기절';
   const hx = zx + (268 - 200) * s * zm.sx, hy = FY + zm.dy + (128 - 560) * s * zm.sy;
   w += `<line x1="${f1(zx + 50)}" y1="268" x2="${f1(hx)}" y2="${f1(hy - 26)}" stroke="#7FA3C9" stroke-width="10"/><circle cx="${f1(hx)}" cy="${f1(hy)}" r="22" fill="none" stroke="#7FA3C9" stroke-width="9"/>`;
-  w += spZero({ x: zx, y: FY, s, t, pose: SP_P.strap, ex, rot: R, headSq: [lerp(1, 0.84, sq), lerp(1, 1.06, sq)], look: [0, -0.3] }, zm);
+  w += `<ellipse cx="${f1(zx)}" cy="${f1(FY - 300)}" rx="230" ry="360" fill="url(#spSpot)"/>`;
+  w += spZero({ x: zx, y: FY, s, t, pose: SP_P.strap, ex, rot: R, headSq: [lerp(1, 0.84, sq), lerp(1, 1.06, sq)], look: [0, -0.3], holdL: SP_BAG }, zm);
+  w += '<g filter="url(#spDim)">';
   // 앞줄 이웃: 밀려 들어와 제로를 양쪽에서 누름 + 문에서 새로 밀고 들어오는 사람
   const NB = [[-1, 690, 470, '#C4BFB4', 'z멍', 1.0], [1, 690, 470, '#B4C0C9', 'z코치지침', 1.02], [-1, 470, 300, '#BFC9BA', '지침', 0.98], [1, 470, 300, '#C2BBAF', 'z멍', 1.03], [-1, 240, 140, '#B9BEC9', 'z코치지침', 1.02], [1, 240, 140, '#C9B9C9', '지침', 1.0]];
   NB.forEach(([sd, d0, d1, c, e, sc], i) => { const x = 960 + sd * lerp(d0, d1, sq) + DX, near = i >= 4;
-    w += gfActor(o => FKV(c, o), { x, y: FY + 10, s: 0.95 * sc, t, pose: i === 2 ? SP_P.strap : '서기', ex: fEx(e), look: [-sd * 0.5, 0], seed: 80 + i, rot: R + (near ? -sd * 4 * sq : 0) }, gfM({ sx: near ? lerp(1, 0.86, sq) : 1 }, lt > tSq ? gfJelly(lt, tSq + 0.05 * i, 0.06, 4, 7) : {})); });
+    w += gfActor(spPass(i), { x, y: FY + 10, s: 0.95 * sc, t, pose: i === 2 ? SP_P.strap : '서기', ex: fEx(e), look: [-sd * 0.5, 0], seed: 80 + i, rot: R + (near ? -sd * 4 * sq : 0) }, gfM({ sx: near ? lerp(1, 0.86, sq) : 1 }, lt > tSq ? gfJelly(lt, tSq + 0.05 * i, 0.06, 4, 7) : {})); });
   const nk = easeOut(gfK(tSq - 0.15, tSq + 0.3, lt));
-  [[0, '#BAC4CF'], [1, '#CBBFB6']].forEach(([j, c]) => { const x = lerp(1950 + j * 200, 1560 + j * 170, nk) + DX; w += gfActor(o => FKV(c, o), { x, y: FY + 10, s: 0.98, t, pose: '서기', ex: fEx('z멍'), look: [-0.6, 0], seed: 90 + j, rot: R }); });
+  [[0, '#BAC4CF'], [1, '#CBBFB6']].forEach(([j, c]) => { const x = lerp(1950 + j * 200, 1560 + j * 170, nk) + DX; w += gfActor(spPass(j + 7), { x, y: FY + 10, s: 0.98, t, pose: '서기', ex: fEx('z멍'), look: [-0.6, 0], seed: 90 + j, rot: R }); });
+  w += '</g>';
   // 후끈한 김 + 땀
   if (lt > tSq) w += [0, 1, 2, 3, 4, 5].map(k => { const ph = (lt * 0.9 + k / 6) % 1, x = 560 + k * 160; return `<path d="M${x} ${f1(470 - ph * 140)} q14 -18 0 -36 q-14 -18 0 -36" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(Math.sin(ph * Math.PI) * 70) / 100}"/>`; }).join('');
   if (lt > tSq) w += spDrops(lt, zx, FY + zm.dy - 400 * s, s, 4, 3);
@@ -184,7 +209,8 @@ spelevScene = function (t, lt, a) {
   // 말풍선에 맞을 때마다 움찔
   const hits = [0, 1, 2, 3].map(i => tBo + i * 0.26 + 0.5);
   hits.forEach(hT => { if (lt > hT && lt < hT + 0.4 && lt < tSlam) m = gfM(m, gfJelly(lt, hT, 0.1, 6, 9)); });
-  w += spZero({ x: zx, y: FY, s, t, pose, ex, rot, look: lt < tC1 ? [0.8, 0] : [0, -0.2] }, m);
+  if (lt > tC1) w += fkAt(zx - 150 + 40 * easeOut(gfK(tC1, tC1 + 0.4, lt)), FY - 30 - 120 * Math.sin(Math.PI * gfK(tC1, tC1 + 0.4, lt)), SP_BAG, 0.95, 70 * gfK(tC1, tC1 + 0.4, lt));
+  w += spZero({ x: zx, y: FY, s, t, pose, ex, rot, look: lt < tC1 ? [0.8, 0] : [0, -0.2], holdL: lt < tC1 ? SP_BAG : null }, m);
   const headTop = FY - 505 * s;
   if (lt > tC1 && lt < tPh) { w += gfT(X - 230, 470, '쿵!', 70, '#FF5A5A', { sw: 12, stroke: '#fff' }).replace('<text', `<text opacity="${f1(gfOut(lt, tC1 + 0.5, 0.2) * 100) / 100}"`);
     w += [0, 1, 2].map(k => { const an = lt * 6 + k * 2.1; return fkAt(zx + Math.cos(an) * 120 * s, headTop + 20 + Math.sin(an) * 30 * s, gfStar4(22, GFC.sun, 4)); }).join(''); }

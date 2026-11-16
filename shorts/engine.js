@@ -142,6 +142,12 @@ function char(o) {
   if (o.hairBehind) h += typeof o.hairBehind === 'function' ? o.hairBehind(t) : o.hairBehind; // long hair / ponytail behind the torso
   h += `<path d="M142 262 Q200 248 258 262 L270 412 Q200 424 130 412 Z" fill="${vest}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>`;
   h += `<g clip-path="url(#vestClip)"><rect x="${L > 0 ? 226 : 120}" y="240" width="56" height="200" fill="${vshade}"/><path d="M135 404 Q200 396 268 404 L270 420 L130 420 Z" fill="${vshade}"/></g>`;
+  if (o.suit) { // 정장 재킷(몸통 색 = vest): 가운데 흰 셔츠 V + 옷깃 + 가슴 주머니 + 단추. 칼라·넥타이는 아래 collar/tie가 그린다
+    const sc = o.suit === true ? '#FFFFFF' : o.suit;
+    h += `<path d="M166 258 L200 250 L234 258 L214 350 L200 360 L186 350 Z" fill="${sc}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;
+    h += `<path d="M166 258 L188 302 L174 314 L196 358" fill="none" stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M234 258 L212 302 L226 314 L204 358" fill="none" stroke="${INK}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    h += `<path d="M228 326 L252 326" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M232 326 l6 -11 l6 11" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><circle cx="200" cy="378" r="5" fill="${INK}"/><circle cx="200" cy="398" r="5" fill="${INK}"/>`;
+  }
   if (o.dress) h += `<path d="M132 392 L268 392 L300 468 Q200 488 100 468 Z" fill="${o.dress}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M150 440 Q200 452 250 440" fill="none" stroke="#fff" stroke-width="4" opacity=".35"/>`; // skirt
   if (o.toga) { // draped toga sash over the shoulder
     const tc = o.toga === true ? '#F4F1EA' : o.toga;
@@ -158,6 +164,10 @@ function char(o) {
   if (o.bandCollar) h += `<path d="M146 262 Q200 248 254 262 L262 302 Q230 314 200 300 Q170 314 138 302 Z" fill="#FBFAF6" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M200 262 L200 300" stroke="${INK}" stroke-width="3" opacity=".4"/>`; // flat white falling-band collar (17th c.)
   if (o.collar) h += `<path d="M172 256 L200 300 L228 256 L200 268 Z" fill="#F4F1EA" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
   if (o.tie) h += `<path d="M200 262 L190 290 L200 360 L210 290 Z" fill="${o.tie}" stroke="${INK}" stroke-width="4"/>`;
+  if (o.lanyard) { // 사원증 목걸이: 목에서 왼쪽 가슴으로 내려온 줄 + 카드(사진 칸 + 줄무늬, 글자 없음)
+    const lc = o.lanyard === true ? '#4FA3E0' : o.lanyard;
+    h += `<path d="M176 256 Q160 300 158 336 M224 256 Q190 300 166 336" fill="none" stroke="${lc}" stroke-width="5" stroke-linecap="round"/><rect x="140" y="334" width="40" height="52" rx="6" fill="#fff" stroke="${INK}" stroke-width="4"/><rect x="148" y="342" width="16" height="18" rx="3" fill="#BFD7F0"/><path d="M148 368 h24 M148 376 h18" stroke="#9AA3B5" stroke-width="3" stroke-linecap="round"/>`;
+  }
   if (o.patch !== false) {
     h += `<line x1="200" y1="256" x2="200" y2="416" stroke="${INK}" stroke-width="4"/>`;
     h += `<rect x="148" y="298" width="40" height="26" rx="5" fill="#1F2D44"/><text x="168" y="318" text-anchor="middle" font-family="${FONT}" font-weight="900" font-size="18" fill="${MINT}">00</text>`;

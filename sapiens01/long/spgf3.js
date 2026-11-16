@@ -24,8 +24,13 @@ function spIsoBox(u0, v0, w, d, h, col, o = {}) {
 const spIsoTree = (u, v, t, s = 1) => { const [x, y] = spIsoP(u, v, 0); return `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(34 * s)}" ry="${f1(14 * s)}" fill="#2A3A20" opacity=".18"/><rect x="${f1(x - 7 * s)}" y="${f1(y - 70 * s)}" width="${f1(14 * s)}" height="${f1(70 * s)}" fill="#B98552" stroke="${INK}" stroke-width="4"/><circle cx="${f1(x)}" cy="${f1(y - 100 * s + Math.sin(t * 1.5 + u) * 2)}" r="${f1(48 * s)}" fill="#8FD18B" stroke="${INK}" stroke-width="6"/>`; };
 const spIsoAt = (u, v, z, inner, k = 1) => { const [x, y] = spIsoP(u, v, z); return fkAt(x, y, inner, k); };
 /* 지어낸 게임 지폐(실제 도안 아님): 복숭아색 + 별 메달 + 10000 */
-const spBill = (col = '#FFC9A8', k = 1) => `<g><rect x="-120" y="-60" width="240" height="120" rx="12" fill="${col}" stroke="${INK}" stroke-width="7"/><rect x="-104" y="-44" width="208" height="88" rx="8" fill="none" stroke="${INK}" stroke-width="3" opacity="${f1(0.5 * k * 100) / 100}"/>` +
-  `<circle cx="-58" cy="0" r="30" fill="${gfMix('#FFE9A8', col, 1 - k)}" stroke="${INK}" stroke-width="4" opacity="${f1(k * 100) / 100}"/><g transform="translate(-58 0) scale(.9)" opacity="${f1(k * 100) / 100}">${GF_ICON.star(0)}</g>` + gfT(40, 16, '10000', 40, gfMix(GFC.navy, '#C9C2B8', 1 - k)) + `</g>`;
+/* 5만 원권 느낌 지폐(운영자 2026-11-16): 노랑·주황 + 50000 + 오만원 + 오른쪽 둥근 무늬 자리(우리가 그린 포도 덩굴).
+   실제 도안·인물 초상·발행처 글자는 그리지 않는다(한국은행 화폐도안 기준: 진짜로 오인될 이용, 인물 도안을 떼어 쓰거나 변형하는 것 제한). k: 색이 빠지는 정도(1 = 원래 색) */
+const spBill = (col = '#F6C35A', k = 1) => { const K = f1(k * 100) / 100, tx = gfMix('#8A4E12', '#C9C2B8', 1 - k), ln = gfMix('#B5761E', '#D9D2C4', 1 - k);
+  return `<g><rect x="-140" y="-62" width="280" height="124" rx="10" fill="${col}" stroke="${INK}" stroke-width="7"/>` +
+    `<g opacity="${K}"><path d="M-140 -10 Q-40 -50 60 -12 Q100 4 140 -20 L140 52 Q140 62 130 62 L-130 62 Q-140 62 -140 52 Z" fill="#EFA24A" opacity=".55"/><ellipse cx="-82" cy="-4" rx="38" ry="34" fill="#FBE7B0" opacity=".85"/>` +
+    `<ellipse cx="80" cy="2" rx="46" ry="46" fill="#FDEBC0" stroke="${ln}" stroke-width="3"/>${[[-14, -12], [6, -12], [-4, 4], [16, 4], [6, 20], [-14, 20], [-4, 34]].map(([x, y]) => `<circle cx="${80 + x}" cy="${y}" r="9" fill="#8E6BD8" stroke="${INK}" stroke-width="2.5"/>`).join('')}<path d="M80 -30 q12 -14 26 -8 q-8 14 -22 12 Z" fill="#7FB069" stroke="${INK}" stroke-width="2.5"/></g>` +
+    `<rect x="-128" y="-50" width="256" height="100" rx="6" fill="none" stroke="${ln}" stroke-width="3"/>` + gfT(-58, 44, '50000', 34, tx, { wt: 900 }) + gfT(-94, -24, '오만원', 22, tx) + gfT(104, -36, '50000', 16, tx) + `</g>`; };
 const SP_LOGO = (t) => `<g><circle r="52" fill="#FFB86B" stroke="${INK}" stroke-width="7"/><path d="M-26 18 L0 -28 L26 18 Z" fill="#fff" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><circle r="64" fill="none" stroke="#FFE38A" stroke-width="6" opacity="${f1((0.4 + 0.3 * Math.sin(t * 4)) * 100) / 100}"/></g>`;
 const spRice = (t) => `<g><path d="M-58 -6 Q-56 46 0 50 Q56 46 58 -6 Z" fill="#fff" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M-52 4 Q0 18 52 4" stroke="#7FB8FF" stroke-width="7" fill="none"/><ellipse cx="0" cy="-8" rx="56" ry="18" fill="#FFF8E6" stroke="${INK}" stroke-width="5"/>` +
   [-22, 0, 22].map((x, i) => `<path d="M${x} -30 q${f1(8 * Math.sin(t * 3 + i))} -16 0 -32 q${f1(-8 * Math.sin(t * 3 + i))} -16 0 -32" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".85"/>`).join('') + `</g>`;
@@ -36,19 +41,20 @@ function spcityM1(t, lt, a) {
   const tW = spW(a, '지갑', 0.6), tB = spW(a, '지폐', 1.6), tN = spW(a, '숫자', 2.9), tC = spW(a, '색칠', 3.5), tP = spW(a, '종이', 3.9), tE = spW(a, '뿐이', 4.6);
   const FY = 960, zx = 640, s = 1.12, raise = easeOut(gfK(tB - 0.1, tB + 0.35, lt)), fade = gfK(tC, tC + 0.6, lt);
   let w = `<rect x="-300" y="-300" width="2600" height="1500" fill="#F4ECDD"/><rect x="-300" y="${FY}" width="2600" height="400" fill="#E3D6C0" stroke="${INK}" stroke-width="7"/>` +
-    `<circle cx="-40" cy="160" r="360" fill="#FFE9A8" opacity=".35"/><circle cx="-40" cy="160" r="170" fill="#FFF3C4" opacity=".5"/>`;
+    `<path d="M40 300 L1900 120 L1900 760 L40 360 Z" fill="#FFF3C4" opacity=".45"/><rect x="14" y="330" width="16" height="630" fill="#B98552" stroke="${INK}" stroke-width="5"/><ellipse cx="22" cy="960" rx="70" ry="16" fill="#B98552" stroke="${INK}" stroke-width="5"/>` +
+    `<path d="M-60 340 L104 340 L70 240 L-26 240 Z" fill="#FFF0C2" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><circle cx="22" cy="350" r="20" fill="#FFE38A"/>`;
   // 그림자(벽에 크게): 지폐 → 나뭇잎 → 연기
-  const shx = 1180, shy = 380, kL = gfK(tP - 0.05, tP + 0.35, lt), kS = gfK(tE, tE + 0.5, lt), op = raise * 0.85;
-  if (op > 0.02) { const bill = `<rect x="-250" y="-125" width="500" height="250" rx="20"/>`, leaf = `<path d="M-230 30 Q-60 -220 230 -40 Q60 200 -230 30 Z"/><path d="M-260 44 L-180 26" stroke="#2A2230" stroke-width="18" stroke-linecap="round"/>`;
-    w += `<defs><filter id="spSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter></defs><g fill="#5A4A60" filter="url(#spSoft)" opacity="${f1(op * 0.55 * (1 - kS) * 100) / 100}" transform="translate(${shx} ${shy}) rotate(${f1(-6 + Math.sin(t * 2) * 2)})"><g opacity="${f1((1 - kL) * 100) / 100}" transform="scale(${f1(lerp(1, 0.8, kL) * 100) / 100})">${bill}</g><g opacity="${f1(kL * 100) / 100}" transform="scale(${f1(lerp(0.6, 1, kL) * 100) / 100})">${leaf}</g></g>`;
+  const shx = 1180, shy = 380, kL = gfK(tP - 0.05, tP + 0.35, lt), kS = gfK(tE, tE + 0.5, lt), op = raise * 1.0;
+  if (op > 0.02) { const bill = `<rect x="-280" y="-124" width="560" height="248" rx="20"/>`, leaf = `<path d="M-230 30 Q-60 -220 230 -40 Q60 200 -230 30 Z"/><path d="M-260 44 L-180 26" stroke="#2A2230" stroke-width="18" stroke-linecap="round"/>`;
+    w += `<defs><filter id="spSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter></defs><g fill="#5A4A60" filter="url(#spSoft)" opacity="${f1(op * 0.78 * (1 - kS) * 100) / 100}" transform="translate(${shx} ${shy}) rotate(${f1(-6 + Math.sin(t * 2) * 2)})"><g opacity="${f1((1 - kL) * 100) / 100}" transform="scale(${f1(lerp(1, 0.8, kL) * 100) / 100})">${bill}</g><g opacity="${f1(kL * 100) / 100}" transform="scale(${f1(lerp(0.6, 1, kL) * 100) / 100})">${leaf}</g></g>`;
     if (kS > 0) w += [0, 1, 2, 3, 4].map(i => { const u = kS, x = shx - 150 + i * 75 + Math.sin(t * 2 + i) * 20, y = shy + 40 - 260 * u - i * 18; return `<path d="M${f1(x)} ${f1(y)} q30 -30 0 -60 q-30 -30 0 -60" fill="none" stroke="#2A2230" stroke-width="${f1(26 - 8 * u)}" stroke-linecap="round" opacity="${f1(0.6 * (1 - u) * op * 100) / 100}"/>`; }).join(''); }
   // 제로: 지갑을 꺼내 지폐를 높이 듦
   const pose = raise > 0.5 ? { armL: P['서기'].armL, hL: P['서기'].hL, armR: [[252, 285], [300, 220], [318, 150]], hR: [320, 140], legL: P['서기'].legL, fL: P['서기'].fL, legR: P['서기'].legR, fR: P['서기'].fR, dy: 0 } : (lt > tW ? '폰보기' : '서기');
   w += spZero({ x: zx, y: FY, s, t, pose, ex: lt < tN ? 'z기본' : lt < tP ? 'z반짝' : 'z의심', look: [0.6, -0.4], sweat: false }, lt > tB ? gfJelly(lt, tB, 0.08, 4, 7) : {});
   if (lt > tW && raise < 0.5) { const pp = P['폰보기'], q = gfHand(zx, FY, s, [(pp.hL[0] + pp.hR[0]) / 2, (pp.hL[1] + pp.hR[1]) / 2 - 20]); w += fkAt(q[0], q[1], `<rect x="-44" y="-30" width="88" height="60" rx="10" fill="#9C6B43" stroke="${INK}" stroke-width="5"/><path d="M-44 -6 h88" stroke="${INK}" stroke-width="3" opacity=".4"/>`); }
-  if (raise > 0.02) { const q = gfHand(zx, FY, s, [320, 120]); w += fkAt(q[0] + 20, q[1] - 40 * raise, spBill(gfMix('#FFC9A8', '#FBF7EE', fade), 1 - fade), lerp(0.6, 1.25, raise), -8 + Math.sin(t * 2) * 2);
+  if (raise > 0.02) { const q = gfHand(zx, FY, s, [320, 120]); w += fkAt(q[0] + 20, q[1] - 40 * raise, spBill(gfMix('#F6C35A', '#FBF7EE', fade), 1 - fade), lerp(0.6, 1.25, raise), -8 + Math.sin(t * 2) * 2);
     if (lt > tN && lt < tN + 1.0) w += gfStarBurst(lt, tN, q[0] + 60, q[1] - 40, { r1: 120, n: 6 }); }
-  w += gfChipAt(lt, tP + 0.1, 1330, 700, '그냥 색칠된 종이', { size: 38, bg: '#fff', rot: -3 });
+  w += gfStarBurst(lt, tP, shx, shy, { r1: 260, n: 9 }) + gfStarBurst(lt, tE, shx, shy - 80, { r1: 220, n: 7 }) + gfChipAt(lt, tP + 0.1, 1330, 700, '그냥 색칠된 종이', { size: 38, bg: '#fff', rot: -3 });
   const cam = qLerpCam(gfK(0, 3, lt), [900, 560, 1.0], [960, 540, 1.04]);
   return fkDefs() + gfStyleDefs('paper') + `<g filter="url(#gs_paperbg)">${qCam(cam, w)}</g>`;
 }
@@ -67,7 +73,7 @@ function spCityWorld(t, lt, st) {
   fg += spIsoBox(110, 500, 150, 130, 120, '#FFD9A8', { win: [1, 2] }) + spIsoTree(300, 520, t, 0.75) + spIsoBox(820, 470, 140, 120, 110, '#D9CCFF', { win: [1, 2] });
   // 작은 사람들 + 믿음의 말풍선(동전)
   const ppl = SP_PEOPLE.map(([u, v, c], i) => { const k = gfIn(st.people, i * 0.06, 3.4, 0.42); if (k < 0.02) return ''; const [x, y] = spIsoP(u, v, 0);
-    let h = gfActor(o => FKV(c, o), { x, y, s: 0.36 * Math.min(1, k), t, pose: '서기', ex: fEx(st.peopleEx || 'z기본'), look: [0, -0.3], seed: 40 + i });
+    let h = gfActor(spPass(i), { x, y, s: 0.36 * Math.min(1, k), t, pose: '서기', ex: fEx(st.peopleEx || 'z기본'), look: [0, -0.3], seed: 40 + i });
     if (st.belief > 0.02) h += fkAt(x + 40, y - 250 + Math.sin(t * 2 + i) * 5, `<ellipse rx="44" ry="36" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="-26" cy="40" r="8" fill="#fff" stroke="${INK}" stroke-width="4"/><g transform="scale(1.1)">${GF_ICON[st.bubbleIcon || 'star'](t)}</g>`, st.belief * (1 - st.pop));
     return h; });
   // 제로
@@ -88,10 +94,10 @@ function spcityScene(t, lt, a) {
     if (walk > 0 && walk < 1) { const wk = gfWalk(walk * 300, 1, 0.05); st.zPose = wk.pose; st.zm = { sy: wk.sy, dy: wk.dy }; }
     st.zEx = lt > tX ? 'z빵긋' : 'z기본';
     const [bx, by] = spIsoP(st.zu, st.zv, 0), sw = gfK(tX, tX + 0.6, lt);
-    if (sw < 1) st.extra = fkAt(bx + 60 + 140 * easeIn(sw), by - 380 - 60 * Math.sin(Math.PI * sw), spBill('#FFC9A8', 1), 0.42 * (1 - sw * 0.6) * gfIn(lt, tD - 0.2, 3, 0.45), -6);
+    if (sw < 1) st.extra = fkAt(bx + 60 + 140 * easeIn(sw), by - 380 - 60 * Math.sin(Math.PI * sw), spBill('#F6C35A', 1), 0.42 * (1 - sw * 0.6) * gfIn(lt, tD - 0.2, 3, 0.45), -6);
     if (lt > tX) st.extra = (st.extra || '') + fkAt(bx + 70, by - 330 - 10 * Math.sin(t * 3), spRice(t), gfIn(lt, tX + 0.35, 3.4, 0.42) * 0.9);
     if (st.belief > 0.02) over += SP_PEOPLE.map(([u, v]) => { const [x, y] = spIsoP(u, v, 0); return `<line x1="${f1(x + 40)}" y1="${f1(y - 250)}" x2="${f1(bx + 60)}" y2="${f1(by - 380)}"/>`; }).join('').replace(/^/, `<g stroke="#FFC85A" stroke-width="4" stroke-dasharray="10 8" opacity="${f1(st.belief * (1 - gfK(tS, tS + 0.4, lt)) * 70) / 100}">`) + '</g>';
-    if (lt > tX) hud += gfChipAt(lt, tX + 0.1, 1450, 280, '돈 ⇄ 따뜻한 밥', { size: 42, bg: '#fff', rot: -3 });
+    if (lt > tX) { const kc = gfIn(lt, tX + 0.05, 3, 0.45) * (1 - gfK(tX + 1.9, tX + 2.2, lt)); hud += fkAt(960, 300, gfPanel(720, 250, { bg: '#fff' }) + gfT(0, -78, '돈 ⇄ 따뜻한 밥', 40, GFC.navy) + `<g transform="translate(-200 30) scale(.8)">${spBill('#F6C35A', 1)}</g>` + `<path d="M-60 30 h100 m-26 -22 l26 22 l-26 22" fill="none" stroke="${GFC.coral}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>` + `<g transform="translate(200 40) scale(1.2)">${spRice(t)}</g>`, kc); }
     camA = [960, 470, 0.86]; camB = [1000, 470, 0.92]; ck = gfK(0, 4, lt);
   } else if (ph === 2) {   // "회사도, 직급도 똑같습니다"
     const tC = spW(a, '회사', 0.2), tR = spW(a, '직급', 0.9);
@@ -99,11 +105,12 @@ function spcityScene(t, lt, a) {
     st.extra = fkAt(spIsoP(600, 330, 0)[0] + 10, spIsoP(600, 330, 0)[1] - 0.78 * 210, spTag('대리', 1), st.tag * 1.3);
     st.zEx = lt > tR ? 'z뿌듯' : 'z기본'; st.zm = lt > tR ? gfJelly(lt, tR, 0.08, 4, 7) : {};
     if (lt > tC) over += gfRing(lt, tC, spIsoP(240, 180, 470)[0], spIsoP(240, 180, 470)[1], 40, 160, '#FFE38A', 10, 0.5);
+    if (lt > tR) hud += fkAt(1460, 330, `<circle r="170" fill="#fff" stroke="${INK}" stroke-width="8"/><g transform="translate(0 10)">${spTag('대리', 3)}</g><circle cx="0" cy="-66" r="9" fill="#E0574F" stroke="${INK}" stroke-width="4"/>`, gfIn(lt, tR + 0.05, 3, 0.45)) + gfChipAt(lt, tR + 0.2, 1460, 540, '직급', { size: 36, bg: '#FFF3C4' });
     camA = [1000, 470, 0.92]; camB = [900, 430, 0.95]; ck = gfK(0, 2, lt);
   } else {   // "물리적으로 만질 수 있는 게 아니라 … 약속해 둔 거대한 게임 규칙인 셈이죠"
     const tT = spW(a, '만질', 0.9), tPr = spW(a, '약속', 3.4), tG = spW(a, '게임', 4.6), tOff = tG + 0.15;
     st.zu = 600; st.zv = 330; st.logo = 1 - gfK(tOff, tOff + 0.12, lt); st.belief = 1; st.bubbleIcon = 'building'; st.pop = gfK(tOff + 0.3, tOff + 0.5, lt);
-    st.fold = easeIn(gfK(tOff + 0.15, tOff + 0.6, lt)); st.tag = 1 - gfK(tOff + 0.4, tOff + 0.6, lt);
+    st.fold = easeInOut(gfK(tOff + 0.2, tOff + 0.9, lt)); st.tag = 1 - gfK(tOff + 0.6, tOff + 0.8, lt);
     st.zPose = lt > tT && lt < tPr ? SP_P.reach : '서기'; st.zEx = lt > tOff + 0.4 ? 'z멍' : lt > tT ? 'z의심' : 'z기본';
     const [zx, zy] = spIsoP(600, 330, 0);
     st.extra = fkAt(zx + 10, zy - 0.78 * 210, spTag('대리', 1), st.tag * 1.3) + (st.tag < 0.98 && st.tag > 0.02 ? `<rect x="${f1(zx - 30)}" y="${f1(zy - 175)}" width="60" height="30" rx="4" fill="none" stroke="${INK}" stroke-width="4" stroke-dasharray="8 6"/>` : '');
@@ -120,10 +127,10 @@ function spcityScene(t, lt, a) {
 }
 
 /* ===== p1~p3: 제4의 벽 — 멈춘 흑백 도시, 컬러 제로가 점선 벽에 기대어 시청자에게 ===== */
-const SP_LEAN = { armL: [[148, 285], [104, 236], [78, 182]], hL: [74, 172], armR: [[252, 285], [278, 345], [284, 398]], hR: [286, 406],
-  legL: [[180, 412], [176, 470], [172, 522]], fL: [160, 534, 0], legR: [[220, 412], [240, 468], [262, 518]], fR: [272, 530, -8], dy: 0 };
+const SP_LEAN = { armL: [[148, 285], [124, 338], [114, 338]], hL: [114, 338], armR: [[252, 285], [276, 338], [286, 338]], hR: [286, 338],
+  legL: [[180, 412], [208, 468], [234, 522]], fL: [246, 532, 0], legR: [[220, 412], [212, 468], [176, 522]], fR: [164, 532, 0], dy: 0 };
 function sppauseScene(t, lt, a) {
-  const ph = a.ph, run = a._run, s = 1.42, FY = 1230, wallX = -10;
+  const ph = a.ph, run = a._run, s = 1.42, FY = 1230, wallX = -110;
   // 멈춘 배경: 접힌 뒤의 종이 도시를 흑백으로
   const st = { fold: 1, foldStore: 0, logo: 0, people: 9, belief: 0, pop: 1, zu: 600, zv: 330, noZero: true };
   const W = spCityWorld(0, 0, st);
@@ -141,7 +148,7 @@ function sppauseScene(t, lt, a) {
   if (ph === 1) { base = 'z빵긋'; rot = -7 + Math.sin(lt * 16) * 6 * Math.exp(-lt * 2.5); }
   if (ph === 2) { base = 'z결심'; rot = -5; }
   E['_spzt'] = qTalk(base, env(t));
-  h += gfActor(FKZW, { x: zx, y: zy, s: zs, t, pose, ex: { expr: '_spzt', prev: '_spzt', k: 1, blink: 0 }, look, seed: 3, rot }, m);
+  h += gfActor(SPZW, { x: zx, y: zy, s: zs, t, pose, ex: { expr: '_spzt', prev: '_spzt', k: 1, blink: 0 }, look, seed: 3, rot, crossArms: come > 0.85 }, m);
   const hx = zx, hy = zy - 390 * zs;
   // 생각 말풍선: 출근 ✕, 돈 ✕ → "천만에요"에 톡 터짐
   if (ph === 0 || (ph === 1 && lt < 0.5)) { const tO = ph === 0 ? spW(a, '출근', 1.7) : -9, tM = ph === 0 ? spW(a, '돈도', 2.5) : -9, popK = ph === 1 ? gfK(0.1, 0.3, lt) : 0;
@@ -175,21 +182,33 @@ const SP_FOOD = [
 const spWheatEar = (s, t) => { let k = ''; for (let i = 0; i < 7; i++) for (const sd of [-1, 1]) k += `<ellipse cx="${sd * 9}" cy="${-i * 16}" rx="10" ry="13" fill="#F2C14E" stroke="${INK}" stroke-width="3" transform="rotate(${sd * 18} ${sd * 9} ${-i * 16})"/>`;
   return `<g transform="scale(${s})"><path d="M0 40 L0 0" stroke="#C9A040" stroke-width="5"/>${k}${[-1, 0, 1].map(d => `<path d="M${d * 6} -100 l${d * 10} -40" stroke="#E8C66A" stroke-width="3"/>`).join('')}</g>`; };
 /* 왕관 쓴 밀(보스): 낟알 몸 + 얼굴 + 왕관 + 잎 팔 */
+/* 왕관 쓴 밀(보스) v2: 통통한 이삭 몸 한가운데 얼굴, 빨간 망토, 잎 팔(왼손은 목줄, 오른손은 허리), chomp = 입 벌림(먹이) */
+const SP_KING_L = up => up ? [-310, -30] : [-290, 150];
 function spWheatKing(t, o = {}) {
-  const sm = o.smirk || 0, bob = Math.sin(t * 2.2) * 6; let k = '';
-  for (let i = 0; i < 9; i++) for (const sd of [-1, 1]) { const y = 160 - i * 62, x = sd * (66 - Math.abs(i - 4) * 4); k += `<ellipse cx="${x}" cy="${y}" rx="64" ry="50" fill="${i % 2 ? '#F2C14E' : '#F6CD62'}" stroke="${INK}" stroke-width="7" transform="rotate(${sd * 16} ${x} ${y})"/>`; }
-  let s = `<g transform="translate(0 ${f1(bob)})"><path d="M0 220 L0 900" stroke="#C9A040" stroke-width="34"/><path d="M0 220 L0 900" stroke="${INK}" stroke-width="6" opacity=".25"/>`;
-  s += [-1, 1].map(sd => `<path d="M${sd * 20} 420 Q${sd * 170} ${o.armUp && sd > 0 ? 260 : 360} ${sd * 250} ${o.armUp && sd > 0 ? 180 : 300}" fill="none" stroke="#6DBE55" stroke-width="30" stroke-linecap="round"/><path d="M${sd * 20} 420 Q${sd * 170} ${o.armUp && sd > 0 ? 260 : 360} ${sd * 250} ${o.armUp && sd > 0 ? 180 : 300}" fill="none" stroke="${INK}" stroke-width="5" opacity=".35"/>`).join('');
-  s += [-2, -1, 0, 1, 2].map(d => `<path d="M${d * 26} -380 l${d * 30} -170" stroke="#E8C66A" stroke-width="7" stroke-linecap="round"/>`).join('') + k;
-  // 얼굴
-  s += `<ellipse cx="0" cy="40" rx="118" ry="96" fill="#FBE19A" stroke="${INK}" stroke-width="7"/><ellipse cx="-42" cy="22" rx="17" ry="${f1(22 - 8 * sm)}" fill="${INK}"/><ellipse cx="42" cy="22" rx="17" ry="${f1(22 - 8 * sm)}" fill="${INK}"/><circle cx="-36" cy="14" r="5" fill="#fff"/><circle cx="48" cy="14" r="5" fill="#fff"/>` +
-    `<path d="M-74 -16 L-20 ${f1(-2 + 10 * sm)} M74 -16 L20 ${f1(-2 + 10 * sm)}" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><path d="M-44 70 Q0 ${f1(96 + 10 * sm)} 50 ${f1(56 - 10 * sm)}" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><ellipse cx="-80" cy="66" rx="16" ry="9" fill="#FF9BB0" opacity=".7"/><ellipse cx="80" cy="66" rx="16" ry="9" fill="#FF9BB0" opacity=".7"/>`;
-  // 왕관
-  s += `<g transform="translate(0 -420)"><path d="M-110 40 L-110 -40 L-60 0 L0 -70 L60 0 L110 -40 L110 40 Z" fill="#FFD84A" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><circle cx="0" cy="8" r="16" fill="#FF6B8A" stroke="${INK}" stroke-width="5"/><circle cx="-110" cy="-44" r="10" fill="#FFD84A" stroke="${INK}" stroke-width="5"/><circle cx="110" cy="-44" r="10" fill="#FFD84A" stroke="${INK}" stroke-width="5"/><circle cx="0" cy="-74" r="11" fill="#FFD84A" stroke="${INK}" stroke-width="5"/>`;
+  const sm = o.smirk || 0, ch = o.chomp || 0, bob = Math.sin(t * 2.2) * 6, G = '#F2C14E', G2 = '#F8D36A';
+  const arm = (x0, y0, [x1, y1], hand) => `<path d="M${x0} ${y0} Q${f1((x0 + x1) / 2)} ${f1(Math.max(y0, y1) + 60)} ${x1} ${y1}" fill="none" stroke="${INK}" stroke-width="42" stroke-linecap="round"/><path d="M${x0} ${y0} Q${f1((x0 + x1) / 2)} ${f1(Math.max(y0, y1) + 60)} ${x1} ${y1}" fill="none" stroke="#6DBE55" stroke-width="30" stroke-linecap="round"/>` +
+    `<ellipse cx="${x1}" cy="${y1}" rx="34" ry="24" fill="#7BD06A" stroke="${INK}" stroke-width="6" transform="rotate(${hand} ${x1} ${y1})"/>`;
+  let s = `<g transform="translate(0 ${f1(bob)})">`;
+  s += `<path d="M-150 -170 Q-310 160 -260 480 L260 480 Q310 160 150 -170 Z" fill="#C8423A" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-256 470 L256 470" stroke="#FFD84A" stroke-width="18" stroke-linecap="round"/>`;
+  s += `<path d="M0 380 L0 1000" stroke="#C9A040" stroke-width="40"/><path d="M0 380 L0 1000" stroke="${INK}" stroke-width="6" opacity=".25"/>`;
+  s += [-3, -2, -1, 0, 1, 2, 3].map(d => `<path d="M${d * 34} -230 l${d * 40} -200" stroke="#E8C66A" stroke-width="8" stroke-linecap="round"/>`).join('');
+  s += arm(-150, 40, SP_KING_L(o.armUp), -30) + arm(150, 40, [292, 176], 30);
+  s += `<ellipse cx="0" cy="40" rx="188" ry="300" fill="${G}" stroke="${INK}" stroke-width="9"/>`;
+  for (let r = -6; r <= 6; r++) for (let c = -4; c <= 4; c++) { const x = c * 58 + (r % 2 ? 29 : 0), y = 40 + r * 48; if ((x / 168) ** 2 + ((y - 40) / 280) ** 2 > 0.92) continue; s += `<ellipse cx="${x}" cy="${y}" rx="26" ry="20" fill="${G2}" stroke="${INK}" stroke-width="3" opacity=".9"/>`; }
+  s += `<ellipse cx="0" cy="40" rx="132" ry="108" fill="#FBE19A" stroke="${INK}" stroke-width="7"/>` +
+    `<ellipse cx="-46" cy="16" rx="18" ry="${f1(24 - 9 * sm)}" fill="${INK}"/><ellipse cx="46" cy="16" rx="18" ry="${f1(24 - 9 * sm)}" fill="${INK}"/><circle cx="-40" cy="8" r="6" fill="#fff"/><circle cx="52" cy="8" r="6" fill="#fff"/>` +
+    `<path d="M-84 -24 L-22 ${f1(-6 + 12 * sm)} M84 -24 L22 ${f1(-6 + 12 * sm)}" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><ellipse cx="-88" cy="62" rx="18" ry="10" fill="#FF9BB0" opacity=".7"/><ellipse cx="88" cy="62" rx="18" ry="10" fill="#FF9BB0" opacity=".7"/>`;
+  s += ch > 0.05 ? `<ellipse cx="0" cy="80" rx="${f1(40 + 10 * ch)}" ry="${f1(10 + 34 * ch)}" fill="#7A1E2A" stroke="${INK}" stroke-width="7"/><ellipse cx="0" cy="${f1(90 + 20 * ch)}" rx="${f1(22 + 6 * ch)}" ry="${f1(6 + 10 * ch)}" fill="#FF7A8A"/>`
+    : `<path d="M-50 70 Q0 ${f1(100 + 12 * sm)} 56 ${f1(58 - 12 * sm)}" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>`;
+  s += `<g transform="translate(0 -300)"><path d="M-120 40 L-120 -42 L-64 0 L0 -74 L64 0 L120 -42 L120 40 Z" fill="#FFD84A" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><circle cx="0" cy="8" r="17" fill="#FF6B8A" stroke="${INK}" stroke-width="5"/><circle cx="-120" cy="-46" r="11" fill="#FFD84A" stroke="${INK}" stroke-width="5"/><circle cx="120" cy="-46" r="11" fill="#FFD84A" stroke="${INK}" stroke-width="5"/><circle cx="0" cy="-78" r="12" fill="#FFD84A" stroke="${INK}" stroke-width="5"/>`;
   if (o.flags) o.flags.forEach(([txt, k], i) => { if (k < 0.02) return; const sd = i ? 1 : -1; s += `<g transform="translate(${sd * 100} -20) rotate(${sd * 62}) scale(${f1(k * 100) / 100})"><line x1="0" y1="0" x2="0" y2="-170" stroke="${INK}" stroke-width="8"/><g transform="translate(0 -170) rotate(${-sd * 62})"><path d="M0 0 L${sd * 330} 26 L0 72 Z" fill="${i ? '#9ED8FF' : '#FFB3B3'}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>${gfT(sd * 130, 48, txt, 34, GFC.navy)}</g></g>`; });
   s += `</g></g>`;
   return s;
 }
+const SP_HOEUP = { armL: [[148, 285], [124, 214], [166, 150]], hL: [170, 140], armR: [[252, 285], [268, 210], [226, 150]], hR: [222, 140], legL: [[180, 412], [164, 468], [160, 522]], fL: [148, 534, 0], legR: [[220, 412], [238, 468], [244, 522]], fR: [256, 534, 0], dy: 0 };
+/* "닝겐, 밀 무시하나염?" — 밀 대왕의 뾰족 말풍선(글자만, 목소리 없음) */
+const spKingTalk = (x, y, k, t, txt) => k < 0.02 ? '' : fkAt(x, y + Math.sin(t * 5) * 4, (() => { let d = ''; for (let i = 0; i < 32; i++) { const a = i * Math.PI / 16, r = i % 2 ? 1 : 1.12; d += (i ? 'L' : 'M') + f1(Math.cos(a) * 270 * r) + ' ' + f1(Math.sin(a) * 92 * r); }
+  return `<path d="M150 70 L250 150 L190 60 Z" fill="#FFF3C4" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="${d}Z" fill="#FFF3C4" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>` + gfT(0, 16, txt, 46, '#8A4E12'); })(), k, Math.sin(t * 9) * 2);
 function spwheatScene(t, lt, a) {
   const ph = a.ph, run = a._run, FY = 900, zx = 560;
   let cam = [960, 600, 1.0], w = '', hud = '', night = 0, king = 0, kingY = 1300, leash = 0, zero = '', s = 1.0;
@@ -201,14 +220,14 @@ function spwheatScene(t, lt, a) {
     cam = qLerpCam(gfK(0, 5, lt), [900, 600, 1.0], [960, 580, 1.06]); }
   if (ph === 1) {   // 수렵·채집: 느긋하게 쉬며 다양한 음식
     const tH = spW(a, '몇', 1.8), tF = spW(a, '다양', 3.3);
-    zero = SP_FURDEF + gfActor(spPrimZ, { x: zx, y: FY, s, t, pose: SP_P.sit, ex: fEx('z빵긋'), look: [0.3, -0.3], seed: 3 }, { sy: 0.98 + 0.02 * Math.sin(t * 2) });
-    if (lt > tF) SP_FOOD.forEach((fd, i) => { const an = t * 0.8 + i * 1.256, k = gfIn(lt, tF + i * 0.12, 3.4, 0.42); w += fkAt(zx + Math.cos(an) * 300, FY - 330 + Math.sin(an) * 110, fd(t), 1.5 * k); });
+    zero = SP_FURDEF + gfActor(spPrimZ, { x: zx + 230, y: FY - 62, s, t, pose: '만세', ex: fEx('z빵긋'), look: [0, -0.6], seed: 3, rot: -84 + Math.sin(t * 1.5) * 1.5 }, { sy: 0.98 + 0.02 * Math.sin(t * 2) }) + gfEmote(lt, 0.4, zx - 160, FY - 260, 'note', { hold: 9 });
+    if (lt > tF) SP_FOOD.forEach((fd, i) => { const an = t * 0.8 + i * 1.256, k = gfIn(lt, tF + i * 0.12, 3.4, 0.42); w += fkAt(zx + Math.cos(an) * 300, FY - 300 + Math.sin(an) * 90, fd(t), 1.5 * k); });
     if (lt > tH) hud += fkAt(1420, 300, gfPanel(520, 190, { bg: '#fff' }) + gfT(-200, -24, '일', 40, GFC.navy) + `<g transform="translate(-150 -38)">${gfBar(320, 0.25 * gfK(tH, tH + 0.6, lt), { h: 30, col: GFC.coral })}</g>` + gfT(-200, 54, '쉼', 40, GFC.navy) + `<g transform="translate(-150 40)">${gfBar(320, 0.85 * gfK(tH + 0.2, tH + 0.8, lt), { h: 30, col: GFC.mint })}</g>`, gfIn(lt, tH, 3, 0.45));
     hud += gfChipAt(lt, 0.1, 960, 120, '수렵·채집 시절', { size: 42, bg: '#fff' });
     cam = [940, 600, 1.04]; }
   if (ph === 2) {   // 농사: 인구 ↑, 개인 ↓
     const tP = spW(a, '인구', 1.6), tI = spW(a, '개인', 3.0), tD = spW(a, '종일', 3.8), tN = spW(a, '영양', 5.6), tS = spW(a, '전염병', 6.6);
-    const bend = lt > tD - 0.2; zero = gfActor(spFarmZ, { x: zx, y: FY, s, t, pose: bend ? SP_P.pant : '서기', ex: fEx(lt > tS ? 'z코치지침' : bend ? '지침' : 'z기본'), look: [0.3, 0.3], seed: 3, rot: bend ? 12 + Math.sin(t * 5) * 2 : 0, holdR: SP_HOE, sweat: bend, headDy: bend ? 14 : 0 });
+    const bend = lt > tD - 0.2, up = bend && Math.sin(lt * 6.5) > 0.2; zero = gfActor(spFarmZ, { x: zx, y: FY, s, t, pose: !bend ? '서기' : up ? SP_HOEUP : SP_P.pant, ex: fEx(lt > tS ? 'z코치지침' : bend ? '지침' : 'z기본'), look: [0.3, 0.3], seed: 3, rot: !bend ? 0 : up ? 2 : 14, holdR: SP_HOE, sweat: bend, headDy: bend && !up ? 14 : 0 });
     if (bend) zero += spDrops(lt, zx, FY - 380, s, 2, 4);
     // 해가 하루를 휙
     const su = gfK(tD, tD + 1.6, lt); if (su > 0 && su < 1) hud += fkAt(lerp(200, 1720, su), 260 - Math.sin(Math.PI * su) * 160, gfSun(0, 0, 54, t), 1);
@@ -225,21 +244,23 @@ function spwheatScene(t, lt, a) {
     night = ph === 4 ? gfK(0, 0.8, lt) : ph === 5 ? 1 : 0;
     let flags = null;
     if (ph === 5) { const tA = spW(a, '연봉', 4.6), tB = spW(a, '타이틀', 5.4); flags = [['더 높은 연봉', gfIn(lt, tA, 3.4, 0.42)], ['더 번듯한 타이틀', gfIn(lt, tB, 3.4, 0.42)]]; }
-    const kx = 1300, ky = lerp(1500, 470, king), kS = 0.92;
-    w += `<defs><clipPath id="spHz"><rect x="-600" y="-1200" width="3200" height="2010"/></clipPath></defs><g clip-path="url(#spHz)">${fkAt(kx, ky, spWheatKing(t, { smirk: sm, armUp: leash > 0.5, flags }), kS)}</g>`;
+    const kx = 1320, ky = lerp(1500, 440, king), kS = 0.92, tFd = ph === 5 ? spW(a, '먹이', 6.4) : 99, chomp = lt > tFd ? Math.abs(Math.sin((lt - tFd) * 6)) : 0;
+    w += `<defs><clipPath id="spHz"><rect x="-600" y="-1200" width="3200" height="2010"/></clipPath></defs><g clip-path="url(#spHz)">${fkAt(kx, ky, spWheatKing(t, { smirk: sm, armUp: leash > 0.5, flags, chomp }), kS)}</g>`;
+    if (ph === 3) w += spKingTalk(kx - 560, ky - 250, gfIn(lt, tK + 0.45, 3, 0.45) * (1 - gfK(tK + 3.0, tK + 3.3, lt)), t, '닝겐, 밀 무시하나염?');
     if (ph === 3 && lt > tR) for (let i = 0; i < 8; i++) w += fkAt(200 + i * 230, 900 - 60 * gfIn(lt, tR + i * 0.06, 3.4, 0.42), spWheatEar(1.3, t), 1);
     // 제로
     if (!office) zero = gfActor(spFarmZ, { x: zx, y: FY, s, t, pose: SP_P.pant, ex: fEx(lt > tK ? 'z충격' : '지침'), look: [0.6, -0.5], seed: 3, rot: 10, holdR: SP_HOE, headDy: 10 });
     else { const tTech = ph === 5 ? spW(a, '기술', 0.9) : -9, tSp = ph === 5 ? spW(a, '스펙', 1.6) : -9, tF = ph === 5 ? spW(a, '먹이', 6.4) : -9, tY = ph === 5 ? spW(a, '야근', 7.2) : -9;
-      const dx = zx, dy = FY; zero = gfActor(FKZW, { x: dx, y: dy, s, t, pose: SP_P.pant, ex: fEx(ph === 5 && lt > tY ? 'z코치지침' : '지침'), look: [0.2, 0.4], seed: 3, rot: 8, headDy: 12, sweat: ph === 5 });
+      const dx = zx, dy = FY; zero = gfActor(SPZW, { x: dx, y: dy, s, t, pose: SP_P.pant, ex: fEx(ph === 5 && lt > tY ? 'z코치지침' : '지침'), look: [0.2, 0.4], seed: 3, rot: 8, headDy: 12, sweat: ph === 5 });
       zero += `<rect x="${dx - 280}" y="${dy - 150}" width="560" height="34" rx="8" fill="#C9A27A" stroke="${INK}" stroke-width="7"/><rect x="${dx - 250}" y="${dy - 116}" width="26" height="140" fill="#B08A62" stroke="${INK}" stroke-width="5"/><rect x="${dx + 224}" y="${dy - 116}" width="26" height="140" fill="#B08A62" stroke="${INK}" stroke-width="5"/>` +
         `<path d="M${dx - 116} ${dy - 150} L${dx - 102} ${dy - 268} L${dx + 102} ${dy - 268} L${dx + 116} ${dy - 150} Z" fill="#C9CED8" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><ellipse cx="${dx}" cy="${dy - 372}" rx="96" ry="56" fill="#BFE9FF" opacity=".3"/>`;
       if (ph === 5) { if (lt > tTech) w += fkAt(dx - 330, dy - 520, `<circle r="44" fill="#fff" stroke="${INK}" stroke-width="6"/><path d="M0 -26 L8 -10 L26 -10 L12 2 L18 20 L0 10 L-18 20 L-12 2 L-26 -10 L-8 -10 Z" fill="#C9CED8" stroke="${INK}" stroke-width="4"/>`, gfIn(lt, tTech, 3.4, 0.42));
         if (lt > tSp) for (let i = 0; i < 4; i++) w += fkAt(dx + 280, dy - 280 - i * 34, `<rect x="-70" y="-14" width="140" height="28" rx="5" fill="${['#FFF3C4', '#E8F4FF', '#FFE1E1', '#EDE8FF'][i]}" stroke="${INK}" stroke-width="4"/>`, gfIn(lt, tSp + i * 0.12, 3.4, 0.42));
-        if (lt > tF) for (let i = 0; i < 6; i++) { const u = ((lt - tF) * 1.3 + i / 6) % 1; w += fkAt(lerp(dx + 120, kx, u), lerp(dy - 420, ky + 60, u) - Math.sin(Math.PI * u) * 160, i % 2 ? `<circle r="22" fill="#FFD84A" stroke="${INK}" stroke-width="5"/>` : `<rect x="-26" y="-18" width="52" height="36" rx="4" fill="#fff" stroke="${INK}" stroke-width="4"/>`, 1, u * 360); }
+        if (lt > tF) for (let i = 0; i < 6; i++) { const u = ((lt - tF) * 1.3 + i / 6) % 1; w += fkAt(lerp(dx + 120, kx, u), lerp(dy - 420, ky + 80 * kS, u) - Math.sin(Math.PI * u) * 160, i % 2 ? `<circle r="22" fill="#FFD84A" stroke="${INK}" stroke-width="5"/>` : `<rect x="-26" y="-18" width="52" height="36" rx="4" fill="#fff" stroke="${INK}" stroke-width="4"/>`, 1, u * 360); }
+        if (lt > tF) { const v = lt > tF + 1.6 ? 1 : lt > tF + 0.6 ? 2 : 3; hud += fkAt(250, 92, fkHearts(lt, v, { from: v + 1, tp: v === 1 ? tF + 1.6 : v === 2 ? tF + 0.6 : -9, low: v <= 1 }), 0.82); }
         if (lt > tY) hud += fkAt(1700, 92, gfChip('PM 11:40', { size: 40, icon: 'moon', bg: '#fff' }), gfBeat(lt, tY, 0.16, 4, 8)) + gfChipAt(lt, tY, 960, 120, '야근 중', { size: 42, bg: '#EDE8FF', col: '#5B4FCF' }); } }
     // 목줄(점선): 밀 대왕 잎 손 → 제로 목
-    if (leash > 0.02) { const hx = zx + (office ? 30 : 40), hy = FY - 330, lx = kx + 250 * kS, ly = ky + 180 * kS, k = leash;
+    if (leash > 0.02) { const hx = zx + (office ? 30 : 40), hy = FY - 330, lx = kx + SP_KING_L(true)[0] * kS, ly = ky + SP_KING_L(true)[1] * kS, k = leash;
       w += `<path d="M${f1(lx)} ${f1(ly)} Q${f1((lx + hx) / 2)} ${f1(Math.min(ly, hy) - 120 * (1 - k) + 60)} ${f1(lerp(lx, hx, k))} ${f1(lerp(ly, hy, k))}" fill="none" stroke="#FFC85A" stroke-width="12" stroke-dasharray="16 12" stroke-dashoffset="${f1(-run * 30)}"/>` +
         (k > 0.95 ? `<ellipse cx="${f1(zx + 8)}" cy="${f1(FY - 312)}" rx="60" ry="16" fill="none" stroke="#FFC85A" stroke-width="10" stroke-dasharray="14 10"/>` : ''); }
     if (ph === 3 && king > 0.3) { hud += fkAt(560, 110, gfPanel(560, 120, { bg: '#fff' }) + gfT(-200, -6, '보스', 30, GFC.coral) + gfT(-20, -6, '밀 대왕', 44, GFC.navy) + `<g transform="translate(-230 26)">${gfBar(460, 1, { h: 26, col: GFC.coral })}</g>`, gfIn(lt, tK + 0.3, 3, 0.45));
