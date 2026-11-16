@@ -9,6 +9,9 @@ STY = ('Background plate for a cute 2D cartoon animation in a cozy healing video
        'Wide 16:9. Absolutely no text, letters, numbers, signs with writing, symbols or logos.')
 P = {
  'savanna_top': 'A wide ancient grassland seen from directly above like a cute miniature diorama board: soft green grass with lighter patches, a gentle blue river winding from left to right across the middle, small round bushes, a few round trees seen from above, scattered rocks and a sandy riverbank. Bright soft daylight. The grass areas on both sides of the river are EMPTY open space (small figures will be drawn later). No people, no animals, no buildings, no bridges.',
+ 'wheat_low': 'A golden wheat field seen from a very low camera angle near the ground, looking UP: tall golden wheat stalks in the front edges, the field rising to a LOW horizon line in the bottom fifth of the image, a huge dramatic sky with warm golden-hour light and big soft clouds filling most of the frame, a few wheat ears silhouetted against the sky. Grand, a little dramatic but still cute. No people, no animals, no buildings.',
+ 'meadow_wide': 'A very wide open pastel meadow panorama: soft rolling hills of light green grass with little pastel flowers, a few round trees far away, a gentle path, a huge bright pastel blue sky with fluffy clouds, the horizon around the middle of the image, open and free feeling. The foreground grass in the lower part is EMPTY open space (characters will be drawn later). No people, no animals, no buildings.',
+ 'meadow_sunset': 'The same kind of wide pastel meadow at sunset: soft rolling hills, a gentle path winding toward the horizon, warm orange and pink sunset sky with a big soft glowing sun near the horizon, long soft shadows, calm and emotional. The foreground in the lower part is EMPTY open space. No people, no animals, no buildings.',
 }
 for k in sys.argv[1:] or list(P):
     out = xai.image(P[k] + ' ' + STY, f'{OUT}/{k}.png', n=2)

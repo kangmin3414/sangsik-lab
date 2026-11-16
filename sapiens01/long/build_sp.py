@@ -26,7 +26,12 @@ def place(fn, t0, t1, g, fin=1.5, fout=2.5, off=0.0):
 B = '/dev/shm/sp/bgm/'
 def bg(name): return B + name + ('.mp3' if os.path.exists(B + name + '.mp3') else '.opus')
 SEG = [('commute', 0, A('k0') + 0.25, 0.30, 0.0),
-       ('savanna', A('r1') - 0.3, DUR, 0.28, 0.0)]
+       ('savanna', A('r1') - 0.3, A('m1') + 0.3, 0.28, 0.0),
+       ('papercity', A('m1') - 0.3, A('p1') + 0.2, 0.28, 0.0),
+       ('savanna', A('w1') - 0.3, A('w4') + 0.2, 0.24, 30.0),
+       ('boss', A('w4') - 0.2, A('b1') + 0.3, 0.28, 0.0),
+       ('meadow', A('b1') - 0.3, A('e1') + 0.4, 0.26, 0.0),
+       ('ending', A('e1') - 0.5, DUR, 0.30, 0.0)]
 for name, t0, t1, g, off in SEG: place(bg(name), t0, t1, g, fin=0.8 if t0 > 0.1 else 0.3, fout=1.0 if t1 < DUR - 0.1 else 1.6, off=off)
 def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
 vad = (np.abs(voice) > 0.006).astype(float)
@@ -108,6 +113,68 @@ for k in range(7): put(tA + k * stp, S.pop(480 + k * 45), 0.09)
 for k in range(6): put(tA + stp * 0.5 + k * stp, S.pop(520 + k * 45), 0.08)
 put(tT, S.sparkle(6, 0.5), 0.1); put(E1('r5') + 0.05, S.clear(), 0.28)
 steps(E1('r5') + 1.1, DUR - 0.6, 0.24, 0.05)
+
+# ======== 2막: 종이 도시 ========
+c = A('m1'); put(W('m1', '지갑', 0.6), S.rustle(0.25), 0.2); tB = W('m1', '지폐', 1.6); put(tB, S.flip(), 0.16); put(W('m1', '숫자', 2.9), S.sparkle(4, 0.3), 0.08)
+put(W('m1', '색칠', 3.5), S.whoosh(0.5, 2000, 6000), 0.06); put(W('m1', '종이', 3.9), S.rustle(0.3), 0.16); put(W('m1', '뿐이', 4.6), S.whoosh(0.9, 300, 1800), 0.08)
+c = A('m2'); put(c - 0.26, S.bands(), 0.35)
+for i in range(8): put(c + 0.2 + i * 0.06, S.blip(700 + i * 40), 0.04)
+put(W('m2', '믿으', 1.6), S.sparkle(5, 0.4), 0.08); tS = W('m2', '편의점', 2.6); steps(tS - 0.3, W('m2', '밥과', 3.4) - 0.1, 0.24, 0.1); tX = W('m2', '바꿀', 3.8); put(tX, S.coin(), 0.12); put(tX + 0.35, S.pop(760), 0.1)
+put(W('m3', '회사', 0.2), S.ding(), 0.08); put(W('m3', '직급', 0.9), S.equip(), 0.14)
+tT = W('m4', '만질', 0.9); put(tT, S.whoosh(0.3, 900, 4000), 0.06); put(W('m4', '약속', 3.4), S.sparkle(5, 0.4), 0.06); tOff = W('m4', '게임', 4.6) + 0.15
+put(tOff, S.pop(980), 0.14); put(tOff + 0.15, S.whoosh(0.45, 300, 1500), 0.12); put(tOff + 0.6, S.land(), 0.2)
+for i in range(8): put(tOff + 0.3 + i * 0.02, S.pop(500 + i * 30), 0.03)
+# ======== 제4의 벽 ========
+c = A('p1'); put(c + 0.02, S.blip(880), 0.16); put(c + 0.14, S.blip(660), 0.16); put(c, S.low(110, 3.0), 0.14); steps(c + 0.05, c + 0.9, 0.3, 0.1)
+put(W('p1', '출근', 1.7), S.pop(700), 0.08); put(W('p1', '돈도', 2.5), S.pop(820), 0.08); put(W('p1', '소리', 3.6), S.question(), 0.12)
+c = A('p2'); put(c + 0.12, S.stamp(), 0.24); put(c + 0.15, S.pop(500), 0.08); put(c + 0.2, S.pop(560), 0.08)
+c = A('p3'); put(c, S.low(98, 4.0), 0.12); put(W('p3', '허구', 1.6), S.pop(640), 0.08); put(W('p3', '잊어', 2.2), S.whoosh(0.6, 300, 1500), 0.08); tSl = W('p3', '노예', 4.2); put(tSl, S.whoosh(0.5, 600, 3000), 0.1); put(tSl + 0.1, S.low(147, 1.2), 0.18)
+# ======== 밀 대왕 ========
+c = A('w1'); put(c - 0.26, S.bands(), 0.35); tF = W('w1', '농업', 2.6); put(tF - 0.05, S.boing(300, 800, 0.3), 0.1); put(tF, S.sparkle(5, 0.4), 0.08); put(W('w1', '최대', 4.4), S.stamp(), 0.24)
+tF = W('w2', '다양', 3.3)
+for i in range(5): put(tF + i * 0.12, S.pop(700 + i * 70), 0.07)
+put(W('w2', '몇', 1.8), S.gauge(0.0, 0.25), 0.06)
+tP = W('w3', '인구', 1.6); put(tP, S.letters(8, 0.12, 700), 0.05); put(W('w3', '개인', 3.0), S.hurt(), 0.1); tD = W('w3', '종일', 3.8); put(tD, S.whoosh(1.6, 300, 2500), 0.06)
+put(W('w3', '영양', 5.6), S.hurt(), 0.1); tSk = W('w3', '전염병', 6.6); put(tSk, S.hurt(), 0.12); put(tSk + 0.1, S.low(150, 1.0), 0.12)
+tK = W('w4', '밀이', 1.7); put(tK - 0.2, S.low(70, 1.6), 0.5); put(tK - 0.2, S.whoosh(1.2, 60, 700), 0.3); put(tK + 0.3, S.bang(), 0.12)
+tTm = W('w4', '길들', 2.2); put(tTm, S.strike(), 0.12); tR = W('w4', '번식', 3.3)
+for i in range(8): put(tR + i * 0.06, S.pop(600 + i * 50), 0.05)
+c = A('w5'); put(c, S.whoosh(0.7, 200, 1500), 0.12); put(c + 0.1, S.low(130, 1.2), 0.12)
+put(W('w6', '기술', 0.9), S.pop(760), 0.08)
+tSp = W('w6', '스펙', 1.6)
+for i in range(4): put(tSp + i * 0.12, S.pop(600 + i * 80), 0.06)
+put(W('w6', '연봉', 4.6), S.pop(880), 0.08); put(W('w6', '타이틀', 5.4), S.pop(940), 0.08)
+tFd = W('w6', '먹이', 6.4)
+for i in range(4): put(tFd + i * 0.3, S.coin(), 0.05)
+put(W('w6', '야근', 7.2), S.tick(1500), 0.1)
+# ======== 상상의 질서 · 상자 탈출 ========
+c = A('b1'); put(c - 0.26, S.bands(), 0.35); put(W('b1', '함무', 1.4) - 0.3, S.pop(560), 0.12); put(W('b1', '불평등', 2.8), S.blip(440), 0.06); put(W('b1', '독립', 5.8) - 0.3, S.pop(700), 0.12); put(W('b1', '자유', 6.8), S.sparkle(4, 0.4), 0.08)
+tS2 = W('b2', '상상', 2.4); put(tS2 + 0.1, S.stamp(), 0.22); put(tS2 + 0.35, S.stamp(), 0.2)
+c = A('b3'); put(c, S.whoosh(0.6, 200, 1200), 0.1); put(c + 0.3, S.pop(600), 0.1)
+for i in range(4): put(c + 0.8 + i * 0.3, S.blip(500 + i * 60), 0.05)
+put(W('b3', '30', 1.45), S.hurt(), 0.06); put(W('b3', '남들처럼', 3.79), S.hurt(), 0.06); put(W('b3', '자연', 7.6) + 0.1, S.stamp(), 0.24)
+tR4 = W('b4', '깨닫', 0.57); tO = W('b4', '필요', 5.47); put(tR4, S.ding(), 0.12); put(tR4 + 0.2, S.whoosh(1.4, 300, 3000), 0.08); put(tR4 + 0.9, S.whoosh(0.4, 500, 2500), 0.08)
+put(tR4 + 1.3, S.flip(), 0.12); put(tR4 + 2.3, S.blip(1320), 0.1); steps(tO - 0.3, tO + 1.0, 0.3, 0.1)
+for i in range(7): put(tO + 0.2 + i * 0.04, S.pop(600 + i * 60), 0.05)
+put(E1('b4') + 0.1, S.item(), 0.24)
+put(W('b5', '필요', 0.73), S.pop(760), 0.1); put(W('b5', '행복', 3.05), S.heart(), 0.16)
+# ======== AI · 진짜 질문 · 국밥 ========
+tAI = W('a1', 'AI', 2.6); put(tAI - 0.3, S.whoosh(1.4, 1500, 7000), 0.1); put(tAI + 0.6, S.boing(200, 400, 0.4), 0.06)
+tSw = W('a1', '대체', 5.4); put(tSw, S.whoosh(0.6, 400, 3000), 0.12)
+for i in range(6): put(tSw + 0.1 + i * 0.06, S.coin(), 0.04)
+put(W('a2', '천재', 2.4), S.gauge(0.0, 1.0), 0.08); put(W('a2', '행복', 4.3), S.gauge(0.0, 0.18), 0.06); put(W('a2', '부족', 6.3), S.low(196, 0.8), 0.1)
+put(W('a3', '책', 0.65), S.flip(), 0.12); put(W('a3', '문장', 3.2), S.sparkle(6, 0.5), 0.08)
+c = A('a4'); put(c + 0.2, S.flip(), 0.1); put(W('a4', '아니라', 4.75), S.strike(), 0.08); put(W('a4', '무엇', 6.13), S.ding(), 0.08)
+tTi = W('a5', '타이틀', 2.05); put(tTi - 0.1, S.pop(880), 0.1); put(W('a5', '말고', 2.49) + 0.1, S.pop(400), 0.12); tWa = W('a5', '작고', 5.05); steps(tWa - 0.9, tWa - 0.1, 0.25, 0.08)
+put(tWa, S.pop(700), 0.08); put(tWa + 0.15, S.pop(760), 0.08); put(W('a5', '따뜻', 5.69), S.heart(), 0.16); put(E1('a5') + 0.05, S.clear(), 0.26)
+# ======== 엔딩 ========
+c = A('e1'); steps(c + 0.2, A('e4') + 2.0, 0.55, 0.035)
+for k, fb in (('돈도', 0.15), ('직급', 0.67), ('평가', 2.47)): put(W('e1', k, fb), S.pop(700), 0.07)
+tBr = W('e1', '빌려', 5.19)
+for i in range(3): put(tBr + i * 0.15, S.whoosh(1.0, 800, 3500), 0.05)
+put(W('e1', '가치', 8.23), S.heart(), 0.14)
+put(W('e2', '조급', 1.37) - 0.2, S.flip(), 0.1); put(W('e3', '내일', 0.37), S.pop(760), 0.08); put(W('e3', '댓글', 5.17), S.pop(860), 0.08)
+put(W('e4', '하루', 2.83), S.sparkle(4, 0.4), 0.06); put(E1('e4') + 0.2, S.sparkle(8, 1.2), 0.08)
 
 mixd = voice * 1.0 + bed + sfx * 0.6
 if os.environ.get('SP_STEMS'): np.savez('/dev/shm/sp/stems.npz', voice=voice, bed=bed, sfx=sfx)

@@ -4,7 +4,8 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_sp import LINES, SAMPLE
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s1a': 1.0, 's1b': 0.85, 's1c': 0.8, 's2': 0.55, 's3': 0.4, 's4': 0.3, 'k0': 0.35, 'r1': 0.45, 'r2': 0.3, 'r3': 0.4, 'r4': 0.35, 'r5': 0.35}
+GAP = {'s1a': 1.0, 's1b': 0.85, 's1c': 0.8, 's2': 0.55, 's3': 0.4, 's4': 0.3, 'k0': 0.35, 'r1': 0.45, 'r2': 0.3, 'r3': 0.4, 'r4': 0.35, 'r5': 0.35,
+       'm1': 0.6, 'p1': 0.7, 'p2': 0.35, 'p3': 0.35, 'w1': 0.7, 'w4': 0.45, 'w5': 0.5, 'b1': 0.7, 'b4': 0.45, 'a1': 0.6, 'a4': 0.6, 'a5': 0.7, 'e1': 0.9, 'e2': 0.5, 'e3': 0.4, 'e4': 0.9}
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)

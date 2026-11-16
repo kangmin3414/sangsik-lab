@@ -12,7 +12,7 @@ const gsLv = n => Array.from({ length: n }, (_, i) => f1(i / (n - 1) * 1000) / 1
 /* 어두운 선(외곽선)만 골라 낸 알파 → result 'line' */
 const gsLine = (thr = [1, 1, 0.3, 0, 0, 0, 0, 0]) => `<feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="la"/><feComponentTransfer in="la" result="line"><feFuncA type="table" tableValues="${thr.join(' ')}"/></feComponentTransfer>`;
 /* 도트: 먼저 어두운 선을 굵혀(erode) 칸 가운데 표본이 선을 놓치지 않게 하고, 칸마다 가운데 2×2 점을 뽑아 칸 크기만큼 넓힌다(이웃 칸과 겹치지 않게 반지름 = 칸/2 - 1). */
-const GS_PR = { x: -160, y: -40, w: 2240, h: 1280 };   // 도트 필터 영역: 화면(0~1920)과 세계 좌표(줌 0.88로 넓어짐)를 모두 덮는다
+const GS_PR = { x: -160, y: -40, w: 2240, h: 1280 }, GS_BIG = { x: -900, y: -800, w: 3800, h: 2900 };   // GS_BIG: 카메라 줌 안에서 쓰는 종이 화풍   // 도트 필터 영역: 화면(0~1920)과 세계 좌표(줌 0.88로 넓어짐)를 모두 덮는다
 const gsPixBody = (px, thick) => { const b = Math.max(4, Math.round(px / 2) * 2), h = Math.floor(b / 2), er = thick ? Math.max(1, Math.round(b / 4)) : 0, X = GS_PR.x, Y = GS_PR.y;
   return (er ? `<feMorphology in="SourceGraphic" operator="erode" radius="${er}" result="src"/>` : '') + `<feFlood x="${X + h - 1}" y="${Y + h - 1}" width="2" height="2"/><feComposite x="${X}" y="${Y}" width="${b}" height="${b}"/><feTile result="a"/><feComposite in="${er ? 'src' : 'SourceGraphic'}" in2="a" operator="in"/><feMorphology operator="dilate" radius="${h - 1}" result="p"/>`; };
 const GS = {
@@ -45,8 +45,8 @@ const GS = {
     gsTurb(0.045, 3, 8, 'bl') + gsGrey('bl', 0.86, 1.06, 'bl2') + gsTurb(0.75, 1, 3, 'gr') + gsGrey('gr', 0.88, 1.04, 'gr2', [1, 0.98, 0.94]) +
     `<feBlend in="lt" in2="bl2" mode="multiply" result="m"/><feBlend in="m" in2="gr2" mode="multiply"/>`),
   paper: () => gsF('gs_paper', `<feDropShadow dx="8" dy="10" stdDeviation="3.5" flood-color="#2A2018" flood-opacity=".38" result="ds"/>` + gsTurb(0.65, 2, 4, 'gr') + gsGrey('gr', 0.86, 1.04, 'gr2', [1, 0.98, 0.95]) +
-    `<feBlend in="ds" in2="gr2" mode="multiply" result="m"/><feComposite in="m" in2="ds" operator="in"/>`),
-  paperbg: () => gsF('gs_paperbg', `<feColorMatrix in="SourceGraphic" type="saturate" values="0.75" result="s"/>` + gsTurb(0.65, 2, 9, 'gr') + gsGrey('gr', 0.84, 1.03, 'gr2', [1, 0.97, 0.92]) + `<feBlend in="s" in2="gr2" mode="multiply"/>`),
+    `<feBlend in="ds" in2="gr2" mode="multiply" result="m"/><feComposite in="m" in2="ds" operator="in"/>`, GS_BIG),
+  paperbg: () => gsF('gs_paperbg', `<feColorMatrix in="SourceGraphic" type="saturate" values="0.75" result="s"/>` + gsTurb(0.65, 2, 9, 'gr') + gsGrey('gr', 0.84, 1.03, 'gr2', [1, 0.97, 0.92]) + `<feBlend in="s" in2="gr2" mode="multiply"/>`, GS_BIG),
 };
 const GS_NAME = { vector: '기본', pixel: '도트 게임', gameboy: '초록 도트', cave: '동굴 벽화', shadow: '그림자극', relief: '돌판 부조', woodblock: '목판화', chalk: '칠판 분필', holo: '홀로그램', water: '수채화', paper: '종이 오리기' };
 function gfStyleDefs(style, o = {}) {
