@@ -14,6 +14,7 @@ P['gy쓰기'] = Object.assign({ armL: [[148, 285], [140, 342], [176, 368]], hL: 
 
 const GY_DEFS = `<defs>
 <radialGradient id="gyLensGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#7FD8FF" stop-opacity=".95"/><stop offset="1" stop-color="#7FD8FF" stop-opacity="0"/></radialGradient>
+<radialGradient id="gyDevilGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF3B3B" stop-opacity=".45"/><stop offset="1" stop-color="#FF3B3B" stop-opacity="0"/></radialGradient>
 <radialGradient id="gyUnder" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#B8F0FF" stop-opacity=".55"/><stop offset="1" stop-color="#B8F0FF" stop-opacity="0"/></radialGradient>
 <linearGradient id="gyNavy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2347"/><stop offset="1" stop-color="#2E3A6E"/></linearGradient>
 <filter id="gyGray" x="-10%" y="-10%" width="120%" height="120%"><feColorMatrix type="saturate" values="0.08"/><feComponentTransfer><feFuncR type="linear" slope=".82"/><feFuncG type="linear" slope=".82"/><feFuncB type="linear" slope=".86"/></feComponentTransfer></filter>
@@ -43,12 +44,40 @@ const gyEye = (open = 1, s = 1) => { const ry = 30 * clamp(open, 0.06, 1); retur
   (open > 0.35 ? `<circle r="${f1(17 * Math.min(1, open * 1.3))}" fill="${GFC.navy}"/><circle cx="6" cy="-6" r="5" fill="#fff"/>` : `<path d="M-40 4 Q0 22 40 4" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>`) + `</g>`; };
 /* 낡은 몽당연필(손 중심 기준) — 끝 장면 복선 */
 const GY_PENCIL = `<g transform="rotate(28)"><rect x="-7" y="-58" width="14" height="58" rx="3" fill="#FFD36E" stroke="${INK}" stroke-width="4"/><path d="M-7 -40 h14 M-7 -22 h14" stroke="#E0A84A" stroke-width="3"/><path d="M-7 0 L0 18 L7 0 Z" fill="#F2D6B3" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><path d="M-2.5 12 L0 18 L2.5 12 Z" fill="${INK}"/><rect x="-7" y="-66" width="14" height="10" rx="2" fill="#FF9AA8" stroke="${INK}" stroke-width="3"/></g>`;
-/* 유혹(우리 캐릭터): 보라 불꽃 몸 + 작은 뿔 + 씩 웃음 */
-function gyImp(t, s = 1, grin = 1) { const sw = Math.sin(t * 3.2) * 5;
-  return `<g transform="scale(${s}) rotate(${f1(sw * 0.5)})"><path d="M0 -122 Q22 -96 40 -100 Q30 -76 54 -46 Q66 -10 62 18 Q58 84 0 88 Q-58 84 -62 18 Q-66 -10 -54 -46 Q-30 -76 -40 -100 Q-22 -96 0 -122 Z" fill="#9B6BFF" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>` +
-    `<path d="M-30 -58 L-48 -100 L-12 -70 Z M30 -58 L48 -100 L12 -70 Z" fill="#FF6B9A" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><ellipse cx="-20" cy="-6" rx="9" ry="13" fill="${INK}"/><ellipse cx="20" cy="-6" rx="9" ry="13" fill="${INK}"/><circle cx="-17" cy="-11" r="3.5" fill="#fff"/><circle cx="23" cy="-11" r="3.5" fill="#fff"/>` +
-    `<path d="M-30 ${f1(20 - 4 * grin)} Q0 ${f1(30 + 26 * grin)} 30 ${f1(20 - 4 * grin)} Q0 34 -30 ${f1(20 - 4 * grin)} Z" fill="#5A1E2A" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>` +
-    `<path d="M-60 24 Q-90 4 -96 -22 M60 24 Q90 4 96 -22" stroke="${INK}" stroke-width="7" fill="none" stroke-linecap="round"/><ellipse cx="-36" cy="16" rx="8" ry="5" fill="#FF9BB0" opacity=".8"/><ellipse cx="36" cy="16" rx="8" ry="5" fill="#FF9BB0" opacity=".8"/></g>`; }
+/* 유혹 = 악마(운영자 2026-11-16 "진짜 악마처럼"): 빨간 몸, 상아색 뿔, 뾰족 귀, 브이자 눈썹, 노란 눈 + 세로 동공, 송곳니 웃음, 염소수염,
+   박쥐 날개, 화살촉 꼬리, 삼지창, 붉은 기운. o: {grin 0~1, look -1~1, point 0~1(오른손을 뻗어 가리킴), wing 펄럭임 세기} — 원점 = 몸 가운데 */
+function gyDevil(t, s = 1, o = {}) {
+  const R = '#E23B3B', R2 = '#B3202C', DK = '#3B1424', fl = Math.sin(t * 11) * (o.wing == null ? 1 : o.wing), gr = o.grin == null ? 1 : o.grin, lk = o.look || 0, pt = o.point || 0, tw = Math.sin(t * 3.4) * 10;
+  const wing = d => `<g transform="translate(${d * 30} -14) scale(${d} 1) rotate(${f1(-6 + fl * 14)})"><path d="M0 0 C18 -62 70 -100 140 -104 C122 -78 130 -60 144 -46 C112 -52 102 -36 106 -12 C82 -30 64 -18 62 8 C44 -12 22 -4 0 18 Z" fill="${DK}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M14 4 L110 -90 M30 8 L124 -52 M46 10 L104 -22" stroke="#6E2A48" stroke-width="4"/></g>`;
+  const tail = `M14 62 C72 112 134 72 124 ${f1(10 + tw)} C116 -30 154 -40 172 ${f1(-22 + tw)}`;
+  let h = `<g transform="scale(${f1(s * 1000) / 1000})"><circle cx="0" cy="-60" r="210" fill="url(#gyDevilGlow)"/>` + wing(-1) + wing(1);
+  h += `<path d="${tail}" fill="none" stroke="${INK}" stroke-width="17" stroke-linecap="round"/><path d="${tail}" fill="none" stroke="${R}" stroke-width="8" stroke-linecap="round"/>` +
+    `<g transform="translate(172 ${f1(-22 + tw)}) rotate(28)"><path d="M0 -30 L22 8 L0 0 L-22 8 Z" fill="${R}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/></g>`;
+  h += `<path d="M-16 74 L-24 114 L-44 118 M16 74 L24 114 L44 118" stroke="${INK}" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  h += `<path d="M-46 -12 Q-58 70 -24 82 L24 82 Q58 70 46 -12 Q0 -32 -46 -12 Z" fill="${R}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/><path d="M-20 10 Q0 22 20 10" stroke="${R2}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  // 삼지창(왼손)
+  h += `<g transform="translate(-82 26) rotate(${f1(-6 + Math.sin(t * 2) * 3)})"><path d="M0 124 L0 -168" stroke="${INK}" stroke-width="15" stroke-linecap="round"/><path d="M0 124 L0 -168" stroke="#6B4A3A" stroke-width="7" stroke-linecap="round"/>` +
+    `<path d="M-32 -196 L-32 -150 Q0 -132 32 -150 L32 -196 M0 -150 L0 -216" stroke="${INK}" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M-32 -196 L-32 -150 Q0 -132 32 -150 L32 -196 M0 -150 L0 -216" stroke="#D5DEE8" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` +
+    `<path d="M-32 -222 l-11 22 h22 Z M0 -242 l-11 22 h22 Z M32 -222 l-11 22 h22 Z" fill="#D5DEE8" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/></g>`;
+  h += `<path d="M-40 4 Q-64 18 -82 26" stroke="${INK}" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="-82" cy="26" r="14" fill="${R}" stroke="${INK}" stroke-width="6"/>`;
+  const hx = lerp(52, 128, pt), hy = lerp(-58, -40, pt) + (pt < 0.5 ? Math.sin(t * 5) * 3 : 0);
+  h += `<path d="M40 0 Q${f1(hx * 0.7)} ${f1(hy * 0.4)} ${f1(hx)} ${f1(hy)}" stroke="${INK}" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="${f1(hx)}" cy="${f1(hy)}" r="14" fill="${R}" stroke="${INK}" stroke-width="6"/>` + (pt > 0.5 ? `<path d="M${f1(hx + 8)} ${f1(hy - 4)} l22 -8" stroke="${INK}" stroke-width="9" stroke-linecap="round"/>` : '');
+  // 머리
+  h += `<g transform="translate(${f1(lk * 6)} -104)">` +
+    [-1, 1].map(d => `<path d="M${d * 38} -44 C${d * 62} -78 ${d * 60} -118 ${d * 34} -140 C${d * 40} -106 ${d * 22} -78 ${d * 12} -60 Z" fill="#F4E6D0" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/><path d="M${d * 50} -84 q${d * -10} 6 ${d * -18} 2 M${d * 50} -106 q${d * -10} 6 ${d * -16} 2" stroke="#C9B48E" stroke-width="4" fill="none"/>` +
+      `<path d="M${d * 62} -8 L${d * 102} -32 L${d * 64} 20 Z" fill="${R}" stroke="${INK}" stroke-width="7" stroke-linejoin="round"/>`).join('') +
+    `<path d="M-68 -10 Q-68 -66 0 -68 Q68 -66 68 -10 Q64 40 0 66 Q-64 40 -68 -10 Z" fill="${R}" stroke="${INK}" stroke-width="8" stroke-linejoin="round"/>` +
+    `<path d="M-30 52 L0 98 L30 52 Q0 66 -30 52 Z" fill="${DK}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
+    [-1, 1].map(d => `<path d="M${d * 46} -14 Q${d * 28} -26 ${d * 10} -8 Q${d * 28} 2 ${d * 46} -14 Z" fill="#FFE14A" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><ellipse cx="${f1(d * 27 + lk * 4)}" cy="-11" rx="3.6" ry="8" fill="${INK}"/>` +
+      `<path d="M${d * 52} -36 L${d * 8} -18" stroke="${INK}" stroke-width="10" stroke-linecap="round"/>`).join('') +
+    `<path d="M-42 ${f1(16 - 2 * gr)} Q0 ${f1(20 + 32 * gr)} 42 ${f1(16 - 2 * gr)} Q0 ${f1(26 + 6 * gr)} -42 ${f1(16 - 2 * gr)} Z" fill="#4A0F1E" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
+    (gr > 0.3 ? `<path d="M-20 ${f1(19 + 3 * gr)} l7 13 l6 -12 Z M8 ${f1(19 + 3 * gr)} l6 12 l7 -13 Z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>` : '') +
+    `<path d="M-50 18 q-8 6 -6 14 M50 18 q8 6 6 14" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
+  return h + `</g>`;
+}
+/* 나타날 때의 검붉은 연기 */
+function gyPoof(t, t0, x, y, s = 1) { const u = gfK(t0, t0 + 0.7, t); if (u <= 0 || u >= 1) return ''; const e = easeOut(u);
+  return Array.from({ length: 8 }, (_, i) => { const a = i / 8 * Math.PI * 2 + 0.3, r = (30 + 140 * e) * s; return `<circle cx="${f1(x + Math.cos(a) * r)}" cy="${f1(y + Math.sin(a) * r * 0.7 - 40 * e * s)}" r="${f1((46 - 26 * u) * s)}" fill="${i % 2 ? '#5A2A3E' : '#7A3A52'}" opacity="${f1((1 - u) * 0.85 * 100) / 100}"/>`; }).join(''); }
 /* 투명해짐: k 0(보임)~1(점선 테두리만) */
 const gyGhost = (inner, k) => k <= 0.01 ? inner : `<g opacity="${f1((1 - 0.88 * k) * 100) / 100}">${inner}</g><g filter="url(#gyOutline)" mask="url(#gyStripes)" opacity="${f1(Math.min(1, k * 1.4) * 100) / 100}">${inner}</g>`;
 
@@ -82,9 +111,9 @@ function gySheep(x, y, s, t, seed = 0) { const b = Math.abs(Math.sin(t * 2 + see
 /* ---------- HUD(카메라 밖) ---------- */
 function gyHud(lt, o = {}) {
   const sec = Math.max(0, 300 - Math.floor(o.clock || 0)), txt = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
-  let h = fkAt(380, 64, gfChip('STAGE · 인생 결정짓는 최종 시험', { size: 30, bg: GFC.sun }), (o.kS == null ? 1 : o.kS) * 1.2, -2);
+  let h = fkAt(420, 64, gfChip('STAGE · 인생 결정짓는 최종 시험', { size: 34, bg: GFC.sun }), (o.kS == null ? 1 : o.kS) * 1.2, -2);
   const hp = o.hp == null ? 12 : o.hp, sh = o.hpT != null ? gfShake(lt, o.hpT, 9, 0.3) : [0, 0];
-  h += fkAt(340 + sh[0], 158 + sh[1], gfPanel(470, 74, { r: 30 }) + gfT(-205, 11, '멘탈 HP', 28, GFC.navy, { anchor: 'start' }) + `<g transform="translate(-72 0)">${gfBar(180, hp / 100, { col: hp < 30 ? '#FF5A5A' : GFC.mint, h: 24 })}</g>` + gfT(218, 11, `${Math.round(hp)}/100`, 28, hp < 30 ? '#E5484D' : GFC.navy, { anchor: 'end' }), (o.kH == null ? 1 : o.kH) * 1.2);
+  h += fkAt(356 + sh[0], 162 + sh[1], gfPanel(500, 80, { r: 32 }) + gfT(-222, 12, '멘탈 HP', 32, GFC.navy, { anchor: 'start' }) + `<g transform="translate(-72 0)">${gfBar(170, hp / 100, { col: hp < 30 ? '#FF5A5A' : GFC.mint, h: 26 })}</g>` + gfT(234, 12, `${Math.round(hp)}/100`, 32, hp < 30 ? '#E5484D' : GFC.navy, { anchor: 'end' }), (o.kH == null ? 1 : o.kH) * 1.2);
   const pulse = o.tT != null ? gfBeat(lt, o.tT, 0.2, 4, 7) : 1;
   h += fkAt(1630, 104, gfPanel(380, 120, { r: 34 }) + `<g transform="translate(-130 0)">${gfIcon('clock', 1.15, lt)}</g>` + gfT(-80, -14, '남은 시간', 26, '#6B7280', { anchor: 'start', wt: 800 }) + gfT(-80, 36, txt, 54, sec < 300 && sec % 2 ? '#E5484D' : '#E5484D', { anchor: 'start' }), (o.kT == null ? 1 : o.kT) * pulse * 1.2);
   return h;
@@ -110,47 +139,55 @@ function gyBackRoom(t, o = {}) { // 시험장 뒤쪽 벽(제로 얼굴 쪽에서
 }
 function gyExaminees(t, o = {}) {
   let h = '';
-  [[330, 0, 'z결심'], [620, 4, 'z멍'], [1300, 5, 'z결심'], [1590, 7, 'z당황']].forEach(([x, i, ex], k) => {
+  [[300, 0, 'z결심'], [590, 4, 'z멍'], [1350, 5, 'z결심'], [1630, 7, 'z당황']].forEach(([x, i, ex], k) => {
     const wr = Math.sin(t * 6 + k * 2.1) * 2.5;
-    const fx = o.glowOthers ? (() => `<circle cx="236" cy="190" r="${f1(46 + 8 * Math.sin(t * 4 + k))}" fill="url(#gyLensGlow)" opacity="${f1(o.glowOthers * (k % 2 ? 0.9 : 0) * 100) / 100}"/>`) : null;
+    const fx = o.glowOthers ? (() => (k === 1 || k === 2) ? `<circle cx="236" cy="190" r="${f1(70 + 10 * Math.sin(t * 4 + k))}" fill="url(#gyLensGlow)" opacity="${f1(o.glowOthers * 100) / 100}"/>` + gyGlassFx(o.glowOthers)() : '') : null;
     h += gfActor(spPass(i), { x, y: 800, s: 0.6, t, pose: '책상', ex: fEx(ex), look: [0, 0.7], seed: 20 + k, headFx: fx }, { dy: wr * 0.4 }) + gyDesk(x, 806, 0.6, {});
   });
   return h;
 }
-/* 제로 시점 시험지(전체 화면). o: {typ 0~1 정답 입력, ar 0~1 파란 화면, shake, sweat, hand} */
+/* 제로 시점 시험지(전체 화면). o: {typ 0~1 정답 입력, ar 0~1 파란 화면, shake, sweat}
+   문제와 답은 실제 글자(운영자 2026-11-16 "문제는 정말 문제를 보여주고 답변도 그에 맞게"). 답은 지자체 가스 누출 행동 요령(밸브 잠금·환기·전기 기구 조작 금지)과 맞춤. */
+const GY_Q = ['5. 작업장에서 가스 냄새가 난다.', '가장 먼저 해야 할 조치 3가지를 쓰시오. (15점)'];
+const GY_ANS = ['① 가스 밸브(콕·중간밸브)를 잠근다.', '② 창문과 문을 열어 환기한다.', '③ 전기 스위치·환풍기는 만지지 않는다.'];
 function gyPovPaper(t, lt, o = {}) {
   const sh = o.shake ? [Math.sin(t * 61) * 6 * o.shake, Math.cos(t * 47) * 4 * o.shake] : [0, 0];
   let h = gfFull('#C99E66') + `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#gfDots)" opacity=".25"/>`;
-  h += `<g transform="rotate(-2 960 540)"><rect x="372" y="34" width="1180" height="1150" rx="12" fill="${GFC.navy}" opacity=".2"/><rect x="360" y="20" width="1180" height="1150" rx="12" fill="#FFFDF5" stroke="${INK}" stroke-width="8"/>` +
-    gfT(950, 108, '자격증 시험 · 2교시', 40, '#6B7280', { wt: 800 }) + `<line x1="420" y1="140" x2="1480" y2="140" stroke="#C9D0DA" stroke-width="4"/>` +
-    gfT(420, 230, '서술형 5. 다음 상황에서 가장 알맞은 조치를 쓰시오. (20점)', 38, GFC.navy, { anchor: 'start', wt: 800 }) +
-    `<rect x="420" y="276" width="1060" height="470" rx="14" fill="#fff" stroke="#9AA6B8" stroke-width="5" stroke-dasharray="16 10"/>`;
-  for (let r = 0; r < 5; r++) h += `<line x1="450" y1="${356 + r * 80}" x2="1450" y2="${356 + r * 80}" stroke="#E3E8EF" stroke-width="3"/>`;
-  if (o.typ > 0) { // 정답 글자(파란 막대로) 타이핑
-    let n = Math.floor(o.typ * 46), k = 0, last = [470, 340];
-    for (let r = 0; r < 5 && k < n; r++) { let x = 470; if (r === 0) { h += gfT(470, 352, '답)', 36, '#2E8BFF'); x = 540; }
-      for (let c = 0; c < 10 && k < n; c++, k++) { const w = 46 + 70 * hash(r * 13 + c * 7.1); if (x + w > 1440) break; h += `<rect x="${f1(x)}" y="${322 + r * 80}" width="${f1(w)}" height="26" rx="13" fill="#2E8BFF" opacity=".85"/>`; x += w + 18; last = [x, 322 + r * 80]; } }
-    if (Math.floor(t * 4) % 2) h += `<rect x="${f1(last[0])}" y="${last[1] - 6}" width="14" height="38" rx="3" fill="#2E8BFF"/>`;
-  }
+  h += `<g transform="rotate(-1.5 960 600)"><rect x="372" y="164" width="1180" height="1100" rx="12" fill="${GFC.navy}" opacity=".2"/><rect x="360" y="150" width="1180" height="1100" rx="12" fill="#FFFDF5" stroke="${INK}" stroke-width="8"/>` +
+    gfT(950, 236, '자격증 시험 · 실기 2교시', 36, '#6B7280', { wt: 800 }) + `<line x1="420" y1="262" x2="1480" y2="262" stroke="#C9D0DA" stroke-width="4"/>` +
+    gfT(430, 334, GY_Q[0], 46, GFC.navy, { anchor: 'start' }) + gfT(430, 396, GY_Q[1], 46, GFC.navy, { anchor: 'start' }) +
+    `<rect x="420" y="430" width="1060" height="380" rx="14" fill="#fff" stroke="#9AA6B8" stroke-width="5" stroke-dasharray="16 10"/>`;
+  for (let r = 0; r < 3; r++) h += `<line x1="450" y1="${528 + r * 100}" x2="1450" y2="${528 + r * 100}" stroke="#E3E8EF" stroke-width="3"/>`;
   h += `</g>`;
-  if (o.sweat) for (let i = 0; i < 6; i++) { const p = ((lt * 0.9 + hash(i * 3.3)) % 1), x = 520 + hash(i * 7.7) * 880, y = -40 + p * 900;
-    h += `<g transform="translate(${f1(x)} ${f1(y)}) scale(2)"><path d="M0 -26 Q-16 0 -10 10 Q0 20 10 10 Q16 0 0 -26 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="4"/></g>` + (p > 0.85 ? `<ellipse cx="${f1(x)}" cy="${f1(y + 24)}" rx="${f1(30 * (p - 0.85) / 0.15)}" ry="8" fill="#9ED8FF" opacity=".6"/>` : ''); }
-  // 두 손(동그라미) + 몽당연필
+  if (o.sweat) for (let i = 0; i < 5; i++) { const p = ((lt * 0.9 + hash(i * 3.3)) % 1), x = 520 + hash(i * 7.7) * 860, y = 470 + p * 310;
+    h += `<g transform="translate(${f1(x)} ${f1(y)}) scale(2)"><path d="M0 -26 Q-16 0 -10 10 Q0 20 10 10 Q16 0 0 -26 Z" fill="#9ED8FF" stroke="${INK}" stroke-width="4"/></g>` + (p > 0.85 ? `<ellipse cx="${f1(x)}" cy="${f1(y + 40)}" rx="${f1(40 * (p - 0.85) / 0.15)}" ry="9" fill="#9ED8FF" opacity=".6"/>` : ''); }
+  // 두 손(동그라미) + 몽당연필: 답 칸 아래, 글자를 가리지 않게. 화면 아래에서 남색 소매가 올라온다
+  h += `<path d="M${f1(1260 + sh[0])} 1300 L${f1(1330 + sh[0])} ${f1(950 + sh[1])} L${f1(1420 + sh[0])} ${f1(960 + sh[1])} L${f1(1420 + sh[0])} 1300 Z" fill="#3D4F7A" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/><path d="M440 1300 L470 990 L580 990 L600 1300 Z" fill="#3D4F7A" stroke="${INK}" stroke-width="10" stroke-linejoin="round"/><path d="M470 1000 L580 1000" stroke="#fff" stroke-width="16"/>`;
   const hk = o.shake || 0, rot = Math.sin(t * 55) * 7 * hk;
-  h += `<g transform="translate(${f1(1270 + sh[0])} ${f1(820 + sh[1])}) rotate(${f1(rot)})"><g transform="scale(3.2)">${GY_PENCIL}</g><circle cx="0" cy="0" r="66" fill="#fff" stroke="${INK}" stroke-width="12"/></g>`;
-  h += `<circle cx="${f1(560 - sh[0] * 0.5)}" cy="${f1(930 + sh[1] * 0.5)}" r="66" fill="#fff" stroke="${INK}" stroke-width="12"/>`;
-  if (hk > 0) h += [0, 1, 2].map(i => `<path d="M${1370 + i * 18} ${740 - i * 26} q14 -10 0 -22 q-14 -10 0 -22" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>`).join('');
+  h += `<g transform="translate(${f1(1360 + sh[0])} ${f1(930 + sh[1])}) rotate(${f1(rot)})"><g transform="scale(3.2)">${GY_PENCIL}</g><circle cx="0" cy="0" r="66" fill="#fff" stroke="${INK}" stroke-width="12"/></g>`;
+  h += `<circle cx="${f1(520 - sh[0] * 0.5)}" cy="${f1(960 + sh[1] * 0.5)}" r="66" fill="#fff" stroke="${INK}" stroke-width="12"/>`;
+  if (hk > 0) h += [0, 1, 2].map(i => `<path d="M${1460 + i * 18} ${850 - i * 26} q14 -10 0 -22 q-14 -10 0 -22" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>`).join('');
+  if (o.typ > 0) { // 정답: 렌즈 앞 공중에 떠오른 반투명 화면(시험지 위가 아님), 한 글자씩
+    const tot = GY_ANS.reduce((q, x) => q + x.length, 0); let n = Math.floor(o.typ * tot), last = [500, 560]; const bob = Math.sin(t * 2.2) * 6, pk = Math.min(1, o.typ * 6);
+    let f = `<rect x="470" y="516" width="1000" height="330" rx="26" fill="${GFC.navy}" opacity=".18"/>` +
+      `<rect x="450" y="456" width="1000" height="330" rx="26" fill="#0E2A52" fill-opacity=".74" stroke="#3FA9FF" stroke-width="6"/><rect x="462" y="468" width="976" height="306" rx="18" fill="none" stroke="#7FD8FF" stroke-width="2" opacity=".6"/>` +
+      `<rect x="474" y="430" width="200" height="50" rx="25" fill="#3FA9FF" stroke="${INK}" stroke-width="5"/>` + gfT(574, 466, 'AI 정답', 30, '#fff');
+    GY_ANS.forEach((ln, r) => { if (n <= 0) return; const sub = ln.slice(0, n); n -= ln.length;
+      f += gfT(500, 560 + r * 92, sub, 50, '#DFF6FF', { anchor: 'start' }); last = [500 + gfTextW(sub, 50) + 8, 560 + r * 92]; });
+    if (o.typ < 1 && Math.floor(t * 4) % 2) f += `<rect x="${f1(last[0])}" y="${last[1] - 42}" width="12" height="52" rx="3" fill="#7FFFC8"/>`;
+    h += `<g transform="translate(0 ${f1(bob - 30 * (1 - pk))})" opacity="${f1(pk * 100) / 100}">${f}</g>`;
+  }
   if (o.ar > 0) { // 파란 AR 덮개: 격자 + 훑는 선 + 모서리 괄호
-    const k = o.ar, sy = 40 + ((lt * 0.75) % 1) * 960;
+    const k = o.ar, sy = 140 + ((lt * 0.75) % 1) * 860;
     h += `<g opacity="${f1(k * 100) / 100}"><rect x="-600" y="-600" width="3120" height="2280" fill="#2E8BFF" opacity=".1"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#gyGrid)"/>` +
       `<rect x="-600" y="${f1(sy - 4)}" width="3120" height="8" fill="#7FD8FF" opacity=".75"/><rect x="-600" y="${f1(sy - 60)}" width="3120" height="56" fill="#7FD8FF" opacity=".12"/>` +
-      [[404, 258, 1, 1], [1500, 258, -1, 1], [404, 770, 1, -1], [1500, 770, -1, -1]].map(([x, y, dx, dy]) => `<path d="M${x} ${y + dy * 60} L${x} ${y} L${x + dx * 60} ${y}" stroke="#3FA9FF" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`).join('') + `</g>`;
+      [[404, 412, 1, 1], [1500, 412, -1, 1], [404, 828, 1, -1], [1500, 828, -1, -1]].map(([x, y, dx, dy]) => `<path d="M${x} ${y + dy * 60} L${x} ${y} L${x + dx * 60} ${y}" stroke="#3FA9FF" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`).join('') + `</g>`;
   }
   return h;
 }
 /* 안경 너머로 보는 테두리(제로 시점) */
-const gyLensView = (k = 1) => `<path fill-rule="evenodd" fill="${GFC.navy}" opacity="${f1(0.88 * k * 100) / 100}" d="M-700 -700 H2620 V1780 H-700 Z M80 60 H898 Q948 60 948 110 V1010 Q948 1060 898 1060 H80 Q30 1060 30 1010 V110 Q30 60 80 60 Z M1022 60 H1840 Q1890 60 1890 110 V1010 Q1890 1060 1840 1060 H1022 Q972 1060 972 1010 V110 Q972 60 1022 60 Z"/>` +
-  `<path d="M948 120 Q960 108 972 120" stroke="${GFC.navy}" stroke-width="18" fill="none" opacity="${f1(0.88 * k * 100) / 100}"/>`;
+const gyLensView = (k = 1) => `<path fill-rule="evenodd" fill="${GFC.navy}" opacity="${f1(0.8 * k * 100) / 100}" d="M-700 -700 H2620 V1780 H-700 Z M140 40 H1780 Q1880 40 1880 140 V1000 Q1880 1100 1780 1100 H140 Q40 1100 40 1000 V140 Q40 40 140 40 Z"/>` +
+  `<rect x="40" y="40" width="1840" height="1060" rx="100" fill="none" stroke="#7FD8FF" stroke-width="6" opacity="${f1(0.6 * k * 100) / 100}"/>`;   // 오른쪽 렌즈 하나로 보는 테두리(가운데 띠 없음)
 /* 앞쪽(칠판 쪽) 교실: 제로가 고개를 들어 보는 쪽 */
 function gyFrontRoom(t, clock = 0) {
   let h = gfRoom({ fy: 760, wall: '#E4EEF2', wall2: '#CFE0E8', floor: '#D9C3A0', base: '#F3F7F9', dots: false });
@@ -187,31 +224,26 @@ gyexamScene = function (t, lt, a, runLt) {
     if (lt < tE) {
       cam = camLerp((lt - 0) / 0.7, [960, 520, 1.5], [960, 500, 1.6]);
       const raise = lt > tK - 0.35, glow = gfK(tK, tK + 0.35, lt);
-      w = room() + gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: raise ? 'gy톡' : 'gy쓰기', ex: lt > tK ? 'z반짝' : lt > tB ? 'z결심' : 'z멘붕', look: [0.2, -0.2], holdR: raise ? null : GY_PENCIL, glow, sweat: lt < tK }, lt > tK ? gfJelly(lt, tK, 0.08, 5, 8) : {}, { extra: raise ? `<g transform="translate(90 -190) rotate(-20)">${GY_PENCIL}</g>` : '' });
+      w = room() + gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: raise ? 'gy톡' : 'gy쓰기', ex: lt > tK ? 'z반짝' : lt > tB ? 'z결심' : 'z멘붕', look: [0.2, -0.2], holdR: GY_PENCIL, glow, sweat: lt < tK }, lt > tK ? gfJelly(lt, tK, 0.08, 5, 8) : {}, {});
       const tp = [ZX + 112, FY - 382]; w += gfRing(lt, tK, tp[0], tp[1], 10, 90, '#7FD8FF', 10, 0.4) + gfStarBurst(lt, tK, tp[0], tp[1], { n: 6, r0: 20, r1: 110, cols: ['#7FD8FF', '#fff', GFC.sun] }) + gfPlus(lt, tK, tp[0] + 80, tp[1] - 40, '톡!', { size: 54, col: '#3FA9FF' });
       h += qCam(cam, w);
     } else {
-      const ar = gfK(tE, tE + 0.4, lt), typ = gfK(tA, D - 0.2, lt);
+      const ar = gfK(tE, tE + 0.4, lt), typ = gfK(tA - 0.1, D - 0.9, lt);
       h += gyPovPaper(t, lt, { ar, typ }) + gyLensView(0.55 * ar);
-      if (lt > tE + 0.2) h += fkAt(760, 880, gyAR(560, 'AI 글래스 · 스텔스 모드 ON', { size: 34 }), gfIn(lt, tE + 0.2, 3.2, 0.45), -2);
-      if (lt > tA) h += fkAt(1300, 290, gfChip('정답 입력 중…', { size: 34, bg: '#BFF0FF' }), gfIn(lt, tA, 3.4, 0.45), 3);
+      if (lt > tE + 0.2) h += fkAt(900, 900, gyAR(640, 'AI 글래스 · 스텔스 모드 ON', { size: 40 }), gfIn(lt, tE + 0.2, 3.2, 0.45), -2);
     }
     hud.hp = lt > tA ? 12 + 30 * gfK(tA, D, lt) : 9; hud.hpT = tA;
-  } else if (ph === 3) { // 감독관은 눈치채지 못하고, 적발 확률은 0.01%
-    const tN = gyW(a, '눈치', 0.75), tP = gyW(a, '0', 2.75), u = lt / D;
-    let r = gyFrontRoom(t, clock);
-    const px = lerp(500, 900, u), wk = gfWalk(px * 1.3, 0.8), PS = 1.0, PY = 800;
-    r += gfActor(GY_PROC, { x: px, y: PY, s: PS, t, pose: wk.pose, ex: fEx(lt > tN ? 'z멍' : 'z의심'), look: [Math.sin(lt * 1.6) * 0.7, 0], seed: 40 }, { sy: wk.sy, dy: wk.dy });
-    if (lt > tN) r += gfEmote(lt, tN, px + 100, PY - 590 * PS, 'dots', { hold: 2.2 });
-    // 앞사람 뒤통수 둘 + 내 책상 끝
-    r += [[420, 0], [1560, 1]].map(([x, i]) => `<circle cx="${x}" cy="900" r="120" fill="${['#3A2E2A', '#2B2B2B'][i]}" stroke="${INK}" stroke-width="8"/><path d="M${x - 190} 1100 Q${x - 180} 990 ${x} 990 Q${x + 180} 990 ${x + 190} 1100 Z" fill="${['#5E6A8C', '#8FB8E8'][i]}" stroke="${INK}" stroke-width="8"/>`).join('');
-    // AR: 감독관 표시
-    const ry0 = PY - 560 * PS - 30, k = gfK(0, 0.3, lt);
-    r += `<g opacity="${f1(k * 100) / 100}">` + [[px - 150, ry0, 1, 1], [px + 150, ry0, -1, 1], [px - 150, PY + 20, 1, -1], [px + 150, PY + 20, -1, -1]].map(([x, y, dx, dy]) => `<path d="M${f1(x)} ${f1(y + dy * 50)} L${f1(x)} ${f1(y)} L${f1(x + dx * 50)} ${f1(y)}" stroke="#3FA9FF" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`).join('') +
-      fkAt(px, ry0 - 50, gyAR(220, '감독관', { size: 32 })) + `</g>`;
-    h += `<g>${r}</g><rect x="-600" y="-600" width="3120" height="2280" fill="#2E8BFF" opacity=".08"/><rect x="-600" y="-600" width="3120" height="2280" fill="url(#gyGrid)" opacity=".5"/>` + gyLensView(0.55);
-    if (lt > tP - 0.2) { const k2 = gfIn(lt, tP - 0.2, 3, 0.45);
-      h += fkAt(1400, 470, gyAR(560, '', {}) + gfT(0, 12, '감독관 적발 확률', 36, '#BFF0FF'), k2) + fkAt(1400, 600, gfT(0, 0, '0.01%', 120, '#7FFFC8', { sw: 14, stroke: '#0E2A52' }), k2 * gfBeat(lt, tP + 0.4, 0.18, 4, 7)); }
+  } else if (ph === 3) { // 감독관은 눈치채지 못하고(하품하며 제로 뒤를 지나감), 적발 확률은 0.01%
+    const tN = gyW(a, '눈치', 0.75), tP = gyW(a, '0', 2.75), u = gfK(0, D, lt);
+    cam = camLerp(u, [960, 600, 1.08], [980, 580, 1.16]);
+    const px = lerp(300, 1560, easeInOut(u)), wk = gfWalk(px * 1.1, 0.8), yawn = lt > tN - 0.2 && lt < tN + 1.6, near = px > 700 && px < 1250;
+    const proc = gfActor(GY_PROC, { x: px, y: 866, s: 0.82, t, pose: wk.pose, ex: fEx(yawn ? 'z하품' : 'z졸음'), look: [0.6, -0.2], seed: 40 }, { sy: wk.sy, dy: wk.dy }) +
+      (yawn ? gfEmote(lt, tN - 0.2, px + 90, 866 - 560 * 0.82, 'zzz', { hold: 1.6 }) : '');
+    w = gyBackRoom(t, { clock }) + gyExaminees(t) + proc +
+      gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: 'gy쓰기', ex: near ? 'z민망' : 'z결심', look: [lerp(-0.7, 0.7, u), -0.1], holdR: GY_PENCIL, glow: 0.75 + 0.25 * Math.sin(t * 6), sweat: near }, { dy: Math.sin(lt * 14) * 1 });
+    h += qCam(cam, w);
+    if (lt > tP - 0.2) { const k2 = gfIn(lt, tP - 0.2, 3, 0.45);   // 게임 알림(화면 UI)
+      h += fkAt(1460, 330, gyAR(520, '', {}) + gfT(0, 14, '감독관 적발 확률', 38, '#BFF0FF'), k2) + fkAt(1460, 456, gfT(0, 0, '0.01%', 120, '#7FFFC8', { sw: 14, stroke: '#0E2A52' }), k2 * gfBeat(lt, tP + 0.4, 0.18, 4, 7)); }
     hud.hp = 42;
   } else if (ph === 4) { // 자, 솔직하게 한번 상상해 볼까요? — 멈춤 + 제로가 시청자를 본다
     const tS = gyW(a, '솔직', 0.55), tI = gyW(a, '상상', 1.3);
@@ -232,4 +264,10 @@ gyexamScene = function (t, lt, a, runLt) {
     hud.hp = 42;
   }
   return h + gyHud(lt, hud);
+};
+
+/* 제목 카드: [제로의 세계] 네온(기존) + 이번 편 주제 꼬리표 */
+CAMS['gytitle'] = 'fixed';
+gytitleScene = function (t, lt, a) {
+  return ftitleScene(t, lt, a) + fkAt(960, 800, gfChip('기게스의 반지 × AI 안경', { size: 64, bg: '#FFF4FB' }) + `<g transform="translate(-480 -4) scale(.75)">${gyRing(t, 0)}</g><g transform="translate(490 -4) scale(.72)">${gyGlasses(1, t)}</g>`, gfIn(lt, 0.35, 3.2, 0.45));
 };

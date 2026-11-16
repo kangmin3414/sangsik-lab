@@ -30,7 +30,7 @@ def trail_sum(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(le
 vad = (np.abs(voice) > 0.006).astype(float)
 act = (trail_sum(vad, int(0.5 * SR)) > 0) | (trail_sum(vad[::-1], int(0.15 * SR))[::-1] > 0)
 k = int(0.12 * SR); act = trail_sum(act.astype(float), k) / k
-bed *= (1.0 - 0.74 * act)
+bed *= (1.0 - 0.8 * act)
 
 sfx = np.zeros(N)
 def put(t, w, g=1.0):
@@ -53,8 +53,8 @@ tH = W('o2', '손은', 1.3) - 0.1; put(tH - 0.15, S.whoosh(0.3, 600, 4000), 0.1)
 for i in range(6): put(tH + 0.1 + i * 0.16, S.tick(700 + (i % 2) * 120), 0.04)       # 덜덜
 tK = W('o3', '톡', 1.75); put(tK, S.blip(1760), 0.14); put(tK + 0.05, S.sparkle(4, 0.35), 0.07)
 tE = W('o3', '눈앞', 2.6) - 0.15; put(tE, S.whoosh(0.45, 1500, 7000), 0.12); put(tE + 0.25, S.blip(1320), 0.08); put(tE + 0.35, S.blip(1760), 0.08)
-tA = W('o3', '정답', 3.4); put(tA, S.letters(26, 0.07, 900), 0.05)
-c = A('o4'); steps(c + 0.1, E1('o4') + 0.2, 0.45, 0.07); put(W('o4', '눈치', 0.75) + 0.1, S.letters(3, 0.18, 600), 0.05)
+tA = W('o3', '정답', 3.4); put(tA - 0.1, S.letters(18, 0.065, 900), 0.05)
+c = A('o4'); steps(c + 0.1, E1('o4') + 0.2, 0.45, 0.07); put(W('o4', '눈치', 0.75) - 0.2, S.whoosh(0.9, 180, 700), 0.1)   # 감독관 발소리 + 하품
 tP = W('o4', '0', 2.75); put(tP - 0.2, S.pop(900), 0.08); put(tP + 0.4, S.ding(), 0.08)
 c = A('o5'); put(c, S.blip(523), 0.12); put(c + 0.08, S.blip(392), 0.12); put(W('o5', '상상', 1.3), S.question(), 0.1)
 tN = W('o6', '아무도', 0.15)
@@ -63,12 +63,12 @@ put(W('o6', '100', 1.15) - 0.1, S.gauge(0.0, 1.0), 0.06); put(W('o6', '여러분
 tQ = W('o6', '쓰시겠', 5.1)
 for i in range(4): put(tQ + i * 0.455, S.blip(990), 0.06)
 # ======== 제목 카드 ========
-iris('k0'); put(A('k0') + 0.15, S.hum(1.5), 0.6); put(A('k0') + 0.25, S.blip(660), 0.06); iris('g1')
+iris('k0'); put(A('k0') + 0.15, S.hum(1.5), 0.6); put(A('k0') + 0.25, S.blip(660), 0.06); put(A('k0') + 0.35, S.pop(880), 0.08); iris('g1')
 # ======== 1단계: 뉴스 → 그리스 ========
 for k2, fb in (('AI', 0.3), ('시험', 1.65), ('부정', 2.1)): put(W('g1', k2, fb) - 0.05, S.land(), 0.14)
 put(W('g1', '논란', 2.8), S.stamp(), 0.22)
 c = A('g2'); put(c + 0.25, S.whoosh(0.5, 400, 3000), 0.1); put(W('g2', '질문', 1.45) - 0.2, S.pop(700), 0.08)
-tY = W('g2', '2400', 1.99) - 0.1; put(tY, S.whoosh(1.6, 200, 2500), 0.12); put(tY, S.letters(14, 0.1, 1600)[::-1].copy(), 0.04)
+tY = W('g2', '2400', 1.99) - 0.1; put(tY, S.whoosh(1.0, 200, 2500), 0.12); put(tY, S.letters(9, 0.1, 1600)[::-1].copy(), 0.04); put(tY + 0.9, S.land(), 0.14)
 tG = W('g2', '고대', 3.5) - 0.1; put(tG, S.sparkle(6, 0.6), 0.08); put(tG + 0.4, S.pop(760), 0.07)
 put(W('g2', '시작', 5.3), S.pop(880), 0.06)
 put(W('g3', '플라톤', 0.5) - 0.1, S.pop(760), 0.08); tKk = W('g3', '국가', 1.2) - 0.1; put(tKk, S.flip(), 0.12)
@@ -85,7 +85,7 @@ tKd = W('g5', '깨달은', 1.75); put(tKd - 0.2, S.ding(), 0.1); put(W('g5', '�
 tX = W('g5', '순식간', 3.85) - 0.15; bands_t = tX; put(tX - 0.2, S.bands(), 0.24); put(tX + 0.3, S.whoosh(0.6, 800, 6000), 0.1)
 put(tX + 0.35, S.question(), 0.05); put(tX + 0.55, S.question(), 0.05)
 tWk = W('g5', '왕을', 4.8); put(tWk, S.boing(220, 620, 0.3), 0.14); put(tWk + 0.4, S.land(), 0.1); put(tWk + 0.55, S.coin(), 0.08)
-tNn = W('g5', '나라를', 5.55); put(tNn + 0.1, S.stamp(), 0.2); put(E1('g5') + 0.1, S.clear(), 0.18)
+tNn = W('g5', '나라를', 5.55); put(tNn + 0.1, S.stamp(), 0.2); put(E1('g5') + 0.1, S.hurt(), 0.12); put(E1('g5') + 0.15, S.low(87, 1.0), 0.18)   # 축하 대신 씁쓸하게
 iris('g6'); tS = W('g6', '섬뜩', 1.5); put(tS - 0.3, S.low(98, 1.4), 0.3); put(tS, S.hum(1.6), 0.5); put(W('g6', '질문', 2.3) - 0.1, S.question(), 0.08)
 put(W('g7', '진짜', 1.6) - 0.3, S.pop(760), 0.08); put(W('g7', '아니면', 3.95), S.bang(), 0.08); put(W('g7', '보고', 5.4) - 0.2, S.pop(880), 0.08)
 bands('g8'); put(A('g8') + 0.05, S.pop(700), 0.07); put(W('g8', 'AI', 0.7) - 0.1, S.pop(880), 0.07); tB = W('g8', '바로', 1.45); put(tB, S.ding(), 0.12); put(tB + 0.05, S.sparkle(5, 0.4), 0.07)
@@ -93,7 +93,11 @@ put(E1('g8') + 0.05, S.pop(900), 0.06)
 iris('g9'); tVv = W('g9', '사라진', 1.07)
 for i in range(5): put(tVv + 0.3 + i * 0.12, S.pop(820 - i * 70), 0.06)
 tM = W('g9', '나만', 2.75); put(tM - 0.1, S.pop(640), 0.08); put(tM + 0.3, S.blip(1760), 0.05); put(tM + 0.45, S.blip(1760), 0.05)
-tTe = W('g9', '유혹', 5.4) - 0.1; put(tTe, S.boing(160, 420, 0.3), 0.1); tHh = W('g9', '고개', 6.15); put(tHh - 0.2, S.ghost(0.8), 0.08); put(tHh + 0.3, S.low(130, 1.2), 0.15)
+put(tM - 0.35, S.whoosh(0.35, 250, 1400), 0.08)                                  # 악마가 책상 뒤에서 엿봄
+tTe = W('g9', '유혹', 5.4) - 0.1; put(tTe + 0.05, S.sparkle(3, 0.25), 0.05)       # 눈이 번뜩
+tHh = W('g9', '고개', 6.15); put(tHh - 0.15, S.whoosh(0.6, 150, 1800), 0.16); put(tHh - 0.1, S.low(98, 1.1), 0.22)   # 펑 + 솟아오름
+for i in range(5): put(tHh + 0.35 + i * 0.18, S.whoosh(0.12, 300, 1200), 0.05)   # 날갯짓
+put(E1('g9') + 0.1, S.ghost(0.7), 0.06)
 
 mixd = voice * 1.0 + bed + sfx * 0.6
 if os.environ.get('GY_STEMS'): np.savez('/dev/shm/gy/stems.npz', voice=voice, bed=bed, sfx=sfx)
