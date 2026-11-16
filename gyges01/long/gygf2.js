@@ -118,11 +118,12 @@ gyfieldScene = function (t, lt, a) {
   sheep.forEach(([x, s, sd]) => { w += gySheep(x, FY + 10, s, t, sd); });
   // 땅이 갈라지고 반지가 솟음
   const crack = gfK(tC, tC + 0.4, lt);
-  if (crack > 0) w += `<path d="M1000 ${FY - 6} l40 20 l-30 18 l50 22" fill="none" stroke="${INK}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="${f1(crack * 100) / 100}"/><ellipse cx="1040" cy="${FY + 24}" rx="${f1(140 * crack)}" ry="${f1(34 * crack)}" fill="#FFE38A" opacity="${f1(0.6 * crack * (1 - gfK(tPk + 0.4, tPk + 1, lt)) * 100) / 100}"/>`;
+  if (crack > 0) w += `<path d="M960 ${FY - 2} L1010 ${FY - 14} L1040 ${FY + 2} L1080 ${FY - 12} L1120 ${FY} L1080 ${FY + 10} L1040 ${FY + 20} L1000 ${FY + 8} Z" fill="#3A2A1E" stroke="${INK}" stroke-width="7" stroke-linejoin="round" opacity="${f1(crack * 100) / 100}"/><ellipse cx="1040" cy="${FY + 24}" rx="${f1(140 * crack)}" ry="${f1(34 * crack)}" fill="#FFE38A" opacity="${f1(0.6 * crack * (1 - gfK(tPk + 0.4, tPk + 1, lt)) * 100) / 100}"/>`;
   // 기게스
   const gx = lerp(560, 860, gfK(0, tR, lt)), vis = gfK(tV, tV + 0.6, lt), holding = lt > tPk;
+  if (lt > tPk) w += `<g transform="translate(${f1(gx - 170)} ${FY - 8}) rotate(-84)">${GY_CROOK}</g>`;   // 지팡이는 바닥에 내려놓음
   const wk = lt < tR ? gfWalk(gx * 1.2, 0.8) : null;
-  const gg = gfActor(GY_GG, { x: gx, y: FY, s: 0.95, t, pose: wk ? wk.pose : holding ? '들기' : '서기', ex: fEx(lt > tPk ? 'z반짝' : lt > tC ? 'z충격' : 'z빵긋'), look: [0.6, lt > tC && lt < tPk ? 0.4 : -0.1], seed: 60, holdR: holding ? `<g transform="scale(.62)">${gyRing(t, lt > tIn ? gfK(tIn, tIn + 0.8, lt) : 0)}</g>` : GY_CROOK, holdL: holding ? GY_CROOK : null }, wk ? { sy: wk.sy, dy: wk.dy } : (lt > tC && lt < tC + 0.5 ? gfJelly(lt, tC, 0.12, 5, 8) : {}));
+  const gg = gfActor(GY_GG, { x: gx, y: FY, s: 0.95, t, pose: wk ? wk.pose : holding ? '들기' : '서기', ex: fEx(lt > tPk ? 'z반짝' : lt > tC ? 'z충격' : 'z빵긋'), look: [0.6, lt > tC && lt < tPk ? 0.4 : -0.1], seed: 60, holdR: holding ? `<g transform="scale(.62)">${gyRing(t, lt > tIn ? gfK(tIn, tIn + 0.8, lt) : 0)}</g>` : GY_CROOK }, wk ? { sy: wk.sy, dy: wk.dy } : (lt > tC && lt < tC + 0.5 ? gfJelly(lt, tC, 0.12, 5, 8) : {}));
   w += gyGhost(gg, vis);
   if (!holding && lt > tR - 0.3) w += fkAt(1040, FY - 40 - 160 * easeOut(gfK(tR - 0.3, tR + 0.3, lt)), `<g transform="scale(.7)">${gyRing(t, 0)}</g>`, 1) + gfRays(t, 1040, FY - 200, 160, GFC.sun, 10, 0.4);
   if (lt > tC) w += gfEmote(lt, tC, gx + 120, FY - 560, 'bang', { hold: 0.9 });

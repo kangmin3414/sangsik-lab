@@ -21,7 +21,7 @@ gyretryScene = function (t, lt, a) {
   h += fkAt(960, 520, gfPanel(620, 150, { r: 75, bg: GFC.sun, sw: 9 }) + gfT(0, 26, '▶ 다시 하기', 72, GFC.navy), gfIn(lt, 0.2, 3, 0.45) * (press ? 0.92 : lt > tc ? gfBeat(lt, tc + 0.15, 0.12, 4, 8) : 1));
   const cx = lerp(1500, 1150, easeOut(gfK(0.3, tc, lt))), cy = lerp(860, 560, easeOut(gfK(0.3, tc, lt)));
   h += `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(1.4)">${GY_CURSOR}</g>` + gfRing(lt, tc, 1150, 560, 10, 120, '#fff', 10, 0.35);
-  if (lt > tc + 0.2) { h += fkAt(960, 740, gfChip('◀◀ 시험 종료 5분 전으로', { size: 44, bg: '#fff' }), gfIn(lt, tc + 0.2, 3.2, 0.45));
+  if (lt > tc + 0.2) { h += fkAt(960, 740, gfChip('◀◀ 시험 종료 5분 전으로', { size: 56, bg: '#fff' }), gfIn(lt, tc + 0.2, 3.2, 0.45));
     const k = gfK(tc + 0.4, D, lt); for (let i = 0; i < 10; i++) h += `<rect x="-200" y="${f1(((i * 137 + lt * 2600) % 1300) - 100)}" width="2400" height="${6 + (i % 3) * 6}" fill="#fff" opacity="${f1(0.25 * k * 100) / 100}"/>`; }
   return h;
 };
@@ -33,7 +33,7 @@ function gyExamineesLeave(t, lt, leaveTs) { // 다른 수험생이 하나씩 일
     const t0 = leaveTs[k], u = gfK(t0, t0 + 1.6, lt), gone = u >= 1;
     if (!gone) { const xx = x + (u > 0 ? (1 - 2 * (k < 2)) * -0 : 0) + u * 900 * (k < 2 ? -1 : 1), stand = u > 0, wk = stand ? gfWalk(xx * 1.4, 0.8) : null;
       h += gfActor(spPass(i), { x: xx, y: stand ? 820 : 800, s: 0.6, t, pose: stand ? wk.pose : '책상', ex: fEx(stand ? ex : 'z결심'), look: [stand ? (k < 2 ? -0.7 : 0.7) : 0, stand ? 0 : 0.7], seed: 20 + k }, stand ? { sy: wk.sy, dy: wk.dy } : { dy: Math.sin(t * 6 + k * 2.1) });
-      if (u > 0 && u < 0.35) h += gfPlus(lt, t0, x, 800 - 360, '제출!', { size: 34, col: GFC.mint }); }
+      if (u > 0 && u < 0.6) h += fkAt(xx, 820 - 380, gfChip('제출!', { size: 30, bg: '#E3FFD6' }), gfIn(lt, t0, 3.2, 0.45) * gfOut(lt, t0 + 0.5, 0.2)); }
     h += gyDesk(x, 806, 0.6, {});
   });
   return h;
@@ -58,30 +58,30 @@ gychoiceScene = function (t, lt, a, runLt) {
     const pose = off && !placed ? 'gy들기' : 'gy쓰기', glassAt = placed ? null : off ? [ZX, FY - 380 + 120 * gfK(tO + 0.3, tP, lt)] : null;
     w += gyAtDesk({ x: ZX, y: FY, s: 1, t, pose, ex: lt > tR ? 'z결심' : 'z당황', look: [lt > tR ? 0 : 0.6, 0], holdR: pose === 'gy쓰기' ? GY_PENCIL : null, noGlass: off, glow: lt < tR ? 0.5 : 0 }, lt > tR && lt < tR + 0.5 ? { sy: 1.045 } : {}, { glasses: placed ? 0 : null, t });
     if (glassAt) w += fkAt(glassAt[0], glassAt[1], gyGlasses(0), 0.9);
-    if (lt < tP) w += fkAt(ZX - 330, FY - 590, `<path d="M90 60 L150 120 L40 66 Z" fill="#FFF0F0" stroke="#B3202C" stroke-width="6" stroke-linejoin="round"/><rect x="-250" y="-70" width="500" height="140" rx="60" fill="#FFF0F0" stroke="#B3202C" stroke-width="6" stroke-dasharray="18 10"/>` + gfT(0, 16, '아무도 모른다니까~', 42, '#B3202C'), gfIn(lt, 0.1, 3, 0.45));
+    if (lt < tP) w += fkAt(1500, FY - 560, `<path d="M-90 60 L-150 120 L-40 66 Z" fill="#FFF0F0" stroke="#B3202C" stroke-width="6" stroke-linejoin="round"/><rect x="-250" y="-70" width="500" height="140" rx="60" fill="#FFF0F0" stroke="#B3202C" stroke-width="6" stroke-dasharray="18 10"/>` + gfT(0, 16, '아무도 모른다니까~', 42, '#B3202C'), gfIn(lt, 0.1, 3, 0.45));
     if (lt > tP + 0.1) w += fkAt(DX, dy - 150, gfChip('칫!', { size: 38, bg: '#FFE1E1' }), gfIn(lt, tP + 0.15, 3.2, 0.45) * gfOut(lt, tP + 1.0, 0.25), 8);
     h += qCam(cam, w);
-    if (placed) h += fkAt(960, 180, gyAR(520, '스텔스 모드 OFF', { size: 40 }), gfIn(lt, tP + 0.3, 3.2, 0.45));
+    if (placed) h += fkAt(1440, 460, gyAR(520, '스텔스 모드 OFF', { size: 40 }), gfIn(lt, tP + 0.3, 3.2, 0.45));
   } else if (ph === 2) { // 남들보다 느리고, 손해(75점)
     const tSl = gyW(a, '느리고', 0.7), tL = gyW(a, '손해', 2.4) - 0.1;
     cam = camLerp(lt / D, [960, 560, 1.05], [960, 540, 1.12]);
-    w = gyBackRoom(t, { clock }) + gyExamineesLeave(t, lt, [0.1, 0.5, 0.9, 1.3]);
+    w = gyBackRoom(t, { clock }) + gyExamineesLeave(t, lt, [0.1, 0.8, 1.5, 2.2]);
     const scr = Math.sin(lt * 16) * 3;
     w += gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: 'gy쓰기', ex: 'z결심', look: [0, 0.6], holdR: GY_PENCIL, noGlass: true }, { dy: scr * 0.3 }, { glasses: 0, t });
-    w += fkAt(ZX, FY - 640, `<circle r="60" fill="url(#gfGlow)"/>` + gfIcon('bulb', 1.2, t), gfIn(lt, 0.2, 3, 0.45));
-    w += fkAt(ZX + 360, FY - 560, gfPanel(380, 76, { r: 30 }) + gfT(-170, 11, '답안', 30, GFC.navy, { anchor: 'start' }) + `<g transform="translate(-90 0)">${gfBar(250, 0.15 + 0.25 * gfK(0, D, lt), { col: GFC.mint, h: 24 })}</g>`, gfIn(lt, tSl - 0.2, 3, 0.45));
-    if (lt > tSl) w += fkAt(ZX - 340, FY - 600, gfChip('나만의 생각 회로 가동 중…', { size: 34, bg: '#FFF3B0' }), gfIn(lt, tSl, 3.2, 0.45), -3);
+    w += fkAt(ZX + 150, FY - 560, `<circle r="60" fill="url(#gfGlow)"/>` + gfIcon('bulb', 1.2, t), gfIn(lt, 0.2, 3, 0.45));
+    if (lt < tL) w += fkAt(ZX + 420, FY - 470, gfPanel(380, 80, { r: 30 }) + gfT(-170, 12, '내 답안', 32, GFC.navy, { anchor: 'start' }) + `<g transform="translate(-60 0)">${gfBar(220, 0.15 + 0.25 * gfK(0, D, lt), { col: GFC.mint, h: 24 })}</g>`, gfIn(lt, tSl - 0.2, 3, 0.45));
+    if (lt > tSl) w += fkAt(ZX - 360, FY - 470, gfChip('나만의 생각 회로 가동 중…', { size: 36, bg: '#FFF3B0' }), gfIn(lt, tSl, 3.2, 0.45), -3);
+    if (lt > tL) w += fkAt(ZX + 420, FY - 430, gyCert('75점', '느려도 내 힘으로'), gfIn(lt, tL, 3, 0.45) * 0.9, 4) + fkAt(ZX + 560, FY - 540, gfChip('−25', { size: 40, bg: '#FFE1E1' }), gfIn(lt, tL + 0.3, 3.2, 0.45), 8);
     h += qCam(cam, w);
-    if (lt > tL) h += fkAt(1450, 470, gyCert('75점', '느려도 내 힘으로'), gfIn(lt, tL, 3, 0.45), 4) + fkAt(1560, 390, gfChip('−25', { size: 36, bg: '#FFE1E1' }), gfIn(lt, tL + 0.3, 3.2, 0.45), 8);
     hud.hp = 12;
   } else if (ph === 3) { // AI가 0.1초 만에 정답 ×9999(흔함) vs 스스로 버텨낸 근육(전설)
     const tA = gyW(a, 'AI', 0.4) - 0.1, t01 = gyW(a, '초', 1.85), tRare = gyW(a, '희소', 4.0) - 0.1, tK = gyW(a, '아는', 5.6) - 0.3, tS = gyW(a, '스스로', 7.2) - 0.1, tM = gyW(a, '근육', 8.8) - 0.2;
     let w2 = gfFull('url(#gyNavy)') + gfRays(t, 960, 430, 1300, '#8E7CFF', 14, 0.08, 6);
     const dim = gfK(tRare, tRare + 0.5, lt);
     // 로봇이 정답 카드를 쏟아냄
-    w2 += `<g opacity="${f1((1 - 0.55 * dim) * 100) / 100}">` + fkAt(300, 640, spRobot(t, 1.5), gfIn(lt, tA, 3, 0.45));
+    w2 += `<g opacity="${f1((1 - 0.55 * dim) * 100) / 100}">` + fkAt(330, 720, spRobot(t, 2.1), gfIn(lt, tA, 3, 0.45));
     const n = Math.min(60, Math.floor(Math.max(0, lt - tA - 0.2) * 22));
-    for (let i = 0; i < n; i++) { const p = Math.min(1, (lt - tA - 0.2 - i / 22) * 2.5), x = lerp(380, 560 + hash(i * 3.7) * 300, p), y = lerp(560, 760 - hash(i * 1.9) * 160 - Math.sin(Math.PI * p) * 160, p);
+    for (let i = 0; i < n; i++) { const p = Math.min(1, (lt - tA - 0.2 - i / 22) * 2.5), x = lerp(430, 600 + hash(i * 3.7) * 300, p), y = lerp(560, 780 - hash(i * 1.9) * 160 - Math.sin(Math.PI * p) * 160, p);
       w2 += `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1((hash(i * 5.1) - 0.5) * 60)})"><rect x="-44" y="-30" width="88" height="60" rx="8" fill="#E9ECF2" stroke="${INK}" stroke-width="4"/>${gfT(0, 10, '정답', 24, '#6B7280')}</g>`; }
     if (lt > t01 - 0.1) w2 += fkAt(300, 330, gfChip('0.1초', { size: 44, icon: 'clock', bg: '#fff' }), gfIn(lt, t01 - 0.1, 3.2, 0.45), -4);
     if (n > 20) w2 += fkAt(700, 880, gfChip('정답 ×9999', { size: 40, bg: '#E9ECF2' }), gfIn(lt, tA + 1.2, 3.2, 0.45), 2);
@@ -99,13 +99,14 @@ gychoiceScene = function (t, lt, a, runLt) {
     [300, 590, 1350, 1630].forEach(x => { w += gyDesk(x, 806, 0.6, { paper: false }); });
     // 창에 비친 제로(고개를 끄덕임)
     const nod = lt > tSf ? Math.max(0, Math.sin((lt - tSf) * 7)) * 8 : 0;
-    w += `<g opacity="${f1((0.25 + 0.6 * dark) * 100) / 100}"><clipPath id="gyWin"><rect x="120" y="170" width="300" height="260"/></clipPath><g clip-path="url(#gyWin)"><rect x="120" y="170" width="300" height="260" fill="#1B2347"/>${gfActor(SPZW, { x: 290, y: 560, s: 0.42, t, pose: '서기', ex: fEx(lt > tSf ? 'z빵긋' : 'z결심'), look: [0.4, nod * 0.03], seed: 3, noGlass: true, headFx: null }, {})}</g></g>`;
+    w += `<g opacity="${f1((0.25 + 0.6 * dark) * 100) / 100}"><clipPath id="gyWin"><rect x="120" y="170" width="300" height="260"/></clipPath><g clip-path="url(#gyWin)"><rect x="120" y="170" width="300" height="260" fill="#1B2347"/>${gfActor(SPZW, { x: 270, y: 640, s: 0.62, t, pose: '서기', ex: fEx(lt > tSf ? 'z빵긋' : 'z결심'), look: [0.4, nod * 0.03], seed: 3, noGlass: true, headFx: null }, {})}</g></g>`;
     w += `<rect x="-600" y="-600" width="3120" height="2280" fill="#0E1430" opacity="${f1(0.6 * dark * 100) / 100}"/>` + `<ellipse cx="${ZX}" cy="${FY - 260}" rx="${420}" ry="380" fill="url(#gfGlow)" opacity="${f1((0.3 + 0.5 * dark) * 100) / 100}"/>`;
     w += gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: 'gy쓰기', ex: lt > tSf ? 'z빵긋' : 'z결심', look: [lt > tSf ? -0.6 : 0, 0.5], holdR: GY_PENCIL, noGlass: true }, { dy: Math.sin(lt * 12) * 0.6 }, { glasses: 0, t });
     if (lt > tSf) w += `<line x1="${ZX - 200}" y1="${FY - 360}" x2="420" y2="330" stroke="#FFE9A8" stroke-width="4" stroke-dasharray="10 12" opacity="${f1(me * 0.6 * 100) / 100}"/>`;
-    if (lt > tSt) w += fkAt(ZX, FY - 640, gfChip('나만의 기준', { size: 40, bg: '#FFF3B0' }), gfIn(lt, tSt, 3.2, 0.45), -3);
+    if (lt > tSt) w += fkAt(ZX + 230, FY - 600, gfChip('나만의 기준', { size: 42, bg: '#FFF3B0' }), gfIn(lt, tSt, 3.2, 0.45), -3);
+    if (lt > tSf) w += fkAt(270, 500, gfChip('창에 비친 나', { size: 40, bg: '#fff' }), gfIn(lt, tSf + 0.1, 3.2, 0.45), -3);
     h += qCam(cam, w);
-    if (lt > tP - 0.1) h += fkAt(330, 300, gfChip('플라톤의 정의 · 뜻을 옮김', { size: 34, bg: '#fff' }), gfIn(lt, tP - 0.1, 3.2, 0.45), -2);
+    if (lt > tP - 0.1) h += fkAt(960, 66, gfChip('플라톤의 정의 · 뜻을 옮김', { size: 40, bg: '#fff' }), gfIn(lt, tP - 0.1, 3.2, 0.45), 0);
     hud.eyes = eyes; hud.myEye = me; hud.eyeT = lt > tSf ? tSf + 0.3 : lt > tN ? tN : null; hud.hp = 12 + 40 * me;
   }
   return h + gyHud(lt, hud);
@@ -115,59 +116,70 @@ gychoiceScene = function (t, lt, a, runLt) {
 gyendScene = function (t, lt, a) {
   const ph = a.ph, D = a._dur || 5, FY = GY.FY, ZX = GY.ZX;
   let h = fkDefs() + GY_DEFS;
-  if (ph === 0) { // 기술은 반지를 건넬 수 있다: 로봇이 쿠션 위 반지(↔ 안경)를 내민다
-    const tG = gyW(a, '건넬', 3.4) - 0.2, reach = easeOut(gfK(tG - 0.6, tG + 0.4, lt)), sw = Math.floor(lt / 0.8) % 2, sk = Math.abs(Math.cos(Math.PI * ((lt / 0.8) % 1)));
+  if (ph === 0) { // 기술은 반지를 건넬 수 있다: 로봇이 두 손에 받친 쿠션(반지 ↔ 안경)을 들고 다가온다
+    const tG = gyW(a, '건넬', 3.4) - 0.2, reach = easeOut(gfK(tG - 0.8, tG + 0.4, lt)), sw = Math.floor(lt / 0.8) % 2, sk = Math.abs(Math.cos(Math.PI * ((lt / 0.8) % 1)));
     let w = gfFull('url(#gyNavy)') + gfRays(t, 960, 470, 1300, '#7FD8FF', 14, 0.08, 6);
     for (let i = 0; i < 14; i++) w += gfTwinkle(t, 100 + hash(i * 3.1) * 1720, 80 + hash(i * 7.3) * 500, 10, i, '#fff');
-    w += fkAt(560, 760, spRobot(t, 2.0), gfIn(lt, 0.05, 3, 0.45));
-    const cx = lerp(900, 1180, reach), cy = lerp(600, 520, reach), cs = lerp(1.2, 1.7, reach);
-    w += `<path d="M640 600 Q${f1((640 + cx) / 2)} ${f1(cy + 40)} ${f1(cx - 120)} ${f1(cy + 30)}" stroke="#9AA6C4" stroke-width="22" fill="none" stroke-linecap="round"/><path d="M640 600 Q${f1((640 + cx) / 2)} ${f1(cy + 40)} ${f1(cx - 120)} ${f1(cy + 30)}" stroke="${INK}" stroke-width="5" fill="none" opacity=".5"/>`;
-    w += fkAt(cx, cy, `<ellipse cx="0" cy="40" rx="150" ry="44" fill="#B3202C" stroke="${INK}" stroke-width="7"/><ellipse cx="0" cy="26" rx="140" ry="36" fill="#D9485A"/><circle cx="-140" cy="40" r="12" fill="#FFD84A" stroke="${INK}" stroke-width="4"/><circle cx="140" cy="40" r="12" fill="#FFD84A" stroke="${INK}" stroke-width="4"/>` +
-      `<g transform="translate(0 -40) scale(${f1(Math.max(0.05, sk) * 100) / 100} 1)">${sw ? `<g transform="scale(.9)">${gyGlasses(1, t)}</g>` : gyRing(t, 0)}</g>`, cs);
-    if (lt > tG) w += fkAt(cx, cy - 210, gfChip('투명인간의 반지', { size: 40, bg: '#fff' }), gfIn(lt, tG, 3.2, 0.45), -3);
+    const rs = lerp(1.9, 2.5, reach), ry = lerp(800, 880, reach);
+    w += fkAt(840, ry, spRobot(t, 1) + `<path d="M40 -4 Q90 20 118 -6 M40 16 Q100 40 126 8" stroke="#9AA6C4" stroke-width="12" fill="none" stroke-linecap="round"/><g transform="translate(190 -10)">` +
+      `<ellipse cx="0" cy="-40" rx="110" ry="30" fill="#B3202C" stroke="${INK}" stroke-width="5"/><ellipse cx="0" cy="-50" rx="102" ry="24" fill="#D9485A"/><circle cx="-104" cy="-40" r="9" fill="#FFD84A" stroke="${INK}" stroke-width="3"/><circle cx="104" cy="-40" r="9" fill="#FFD84A" stroke="${INK}" stroke-width="3"/>` +
+      `<g transform="translate(0 -96) scale(${f1(Math.max(0.05, sk) * 0.62 * 100) / 100} .62)">${sw ? `<g transform="scale(.9)">${gyGlasses(1, t)}</g>` : gyRing(t, 0)}</g></g>`, rs * gfIn(lt, 0.05, 3, 0.45));
+    if (lt > tG) w += fkAt(1240, 240, gfChip('투명인간의 반지', { size: 46, bg: '#fff' }), gfIn(lt, tG, 3.2, 0.45), -3);
     return h + qCam([960, 540, 1], w);
   }
-  if (ph === 1) { // 낄지 말지는 우리 몫: 망설이는 다음 수험생에게 몽당연필을 건넴
-    const tK = gyW(a, '낄지', 0.9) - 0.1, tDc = gyW(a, '결정', 2.0), tYe = gyW(a, '여전히', 3.0) - 0.1, tM = gyW(a, '몫', 4.4) - 0.2;
-    const GX = 1180, hes = lt > tK && lt < tYe ? Math.sin((lt - tK) * 6) : 0, given = lt > tYe + 0.4, down = lt > tM;
+  if (ph === 1) { // 낄지 말지는 우리 몫: 다음 시험 응시자가 스스로 안경을 내려놓은 '뒤에' 제로가 엄지척(운영자 검토 2차)
+    const tK = gyW(a, '낄지', 0.9) - 0.1, tDc = gyW(a, '결정', 2.0), tM = gyW(a, '몫', 4.4) - 0.2;
+    const GX = 1100, hes = lt > tK && lt < tM ? Math.sin((lt - tK) * 6) : 0, down = lt > tM;
     let w = gyBackRoom(t, { clock: 0 }) + `<rect x="-600" y="-600" width="3120" height="2280" fill="#FFB86B" opacity=".1"/>`;
     [300, 1630].forEach(x => { w += gyDesk(x, 806, 0.6, { paper: false }); });
-    // 다음 수험생(서윤 아님, 이름 없음): 안경을 들었다 놨다
-    const gp = given ? 'gy쓰기' : 'gy들기';
-    w += gfActor(o => zGirl(Object.assign({ hairStyle: 'pony', hairArgs: ['#2E2A33', '#FF8FB1'], top: '#B8E6A8' }, o)), { x: GX, y: FY, s: 0.95, t, pose: gp, ex: fEx(down ? 'z빵긋' : 'z당황'), look: [given ? -0.5 : 0, 0.2], seed: 31, holdR: given ? GY_PENCIL : null }, hes ? { dy: hes * 4 } : {}) +
-      gyDesk(GX, FY + 6, 0.95, { glasses: down ? 0.3 : null, t });
-    if (!down) w += fkAt(GX, FY - 370 - 40 * Math.max(0, hes), gyGlasses(0.6, t), 0.8);
-    if (lt > tK && lt < tYe) w += fkAt(GX - 230, FY - 640, gfChip(hes > 0 ? '낄까?' : '말까?', { size: 40, bg: '#fff' }), 1, -3) + gfEmote(lt, tK, GX + 150, FY - 560, 'sweat', { hold: 2 });
-    // 제로: 걸어와 몽당연필을 건넴
-    const zx = lerp(-100, GX - 330, easeOut(gfK(0, tDc + 0.3, lt))), walking = lt < tDc + 0.3, wk = walking ? gfWalk(zx * 1.2, 0.8) : null;
-    const giving = lt > tYe - 0.2 && !given;
-    w += gfActor(SPZW, { x: zx, y: FY, s: 1, t, pose: walking ? wk.pose : giving ? '건네기' : '서기', ex: fEx(lt > tYe ? 'z빵긋' : 'z기본'), look: [0.6, 0], seed: 3, holdR: given ? null : GY_PENCIL, headFx: null }, walking ? { sy: wk.sy, dy: wk.dy } : {});
-    if (down) w += gfEmote(lt, tM, GX + 120, FY - 580, 'heart', { hold: 2 }) + gfEmote(lt, tM + 0.2, zx + 120, FY - 600, 'note', { hold: 1.6 });
-    if (given && !down) w += fkAt((zx + GX) / 2, FY - 700, gfChip('몽당연필', { size: 38, bg: '#FFF3B0' }), gfIn(lt, tYe + 0.4, 3.2, 0.45), 3);
-    return h + qCam(camLerp(lt / D, [960, 560, 1.08], [1000, 540, 1.16]), w);
+    // 제로: 시험을 마치고 나가다 문 앞(왼쪽)에서 멈춰 지켜봄 → 그녀가 내려놓으면 엄지척 '화이팅!'
+    const zx = lerp(-160, 300, easeOut(gfK(0, 1.4, lt))), walking = lt < 1.4, wk = walking ? gfWalk(zx * 1.2, 0.8) : null;
+    w += gfActor(SPZW, { x: zx, y: 880, s: 0.85, t, pose: walking ? wk.pose : '서기', handR: down ? 'thumb' : null, ex: fEx(down ? 'z빵긋' : 'z기본'), look: [0.6, 0], seed: 3, headFx: null }, walking ? { sy: wk.sy, dy: wk.dy } : down ? gfJelly(lt, tM + 0.2, 0.08, 5, 8) : {});
+    if (!walking && !down) w += gfEmote(lt, 1.5, zx + 90, 880 - 480, 'dots', { hold: tM - 1.6 });
+    if (down) w += gfPlus(lt, tM + 0.25, zx + 60, 880 - 470, '화이팅!', { size: 50, col: GFC.coral, d: 1.6 });
+    // 다음 응시자(새 인물, 이름 없음): 책상 위 AI 안경을 들었다 놨다 → 스스로 내려놓고 연필을 쥠
+    const GG = o => zGirl(Object.assign({ hairStyle: 'long', hairArgs: ['#8A5A3A', '#FFD84A'], top: '#C9B8FF', dress: '#6E7BA8' }, o));
+    const lift = Math.max(0, hes);
+    w += gfActor(GG, { x: GX, y: FY, s: 0.95, t, pose: down ? 'gy쓰기' : lift > 0.3 ? 'gy들기' : 'gy쓰기', ex: fEx(down ? 'z결심' : 'z당황'), look: [down ? 0 : -0.3, 0.3], seed: 31, holdR: down ? GY_PENCIL : null }, down ? gfJelly(lt, tM, 0.08, 5, 8) : {}) +
+      gyDesk(GX, FY + 6, 0.95, { glasses: down ? 0.15 : null, t });
+    if (!down) w += fkAt(GX, FY - 150 - 50 * lift, gyGlasses(0.6, t), 0.7);   // 가슴 앞에서 들었다 놨다(쓰지 않음)
+    if (lt < tK + 0.6) w += fkAt(GX, FY - 660, gfChip('다음 시험 응시자', { size: 40, bg: '#fff' }), gfIn(lt, 0.3, 3.2, 0.45) * gfOut(lt, tK + 0.4, 0.2), -2);
+    if (lt > tK && lt < tM) w += fkAt(GX + 330, FY - 560, `<g transform="scale(1)">${bubble(0, 0, 250, 110, gfT(0, 16, hes > 0 ? '낄까?' : '말까?', 44, GFC.navy))}</g>`) + gfEmote(lt, tK, GX + 120, FY - 520, 'sweat', { hold: 2.5 });
+    if (down) w += gfEmote(lt, tM, GX + 120, FY - 580, 'spark', { hold: 2 }) + fkAt(GX + 60, FY - 680, gfChip('내가 정했다', { size: 44, bg: '#FFF3B0' }), gfIn(lt, tM + 0.1, 3.2, 0.45), -3);
+    return h + qCam(camLerp(lt / D, [880, 560, 1.06], [940, 540, 1.12]), w);
   }
   if (ph === 2) { // 들킬 확률 0%인 AI 안경 → 선택은?
     const tZ = gyW(a, '%', 1.9) - 0.2, tY = gyW(a, '여러분', 3.5), tC = gyW(a, '선택', 4.9);
     let w = gfFull('url(#gyNavy)') + gfRays(t, 960, 400, 900, '#7FD8FF', 14, 0.08, 8);
-    w += fkAt(960, 400, gfItem(lt, 0.1, { svg: `<g transform="scale(1.5)">${gyGlasses(1, t)}</g>`, name: 'AI 안경', sub: '들킬 확률', w: 480 }), 1.2);
+    w += fkAt(960, 400, gfItem(lt, 0.1, { svg: `<g transform="scale(1.5)">${gyGlasses(1, t)}</g>`, name: 'AI 안경', sub: '들킬 확률', w: 480 }), 1.4);
     const pr = lt < tZ ? '0.01%' : '0%';
     w += fkAt(960, 620, gfT(0, 0, pr, 96, lt < tZ ? '#7FFFC8' : '#FF6B9A', { sw: 12, stroke: '#0E2A52' }), gfIn(lt, 0.3, 3, 0.45) * (lt > tZ ? gfBeat(lt, tZ, 0.3, 3, 5) : 1));
     if (lt > tZ && lt < tZ + 0.5) w += gfPuff(lt, tZ, 1040, 600, 1.2);
-    if (lt > tY) { const k = gfIn(lt, tY, 3, 0.45), cur = Math.floor((lt - tY) * 2.4) % 2;
+    if (lt > tY) { const k = gfIn(lt, tY, 3, 0.45), cur = lt < tY + 0.8 ? -1 : Math.floor((lt - tY - 0.8) * 2.4) % 2;
       w += fkAt(960, 830, gfPanel(760, 120, { r: 30, head: '선택', headBg: GFC.sun }) + [['쓴다', -190], ['안 쓴다', 190]].map(([s2, x], i) => `<g transform="translate(${x} 0)">${i === cur ? `<rect x="-150" y="-36" width="300" height="72" rx="36" fill="${GFC.sun}" opacity=".55"/>` : ''}${gfT(0, 16, s2, 44, GFC.navy)}${i === cur ? `<path d="M-130 -16 L-100 0 L-130 16 Z" fill="${GFC.navy}"/>` : ''}</g>`).join(''), k * 1.1); }
     if (lt > tC) w += gfEmote(lt, tC, 1420, 760, 'q', { hold: 3 });
     return h + qCam([960, 540, 1], w);
   }
   if (ph === 3) { // 댓글로 들려주세요: 빈칸 카드
     let w = gfFull('url(#gyNavy)') + gfRays(t, 960, 400, 900, GFC.sun, 14, 0.08, 8);
-    w += fkAt(960, 430, gfPanel(1100, 300, { r: 44, head: '나의 선택', headBg: GFC.sun }) + gfT(0, -10, '나는 ＿＿＿ 를 고르겠다', 70, GFC.navy) + gfT(0, 80, '왜냐하면 ＿＿＿', 46, '#6B7280', { wt: 800 }), gfIn(lt, 0.05, 3, 0.45));
+    w += fkAt(960, 430, gfPanel(1100, 300, { r: 44, head: '나의 선택', headBg: GFC.sun }) + gfT(0, -10, '나는 ＿＿＿를 고르겠다', 70, GFC.navy) + gfT(0, 86, '왜냐하면 ＿＿＿', 54, '#5B6478', { wt: 900 }), gfIn(lt, 0.05, 3, 0.45));
     w += fkAt(960, 760, gfChip('댓글로 들려주세요', { size: 46, icon: 'letter', bg: '#fff' }), gfIn(lt, 0.5, 3.2, 0.45));
     return h + qCam([960, 540, 1], w);
   }
-  // e5: 책상 위 AI 안경 옆 몽당연필(첫 장면의 그 연필), 따뜻하게
-  let w = gfFull('#FFE9C8') + `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#gfDots)" opacity=".5"/>` + `<ellipse cx="960" cy="560" rx="900" ry="600" fill="url(#gfGlow)" opacity=".7"/>`;
-  w += `<path d="M-200 640 L2120 640 L2300 1300 L-380 1300 Z" fill="#E7C89A" stroke="${INK}" stroke-width="8"/><path d="M-200 640 L2120 640" stroke="#C99E66" stroke-width="14"/>`;
-  w += fkAt(780, 700, gyGlasses(0, t), 2.2, -6) + fkAt(1220, 720, `<g transform="rotate(62)">${GY_PENCIL}</g>`, 4.2) + fkAt(1220, 880, `<ellipse rx="160" ry="20" fill="${GFC.navy}" opacity=".15"/>`, 1);
-  w += fkAt(1220, 520, gfChip('첫 장면의 그 연필', { size: 36, bg: '#fff' }), gfIn(lt, 0.8, 3.2, 0.45), 3);
-  return h + qCam(camLerp(lt / D, [960, 600, 1.0], [1000, 640, 1.1]), w);
+  // e5: 결과 화면(운영자: 마지막 연필 장면 교체) — 1회차(흐리게: 100점 · 실력 Lv.1 · 껍데기) vs 2회차 STAGE CLEAR(75점 · 멘탈 HP 52 · 내 눈 ON · 버텨낸 근육)
+  let w = gfFull('url(#gyNavy)') + gfRays(t, 1130, 420, 1400, GFC.sun, 16, 0.12, 8) + `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#gfDots)" opacity=".25"/>`;
+  const row = (y, k1, v1, col, extra = '') => gfT(-250, y, k1, 36, '#5B6478', { anchor: 'start', wt: 900 }) + gfT(250, y, v1, 42, col || GFC.navy, { anchor: 'end' }) + extra;
+  // 1회차(흐리게)
+  const k1 = gfIn(lt, 0.2, 3, 0.45);
+  w += fkAt(450, 540, `<g opacity=".6">` + gfPanel(580, 520, { r: 40, head: '1회차', headBg: '#C9D0DA', headSize: 36 }) + gfT(0, -170, 'HAPPY END?', 50, '#9AA6B8') + `<line x1="-170" y1="-186" x2="170" y2="-186" stroke="#E5484D" stroke-width="8"/>` +
+    row(-70, '점수', '100점') + row(20, '실제 실력', 'Lv.1', '#E5484D') + row(110, '결과', '텅 빈 껍데기', '#E5484D') + `</g>`, k1 * 1.1, -3);
+  // 2회차 STAGE CLEAR
+  const k2 = gfIn(lt, 0.5, 3, 0.45);
+  w += fkAt(1130, 160, gfBounceText(lt, 0.5, 0, 0, [['STAGE ', '#fff'], ['CLEAR!', GFC.sun]], { size: 96 }), 1);
+  w += fkAt(1150, 560, gfPanel(620, 560, { r: 40, head: '2회차', headBg: GFC.sun, headSize: 36 }) +
+    row(-170, '점수', '75점') + row(-80, '멘탈 HP', '52') + row(10, '내 눈', 'ON', null, `<g transform="translate(150 -12) scale(.48)">${gyEye(1, 1)}<g transform="translate(0 2) scale(.5)">${GF_ICON.heart()}</g></g>`) +
+    gfT(-250, 110, '획득', 36, '#5B6478', { anchor: 'start', wt: 900 }) + `<g transform="translate(150 150) scale(.36)">${gyRarity('버텨낸 근육', '', '#FFB800', '전설', { svg: `<g transform="translate(0 -110) scale(1.4)">${GY_ARM}</g>`, bg: '#FFF8E0', inner: '#FFE9A8', w: 360, h: 420 })}</g>`, k2 * 1.1, 2);
+  w += gfActor(SPZW, { x: 1730, y: FY, s: 0.9, t, pose: '손인사', ex: fEx('z빵긋'), look: [-0.3, 0], seed: 3, headFx: null }, gfHop(lt, 0.9, 30, 0.35)) + gfEmote(lt, 1.2, 1800, FY - 520, 'heart', { hold: 9 });
+  w += gfConfetti(lt, 0.6, { n: 30 });
+  return h + qCam([960, 540, 1], w);
 };

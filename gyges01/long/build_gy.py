@@ -111,12 +111,11 @@ if FULL:
     c = A('c2'); put(c, S.whoosh(0.18, 600, 6000), 0.22); put(c + 0.05, S.hurt(), 0.12); put(c + 0.1, S.letters(8, 0.03, 300), 0.08); put(c + 0.4, S.low(80, 0.8), 0.18)
     put(W('c3', '찰스', 1.0) - 0.1, S.pop(760), 0.08); put(E1('c3') + 0.03, S.item(), 0.2)
     c = A('c4'); put(c + 0.05, S.flip(), 0.1); tT = W('c4', '목표', 0.9); put(tT - 0.1, S.pop(880), 0.08); put(W('c4', '아니다', 4.3), S.strike(), 0.1)
-    put(W('c5', '점수', 0.6) - 0.1, S.pop(700), 0.08); put(W('c5', '실력', 1.65) - 0.1, S.pop(800), 0.08); put(W('c5', '위한', 2.35), S.sparkle(4, 0.4), 0.05)
+    put(W('c5', '점수', 0.6) - 0.1, S.pop(700), 0.08); hitT = W('c5', '실력', 1.65) - 0.2 + 0.25; put(hitT - 0.12, S.whoosh(0.15, 800, 4000), 0.1); put(hitT, S.land(), 0.22); put(hitT + 0.1, S.letters(8, 0.07, 900), 0.05); put(hitT + 0.72, S.ding(), 0.08); put(W('c5', '위한', 2.35), S.pop(820), 0.06)   # 펀치 기계
     tA2 = W('c6', '점수', 0.55) - 0.1; put(tA2 + 0.5, S.blip(1320), 0.07); put(tA2 + 0.62, S.blip(1320), 0.07)
-    put(W('c6', '키우는', 4.5) - 0.2, S.low(150, 0.6), 0.1); tSt = W('c6', '훔치는', 5.9) - 0.1; put(tSt, S.boing(300, 760, 0.5), 0.12)
+    tKu = W('c6', '키우는', 4.5); put(tKu - 0.1, S.land(), 0.08); put(tKu + 0.1, S.whoosh(0.3, 300, 2000), 0.06); tSt = W('c6', '훔치는', 5.9) - 0.1; put(tSt - 0.05, S.boing(300, 760, 0.4), 0.12); put(tSt + 0.35, S.pop(1100), 0.12)   # 아령 걷어참 → 폴짝 → 스티커 착
     tKk = W('c6', '꼼수', 6.3); put(tKk - 0.15, S.pop(980), 0.1); put(tKk + 0.1, S.stamp(), 0.18)
-    tEnd = max(tKk + 1.0, E1('c6') + 0.15 - 1.6)
-    for i in range(8): put(tEnd + 0.1 + i * 0.033, S.land(), 0.05)
+    put(tKk + 0.6, S.pop(760), 0.06)   # '샌드백은 그대로인데 999'
     # ======== 3년 뒤: 스펙 → 가스 누출 보스 → 안경 먹통 → 껍데기 ========
     c = A('c7'); put(c + 0.1, S.flip(), 0.1); tSp = W('c7', '스펙', 2.95) - 0.2
     for i in range(3): put(tSp + i * 0.12, S.pop(760 + i * 80), 0.08)
@@ -142,7 +141,7 @@ if FULL:
     put(W('d2', '결국', 0.71), S.breath(0.6), 0.25); tO = W('d2', '벗어', 2.05) - 0.1; put(tO, S.tick(1100), 0.08)
     tPl = W('d2', '내려놓', 3.09) - 0.1; put(tPl + 0.05, S.land(), 0.1); put(tPl + 0.12, S.whoosh(0.5, 300, 2500), 0.12); put(tPl + 0.2, S.boing(620, 200, 0.25), 0.1)
     c = A('d3')
-    for i, t0 in enumerate([0.1, 0.5, 0.9, 1.3]): put(c + t0, S.pop(700 + i * 60), 0.06); steps(c + t0 + 0.1, c + t0 + 1.4, 0.32, 0.05)
+    for i, t0 in enumerate([0.1, 0.8, 1.5, 2.2]): put(c + t0, S.pop(700 + i * 60), 0.06); steps(c + t0 + 0.1, c + t0 + 1.4, 0.32, 0.05)
     put(c + 0.2, S.scribble(2.6), 0.06); put(W('d3', '손해', 2.37) - 0.1, S.pop(500), 0.1)
     tA4 = W('d4', 'ai', 0.43) - 0.1; put(tA4, S.boing(400, 900, 0.25), 0.08)
     for i in range(30): put(tA4 + 0.25 + i / 22, S.tick(1300 + (i % 4) * 90), 0.035)
@@ -154,12 +153,14 @@ if FULL:
     c = A('e1'); put(c + 0.1, S.boing(300, 600, 0.3), 0.08)
     for i in range(5): put(c + 0.8 * (i + 1) - 0.05, S.flip(), 0.04)
     put(W('e1', '건넬', 3.19) - 0.2, S.sparkle(5, 0.5), 0.07)
-    c = A('e2'); steps(c + 0.1, W('e2', '결정', 2.11) + 0.3, 0.34, 0.07); put(W('e2', '낄지', 1.31) - 0.1, S.question(), 0.06)
-    put(W('e2', '여전히', 2.73) + 0.3, S.pop(760), 0.1); put(W('e2', '몫', 4.25) - 0.2, S.heart(), 0.16)
+    c = A('e2'); steps(c + 0.1, c + 1.4, 0.34, 0.07); put(W('e2', '낄지', 1.31) - 0.1, S.question(), 0.06)
+    put(W('e2', '몫', 4.25) - 0.2, S.land(), 0.06); put(W('e2', '몫', 4.25), S.sparkle(5, 0.5), 0.07); put(W('e2', '몫', 4.25) + 0.05, S.pop(900), 0.08)   # 그녀가 내려놓은 뒤 엄지척
     tZ = W('e3', '%', 1.91) - 0.2; put(tZ, S.blip(1320), 0.1); put(tZ + 0.05, S.pop(520), 0.1); put(W('e3', '여러분', 4.07), S.flip(), 0.1)
     for i in range(5): put(W('e3', '여러분', 4.07) + 0.4 + i * 0.42, S.blip(990), 0.05)
     put(A('e4') + 0.05, S.flip(), 0.1); put(A('e4') + 0.5, S.pop(860), 0.08)
-    put(A('e5') + 0.3, S.sparkle(5, 0.6), 0.05); put(E1('e5') + 0.3, S.morning(), 0.16)
+    put(A('e5') + 0.1, S.pop(880), 0.08)
+    for i in range(4): put(A('e5') + 0.5 + i * 0.25, S.pop(700 + i * 80), 0.05)
+    put(E1('e5') + 0.1, S.clear(), 0.2)
 
 mixd = voice * 1.0 + bed + sfx * 0.6
 if os.environ.get('GY_STEMS'): np.savez('/dev/shm/gy/stems.npz', voice=voice, bed=bed, sfx=sfx)

@@ -139,7 +139,7 @@ function gyDesk(x, y, s, o = {}) { // 살짝 내려다본 책상(원점 = 앞면
 function gyBackRoom(t, o = {}) { // 시험장 뒤쪽 벽(제로 얼굴 쪽에서 본 방)
   let h = gfRoom({ fy: 700, wall: '#E4EEF2', wall2: '#CFE0E8', floor: '#D9C3A0', base: '#F3F7F9', dots: false });
   h += gfWindow(120, 170, 300, 260, t);
-  h += `<g transform="translate(960 250)"><rect x="-300" y="-92" width="600" height="184" rx="18" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-282" y="-74" width="564" height="148" rx="10" fill="#FFF3F3" stroke="#E5484D" stroke-width="6"/>` +
+  h += `<g transform="translate(700 300) scale(.7)"><rect x="-300" y="-92" width="600" height="184" rx="18" fill="#fff" stroke="${INK}" stroke-width="8"/><rect x="-282" y="-74" width="564" height="148" rx="10" fill="#FFF3F3" stroke="#E5484D" stroke-width="6"/>` +
     `<circle cx="-200" cy="0" r="46" fill="#fff" stroke="#E5484D" stroke-width="9"/><g transform="translate(-200 0) scale(.62)">${gyGlasses(0)}</g><line x1="-232" y1="-32" x2="-168" y2="32" stroke="#E5484D" stroke-width="9" stroke-linecap="round"/>` +
     gfT(50, -6, '전자기기', 52, '#E5484D') + gfT(50, 50, '사용 금지', 46, GFC.navy) + `</g>`;
   h += gfClock(1500, 330, 70, 11, 55 + Math.min(4, (o.clock || 0) / 60));
@@ -244,14 +244,14 @@ gyexamScene = function (t, lt, a, runLt) {
   } else if (ph === 3) { // 감독관은 눈치채지 못하고(하품하며 제로 뒤를 지나감), 적발 확률은 0.01%
     const tN = gyW(a, '눈치', 0.75), tP = gyW(a, '0', 2.75), u = gfK(0, D, lt);
     cam = camLerp(u, [960, 600, 1.08], [980, 580, 1.16]);
-    const px = lerp(300, 1560, easeInOut(u)), wk = gfWalk(px * 1.1, 0.8), yawn = lt > tN - 0.2 && lt < tN + 1.6, near = px > 700 && px < 1250;
-    const proc = gfActor(GY_PROC, { x: px, y: 866, s: 0.82, t, pose: wk.pose, ex: fEx(yawn ? 'z하품' : 'z졸음'), look: [0.6, -0.2], seed: 40 }, { sy: wk.sy, dy: wk.dy }) +
+    const px = lerp(260, 720, easeOut(gfK(0, tN, lt))), walking = lt < tN - 0.1, wk = gfWalk(px * 1.1, 0.8), yawn = lt > tN - 0.2 && lt < tN + 1.8, near = !walking;
+    const proc = gfActor(GY_PROC, { x: px, y: 866, s: 0.82, t, pose: walking ? wk.pose : '서기', ex: fEx(yawn ? 'z하품' : 'z졸음'), look: [walking ? 0.6 : -0.4, -0.2], seed: 40 }, walking ? { sy: wk.sy, dy: wk.dy } : {}) +
       (yawn ? gfEmote(lt, tN - 0.2, px + 90, 866 - 560 * 0.82, 'zzz', { hold: 1.6 }) : '');
     w = gyBackRoom(t, { clock }) + gyExaminees(t) + proc +
-      gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: 'gy쓰기', ex: near ? 'z민망' : 'z결심', look: [lerp(-0.7, 0.7, u), -0.1], holdR: GY_PENCIL, glow: 0.75 + 0.25 * Math.sin(t * 6), sweat: near }, { dy: Math.sin(lt * 14) * 1 });
+      gyAtDesk({ x: ZX, y: FY, s: 1, t, pose: 'gy쓰기', ex: near ? 'z민망' : 'z결심', look: [-0.7, -0.1], holdR: GY_PENCIL, glow: 0.75 + 0.25 * Math.sin(t * 6), sweat: near }, { dy: Math.sin(lt * 14) * 1 });
     h += qCam(cam, w);
     if (lt > tP - 0.2) { const k2 = gfIn(lt, tP - 0.2, 3, 0.45);   // 게임 알림(화면 UI)
-      h += fkAt(1460, 330, gyAR(520, '', {}) + gfT(0, 14, '감독관 적발 확률', 38, '#BFF0FF'), k2) + fkAt(1460, 456, gfT(0, 0, '0.01%', 120, '#7FFFC8', { sw: 14, stroke: '#0E2A52' }), k2 * gfBeat(lt, tP + 0.4, 0.18, 4, 7)); }
+      h += fkAt(1440, 290, gyAR(520, '', {}) + gfT(0, 14, '감독관 적발 확률', 38, '#BFF0FF'), k2) + fkAt(1440, 410, gfT(0, 0, '0.01%', 120, '#7FFFC8', { sw: 14, stroke: '#0E2A52' }), k2 * gfBeat(lt, tP + 0.4, 0.18, 4, 7)); }
     hud.hp = 42;
   } else if (ph === 4) { // 자, 솔직하게 한번 상상해 볼까요? — 멈춤 + 제로가 시청자를 본다
     const tS = gyW(a, '솔직', 0.55), tI = gyW(a, '상상', 1.3);

@@ -27,6 +27,27 @@ function gyRuler(len, mark, o = {}) { // 세운 자(원점 = 바닥). mark: 표�
   s += `<path d="M-60 ${f1(-mark)} l26 -14 v28 Z" fill="#E5484D" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
   if (o.sticker) s += `<g transform="translate(0 ${f1(-len + 40)}) rotate(-8) scale(${f1(o.stk || 1)})"><circle r="46" fill="#FF6B6B" stroke="${INK}" stroke-width="6"/>` + gfT(0, 15, o.sticker, 40, '#fff') + `</g>`;
   return `<g>${s}</g>`; }
+/* 오락실 무대 + 펀치 기계(우리 그림, 상표 없음). 원점 = 바닥 가운데 */
+function gyArcade(t) {
+  let h = gfFull('#2A2350') + `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#gfDots)" opacity=".5"/>`;
+  [[180, '#FF7EB6'], [520, '#3DDBB4'], [1480, '#FFD84A'], [1780, '#8E7CFF']].forEach(([x, c], i) => { h += `<rect x="${x - 70}" y="300" width="140" height="${GY.FY - 300}" rx="16" fill="#3B3270" stroke="${INK}" stroke-width="6"/><rect x="${x - 50}" y="340" width="100" height="80" rx="10" fill="${c}" opacity="${f1((0.5 + 0.4 * Math.abs(Math.sin(t * 2 + i))) * 100) / 100}"/>`; });
+  for (let i = 0; i < 16; i++) h += `<circle cx="${60 + i * 120}" cy="120" r="10" fill="${['#FF7EB6', '#FFD84A', '#3DDBB4', '#8FD3FF'][i % 4]}" opacity="${f1((0.4 + 0.6 * Math.abs(Math.sin(t * 4 + i))) * 100) / 100}"/>`;
+  h += `<rect x="-600" y="${GY.FY}" width="3120" height="600" fill="#3B3270"/>`;
+  for (let i = 0; i < 26; i++) h += `<rect x="${-600 + i * 120}" y="${GY.FY + (i % 2) * 60}" width="60" height="60" fill="#4A4088"/>`;
+  return h + `<rect x="-600" y="${GY.FY}" width="3120" height="12" fill="#5A4FA8"/>`;
+}
+function gyPunchMachine(x, y, s, t, o = {}) {
+  const sw = (o.hit || 0) * 70;
+  let h = `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><ellipse cx="0" cy="6" rx="190" ry="22" fill="#000" opacity=".25"/>`;
+  h += `<rect x="-150" y="-620" width="300" height="620" rx="26" fill="#E5484D" stroke="${INK}" stroke-width="9"/><rect x="-150" y="-620" width="300" height="620" rx="26" fill="url(#gfDots)" opacity=".3"/>`;
+  h += `<rect x="-170" y="-700" width="340" height="100" rx="24" fill="#FFD84A" stroke="${INK}" stroke-width="9"/>` + gfT(0, -634, '펀치 측정기', 44, GFC.navy);
+  for (let i = 0; i < 7; i++) h += `<circle cx="${-140 + i * 46.6}" cy="-708" r="9" fill="${Math.floor(t * 6 + i) % 2 ? '#fff' : '#FFB800'}" stroke="${INK}" stroke-width="3"/>`;
+  h += `<rect x="-120" y="-560" width="240" height="130" rx="14" fill="#14122A" stroke="${INK}" stroke-width="7"/>` + `<g transform="translate(0 -472) scale(${f1((o.flash || 1) * 100) / 100})">${gfT(0, 26, o.score || '000', 92, '#FF5A5A', { sw: 0 })}</g>`;
+  if (o.sticker) h += `<g transform="translate(6 -496) rotate(-7) scale(${f1((o.stk || 1) * 100) / 100})"><rect x="-118" y="-58" width="236" height="116" rx="16" fill="#FFF3B0" stroke="${INK}" stroke-width="6"/><path d="M82 -58 L118 -22 L118 -58 Z" fill="#E0C86A" stroke="${INK}" stroke-width="4"/>${gfT(0, 30, o.sticker, 88, '#E5484D')}</g>`;
+  h += `<g transform="translate(-150 -330) rotate(${f1(-sw)})"><rect x="-16" y="-14" width="40" height="28" rx="8" fill="#9AA6B8" stroke="${INK}" stroke-width="6"/><circle cx="-56" cy="0" r="62" fill="#FF8A3D" stroke="${INK}" stroke-width="8"/><circle cx="-70" cy="-16" r="18" fill="#fff" opacity=".45"/></g>`;
+  h += `<rect x="-110" y="-200" width="220" height="150" rx="14" fill="#B3202C" stroke="${INK}" stroke-width="6"/><circle cx="0" cy="-125" r="34" fill="#FFD84A" stroke="${INK}" stroke-width="6"/>` + gfT(0, -113, '₩', 34, GFC.navy);
+  return h + `</g>`;
+}
 function gyGasMon(t, s = 1, o = {}) { // 가스 누출 보스(우리 그림): 초록 연기 덩어리 + 화난 눈썹
   const w = Math.sin(t * 4) * 6, puff = (x, y, r, i) => `<circle cx="${f1(x + Math.sin(t * 3 + i) * 5)}" cy="${f1(y + Math.cos(t * 2.6 + i) * 5)}" r="${r}" fill="#A6E36A" stroke="${INK}" stroke-width="7"/>`;
   const P = [[-90, 10, 70], [-30, -40, 86], [50, -30, 80], [100, 30, 64], [0, 40, 80], [-60, 70, 54], [70, 80, 50]];
@@ -59,7 +80,7 @@ gyscoreScene = function (t, lt, a) {
       h += `<rect x="-600" y="-600" width="3120" height="2280" fill="#120E1C" opacity="${f1(0.82 * credits * 100) / 100}"/>`;
       h += fkAt(960, 330, gfBounceText(lt, tH + 0.1, 0, 0, [['HAPPY END', GFC.sun]], { size: 130 }), 1);
       const roll = (lt - tH - 0.3) * 90;
-      [['주연', '제로'], ['특별 출연', 'AI 안경'], ['그리고', '아무도 몰랐다']].forEach(([a1, b1], i) => { const y = 860 - roll + i * 120; if (y > 420 && y < 1000) h += gfT(900, y, a1, 44, '#B8B0D8', { anchor: 'end', wt: 800 }) + gfT(940, y, b1, 52, '#fff', { anchor: 'start' }); });
+      [['주연', '제로'], ['특별 출연', 'AI 안경'], ['그리고', '아무도 몰랐다']].forEach(([a1, b1], i) => { const y = 860 - roll + i * 120; if (y > 420 && y < 1000) h += gfT(1300, y, a1, 44, '#B8B0D8', { anchor: 'end', wt: 800 }) + gfT(1340, y, b1, 52, '#fff', { anchor: 'start' }); });
       if (lt > tQ) h += fkAt(1450, 300, gfT(0, 40, '?', 150, GFC.coral, { sw: 14, stroke: '#fff' }), gfIn(lt, tQ, 3.4, 0.4), 12);
     }
   } else { // 천만에요: 화면이 지지직, HAPPY END가 금 가며 무너짐
@@ -69,7 +90,7 @@ gyscoreScene = function (t, lt, a) {
       h += `<g transform="translate(${f1(x)} ${f1(380 + dy)}) rotate(${f1(rot)})">${gfT(0, 46, c, 130, GFC.sun, { sw: 14, stroke: GFC.navy })}</g>`; });
     h += `<path d="M700 260 l80 90 l-50 40 l90 110 M1180 240 l-60 120 l70 30 l-40 120" stroke="#fff" stroke-width="8" fill="none" opacity="${f1(g * 100) / 100}"/>`;
     h += gyGlitch(t, 1 - gfK(0.5, 1.2, lt)) + `</g>`;
-    h += fkAt(960, 700, gfChip('ERROR · 진짜 이야기는 지금부터', { size: 40, bg: '#FFE1E1' }), gfIn(lt, 0.35, 3.2, 0.45), -2);
+    h += fkAt(960, 700, gfChip('ERROR · 진짜 이야기는 지금부터', { size: 52, bg: '#FFE1E1' }), gfIn(lt, 0.35, 3.2, 0.45), -2);
   }
   return h;
 };
@@ -84,42 +105,51 @@ gygoodScene = function (t, lt, a) {
   if (ph === 0) { // 경제학자 찰스 굿하트의 법칙(얼굴 없이 법칙 카드)
     const tG = Math.min(0.25, gyW(a, '찰스', 1.2) - 0.1), tL = gyW(a, '법칙', 2.6);
     let w = gfFull('url(#gyNavy)') + gfRays(t, 960, 430, 1200, GFC.sun, 14, 0.12, 8);
-    w += fkAt(960, 470, gfItem(lt, tG, { svg: `<g transform="translate(0 30) scale(1.1)">${gyGauge(0.75)}</g>`, name: '굿하트의 법칙', sub: '경제학자 찰스 굿하트 · 1975', w: 600 }), 1.5);
-    if (lt > tL) w += fkAt(960, 850, gfChip('법칙 카드 획득!', { size: 40, bg: GFC.sun }), gfIn(lt, tL, 3.2, 0.45), -2);
+    w += fkAt(960, 470, gfItem(lt, tG, { svg: `<g transform="translate(0 30) scale(1.1)">${gyGauge(0.75)}</g>`, name: '굿하트의 법칙', sub: '경제학자 찰스 굿하트 · 1975', w: 640 }), 1.7);
+    if (lt > tL) w += fkAt(960, 860, gfChip('법칙 카드 획득!', { size: 50, bg: GFC.sun }), gfIn(lt, tL, 3.2, 0.45), -2);
     h += qCam([960, 540, 1], w);
   } else if (ph === 1) { // 인용: 지표가 목표가 되는 순간
     const tT = gyW(a, '목표', 1.6), tX = gyW(a, '아니다', 4.0);
     let w = gfFull('url(#gyNavy)') + gfRays(t, 960, 430, 1200, GFC.sun, 14, 0.08, 8);
-    w += fkAt(960, 300, gfPanel(1500, 270, { r: 40, head: '굿하트의 법칙', headBg: GFC.sun }) + gfT(0, -14, '"어떤 지표가 목표가 되는 순간,', 58, GFC.navy) + gfT(0, 70, '그 지표는 더 이상 좋은 지표가 아니다."', 58, GFC.navy), gfIn(lt, 0.05, 3, 0.45));
-    w += fkAt(1430, 476, gfChip('널리 알려진 요약', { size: 38, bg: '#fff' }), gfIn(lt, 0.4, 3.2, 0.45), 3);
+    w += fkAt(960, 300, gfPanel(1500, 270, { r: 40, head: '굿하트의 법칙', headBg: GFC.sun, headSize: 40 }) + gfT(0, -14, '"어떤 지표가 목표가 되는 순간,', 58, GFC.navy) + gfT(0, 70, '그 지표는 더 이상 좋은 지표가 아니다."', 58, GFC.navy), gfIn(lt, 0.05, 3, 0.45));
+    w += fkAt(1420, 470, gfChip('널리 알려진 요약', { size: 42, bg: '#fff' }), gfIn(lt, 0.15, 3.2, 0.45), 3);
     const morph = gfK(tT - 0.1, tT + 0.3, lt);
     w += fkAt(640, 700, `<g opacity="${f1((1 - morph * 0.6) * 100) / 100}">${gyGauge(0.7, gfK(tX, tX + 0.3, lt))}</g>`, 1.9) + fkAt(640, 880, gfChip('지표', { size: 44, bg: '#fff' }), 1);
     if (lt > tT - 0.1) w += fkAt(960, 700, gfT(0, 30, '→', 110, '#fff'), gfIn(lt, tT - 0.1, 3, 0.45)) + fkAt(1280, 690, gyTarget(90), gfIn(lt, tT, 3, 0.45) * 1.5) + fkAt(1280, 880, gfChip('목표', { size: 44, bg: '#FFE1E1' }), gfIn(lt, tT + 0.1, 3, 0.45));
     if (lt > tX) w += fkAt(640, 690, `<path d="M-110 -100 L110 100 M110 -100 L-110 100" stroke="#E5484D" stroke-width="18" stroke-linecap="round"/>`, gfIn(lt, tX, 4, 0.4));
     h += qCam([960, 540, 1], w);
-  } else if (ph === 2) { // 점수 = 자, 실력 = 새싹
-    const tS = gyW(a, '점수', 0.8), tR = gyW(a, '실력', 1.6), tM = gyW(a, '위한', 2.35);
-    const grow = 150 + 90 * gfK(tM, D - 0.3, lt);
-    let w = gyLab(t);
-    w += fkAt(840, 740, gySprout(grow, t), 1.2) + fkAt(1100, 740, gyRuler(440, grow * 1.2), 1.0);
-    if (lt > tR - 0.1) w += fkAt(700, 420 - (grow - 150) * 1.2, gfChip('실력 = 새싹', { size: 40, bg: '#E3FFD6' }), gfIn(lt, tR - 0.1, 3.2, 0.45), -3);
-    if (lt > tS - 0.1) w += fkAt(1300, 270, gfChip('점수 = 자', { size: 40, bg: '#FFF3B0' }), gfIn(lt, tS - 0.1, 3.2, 0.45), 3);
-    if (lt > tM) w += fkAt(1250, 560, gfChip('재는 도구일 뿐', { size: 34, bg: '#fff' }), gfIn(lt, tM, 3.2, 0.45), 2);
-    h += qCam(camLerp(lt / D, [980, 520, 1.25], [980, 500, 1.3]), w);
-  } else { // '점수 따기'가 목표 → 새싹은 시들고 자를 늘리고 스티커 → 꼼수 → 가짜 과녁
-    const tA = gyW(a, '점수', 0.6) - 0.1, tK = gyW(a, '키우는', 3.4), tSt = gyW(a, '훔치는', 4.6) - 0.1, tKk = gyW(a, '꼼수', 5.4), tEnd = Math.max(tKk + 1.0, D - 1.6);
+  } else if (ph === 2) { // 점수 = 오락실 펀치 기계 숫자, 실력 = 내 펀치 힘(운영자 2026-11-16: 새싹 비유 교체)
+    const tS = gyW(a, '점수', 0.8), tR = gyW(a, '실력', 1.65) - 0.2, tM = gyW(a, '위한', 2.35), hitT = tR + 0.25;
+    const hit = gfK(hitT, hitT + 0.08, lt) * (1 - gfK(hitT + 0.2, hitT + 0.9, lt)), score = Math.round(75 * easeOut(gfK(hitT + 0.1, hitT + 0.7, lt)));
+    let w = gyArcade(t);
+    w += gyPunchMachine(1120, GY.FY, 1, t, { score: String(score).padStart(3, '0'), hit, flash: lt > hitT + 0.7 ? gfBeat(lt, hitT + 0.7, 0.1, 4, 8) : 1 });
+    const wind = lt > tR - 0.5 && lt < hitT, punch = lt > hitT - 0.05 && lt < hitT + 0.5;
+    w += gfActor(SPZW, { x: 640, y: GY.FY, s: 1, t, pose: punch ? SP_P.reach : wind ? '주먹' : '서기', handR: punch ? 'fist' : null, ex: fEx(punch ? 'z결심' : lt > hitT + 0.5 ? 'z뿌듯' : 'z빵긋'), look: [0.6, 0], seed: 3, headFx: gyGlassFx(0) }, wind ? { sx: 0.96, sy: 1.04 } : punch ? gfJelly(lt, hitT, 0.08, 5, 8) : {});
+    if (punch) w += gfStarBurst(lt, hitT, 900, GY.FY - 300, { n: 7, r1: 140 }) + gfPlus(lt, hitT, 940, GY.FY - 380, '퍽!', { size: 56, col: GFC.sun });
+    if (lt > tS - 0.1) w += fkAt(1120, 180, gfChip('점수 = 기계에 뜬 숫자', { size: 40, bg: '#FFF3B0' }), gfIn(lt, tS - 0.1, 3.2, 0.45), 3);
+    if (lt > tR - 0.1) w += fkAt(560, 280, gfChip('실력 = 내 펀치 힘', { size: 40, bg: '#E3FFD6' }), gfIn(lt, tR - 0.1, 3.2, 0.45), -3);
+    if (lt > tM) w += fkAt(1450, 520, gfChip('재는 도구일 뿐', { size: 36, bg: '#fff' }), gfIn(lt, tM, 3.2, 0.45), 4);
+    h += qCam(camLerp(lt / D, [920, 540, 1.12], [930, 520, 1.18]), w);
+  } else { // '점수 따기'가 목표 → 훈련(아령)은 내팽개치고 → 숫자판에 '999' 스티커를 붙이는 꼼수 → 가짜 과녁
+    const tA = gyW(a, '점수', 0.6) - 0.1, tK = gyW(a, '키우는', 3.4), tSt = gyW(a, '훔치는', 4.6) - 0.1, tKk = gyW(a, '꼼수', 5.4), tEnd = 999;
     if (lt < tEnd) {
-      const wilt = gfK(tK - 0.2, tK + 0.8, lt), stretch = easeOut(gfK(tSt, tSt + 0.7, lt)), stk = lt > tKk - 0.15;
-      let w = gyLab(t);
-      w += fkAt(840, 740, gySprout(240, t, wilt), 1.2) + fkAt(1100, 740, gyRuler(440 + 200 * stretch, 288 + 330 * stretch, { sticker: stk ? '100' : null, stk: stk ? gfIn(lt, tKk - 0.15, 3.4, 0.4) : 1 }), 1.0);
-      if (stretch > 0 && stretch < 1) w += [-1, 1].map(d => `<circle cx="${1100 + d * 60}" cy="${f1(740 - 440 - 200 * stretch + 30)}" r="30" fill="#fff" stroke="${INK}" stroke-width="7"/>`).join('');
-      // 조준선: 새싹 → 자(목표: 점수 따기)
-      const aim = easeInOut(gfK(tA, tA + 0.6, lt)), ax = lerp(840, 1100, aim), ay = lerp(520, 420, aim);
-      if (lt > tA - 0.2) w += `<g transform="translate(${f1(ax)} ${f1(ay)})" opacity="${f1(gfIn(lt, tA - 0.2, 3, 0.45) * 100) / 100}"><circle r="80" fill="none" stroke="#E5484D" stroke-width="9"/><circle r="40" fill="none" stroke="#E5484D" stroke-width="6"/><path d="M-110 0 H-50 M50 0 H110 M0 -110 V-50 M0 50 V110" stroke="#E5484D" stroke-width="9" stroke-linecap="round"/></g>` +
-        fkAt(1420, 330, gfChip('목표: 점수 따기', { size: 42, bg: '#FFE1E1' }), gfIn(lt, tA + 0.4, 3.2, 0.45), 3);
-      if (lt > tK) w += gfEmote(lt, tK, 760, 360, 'gloom', { hold: 4 });
-      if (lt > tKk) w += fkAt(600, 300, gfStamp(lt, tKk + 0.1, '꼼수!', { size: 84 }));
-      h += qCam(camLerp(lt / tEnd, [980, 500, 1.25], [1000, 470, 1.25]), w);
+      const stk = lt > tSt + 0.35;
+      let w = gyArcade(t);
+      w += gyPunchMachine(1120, GY.FY, 1, t, { score: '075', sticker: stk ? '999' : null, stk: stk ? gfIn(lt, tSt + 0.35, 3.6, 0.4) : 1 });
+      // 아령(훈련)은 바닥에 굴러다니고 먼지
+      const kick = gfK(tK - 0.1, tK + 0.5, lt);
+      w += fkAt(lerp(520, 300, easeOut(kick)), GY.FY - 34, `<g transform="rotate(${f1(-180 * easeOut(kick))})"><rect x="-70" y="-10" width="140" height="20" rx="8" fill="#9AA6B8" stroke="${INK}" stroke-width="6"/><rect x="-96" y="-34" width="34" height="68" rx="10" fill="#3B4570" stroke="${INK}" stroke-width="6"/><rect x="62" y="-34" width="34" height="68" rx="10" fill="#3B4570" stroke="${INK}" stroke-width="6"/></g>`, 1);
+      if (lt > tK - 0.1) w += fkAt(360, GY.FY - 150, gfChip('훈련', { size: 34, bg: '#fff' }), gfIn(lt, tK - 0.1, 3.2, 0.45) * gfOut(lt, tK + 1.2, 0.3), -6) + gfPuff(lt, tK + 0.3, 330, GY.FY - 20, 1.2, '#D9D2C2');
+      // 제로: 살금살금 기계로 → 폴짝 뛰어 숫자판에 스티커
+      const zx = lerp(660, 900, gfK(tK, tSt, lt)), jumping = lt > tSt - 0.15 && lt < tSt + 0.6;
+      const wk = lt > tK && lt < tSt - 0.15 ? gfWalk(zx * 1.3, 0.6) : null;
+      w += gfActor(SPZW, { x: zx, y: GY.FY, s: 1, t, pose: jumping ? SP_P.reach : wk ? wk.pose : '서기', ex: fEx(lt > tSt - 0.2 ? 'z히죽' : lt > tA ? 'z의심' : 'z멍'), look: [0.7, -0.3], seed: 3, headFx: gyGlassFx(0), holdR: lt > tSt - 0.5 && !stk ? `<g transform="scale(.5)"><circle r="46" fill="#FF6B6B" stroke="${INK}" stroke-width="6"/>${gfT(0, 15, '999', 40, '#fff')}</g>` : null }, jumping ? gfHop(lt, tSt - 0.05, 150, 0.55) : wk ? { sy: wk.sy, dy: wk.dy } : {});
+      // 조준선: 내 펀치 힘 → 숫자판(목표: 점수 따기)
+      const aim = easeInOut(gfK(tA, tA + 0.6, lt)), ax = lerp(910, 1120, aim), ay = lerp(GY.FY - 330, GY.FY - 470, aim);
+      if (lt > tA - 0.2) w += `<g transform="translate(${f1(ax)} ${f1(ay)})" opacity="${f1(gfIn(lt, tA - 0.2, 3, 0.45) * 100) / 100}"><circle r="90" fill="none" stroke="#E5484D" stroke-width="9"/><circle r="44" fill="none" stroke="#E5484D" stroke-width="6"/><path d="M-120 0 H-56 M56 0 H120 M0 -120 V-56 M0 56 V120" stroke="#E5484D" stroke-width="9" stroke-linecap="round"/></g>` +
+        fkAt(1460, 260, gfChip('목표: 점수 따기', { size: 42, bg: '#FFE1E1' }), gfIn(lt, tA + 0.4, 3.2, 0.45), 3);
+      if (lt > tKk) w += fkAt(560, 300, gfStamp(lt, tKk + 0.1, '꼼수!', { size: 88 })) + fkAt(1460, 720, gfChip('샌드백은 그대로인데 999', { size: 40, bg: '#fff' }), gfIn(lt, tKk + 0.5, 3.2, 0.45), 3);
+      h += qCam(camLerp(lt / tEnd, [920, 540, 1.12], [960, 510, 1.18]), w);
     } else { // 대본의 가짜 과녁: '점수'엔 화살 빽빽, '실력'은 텅 빔
       const k = gfIn(lt, tEnd, 3, 0.45);
       let w = gfFull('#FFF3E0') + `<rect x="-600" y="-600" width="3120" height="2280" fill="url(#gfDots)"/>`;
@@ -147,7 +177,7 @@ gybossScene = function (t, lt, a) {
     if (pov) { // 제로 시점: 빨간 경고(기기 화면은 제로 시점에서만)
       const k = gfIn(lt, tB - 0.1, 3, 0.45);
       h += gyOffice(t, 1) + gfLayer([1500, 600, 1.4], 1, `<g transform="translate(1300 520)">${gyGasMon(t, 1.6, { roar: 0.5 })}</g>`) + `<rect x="-600" y="-600" width="3120" height="2280" fill="#FF2E2E" opacity=".22"/>` + gyLensView(0.6);
-      h += fkAt(960, 430, `<rect x="-480" y="-170" width="960" height="340" rx="30" fill="#3A0A14" fill-opacity=".85" stroke="#FF5A5A" stroke-width="8"/>` + gfT(0, -80, '⚠ AI 글래스 오류', 54, '#FFB0B0') + gfT(0, 6, 'BATTERY 0% · 네트워크 연결 끊김', 44, '#fff') + gfT(0, 90, '안경 사용 불가', 64, '#FF5A5A', { sw: 10, stroke: '#3A0A14' }), k * gfBeat(lt, tB, 0.12, 4, 8) * (1 + gfShake(lt, tB, 6, 0.3)[0] * 0.003));
+      h += fkAt(960, 430, `<rect x="-480" y="-170" width="960" height="340" rx="30" fill="#3A0A14" fill-opacity=".85" stroke="#FF5A5A" stroke-width="8"/>` + gfT(0, -84, '⚠ 실전 상황 · AI 글래스 작동 불가', 46, '#FFB0B0') + gfT(0, 4, 'BATTERY 0% · 네트워크 연결 끊김', 40, '#fff') + gfT(0, 92, '안경을 벗고 직접 해결하세요', 56, '#FF5A5A', { sw: 10, stroke: '#3A0A14' }), k * gfBeat(lt, tB, 0.12, 4, 8) * (1 + gfShake(lt, tB, 6, 0.3)[0] * 0.003));
       return h;
     }
     let w = gyOffice(t, alarm);
@@ -156,25 +186,25 @@ gybossScene = function (t, lt, a) {
     const mk = gfK(tJ, tJ + 0.6, lt), shrink = gfK(D - 1.1, D - 0.3, lt);
     if (mk > 0) { w += `<g transform="translate(${1420} ${f1(lerp(700, 420, easeOut(mk)))}) scale(${f1(lerp(0.3, 1.25, easeOut(mk)) * (1 - 0.8 * shrink))})">${gyGasMon(t, 1, { roar: lt > tC ? 0.6 + 0.4 * Math.sin(t * 8) : 0 })}</g>`;
       w += fkAt(1420, 130, gfPanel(460, 74, { r: 30 }) + gfT(-200, 12, '위기 상황', 32, '#E5484D', { anchor: 'start' }) + `<g transform="translate(-30 0)">${gfBar(220, 1, { col: '#FF5A5A', h: 26 })}</g>`, gfIn(lt, tJ + 0.3, 3, 0.45)) +
-        fkAt(1420, 760, gfChip('가스 누출!', { size: 40, bg: '#FFE1E1' }), gfIn(lt, tJ + 0.2, 3, 0.45), 3); }
+        fkAt(1180, 780, gfChip('가스 누출!', { size: 44, bg: '#FFE1E1' }), gfIn(lt, tJ + 0.2, 3, 0.45), 3); }
     // 제로: 스펙 자랑 → 놀람 → 안경 톡 → 껍데기 → 날아감
     const shell = gfK(tSh, tSh + 0.4, lt), blow = easeIn(gfK(tSh + 0.5, D, lt)), zx = ZX - 280 - 900 * blow, zy = FY - 200 * Math.sin(Math.PI * Math.min(1, blow * 1.4));
     const pose = lt > tG - 0.2 && lt < tB + 0.4 ? 'gy톡' : lt > tJ ? '만세' : lt > tSp ? '주먹' : '서기';
-    const zero = gfActor(SPZW, { x: zx, y: zy, s: 1.0, t, pose, ex: fEx(lt > tN ? 'z멘붕' : lt > tJ ? 'z충격' : 'z뿌듯'), look: [0.6, 0], seed: 3, rot: -40 * blow, headFx: gyGlassFx(lt > tB ? 0 : 0.6), sweat: lt > tJ }, lt > tJ && lt < tJ + 0.5 ? gfJelly(lt, tJ, 0.14, 5, 8) : {});
-    w += gyGhost(zero, shell * 0.9);
+    const zero = gfActor(SPZW, { x: zx, y: zy, s: 1.0, t, pose: shell > 0.5 ? '서기' : pose, ex: fEx(lt > tN ? 'z멘붕' : lt > tJ ? 'z충격' : 'z뿌듯'), look: [0.6, 0], seed: 3, rot: -40 * blow + (shell > 0 ? Math.sin(t * 9) * 6 * shell : 0), headFx: gyGlassFx(lt > tB ? 0 : 0.6), sweat: lt > tJ && shell < 0.5 }, gfM(lt > tJ && lt < tJ + 0.5 ? gfJelly(lt, tJ, 0.14, 5, 8) : {}, { sx: 1 + 0.12 * shell, sy: 1 - 0.38 * shell }));
+    w += shell > 0 ? `<g filter="url(#gyGray)">${zero}</g>` + fkAt(zx + 4, zy - 250 * (1 - 0.38 * shell), `<circle r="34" fill="#FFD84A" stroke="${INK}" stroke-width="6"/>` + gfT(0, 12, '100', 30, GFC.navy) + gfTwinkle(t, 26, -26, 16, 1, '#fff'), 0.9 + 0.1 * Math.sin(t * 6)) : zero;
     if (lt > tSp - 0.1 && lt < tJ + 0.4) { const k = gfIn(lt, tSp - 0.1, 3, 0.45) * gfOut(lt, tJ + 0.1, 0.3);
       [[ZX - 620, 380, gyCert('자격증', '수석 합격'), -6], [ZX - 280, 230, `<g transform="scale(1.3)">${GY_TROPHY}</g>`, 0], [ZX + 60, 380, gyCert('스펙', '빵빵'), 6]].forEach(([x, y, svg, r], i) => { w += fkAt(x, y + Math.sin(t * 2 + i) * 6, svg, k * 0.8, r); });
       w += fkAt(ZX - 280, 120, gfChip('화려한 스펙', { size: 40, bg: GFC.sun }), k, -2); }
     if (lt > tN - 0.1) { const k = gfIn(lt, tN - 0.1, 3, 0.45) * (1 - blow);
-      w += fkAt(1060, 190, gfPanel(520, 170, { r: 30, head: '제로 스탯', headBg: '#fff' }) + gfT(-220, -14, '점수', 34, GFC.navy, { anchor: 'start' }) + gfT(220, -14, '100', 40, GFC.navy, { anchor: 'end' }) + gfT(-220, 52, '실제 실력', 34, GFC.navy, { anchor: 'start' }) + gfT(220, 52, 'Lv.1', 40, '#E5484D', { anchor: 'end' }), k); }
-    if (lt > tSh) w += fkAt(ZX - 280, FY - 640, gfChip('껍데기', { size: 44, bg: '#fff' }), gfIn(lt, tSh, 3.2, 0.45) * (1 - blow), -4);
+      w += fkAt(1040, 200, gfPanel(520, 170, { r: 30, head: '제로 스탯', headBg: '#fff', headSize: 36 }) + gfT(-220, -14, '점수', 34, GFC.navy, { anchor: 'start' }) + gfT(220, -14, '100', 40, GFC.navy, { anchor: 'end' }) + gfT(-220, 52, '실제 실력', 34, GFC.navy, { anchor: 'start' }) + gfT(220, 52, 'Lv.1', 40, '#E5484D', { anchor: 'end' }), k); }
+    if (lt > tSh) w += fkAt(ZX - 280, FY - 560, gfChip('텅 빈 껍데기', { size: 54, bg: '#fff' }), gfIn(lt, tSh, 3.2, 0.45) * (1 - blow), -4);
     if (lt > tSh + 0.4) w += [0, 1, 2, 3].map(i => `<path d="M${1200 - i * 30} ${640 + i * 50} q-200 -30 -420 0" stroke="#A6E36A" stroke-width="12" fill="none" stroke-linecap="round" opacity=".7"/>`).join('');   // 보스의 입김
     if (lt > tC && lt < tC + 0.8) w += gfEmote(lt, tC, zx + 150, zy - 560, 'shock', { hold: 0.7 });
     // 끝 1초: 선배가 밸브를 잠그고 창문을 열자 가스 보스가 쪼그라듦(정확한 대처: 밸브·환기, 전기 스위치는 안 건드림)
     const tFix = D - 1.3;
     if (lt > tFix - 0.6) { const cx = lerp(2100, 1560, easeOut(gfK(tFix - 0.6, tFix, lt))), vr = 90 * gfK(tFix, tFix + 0.4, lt);
       w += `<g transform="translate(1500 640)">${gyValve(vr)}</g>` + gfActor(spPass(4), { x: cx, y: FY, s: 0.95, t, pose: lt > tFix ? '들기' : walkPose(cx * 0.05, 1), ex: fEx('z결심'), look: [-0.6, 0], seed: 77 }, {});
-      if (lt > tFix) w += fkAt(1560, 300, gfChip('밸브 잠금 · 창문 열기!', { size: 38, bg: '#E3FFD6' }), gfIn(lt, tFix, 3.2, 0.45), 3); }
+      if (lt > tFix) w += fkAt(1380, 300, gfPanel(640, 150, { r: 30, head: '시험 5번 문제 그대로!', headBg: GFC.sun, headSize: 34 }) + gfT(0, 4, '① 밸브 잠금', 40, GFC.navy) + gfT(0, 54, '② 창문 열어 환기', 40, GFC.navy), gfIn(lt, tFix, 3.2, 0.45), 2); }
     h += qCam(camLerp(lt / D, [960, 540, 1.0], [900, 540, 1.06]), w);
     if (lt > tJ && lt < tJ + 1.0) h += fkAt(960, 300, gfBounceText(lt, tJ, 0, 0, [['WARNING', '#FF3B3B']], { size: 110 }), 1);
   } else { // 남을 속인 줄 알았지만 → 사실은 EXP를 도둑맞음
@@ -198,7 +228,7 @@ gybossScene = function (t, lt, a) {
         for (let i = 0; i < 4; i++) { const p = ((u * 1.4 + i / 4) % 1); const x = lerp(820, gx - 100, p), y = 330 - Math.sin(Math.PI * p) * 90; w += fkAt(x, y, gyOrb(20), 0.9); } }
       w += fkAt(gx, gy, `<g transform="scale(1.7)">${gyGlasses(0.8, t)}</g><g transform="translate(0 -6) scale(2.4)">${lt > tS ? gyMask : ''}</g>` + (lt > tS ? `<g transform="translate(150 40)"><path d="M-50 -40 Q0 -80 50 -40 L60 50 Q0 74 -60 50 Z" fill="#7FFFC8" stroke="${INK}" stroke-width="6"/>${gfT(0, 26, 'EXP', 34, '#1E6B4A')}</g>` : ''), 1, run > 0 ? -8 : 0);
       if (run > 0) w += [0, 1, 2].map(i => `<line x1="${f1(gx - 200 - i * 40)}" y1="${f1(gy - 40 + i * 40)}" x2="${f1(gx - 360 - i * 40)}" y2="${f1(gy - 40 + i * 40)}" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".6"/>`).join('');
-      if (lt > tS) w += fkAt(960, 820, gfChip('성장 기회 도둑맞음!', { size: 48, bg: '#FFE1E1' }), gfIn(lt, tS + 0.3, 3.2, 0.45), -2);
+      if (lt > tS) w += fkAt(1280, 800, gfChip('성장 기회 도둑맞음!', { size: 48, bg: '#FFE1E1' }), gfIn(lt, tS + 0.3, 3.2, 0.45), -2);
       if (u < 0.35) w += gyGlitch(t, 1 - u / 0.35);
       h += qCam([960, 540, 1], w);
     }
