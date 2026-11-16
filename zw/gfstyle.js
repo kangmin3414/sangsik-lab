@@ -12,11 +12,12 @@ const gsLv = n => Array.from({ length: n }, (_, i) => f1(i / (n - 1) * 1000) / 1
 /* 어두운 선(외곽선)만 골라 낸 알파 → result 'line' */
 const gsLine = (thr = [1, 1, 0.3, 0, 0, 0, 0, 0]) => `<feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="la"/><feComponentTransfer in="la" result="line"><feFuncA type="table" tableValues="${thr.join(' ')}"/></feComponentTransfer>`;
 /* 도트: 먼저 어두운 선을 굵혀(erode) 칸 가운데 표본이 선을 놓치지 않게 하고, 칸마다 가운데 2×2 점을 뽑아 칸 크기만큼 넓힌다(이웃 칸과 겹치지 않게 반지름 = 칸/2 - 1). */
-const gsPixBody = (px, thick) => { const b = Math.max(4, Math.round(px / 2) * 2), h = Math.floor(b / 2), er = thick ? Math.max(1, Math.round(b / 4)) : 0;
-  return (er ? `<feMorphology in="SourceGraphic" operator="erode" radius="${er}" result="src"/>` : '') + `<feFlood x="${h - 1}" y="${h - 1}" width="2" height="2"/><feComposite width="${b}" height="${b}"/><feTile result="a"/><feComposite in="${er ? 'src' : 'SourceGraphic'}" in2="a" operator="in"/><feMorphology operator="dilate" radius="${h - 1}" result="p"/>`; };
+const GS_PR = { x: -160, y: -40, w: 2240, h: 1280 };   // 도트 필터 영역: 화면(0~1920)과 세계 좌표(줌 0.88로 넓어짐)를 모두 덮는다
+const gsPixBody = (px, thick) => { const b = Math.max(4, Math.round(px / 2) * 2), h = Math.floor(b / 2), er = thick ? Math.max(1, Math.round(b / 4)) : 0, X = GS_PR.x, Y = GS_PR.y;
+  return (er ? `<feMorphology in="SourceGraphic" operator="erode" radius="${er}" result="src"/>` : '') + `<feFlood x="${X + h - 1}" y="${Y + h - 1}" width="2" height="2"/><feComposite x="${X}" y="${Y}" width="${b}" height="${b}"/><feTile result="a"/><feComposite in="${er ? 'src' : 'SourceGraphic'}" in2="a" operator="in"/><feMorphology operator="dilate" radius="${h - 1}" result="p"/>`; };
 const GS = {
-  pixel: (o = {}) => gsF('gs_pixel', gsPixBody(o.px || 12, o.thick == null ? 1 : o.thick) + `<feComponentTransfer in="p"><feFuncR type="discrete" tableValues="${gsLv(o.levels || 5)}"/><feFuncG type="discrete" tableValues="${gsLv(o.levels || 5)}"/><feFuncB type="discrete" tableValues="${gsLv(o.levels || 4)}"/></feComponentTransfer>`, { x: 0, y: 0, w: 1920, h: 1080 }),
-  gameboy: (o = {}) => gsF('gs_gameboy', gsPixBody(o.px || 10, 1) + `<feColorMatrix in="p" type="saturate" values="0" result="g"/><feComponentTransfer in="g" result="g2"><feFuncR type="linear" slope="1.35" intercept="-0.12"/><feFuncG type="linear" slope="1.35" intercept="-0.12"/><feFuncB type="linear" slope="1.35" intercept="-0.12"/></feComponentTransfer><feComponentTransfer in="g2"><feFuncR type="discrete" tableValues="0.06 0.19 0.55 0.61"/><feFuncG type="discrete" tableValues="0.22 0.38 0.67 0.74"/><feFuncB type="discrete" tableValues="0.06 0.19 0.06 0.06"/></feComponentTransfer>`, { x: 0, y: 0, w: 1920, h: 1080 }),
+  pixel: (o = {}) => gsF('gs_pixel', gsPixBody(o.px || 12, o.thick == null ? 1 : o.thick) + `<feComponentTransfer in="p"><feFuncR type="discrete" tableValues="${gsLv(o.levels || 5)}"/><feFuncG type="discrete" tableValues="${gsLv(o.levels || 5)}"/><feFuncB type="discrete" tableValues="${gsLv(o.levels || 4)}"/></feComponentTransfer>`, GS_PR),
+  gameboy: (o = {}) => gsF('gs_gameboy', gsPixBody(o.px || 10, 1) + `<feColorMatrix in="p" type="saturate" values="0" result="g"/><feComponentTransfer in="g" result="g2"><feFuncR type="linear" slope="1.35" intercept="-0.12"/><feFuncG type="linear" slope="1.35" intercept="-0.12"/><feFuncB type="linear" slope="1.35" intercept="-0.12"/></feComponentTransfer><feComponentTransfer in="g2"><feFuncR type="discrete" tableValues="0.06 0.19 0.55 0.61"/><feFuncG type="discrete" tableValues="0.22 0.38 0.67 0.74"/><feFuncB type="discrete" tableValues="0.06 0.19 0.06 0.06"/></feComponentTransfer>`, GS_PR),
   cave: () => gsF('gs_cave', `<feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>` +
     `<feComponentTransfer in="g" result="o"><feFuncR type="table" tableValues="0.18 0.52 0.70 0.86"/><feFuncG type="table" tableValues="0.12 0.27 0.46 0.76"/><feFuncB type="table" tableValues="0.10 0.14 0.26 0.62"/></feComponentTransfer>` +
     gsTurb(0.03, 2, 3, 'w') + `<feDisplacementMap in="o" in2="w" scale="10" xChannelSelector="R" yChannelSelector="G" result="d"/>` +
@@ -52,7 +53,7 @@ function gfStyleDefs(style, o = {}) {
   let d = '';
   if (GS[style]) d += GS[style](o);
   if (style === 'paper') d += GS.paperbg();
-  if (o.mosaic > 0) d += gsF('gs_mosaic', gsPixBody(o.mosaic, 0), { x: 0, y: 0, w: 1920, h: 1080 });
+  if (o.mosaic > 0) d += gsF('gs_mosaic', gsPixBody(o.mosaic, 0), GS_PR);
   d += `<pattern id="gs_scan" width="8" height="6" patternUnits="userSpaceOnUse"><rect width="8" height="2" fill="#9FF6FF" opacity=".10"/></pattern>` +
     `<radialGradient id="gs_lamp" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#FFE2A6"/><stop offset=".55" stop-color="#F2A657"/><stop offset="1" stop-color="#7A3A1C"/></radialGradient>`;
   return `<defs>${d}</defs>`;
