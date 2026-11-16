@@ -45,20 +45,33 @@ def steps(t0, t1, iv=0.38, g=0.16):
 def iris(lid, g1=0.45, g2=0.4): c = A(lid); put(c - 0.26, S.iris_close(), g1); put(c + 0.02, S.iris_open(), g2)
 STOP = 0.85
 
-# ----- s1: 출근 스테이지 (신호등 · 지하철 · 엘리베이터 + 상사 말풍선) -----
-c = A('s1')
-t1 = W('s1', '신호등', 1.0) + 0.25; t2 = W('s1', '지하철', 2.6) + 0.25; t3 = W('s1', '앉기도', 4.6) + 0.1
-tB = W('s1', '상사', 5.6); tK = W('s1', '카톡', 7.2) + 0.1; tkHit = tB + 3 * 0.32 + 0.55
-put(c + 0.1, S.stage(), 0.2)                                         # 출근 스테이지 카드
-for a0, b0 in ((c + 0.2, t1), (t1 + STOP, t2), (t2 + STOP, t3), (t3 + STOP, tK)): steps(a0, b0, 0.26, 0.12)
-put(t1 - 0.25, S.blip(440), 0.1); put(t1, S.hurt(), 0.2)            # 빨간불 → MISS
-put(t2 - 0.35, S.whoosh(0.4, 300, 2500), 0.16); put(t2, S.hurt(), 0.2); put(t2 + 0.05, S.whistle(0.3), 0.06)   # 지하철 칸이 와서 찌부(끼익)
-put(t3 - 0.1, S.land(), 0.2); put(t3, S.hurt(), 0.2)                # 문 닫힘
-for i in range(4): put(tB + i * 0.32 + 0.1, S.whoosh(0.3, 900, 4000), 0.05); put(tB + i * 0.32 + 0.55, S.pop(420), 0.05 if i < 3 else 0.0)
-tHb = max(tkHit + 0.05, E1('s1') + 0.05); put(tHb, S.blip(523), 0.12); put(tHb + 0.16, S.blip(523), 0.1)   # 마지막 하트 두근(말 끝난 뒤)
-# ----- s2: 영혼이 털리는 기분 -----
-c = A('s2'); put(c + 0.05, S.letters(3, 0.08, 900), 0.12)          # 콤보 ×3
-put(W('s2', '영혼', 1.2), S.ghost(0.9), 0.16); put(W('s2', '아시죠', 2.6), S.pop(500), 0.1)
+# ----- s1a: 횡단보도 — 급한 발소리 → 빨간불에 끽 → 버스 휙 → 헉헉 -----
+tR = W('s1a', '끊긴', 0.69); tL = W('s1a', '신호', 1.05); tBus = tL - 0.05; tMs = tBus + 0.28; tSl = tBus + 0.95
+put(0.05, S.stage(), 0.2); steps(0.1, tR, 0.2, 0.13)
+for i in range(3): put(tR - 0.95 + i * 0.32, S.blip(990), 0.05)          # 초록불 깜빡
+put(tR, S.whoosh(0.35, 2500, 8000), 0.12); put(tR + 0.02, S.blip(440), 0.1)   # 미끄러짐 + 빨간불
+put(tBus - 0.15, S.whoosh(1.1, 90, 1200), 0.34); put(tMs, S.hurt(), 0.2)   # 버스가 코앞을 휙
+put(tSl + 0.1, S.whoosh(0.7, 150, 1800), 0.16)                             # 승용차
+put(E1('s1a') + 0.05, S.breath(0.45), 0.45); put(E1('s1a') + 0.45, S.breath(0.45), 0.4)   # 헉헉(말 끝난 뒤)
+put(A('s1a') + tSl - A('s1a') + 0.35, S.tick(1600), 0.1)                  # 시계 08:21
+# ----- s1b: 만원 지하철 — 밀려듦 → 끼이익 쏠림 → 숨 게이지 바닥 -----
+c = A('s1b'); tSq = W('s1b', '막히', 0.41); tLu = W('s1b', '만원', 0.93); tJ = W('s1b', '지하철', 1.29); tMs = tJ + 0.32
+put(c - 0.26, S.bands(), 0.4); put(c, S.whoosh(2.6, 70, 500), 0.14)        # 차 안 웅웅
+put(tSq, S.boing(600, 220, 0.25), 0.1); put(tSq + 0.1, S.whoosh(0.3, 300, 2000), 0.08)
+put(tLu, S.whistle(0.45), 0.05); put(tMs, S.hurt(), 0.2)
+put(E1('s1b') + 0.08, S.blip(523), 0.12); put(E1('s1b') + 0.24, S.blip(523), 0.1)   # 숨 게이지 경고
+# ----- s1c: 엘리베이터 — 문이 코앞에서 쿵 → 폰 부르르 → 말풍선 비 → "이거 다시 해와"에 깔림 -----
+c = A('s1c'); tC0 = W('s1c', '자리', 0.37); tC1 = W('s1c', '기도', 0.83) + 0.06; tPh = W('s1c', '날아', 1.33); tBo = W('s1c', '상사', 1.69); tI = W('s1c', '이거', 2.15); tH = W('s1c', '해와', 2.99); tSlam = tH + 0.34
+put(c - 0.26, S.bands(), 0.4); steps(c + 0.1, tC0, 0.2, 0.12); put(tC0, S.whoosh(0.5, 300, 1500), 0.08)
+put(tC1, S.land(), 0.34); put(tC1 + 0.1, S.sparkle(3, 0.3), 0.06)
+for i in range(5): put(tC1 + 0.3 + i * 0.32, S.tick(1800), 0.05)             # 층수 올라감
+put(tPh, S.hum(0.5), 0.45)                                                   # 폰 진동
+for i in range(4): put(tBo + i * 0.26, S.pop(700 + i * 80), 0.07); put(tBo + i * 0.26 + 0.5, S.pop(420), 0.07)
+put(tI, S.boing(200, 500, 0.3), 0.08); put(tSlam, S.stamp(), 0.3); put(tSlam + 0.02, S.hurt(), 0.2)
+tHb = max(tSlam + 0.4, E1('s1c') + 0.05); put(tHb, S.blip(523), 0.12); put(tHb + 0.16, S.blip(523), 0.1)   # 마지막 하트 두근
+# ----- s2: 문 앞에 털썩, 영혼이 털림 -----
+c = A('s2'); put(c + 0.05, S.letters(3, 0.08, 900), 0.12); put(c + 0.02, S.land(), 0.16)
+put(W('s2', '영혼', 0.71), S.ghost(0.9), 0.16); put(W('s2', '아시죠', 2.25), S.pop(500), 0.1)
 # ----- s3: 상상 게임 (도트 세계로) -----
 tF = W('s3', '기를', 2.8); put(tF, S.boing(300, 700, 0.22), 0.12)
 for key, fb, f in (('돈', 3.6, 700), ('회사', 4.0, 820), ('직급', 4.4, 940)): put(W('s3', key, fb), S.pop(f), 0.14)
@@ -88,11 +101,13 @@ put(tC + 0.3, S.hurt(), 0.1); put(tC + 0.4, S.whoosh(1.0, 400, 3000), 0.1)      
 # ----- r4: 보이지 않는 이야기 -----
 for i, (key, fb) in enumerate((('국가', 0.6), ('법인', 1.2), ('종교', 1.8), ('돈이라는', 2.6))): put(W('r4', key, fb), S.pop(640 + i * 110), 0.14)
 put(W('r4', '보이지', 3.4), S.sparkle(5, 0.5), 0.12)
-# ----- r5: 수백만 명이 한 팀처럼 (다리) -----
-tM = W('r5', '수백만', 1.6); tT = W('r5', '팀', 3.2)
-put(tM, S.whoosh(1.2, 400, 3000), 0.1); steps(tM, tM + 1.8, 0.11, 0.06)
-put(tT, S.land(), 0.12); put(tT + 0.05, S.sparkle(6, 0.5), 0.1)
-put(E1('r5') + 0.05, S.clear(), 0.28)
+# ----- r5: 다리 짓기 — 줄 서기 → 통나무 건네기 → 널 깔기(톡톡) → 완성 → 건너는 발소리 -----
+c = A('r5'); tGo = W('r5', '생판', 0.91); tA = W('r5', '수백만', 2.23) - 0.25; tT = W('r5', '팀', 3.71); stp = (tT - 0.08 - tA) / 6
+put(tGo, S.whoosh(1.0, 400, 3000), 0.08); steps(tGo, tGo + 1.0, 0.1, 0.05)
+for k in range(7): put(tA + k * stp, S.pop(480 + k * 45), 0.09)
+for k in range(6): put(tA + stp * 0.5 + k * stp, S.pop(520 + k * 45), 0.08)
+put(tT, S.sparkle(6, 0.5), 0.1); put(E1('r5') + 0.05, S.clear(), 0.28)
+steps(E1('r5') + 1.1, DUR - 0.6, 0.24, 0.05)
 
 mixd = voice * 1.0 + bed + sfx * 0.6
 if os.environ.get('SP_STEMS'): np.savez('/dev/shm/sp/stems.npz', voice=voice, bed=bed, sfx=sfx)

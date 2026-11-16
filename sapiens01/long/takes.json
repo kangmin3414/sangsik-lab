@@ -52,5 +52,26 @@
   "cer": 0.0,
   "hyp": "그 덕분에 생판 모르는 사람 수백만 명과도 한 팀처럼 움직일 수 있게 됐습니다.",
   "text": "그 덕분에 생판 모르는 사람 수백만 명과도 한 팀처럼 움직일 수 있게 됐습니다."
+ },
+ "s1a": {
+  "take": "/dev/shm/sp/takes/s1a.wav",
+  "cer": 0.044,
+  "from": "s1_1",
+  "hyp": "",
+  "text": ""
+ },
+ "s1b": {
+  "take": "/dev/shm/sp/takes/s1b.wav",
+  "cer": 0.044,
+  "from": "s1_1",
+  "hyp": "",
+  "text": ""
+ },
+ "s1c": {
+  "take": "/dev/shm/sp/takes/s1c.wav",
+  "cer": 0.044,
+  "from": "s1_1",
+  "hyp": "",
+  "text": ""
  }
 }

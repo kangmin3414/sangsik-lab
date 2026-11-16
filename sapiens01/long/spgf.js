@@ -43,7 +43,7 @@ const spElev = (k) => { const w = 170 * (1 - k); return `<g><rect x="-230" y="-6
 const spRunT = (lt, hits) => lt - hits.reduce((s, h) => s + Math.min(Math.max(lt - h, 0), SP.STOP), 0);
 function spHud(lt, v, o = {}) {
   let h = fkAt(250, 92, fkHearts(lt, v, { from: o.from, tp: o.tp, low: v <= 1 }), 0.82);
-  h += gfChipAt(0, -1, 1700, 92, 'AM 08:20', { size: 40, icon: 'clock', bg: '#fff' });
+  h += fkAt(1700, 92, gfChip(o.clock || 'AM 08:20', { size: 40, icon: 'clock', bg: '#fff' }), o.clk != null ? gfBeat(lt, o.clk, 0.16, 4, 8) : 1);
   if (o.combo) h += fkAt(250, 180, gfChip(`콤보 ×${o.combo}`, { size: 36, bg: GFC.sun }), gfIn(lt, o.ctp, 3.4, 0.42) * gfBeat(lt, o.ctp, 0.15, 4, 8), -4);
   return h;
 }
@@ -129,12 +129,28 @@ const spDashFrame = (lt, t0, k = 1) => { const a = (t0 > -1 ? gfIn(lt, t0, 3, 0.
 const SP_RIVER = { y: 635, x0: 960 };      // Grok 판(savanna_top_1)에서 화면 가운데 강의 중심
 const spBean = (x, y, s, col, rot = 0) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${f1(s * 1000) / 1000})"><ellipse cx="4" cy="8" rx="25" ry="20" fill="#1B2A12" opacity=".2"/><ellipse cx="0" cy="9" rx="23" ry="15" fill="${col}" stroke="${INK}" stroke-width="4"/><circle cx="0" cy="-3" r="14.5" fill="#FFF8EE" stroke="${INK}" stroke-width="4"/><path d="M-6 -10 q6 -6 12 0" fill="none" stroke="${INK}" stroke-width="2.5" opacity=".35"/></g>`;
 const SP_TUNIC = ['#B98552', '#9C6B43', '#7FA35A', '#C9A06A', '#8E7A5A', '#A8785A'];
-const spPrimZ = o => Z(Object.assign({ vest: '#B98552', vshade: 'rgba(80,40,10,0.18)' }, o));
-const SP_BROW = (t, look) => `<path d="M118 150 Q200 112 282 150" fill="none" stroke="#6B4A33" stroke-width="20" stroke-linecap="round"/><path d="M140 72 q30 -40 60 -10 q30 -34 64 6" fill="none" stroke="#6B4A33" stroke-width="16" stroke-linecap="round"/>`;
-const spNean = o => HALO(char(Object.assign({ goggles: 'none', vest: '#9C6B43', patch: false, tee: true, vshade: 'rgba(60,30,10,0.2)', headFx: SP_BROW, seed: 95 }, o)));
-function spInset(cx, cy, r, inner, k, label) {
+const SP_FURDEF = `<defs><pattern id="spFur" patternUnits="userSpaceOnUse" width="56" height="56"><rect width="56" height="56" fill="#C99A5B"/><ellipse cx="14" cy="14" rx="9" ry="6" fill="#7A4E26"/><ellipse cx="42" cy="34" rx="9" ry="6" fill="#7A4E26"/><ellipse cx="20" cy="46" rx="5" ry="4" fill="#8E6033"/><ellipse cx="46" cy="8" rx="4" ry="3" fill="#8E6033"/></pattern>` +
+  `<pattern id="spFur2" patternUnits="userSpaceOnUse" width="48" height="48"><rect width="48" height="48" fill="#8B6A4A"/><path d="M6 10 l6 8 M24 4 l4 9 M38 18 l6 7 M12 32 l5 8 M30 36 l6 8" stroke="#5E4129" stroke-width="4" stroke-linecap="round"/></pattern></defs>`;
+const SP_SHAG = col => `<path d="M80 172 L66 128 L90 132 L82 88 L112 100 L116 60 L146 78 L160 40 L186 66 L206 30 L226 64 L250 38 L264 76 L294 60 L296 98 L328 94 L314 132 L336 150 L320 176 L300 142 L284 120 L266 138 L248 112 L228 134 L208 108 L188 132 L168 108 L148 134 L128 112 L110 140 L96 124 L90 152 Z" fill="${col}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>`;
+const SP_CLUB = { follow: true, svg: `<path d="M-6 -9 L66 -14 Q114 -28 128 0 Q114 28 66 14 L-6 9 Z" fill="#A9743F" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><circle cx="98" cy="-7" r="5" fill="#7A4E26"/><circle cx="82" cy="8" r="4" fill="#7A4E26"/><path d="M10 -4 L50 -6" stroke="#7A4E26" stroke-width="3" opacity=".5"/>` };
+const SP_AXE = `<g transform="translate(-6 -20)"><path d="M-4 -30 Q24 -22 28 6 Q14 32 -12 24 Q-24 -2 -4 -30 Z" fill="#A3A8B0" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M0 -16 L8 4 M12 -12 L16 6" stroke="#6E747C" stroke-width="3" stroke-linecap="round"/></g>`;
+const SP_RIDGE = () => `<path d="M100 174 Q108 126 200 126 Q292 126 300 174 Q278 158 200 160 Q122 158 100 174 Z" fill="#EDE8DF" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M128 148 Q200 138 272 148" fill="none" stroke="${INK}" stroke-width="3" opacity=".25"/>` +
+  `<path d="M180 194 Q170 224 186 232 Q200 238 214 232 Q230 224 220 194" fill="#F4F0E8" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>`;
+const spPrimZ = o => Z(Object.assign({ vest: 'url(#spFur)', vshade: 'rgba(80,40,10,0.18)', toga: '#7A4E26', dress: 'url(#spFur)', hairFront: SP_SHAG('#3E2A1C'), holdR: SP_CLUB }, o));
+const spNean = o => HALO(char(Object.assign({ goggles: 'none', vest: 'url(#spFur2)', patch: false, tee: true, vshade: 'rgba(60,30,10,0.2)', toga: '#5E4129', dress: 'url(#spFur2)', hairFront: SP_SHAG('#4A3020'), beard: '#4A3020', headFx: SP_RIDGE, puffy: true, holdL: SP_AXE, seed: 95 }, o)));
+const spFire = (x, y, t) => { const f = Math.sin(t * 11) * 6, g = Math.sin(t * 7 + 1) * 4;
+  return `<g transform="translate(${f1(x)} ${f1(y)})"><path d="M-30 16 L30 0 M-30 0 L30 16" stroke="#7A4E26" stroke-width="12" stroke-linecap="round"/><path d="M0 ${f1(-66 - f)} Q30 -24 20 4 Q0 14 -20 4 Q-30 -24 0 ${f1(-66 - f)} Z" fill="#FF9A3C" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/><path d="M0 ${f1(-36 - g)} Q14 -14 8 2 Q0 8 -8 2 Q-14 -14 0 ${f1(-36 - g)} Z" fill="#FFE07A"/></g>`; };
+/* 원 창 안: 하늘·먼 언덕·동굴 절벽·풀밭·모닥불(옛날임을 한눈에) */
+function spCaveBG(r, t, f) {
+  return `<rect x="${-r}" y="${-r}" width="${2 * r}" height="${2 * r}" fill="url(#gfDay)"/>` +
+    `<path d="M${-r} ${f1(r * 0.12)} Q${f1(-r * 0.5)} ${f1(-r * 0.22)} 0 ${f1(r * 0.06)} Q${f1(r * 0.5)} ${f1(-r * 0.28)} ${r} ${f1(r * 0.06)} L${r} ${r} L${-r} ${r} Z" fill="#D8C7A4" stroke="${INK}" stroke-width="5"/>` +
+    `<g transform="scale(${f} 1)"><path d="M${-r} ${f1(-r * 0.45)} Q${f1(-r * 0.62)} ${f1(-r * 0.7)} ${f1(-r * 0.3)} ${f1(-r * 0.42)} Q${f1(-r * 0.12)} ${f1(-r * 0.2)} ${f1(-r * 0.16)} ${f1(r * 0.4)} L${-r} ${f1(r * 0.4)} Z" fill="#A08A72" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
+    `<path d="M${f1(-r * 0.84)} ${f1(r * 0.38)} Q${f1(-r * 0.84)} ${f1(-r * 0.12)} ${f1(-r * 0.58)} ${f1(-r * 0.12)} Q${f1(-r * 0.34)} ${f1(-r * 0.12)} ${f1(-r * 0.34)} ${f1(r * 0.38)} Z" fill="#2E2433" stroke="${INK}" stroke-width="5"/></g>` +
+    `<rect x="${-r}" y="${f1(r * 0.36)}" width="${2 * r}" height="${r}" fill="#B9C97A" stroke="${INK}" stroke-width="5"/>` + spFire(f * r * 0.6, r * 0.66, t);
+}
+function spInset(cx, cy, r, inner, k, label, t = 0, f = 1) {
   if (k < 0.02) return ''; const id = 'spIn' + cx;
-  return fkAt(cx, cy, `<clipPath id="${id}"><circle r="${r}"/></clipPath><circle r="${r + 10}" fill="${GFC.navy}" opacity=".25" transform="translate(8 10)"/><g clip-path="url(#${id})"><rect x="${-r}" y="${-r}" width="${2 * r}" height="${2 * r}" fill="url(#gfDay)"/><rect x="${-r}" y="${r * 0.35}" width="${2 * r}" height="${r}" fill="#9BD67A" stroke="${INK}" stroke-width="5"/>${inner}</g><circle r="${r}" fill="none" stroke="${INK}" stroke-width="9"/>` +
+  return fkAt(cx, cy, `<clipPath id="${id}"><circle r="${r}"/></clipPath><circle r="${r + 10}" fill="${GFC.navy}" opacity=".25" transform="translate(8 10)"/><g clip-path="url(#${id})">${spCaveBG(r, t, f)}${inner}</g><circle r="${r}" fill="none" stroke="${INK}" stroke-width="9"/>` +
     `<g transform="translate(0 ${r + 26})">${gfChip(label, { size: 32, bg: '#fff' })}</g>`, k);
 }
 /* 무리: 시드로 고정된 자리 */
@@ -143,13 +159,13 @@ const SP_CLAN = spSeedPts(70, 560, 330, 230, 150, 3);
 const SP_MANY = spSeedPts(520, 960, 560, 900, 470, 11).filter(p => p[1] < 455 || p[1] > 820).slice(0, 260);
 sptopScene = function (t, lt, a) {
   const ph = a.ph, D = a._dur || 6;
-  const cam = qLerpCam(lt / D, ph <= 1 ? [960, 560, 1.12] : ph === 2 ? [700, 420, 1.3] : [960, 560, 1.02], ph <= 1 ? [960, 560, 1.06] : ph === 2 ? [760, 440, 1.22] : [960, 560, 1.0]);
+  let cam = qLerpCam(lt / D, ph <= 1 ? [960, 560, 1.12] : ph === 2 ? [700, 420, 1.3] : [960, 560, 1.02], ph <= 1 ? [960, 560, 1.06] : ph === 2 ? [760, 440, 1.22] : [960, 560, 1.0]);
   let w = '', hud = '';
   if (ph <= 1) {
     const k = ph === 0 ? gfIn(lt, 0.2, 3, 0.45) : 1 - gfK(spW(a, '능력', 1.6) - 0.2, spW(a, '능력', 1.6) + 0.2, lt);
     const tH = ph === 0 ? spW(a, '하라리', 0.6) : -9, tS = ph === 0 ? spW(a, '호모', 3.2) : -9, tQ = ph === 0 ? spW(a, '비결', 5.0) : -9;
-    hud += spInset(560, 470, 210, gfActor(spPrimZ, { x: 0, y: 190, s: 0.62, t, pose: '서기', ex: fEx(lt > tQ ? 'z의심' : 'z기본'), look: [0.5, 0], seed: 3 }), k, '원시인 제로');
-    hud += spInset(1360, 470, 210, gfActor(spNean, { x: 0, y: 190, s: 0.62, t, pose: '서기', ex: fEx('z기본'), look: [-0.5, 0], sx: 1.08 }), k, '네안데르탈인 친구');
+    hud += SP_FURDEF + spInset(560, 470, 210, gfActor(spPrimZ, { x: -20, y: 196, s: 0.62, t, pose: '서기', ex: fEx(lt > tQ ? 'z의심' : 'z기본'), look: [0.5, 0], seed: 3 }), k, '원시인 제로', t, -1);
+    hud += spInset(1360, 470, 210, gfActor(spNean, { x: 20, y: 196, s: 0.64, t, pose: '서기', ex: fEx('z기본'), look: [-0.5, 0], sx: 1.14 }), k, '네안데르탈인 친구', t, 1);
     if (ph === 0) { hud += gfChipAt(lt, tH, 960, 130, '『사피엔스』 · 유발 하라리', { size: 40, icon: 'book', bg: '#fff', rot: -2 }) + gfChipAt(lt, tS, 960, 800, '호모 사피엔스', { size: 40, bg: '#FFF3C4' });
       if (lt > tQ) hud += gfEmote(lt, tQ, 700, 260, 'q', { hold: 9 }); }
     else { const tI = spW(a, '능력', 1.6); hud += fkAt(960, 520, gfItem(lt, tI - 0.3, { name: '인지 혁명', sub: '눈앞에 없는 걸 함께 믿는 능력', w: 620, svg: `<g transform="translate(0 6) scale(1.3)">${fkCloud(0, 0, 0.9, t, { rain: 0, col: '#EDE8FF' })}</g>` }), 1); }
@@ -164,20 +180,80 @@ sptopScene = function (t, lt, a) {
     hud += gfChipAt(lt, t150, 330, 130, '얼굴을 아는 150명', { size: 40, icon: 'family', bg: '#fff', rot: -2 });
     if (lt > t150) { const bv = Math.min(1, lerp(0.4, 1.12, gfK(t150, tC + 0.4, lt))), crack = bv >= 1;
       hud += fkAt(330, 220, gfBar(420, Math.min(1, bv), { h: 36, col: crack ? GFC.coral : GFC.grass2 }) + (crack ? `<path d="M380 -14 l-14 12 l12 6 l-16 14" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>` : '') + gfT(440, 12, '150', 30, GFC.navy, { anchor: 'start' }), gfIn(lt, t150, 3, 0.45)); }
-  } else {
-    const tN = spW(a, '국가', 0.6), tB = spW(a, '법인', 1.2), tR = spW(a, '종교', 1.8), tM = spW(a, '돈이라는', 2.6), tI = spW(a, '보이지', 3.4), tMany = ph === 4 ? spW(a, '수백만', 1.6) : 99, tT = ph === 4 ? spW(a, '한팀', spW(a, '팀', 3.2)) : 99;
-    const CL = [[560, 200, 'flag', '국가', tN], [860, 150, 'building', '법인', tB], [1160, 150, 'bulb', '종교', tR], [1440, 200, 'star', '돈', tM]];
-    const form = ph === 4 ? easeInOut(gfK(tMany, tMany + 1.8, lt)) : 0, sync = ph === 4 && lt > tT;
-    const bx = SP_RIVER.x0, ry = SP_RIVER.y;
-    SP_MANY.forEach(([x, y, c, r], i) => { const k = ph === 3 ? gfIn(lt, 0.05 + (i % 40) * 0.02, 3.4, 0.42) : 1, row = i % 10, col = Math.floor(i / 10), tx = bx - 135 + row * 30, ty = ry - 175 + col * 14;
-      const d = easeInOut(gfK(tMany + (i % 30) * 0.02, tMany + 1.2 + (i % 30) * 0.02, lt)), px = lerp(x, tx, d), py = lerp(y, ty, d);
-      w += spBean(px + (sync ? 0 : Math.sin(t * 2 + i) * 2), py + (sync ? Math.sin(t * 6 + (i % 10) * 0.4) * 3 : 0), lerp(0.62, 0.56, d) * k, c, sync ? 0 : (r - 0.5) * 50 * (1 - d)); });
-    if (ph === 3 && lt > tI || ph === 4) { const lk = ph === 3 ? gfK(tI, tI + 0.8, lt) : 1 - 0.5 * form; let ln = ''; for (let i = 0; i < 60; i++) { const [x, y] = SP_MANY[i * 4]; const [cx, cy] = CL[i % 4]; ln += `<line x1="${f1(x)}" y1="${f1(y)}" x2="${cx}" y2="${cy + 40}"/>`; }
+  } else if (ph === 3) {
+    const tN = spW(a, '국가', 0.6), tB = spW(a, '법인', 1.2), tR = spW(a, '종교', 1.8), tM = spW(a, '돈이라는', 2.6), tI = spW(a, '보이지', 3.4);
+    SP_MANY.forEach(([x, y, c, r], i) => { const k = gfIn(lt, 0.05 + (i % 40) * 0.02, 3.4, 0.42); w += spBean(x + Math.sin(t * 2 + i) * 2, y, 0.62 * k, c, (r - 0.5) * 50); });
+    if (lt > tI) { const lk = gfK(tI, tI + 0.8, lt); let ln = ''; for (let i = 0; i < 60; i++) { const [x, y] = SP_MANY[i * 4], [cx, cy] = SP_CL[i % 4]; ln += `<line x1="${f1(x)}" y1="${f1(y)}" x2="${cx}" y2="${cy + 40}"/>`; }
       w += `<g stroke="#FFE38A" stroke-width="3" stroke-dasharray="10 8" opacity="${f1(0.7 * lk * 100) / 100}">${ln}</g>`; }
-    CL.forEach(([x, y, ic, nm, t0]) => { const k = ph === 3 ? gfIn(lt, t0, 3.4, 0.42) : 1; if (k < 0.02) return;
-      w += fkAt(x, y + Math.sin(t * 1.6 + x) * 8, `<ellipse cx="0" cy="150" rx="90" ry="22" fill="#1B2A12" opacity=".15"/>` + fkCloud(0, 0, 1.0, t, { rain: 0, col: '#FFFFFF' }).replace(/<ellipse cx="-14"[\s\S]*$/, '</g>') + `<g transform="translate(0 0) scale(1.3)">${GF_ICON[ic](t)}</g>`, k) + (ph === 3 ? gfChipAt(lt, t0 + 0.1, x, y + 110, nm, { size: 30, bg: '#fff' }) : ''); });
-    if (ph === 4 && lt > tT) hud += gfChipAt(lt, tT, 960, 360, '수백만 명이 한 팀처럼', { size: 44, icon: 'family', bg: '#FFF3C4' }) + gfConfetti(lt, tT, { n: 30, d: 1.8 });
-    if (ph === 3 && lt > tI) hud += gfChipAt(lt, tI, 960, 380, '함께 믿는 보이지 않는 이야기', { size: 40, bg: '#EDE8FF', col: '#5B4FCF' });
+    w += spClouds(lt, t, [tN, tB, tR, tM], true);
+    if (lt > tI) hud += gfChipAt(lt, tI, 960, 380, '함께 믿는 보이지 않는 이야기', { size: 40, bg: '#EDE8FF', col: '#5B4FCF' });
+  } else {
+    const B = spBridge(t, lt, a); w += B.w + spClouds(lt, t, [-9, -9, -9, -9], false); hud += B.hud; cam = B.cam;
   }
   return fkDefs() + `<rect x="-600" y="-600" width="3120" height="2280" fill="#8CC66A"/>` + qPlate('savanna', cam, 1) + qCam(cam, w) + hud;
 };
+
+/* 이야기 구름 넷(국가·법인·종교·돈) */
+const SP_CL = [[560, 200, 'flag', '국가'], [860, 150, 'building', '법인'], [1160, 150, 'bulb', '종교'], [1440, 200, 'star', '돈']];
+function spClouds(lt, t, T, label) {
+  return SP_CL.map(([x, y, ic, nm], i) => { const k = T[i] > -1 ? gfIn(lt, T[i], 3.4, 0.42) : 1; if (k < 0.02) return '';
+    return fkAt(x, y + Math.sin(t * 1.6 + x) * 8, `<ellipse cx="0" cy="150" rx="90" ry="22" fill="#1B2A12" opacity=".15"/>` + fkCloud(0, 0, 1.0, t, { rain: 0, col: '#FFFFFF' }).replace(/<ellipse cx="-14"[\s\S]*$/, '</g>') + `<g transform="scale(1.3)">${GF_ICON[ic](t)}</g>`, k) + (label ? gfChipAt(lt, T[i] + 0.1, x, y + 110, nm, { size: 30, bg: '#fff' }) : ''); }).join('');
+}
+/* ===== r5: 다리 짓기 — 네 줄로 늘어서 통나무를 손에서 손으로 → 양쪽 둑에서 널을 깔아 가운데서 만남 → 사람들이 건넘 =====
+   강 가운데(x 960)의 둑: 북 677, 남 843(Grok 판에서 잼). 사슬은 모두 뭍 위(강 피함). */
+const SP_BR = { x: 960, w: 170, yN: 640, yS: 880, st: 19, nN: 7, nS: 6 };
+const SP_CH = [[[560, 400], [930, 646]], [[1360, 400], [990, 646]], [[560, 950], [930, 878]], [[1360, 950], [990, 878]]];
+const SP_CHN = 11;
+const SP_ROLE = (() => { const used = new Set(), role = {}; SP_CH.forEach(([p, q], c) => { for (let j = 0; j < SP_CHN; j++) { const u = j / (SP_CHN - 1), tx = lerp(p[0], q[0], u) + (j % 2 ? 8 : -8), ty = lerp(p[1], q[1], u);
+  let best = -1, bd = 1e12; SP_MANY.forEach(([x, y], i) => { if (used.has(i)) return; const d = (x - tx) ** 2 + (y - ty) ** 2; if (d < bd) { bd = d; best = i; } }); used.add(best); role[best] = [c, j / (SP_CHN - 1), tx, ty]; } }); return role; })();
+const spSegD = (x, y, p, q) => { const vx = q[0] - p[0], vy = q[1] - p[1], u = clamp(((x - p[0]) * vx + (y - p[1]) * vy) / (vx * vx + vy * vy), 0, 1), cx = p[0] + vx * u, cy = p[1] + vy * u; return [Math.hypot(x - cx, y - cy), x - cx, y - cy]; };
+const SP_CROWD = SP_MANY.map(([x, y], i) => { if (SP_ROLE[i]) return null; let px = x, py = y; const dx0 = px - 960; if (Math.abs(dx0) < 560) px = 960 + Math.sign(dx0 || 1) * (560 + Math.abs(dx0) * 0.55); SP_CH.forEach(([p, q]) => { const [d, dx, dy] = spSegD(px, py, p, q); if (d < 46) { const k = (46 - d) / Math.max(d, 1); px += dx * k; py += dy * k; } }); return [px, py]; });
+const spLog = (x, y, ang, k = 1) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(ang)}) scale(${f1(k * 100) / 100})"><rect x="-36" y="-11" width="72" height="22" rx="11" fill="#A9743F" stroke="${INK}" stroke-width="4"/><ellipse cx="36" cy="0" rx="6" ry="11" fill="#E2C08A" stroke="${INK}" stroke-width="3"/><path d="M-24 -3 L18 -3" stroke="#7A4E26" stroke-width="3" opacity=".5"/></g>`;
+const spPile = (x, y) => [[-26, 10], [26, 10], [0, -10], [-52, 30], [0, 30], [52, 30]].map(([dx, dy]) => spLog(x + dx, y + dy, 0, 0.9)).join('');
+function spBridge(t, lt, a) {
+  const B = SP_BR, tGo = spW(a, '생판', 0.91), tA = spW(a, '수백만', 2.23) - 0.25, tT = spW(a, '팀', 3.71), tF = tT - 0.08, stp = (tF - tA) / (B.nN - 1);
+  const form = easeInOut(gfK(tGo, tGo + 1.0, lt)), cheer = lt > tT, fadeL = 1 - gfK(0.5, 1.1, lt);
+  const tN = k => tA + k * stp, tS = k => tA + stp * 0.5 + k * stp;
+  let w = '', hud = '';
+  // 이야기 구름으로 가는 점선(앞 장면에서 이어짐) → 사라짐
+  if (fadeL > 0.02) { let ln = ''; for (let i = 0; i < 60; i++) { const [x, y] = SP_MANY[i * 4], [cx, cy] = SP_CL[i % 4]; ln += `<line x1="${f1(x)}" y1="${f1(y)}" x2="${cx}" y2="${cy + 40}"/>`; } w += `<g stroke="#FFE38A" stroke-width="3" stroke-dasharray="10 8" opacity="${f1(0.7 * fadeL * 100) / 100}">${ln}</g>`; }
+  // 통나무 더미 4곳
+  SP_CH.forEach(([p]) => { w += fkAt(0, 0, spPile(p[0], p[1]), 1); });
+  // 다리: 널(북쪽 7, 남쪽 6) + 난간 줄
+  let pl = '', nN = 0, nS = 0;
+  for (let k = 0; k < B.nN; k++) { const k0 = gfIn(lt, tN(k), 3.6, 0.45); if (k0 < 0.02) continue; nN = k + 1; const y = B.yN + k * B.st + 8;
+    pl += `<g transform="translate(${B.x} ${y}) scale(${f1(k0 * 100) / 100})"><rect x="${-B.w / 2}" y="-8" width="${B.w}" height="16" rx="4" fill="#C08A50" stroke="${INK}" stroke-width="4"/><path d="M${-B.w / 2 + 14} -1 h${B.w * 0.4}" stroke="#8E6033" stroke-width="3" opacity=".6"/></g>`; }
+  for (let k = 0; k < B.nS; k++) { const k0 = gfIn(lt, tS(k), 3.6, 0.45); if (k0 < 0.02) continue; nS = k + 1; const y = B.yS - k * B.st - 8;
+    pl += `<g transform="translate(${B.x} ${y}) scale(${f1(k0 * 100) / 100})"><rect x="${-B.w / 2}" y="-8" width="${B.w}" height="16" rx="4" fill="#C08A50" stroke="${INK}" stroke-width="4"/><path d="M${B.w / 2 - 14} 1 h${-B.w * 0.4}" stroke="#8E6033" stroke-width="3" opacity=".6"/></g>`; }
+  const eN = B.yN + nN * B.st, eS = B.yS - nS * B.st, done = nN === B.nN && nS === B.nS;
+  const rail = (x, y0, y1) => y1 > y0 + 4 ? `<line x1="${x}" y1="${f1(y0)}" x2="${x}" y2="${f1(y1)}" stroke="#7A4E26" stroke-width="7" stroke-linecap="round"/>` : '';
+  let rl = ''; [-1, 1].forEach(sd => { const x = B.x + sd * (B.w / 2 + 8); rl += rail(x, B.yN, eN) + rail(x, eS, B.yS);
+    for (let k = 0; k < nN; k += 2) rl += `<circle cx="${x}" cy="${B.yN + k * B.st + 8}" r="8" fill="#7A4E26" stroke="${INK}" stroke-width="3"/>`;
+    for (let k = 0; k < nS; k += 2) rl += `<circle cx="${x}" cy="${B.yS - k * B.st - 8}" r="8" fill="#7A4E26" stroke="${INK}" stroke-width="3"/>`; });
+  w += `<g>${pl}${rl}</g>`;
+  // 사람들: 사슬로 줄을 서고, 통나무가 지나갈 때 번쩍 듦
+  if (form > 0.6) w += SP_CH.map(([p, q]) => `<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="#FFF3C4" stroke-width="22" stroke-linecap="round" opacity="${f1((form - 0.6) * 1.8 * 100) / 100}"/>`).join('');
+  const logs = [];
+  for (let k = 0; k < B.nN; k++) logs.push([k % 2, tN(k)]);
+  for (let k = 0; k < B.nS; k++) logs.push([2 + (k % 2), tS(k)]);
+  SP_MANY.forEach(([x, y, c, r], i) => { const R = SP_ROLE[i];
+    if (R) { const [ch, u, tx, ty] = R; let lift = 0; logs.forEach(([cc, tp]) => { if (cc !== ch) return; const lu = gfK(tp - 0.9, tp, lt); if (lu > 0 && lu < 1 && Math.abs(lu - u) < 0.09) lift = Math.max(lift, 1 - Math.abs(lu - u) / 0.09); });
+      const px = lerp(x, tx, form), py = lerp(y, ty, form), bob = cheer ? Math.sin(t * 7 + u * 6) * 4 : 0;
+      w += spBean(px, py - lift * 6 + bob, 0.62 + 0.14 * form + 0.14 * lift, c, (r - 0.5) * 50 * (1 - form)); }
+    else { const [cx, cy] = SP_CROWD[i]; const px = lerp(x, cx, form), py = lerp(y, cy, form);
+      w += spBean(px + (cheer ? 0 : Math.sin(t * 2 + i) * 2), py + (cheer ? Math.sin(t * 7 + (i % 9) * 0.6) * 4 : 0), 0.6, c, cheer ? 0 : (r - 0.5) * 50); } });
+  // 통나무가 사슬을 따라 손에서 손으로
+  logs.forEach(([ch, tp]) => { const u = gfK(tp - 0.9, tp, lt); if (u <= 0 || u >= 1) return; const [p, q] = SP_CH[ch], ang = Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI + 90;
+    w += spLog(lerp(p[0], q[0], u), lerp(p[1], q[1], u) - 10, ang, 0.95); });
+  // 다리 끝의 일꾼(북 2, 남 2): 널을 하나 놓을 때마다 앞으로 톡
+  if (!done && form > 0.5) { [[-1, eN + 4, 'N'], [1, eN + 4, 'N'], [-1, eS - 4, 'S'], [1, eS - 4, 'S']].forEach(([sd, y, side], j) => {
+    const lastT = side === 'N' ? (nN ? tN(nN - 1) : tA) : (nS ? tS(nS - 1) : tA), hop = Math.max(0, Math.sin(Math.PI * gfK(lastT, lastT + 0.2, lt))) * 8;
+    w += spBean(B.x + sd * 34, (side === 'N' ? y - 14 : y + 14) - hop, 0.6, SP_TUNIC[j % 6], 0); }); }
+  // 완성 → 양쪽으로 건너는 사람들
+  if (done) { w += gfStarBurst(lt, tT, B.x, (B.yN + B.yS) / 2, { r1: 230, n: 12 }) + gfRing(lt, tT, B.x, (B.yN + B.yS) / 2, 30, 200, '#FFE38A', 12, 0.5);
+    for (let i = 0; i < 16; i++) { const lane = i % 2, ph = ((lt - tT) * 0.42 + i / 16) % 1, a0 = gfK(tT + 0.1, tT + 0.5, lt), y = lane ? lerp(B.yS + 30, B.yN - 30, ph) : lerp(B.yN - 30, B.yS + 30, ph);
+      const op = a0 * Math.min(1, Math.min(ph, 1 - ph) * 8); if (op < 0.03) continue; w += `<g opacity="${f1(op * 100) / 100}">${spBean(B.x + (lane ? 36 : -36), y + Math.sin(t * 9 + i) * 2, 0.7, SP_TUNIC[i % 6], 0)}</g>`; }
+    if (lt < tT + 1.0) w += gfBounceText(lt, tT + 0.05, B.x, B.yN - 70, [['완성!', GFC.sun]], { size: 70 }); }
+  if (cheer) hud += gfChipAt(lt, tT, 960, 360, '수백만 명이 한 팀처럼', { size: 44, icon: 'family', bg: '#FFF3C4' }) + gfConfetti(lt, tT, { n: 30, d: 1.8 });
+  return { w, hud, cam: qLerpCam(gfK(0.5, 1.8, lt), [960, 560, 1.0], [960, 620, 1.04]) };
+}

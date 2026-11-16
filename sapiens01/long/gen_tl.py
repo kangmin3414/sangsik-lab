@@ -4,7 +4,7 @@ from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
 from lines_sp import LINES, SAMPLE
 takes = json.load(open('takes.json')); SR = 44100
-GAP = {'s1': 0.3, 's2': 0.3, 's3': 0.4, 's4': 0.3, 'k0': 0.35, 'r1': 0.45, 'r2': 0.3, 'r3': 0.4, 'r4': 0.35, 'r5': 0.35}
+GAP = {'s1a': 1.0, 's1b': 0.85, 's1c': 0.8, 's2': 0.55, 's3': 0.4, 's4': 0.3, 'k0': 0.35, 'r1': 0.45, 'r2': 0.3, 'r3': 0.4, 'r4': 0.35, 'r5': 0.35}
 PITCH = {}
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=4)
@@ -35,7 +35,7 @@ for lid, scene, v, txt, sp, args in LINES:
                 'segs': [{'v': v, 'text': txt, 't0': round(t, 3), 't1': round(t + d, 3)}]})
     t += d; prev = scene
 json.dump(words, open('words.json', 'w'), ensure_ascii=False, indent=1)
-DUR = t + 1.6; N = int(DUR * SR); voice = np.zeros(N); chv = np.zeros(N)
+DUR = t + 2.6; N = int(DUR * SR); voice = np.zeros(N); chv = np.zeros(N)
 for st, w, v in clips:
     i = int(st * SR); voice[i:i + len(w)] += w[:N - i]
     if v != 'N': chv[i:i + len(w)] += w[:N - i]
