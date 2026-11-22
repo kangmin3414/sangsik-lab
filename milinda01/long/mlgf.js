@@ -184,31 +184,33 @@ function mlnightScene(t, lt, a) {
   if (id === 'n1' || id === 'n3') return mlPhonePOV(t);
   const { ZX, ZY, S } = ML_N, n2 = mlL('n2'), n4 = mlL('n4'), n5 = mlL('n5'), n6 = mlL('n6');
   // 스티커: 가슴에 한 장(n5), 그리고 방 안 물건들(n6)
-  const tak0 = [ZX + 30, ZY - 494 * S], mouth = [tak0[0], tak0[1] - 36], tS = n5.t1 + 0.34, tG = mlAt('n6', '모든', 0.42);
+  const tak0 = [ZX + 30, ZY - 494 * S], mouth = [tak0[0], tak0[1] - 36], tS = n5.t1 + 0.34, tG = mlAt('n6', '모든', 0.42), tUp = n6.t0 + 0.1, tNm = mlAt('n6', '딱지', 0.2) + 0.05;      // tUp: "머리 위에"에서 카메라가 머리 위로, tNm: "딱지"에서 이름표
   const evs = [{ t0: tS, from: mouth, to: [ZX - 2, ZY - 226 * S], text: ['원래', '무대 체질 아님'], fs: 21, rot: -5, arc: -60, fly: 0.2, tp: n5.t0 - 0.1, te: n5.t1 - 0.1 },
     { t0: tG + 0.25, from: mouth, to: [675, 610], text: '원래 스탠드', fs: 28, rot: 6, arc: 150 }, { t0: tG + 0.8, from: mouth, to: [905, 756], text: '원래 베개', fs: 28, rot: -8, arc: 60 }, { t0: tG + 1.35, from: mouth, to: [402, 372], text: '원래 달', fs: 30, rot: 4, arc: 220 }];
   const tt = gfxStop(t, [[tS, 0.1, 0.22]]), st = mlStickers(t, evs);
   const tB2 = mlAt('n2', '잠이', 0.26) - 0.12, tDots = mlAt('n2', '답은', 0.76) - 0.4, tDing = n2.t1 + 0.08, dingK = t >= tDing && id === 'n2' ? Math.exp(-(t - tDing) * 4.5) : 0;
-  // 카메라
+  // 카메라. 5번: 얼굴 클로즈업에서 머리 위로 쓱 올라가 딱지를 크게(첫 등장) → 던진 스티커를 따라 가슴으로 → 6번 "머리 위에"에서 다시 딱지(이름표) → "모든 것에"에서 방 전체
   let cam = gfxCam([[0, { x: 960, y: 560, z: 1.0 }], [n2.t0 - 0.15, { x: 960, y: 566, z: 1.0 }, { ease: 'cut' }], [n2.t0, { x: 990, y: 574, z: 1.1 }, { d: 2.2, ease: 'lin' }], [tB2, { x: 1120, y: 600, z: 1.58 }, { ease: 'cut' }], [tB2 + 0.02, { x: 1124, y: 596, z: 1.68 }, { d: n2.t1 - tB2 + 0.5 }],
-    [n4.t0 - 0.15, { x: 1104, y: 560, z: 1.95 }, { ease: 'cut' }], [n4.t0, { x: 1104, y: 556, z: 2.05 }, { d: 2.4 }], [n5.t0 - 0.15, { x: 1110, y: 590, z: 1.5 }, { ease: 'cut' }], [n6.t0 - 0.1, { x: 960, y: 566, z: 1.0 }, { d: 1.3, ease: 'io' }]], t);
+    [n4.t0 - 0.15, { x: 1104, y: 560, z: 1.95 }, { ease: 'cut' }], [n4.t0, { x: 1104, y: 556, z: 2.05 }, { d: 2.4 }], [n5.t0 - 0.3, { x: 1114, y: 440, z: 2.5 }, { d: 0.3, ease: 'io' }], [n5.t0 + 0.02, { x: 1116, y: 436, z: 2.62 }, { d: tS - 0.32 - n5.t0 }], [tS - 0.27, { x: 1104, y: 626, z: 1.7 }, { d: 0.32, ease: 'io' }], [tUp, { x: 1075, y: 440, z: 2.3 }, { d: 0.6, ease: 'io' }], [tG - 0.85, { x: 960, y: 566, z: 1.0 }, { d: 0.95, ease: 'io' }]], t);
   cam = gfxShake(gfxDrift(cam, t, 3, 1), t, [[tS, 16, 0.3], [tG + 0.25, 5, 0.2], [tG + 0.8, 5, 0.2], [tG + 1.35, 5, 0.2]]);
   const close = cam.z > 1.7;
   // 제로
   const nod = id === 'n4' ? actNod(t, mlAt('n4', '맞아', 0.35), 2, 10, 0.3) : 0, ta = gfxTalkAct(t, 'Z', 2), jz = gfM(actHit(tt, tS, 0.07, 5, 7), actHit(tt, tDing, 0.05, 5.5, 8));
   const base = id === 'n2' ? (t >= tDing ? 'z반짝' : 'z기본') : (id === 'n4' ? (t > mlAt('n4', '맞아', 0.35) ? 'z뿌듯' : 'z반짝') : (id === 'n5' ? (t > tS ? 'z뿌듯' : 'z기본') : (t > n6.t1 - 1.2 ? 'z졸음' : 'z뿌듯')));
-  const look = id === 'n2' || id === 'n4' ? [0, 0.75] : (id === 'n5' ? (t < tS ? [0.5, -0.2] : [0, 0.85]) : [0, 0.8]);
+  const look = id === 'n2' || id === 'n4' ? [0, 0.75] : (id === 'n5' ? (t < tS - 0.25 ? [0.15, -0.9] : [0, 0.85]) : [0, 0.8]);      // 5번: 머리 위에 뭔가 올라왔다 → 눈을 치켜뜬다
   const kd = actGo(t, n5.t0 - 0.05, { f: 2.6, z: 0.7 }), pose = actPose([[0, 'ml폰'], [n5.t0 - 0.05, 'ml무릎', { f: 2.6, z: 0.7 }]], t), py = lerp(ZY - 196 * S, ZY - 150 * S, clamp(kd, 0, 1.1));
   const zero = mlZ({ x: ZX, y: ZY, s: S, t: tt, pose, ex: gfxFace('mlzf', base, t, 'Z'), look, headDy: nod + ta.headDy, tilt: ta.tilt, sx: jz.sx, sy: jz.sy * ta.sy, light: 1 });
   const phone = `<g transform="translate(${ZX} ${f1(py)}) rotate(-4)"><rect x="-37" y="-62" width="74" height="124" rx="13" fill="#232A42" stroke="${INK}" stroke-width="7"/><circle cx="-18" cy="-42" r="7" fill="#3A4466" stroke="${INK}" stroke-width="3"/></g>`;
   // 딱지: n5에서 어깨 뒤에서 톡
   const tIn = n5.t0 - 0.12, kin = gfIn(t, tIn, 3.2, 0.42), tv = gfxVoice(t, 'T');
-  const tak = t < tIn ? '' : mlTak(tak0[0], tak0[1] + (1 - Math.min(1, kin)) * 40 + nod + ta.headDy, 0.62 * Math.min(1.08, kin), Object.assign({ t, look: t < tS ? [-0.3, 0.9] : [-0.2, 0.6], talk: tv ? tv.e : 0, ex: t > tS + 0.2 && id === 'n5' ? 'proud' : (id === 'n6' && t > tG + 1.9 ? 'proud' : 'on'), ls: 0.72 }, st.tak, gfHop(tt, tS - 0.2, 14, 0.2)));
+  const tak = t < tIn ? '' : mlTak(tak0[0], tak0[1] + (1 - Math.min(1, kin)) * 40 + nod + ta.headDy, 0.62 * Math.min(1.08, kin), Object.assign({ t, look: t < tS ? [-0.3, 0.9] : (t > tNm - 0.15 && t < tG - 0.7 ? [-0.7, -0.35] : [-0.2, 0.6]), talk: tv ? tv.e : 0, ex: (t > tS + 0.2 && t < tUp + 0.35) || (id === 'n6' && t > tG + 1.9) ? 'proud' : 'on', ls: 0.72 }, st.tak, gfHop(tt, tS - 0.2, 14, 0.2)));
+  // 딱지 소개: 이름이 불릴 때 이름표가 톡(이 편의 '이름표' 그림이 여기서 처음 나온다 → 사갈라의 [나가세나] · [수레] · [제로]로 이어진다)
+  const kNm = t > tNm ? gfIn(t, tNm, 3, 0.42) * (1 - mlS(t, tG + 0.05, 0.3)) : 0, nameTag = kNm > 0.01 ? `<g transform="translate(${f1(tak0[0] - 132)} ${f1(tak0[1] - 196)}) scale(${f1(kNm * 1000) / 1000})">${mlTag('딱지', { fs: 30, len: 34, sway: 5 * Math.exp(-(t - tNm) * 1.6) * Math.sin((t - tNm) * 8) })}</g>` + gfStarBurst(t, tNm, tak0[0] - 132, tak0[1] - 130, { n: 6, r0: 24, r1: 110 }) : '';
   const set = mlNightSet(t), kp = gfxProj(cam, ZX, py - 12), actors = set.back + zero + phone + set.front + tak + st.svg;
   const moon = gfxProj(cam, 402, 282, 0.94);
   return mlCompose({ cam, defs: gfDefs() + ML_DEFS + gfxDefs({ shadow: '#070B20', lights: [{ id: 'mlLn', amb: '#3A4576', key: { x: kp[0], y: kp[1], z: 150 * cam.z, col: '#CFEAFF', k: 1.2 + 0.85 * dingK }, rim: { dx: -7, dy: -3, col: '#8FB0FF', k: 0.7 }, bump: 5, relief: 9 }] }),
     far: [[0.94, set.wall, close ? { blur: 4 } : {}]], cast: [zero, { dx: -30, dy: -70, s: 1.32, cx: ZX, cy: ZY - 200, op: 0.42, soft: 3 }], lit: actors, light: 'mlLn',
-    glow: gfxGlow(ZX, py - 20, 250 + 150 * dingK, '#CFEAFF', 0.36 + 0.4 * dingK) + (id === 'n2' ? mlTyping(t, tDots, tDing, ZX + 196, py - 104) : '') + st.fx, grade: gfxGrade('night', 0.42) + `<g>${gfxGlow(moon[0], moon[1], 300 * cam.z, '#BFD0FF', 0.3)}</g>`, vig: gfxVignette(0.55),
+    glow: gfxGlow(ZX, py - 20, 250 + 150 * dingK, '#CFEAFF', 0.36 + 0.4 * dingK) + (id === 'n2' ? mlTyping(t, tDots, tDing, ZX + 196, py - 104) : '') + st.fx + nameTag, grade: gfxGrade('night', 0.42) + `<g>${gfxGlow(moon[0], moon[1], 300 * cam.z, '#BFD0FF', 0.3)}</g>`, vig: gfxVignette(0.55),
     hud: gfChipAt(t, n2.t0 + 0.1, 250, 96, '일요일 밤 11:00', { size: 34, icon: 'moon' }) });
 }
 /* ---------- 제목 카드: 딱지가 뽑은 큰 스티커 ---------- */
