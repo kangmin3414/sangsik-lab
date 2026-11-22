@@ -12,8 +12,8 @@
     M.bed('night.mp3', t0, t1, g=0.3, off=0.0)           # 배경음(스테레오 그대로)
     M.render('/dev/shm/ep/mix.wav')                      # → 스테레오 wav
 남의 소리는 쓰지 않는다. 울림은 직접 만든 충격 응답(감쇠하는 잡음 + 이른 반사 몇 개)이다."""
-import json, subprocess, numpy as np, soundfile as sf
-from scipy.signal import fftconvolve, butter, lfilter
+import json, os, subprocess, numpy as np, soundfile as sf
+from scipy.signal import fftconvolve, butter, lfilter, sosfilt
 SR = 44100
 
 def pan(mono, x=960, width=0.6):
@@ -54,14 +54,14 @@ def fade(a, fin=0.0, fout=0.0):
 
 class Mix:
     def __init__(self, duration):
-        self.dur = duration; self.n = int(duration * SR); self.v = np.zeros((self.n, 2)); self.s = np.zeros((self.n, 2)); self.b = np.zeros((self.n, 2)); self.vmono = np.zeros(self.n); self.bgain = np.ones(self.n)
+        self.dur = duration; self.n = int(duration * SR); self.v = np.zeros((self.n, 2)); self.s = np.zeros((self.n, 2)); self.b = np.zeros((self.n, 2)); self.vmono = np.zeros(self.n); self.bgain = np.ones(self.n); self.vclips = []; self.margin_log = []
     def _add(self, buf, w, t):
         i = int(t * SR)
         if i >= self.n or i + len(w) <= 0: return
         if i < 0: w = w[-i:]; i = 0
         w = w[:self.n - i]; buf[i:i + len(w)] += w
     def voice(self, mono, t, x=960, room=None, wet=0.12, g=1.0, width=0.5):
-        mono = np.asarray(mono, np.float64) * g; self._add(self.v, pan(mono, x, width), t); i = int(t * SR); w = mono[:max(0, self.n - i)]; self.vmono[i:i + len(w)] += w
+        mono = np.asarray(mono, np.float64) * g; self._add(self.v, pan(mono, x, width), t); i = int(t * SR); w = mono[:max(0, self.n - i)]; self.vmono[i:i + len(w)] += w; self.vclips.append((t, len(mono) / SR))
         if room: self._add(self.v, reverb(mono, room) * wet, t)
     def sfx(self, w, t, g=1.0, x=960, room=None, wet=0.18, width=0.85):
         w = np.asarray(w, np.float64) * g; self._add(self.s, pan(w, x, width), t)
@@ -72,14 +72,37 @@ class Mix:
         """t0~t1 사이 배경음을 g배로(양 끝 ramp초에 걸쳐 바뀜)"""
         i0, i1, r = int(t0 * SR), int(min(self.dur, t1) * SR), int(ramp * SR); k = np.ones(self.n); k[i0:i1] = g
         a = max(0, i0 - r); k[a:i0] = np.linspace(1, g, i0 - a); e = min(self.n, i1 + r); k[i1:e] = np.linspace(g, 1, e - i1); self.bgain *= k
+    def amb(self, kind, t0, t1, rel_db=-13.0, fin=1.2, fout=1.6, seed=5):
+        """공기 소리를 t0~t1에 깐다. 크기는 그 구간 배경음(이미 깔아 둔 bed)보다 rel_db만큼 작게(배경음이 없으면 -46 dBFS). 배경음과 함께 목소리에 덕킹된다."""
+        t0 = max(0.0, t0); t1 = min(self.dur, t1); i0, i1 = int(t0 * SR), int(t1 * SR); seg = self.b[i0:i1]; r = float(np.sqrt(np.mean(seg ** 2))) if len(seg) else 0.0
+        g = (r if r > 1e-4 else 10 ** (-33 / 20)) * 10 ** (rel_db / 20); self._add(self.b, fade(air(kind, t1 - t0, seed) * g, fin, fout), t0); return g
+    def sfx2(self, st, t, g=1.0):
+        """이미 스테레오인 효과음(바람처럼 좌우로 움직이는 것)"""
+        self._add(self.s, np.asarray(st, np.float64) * g, t)
     def duck(self, depth=0.6, thresh=0.006, hold=0.6, pre=0.25, smooth=0.25):
         """목소리가 있는 동안(앞 pre초 ~ 뒤 hold초) 배경음을 (1 - depth)배로"""
         def trail(x, k): c = np.concatenate([[0.0], np.cumsum(x)]); i = np.arange(len(x)); return c[i + 1] - c[np.maximum(0, i + 1 - k)]
         vad = (np.abs(self.vmono) > thresh).astype(float); act = (trail(vad, int(hold * SR)) > 0) | (trail(vad[::-1], int(pre * SR))[::-1] > 0)
         k = int(smooth * SR); act = trail(act.astype(float), k) / k; return 1.0 - depth * act
-    def render(self, path, sfx_gain=0.6, duck=0.6, target=-14, stems=None):
-        mixd = self.v + self.b * (self.bgain * self.duck(duck))[:, None] + self.s * sfx_gain
-        if stems: np.savez(stems, voice=self.v, bed=self.b, sfx=self.s)
+    def margin(self, base, target=11.0, max_cut=5.0, ramp=0.3, band=(300, 4000)):
+        """말 여유 지키기: 대사 한 줄마다 말소리 띠(300~4000Hz)에서 '목소리 - 배경음'이 target dB에 못 미치면, 그 줄 동안만 배경음을 모자란 만큼(최대 max_cut dB) 더 낮춘다.
+        덕킹은 깊이가 고정이라 음악이 부풀어 오르는 대목에서는 말이 묻힌다(밀린다 편 17번 줄: 여유 6.3dB, 다른 줄은 10~20dB → 음성 인식이 '스님'을 '선생님'으로 들었다).
+        base: 이미 정해진 배경음 이득(시간축, bgain * duck). 돌려주는 값: 덧곱할 이득(시간축), 줄별 기록 [(시작 초, 원래 여유 dB, 더 낮춘 dB)]."""
+        sos = butter(4, [band[0] / (SR / 2), band[1] / (SR / 2)], 'band', output='sos'); v = sosfilt(sos, self.v.mean(axis=1)); b = sosfilt(sos, (self.b * base[:, None]).mean(axis=1))
+        db = lambda x: 20 * np.log10(np.sqrt(np.mean(x ** 2)) + 1e-9); cutdb = np.zeros(self.n); log = []
+        for t, d in sorted(self.vclips):
+            i0, i1 = max(0, int(t * SR)), min(self.n, int((t + d) * SR)); act = np.abs(v[i0:i1]) > 10 ** (-50 / 20)
+            if act.sum() < SR * 0.1: continue
+            m = db(v[i0:i1][act]) - db(b[i0:i1][act]); cut = float(np.clip(target - m, 0, max_cut)); log.append((round(t, 2), round(float(m), 1), round(cut, 1)))
+            if cut > 0.05: a, e = max(0, i0 - int(0.25 * SR)), min(self.n, i1 + int(0.35 * SR)); cutdb[a:e] = np.maximum(cutdb[a:e], cut)
+        k = max(2, int(ramp * SR)); c = np.concatenate([[0.0], np.cumsum(cutdb)]); i = np.arange(self.n); sm = (c[np.minimum(self.n, i + k // 2)] - c[np.maximum(0, i - k // 2)]) / k      # 이동 평균으로 모서리를 둥글게(툭 꺼지지 않게)
+        return 10 ** (-sm / 20), log
+    def render(self, path, sfx_gain=0.6, duck=0.6, target=-14, stems=None, margin=None, max_cut=5.0):
+        """margin: 숫자(dB)를 주면 '말 여유 지키기'를 켠다(위 margin). 기록은 self.margin_log."""
+        bg = self.bgain * self.duck(duck)
+        if margin: mg, self.margin_log = self.margin(bg, margin, max_cut); bg = bg * mg
+        mixd = self.v + self.b * bg[:, None] + self.s * sfx_gain
+        if stems: np.savez(stems, voice=self.v, bed=self.b, sfx=self.s, bedmix=self.b * bg[:, None], sfxmix=self.s * sfx_gain)      # bedmix · sfxmix: 믹스에 실제로 들어간 크기(말 가림 계산용 → mask_*.py)
         raw = path.replace('.wav', '_raw.wav'); sf.write(raw, mixd, SR)
         af = f'lowpass=f=11000,alimiter=limit=0.32:level=false,loudnorm=I={target}:TP=-1.0:LRA=11'
         r = subprocess.run(['ffmpeg', '-nostdin', '-hide_banner', '-i', raw, '-af', af + ':print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
@@ -88,6 +111,30 @@ class Mix:
         subprocess.run(['ffmpeg', '-nostdin', '-y', '-loglevel', 'error', '-i', raw, '-af', af2, '-ar', str(SR), path], check=True)
         return float(np.abs(mixd).max())
 
+# ---------- 공기 소리(장면에 깔리는 아주 작은 바탕. 직접 합성, 스테레오) ----------
+def _lfo(n, f, depth, seed):
+    """느린 흔들림 0~1: 낮은 주파수 사인 두 개를 섞는다"""
+    r = np.random.default_rng(seed); t = np.arange(n) / SR; a = 0.5 + 0.5 * np.sin(2 * np.pi * f * t + r.random() * 6.28); b = 0.5 + 0.5 * np.sin(2 * np.pi * f * 2.7 * t + r.random() * 6.28)
+    return 1 - depth + depth * (0.65 * a + 0.35 * b)
+def air(kind, d, seed=5):
+    """공기 소리 d초(스테레오, RMS 1로 맞춤). night: 조용한 방(낮은 웅웅 + 아주 옅은 쉬), office: 환기 소리(낮은 바람 + 옅은 전기 웅), yard: 마당 바람(느리게 부풀고 잦아듦 + 나뭇잎)."""
+    n = int(d * SR); out = np.zeros((n, 2)); t = np.arange(n) / SR
+    for ch in range(2):
+        r = np.random.default_rng(seed * 10 + ch); w = r.standard_normal(n)
+        if kind == 'night': x = _bp(w, 40, 190) * 1.0 + _bp(r.standard_normal(n), 3000, 7000) * 0.035; x *= _lfo(n, 0.07, 0.25, seed + ch)
+        elif kind == 'office': x = _bp(w, 70, 420) * 1.0 + _bp(r.standard_normal(n), 1800, 5200) * 0.05 + np.sin(2 * np.pi * 120 * t + ch) * 0.02; x *= _lfo(n, 0.05, 0.12, seed + ch)
+        else: x = _bp(w, 90, 480) * _lfo(n, 0.11, 0.6, seed + ch) + _bp(r.standard_normal(n), 3200, 7000) * float(os.environ.get('GFX_LEAF', 0)) * _lfo(n, 0.19, 0.8, seed + 7 + ch) ** 2
+        out[:, ch] = x
+    return out / (np.sqrt(np.mean(out ** 2)) + 1e-9)
+def gust(d=1.8, to_left=True):
+    """휘이잉: 한 줄기 바람이 지나간다(스테레오, 오른쪽 → 왼쪽). 어색한 침묵에 쓴다."""
+    n = int(d * SR); t = np.arange(n) / SR; k = t / d; env = np.sin(np.pi * k) ** 1.6; lo = _bp(_rng.standard_normal(n), 250, 900); hi = _bp(_rng.standard_normal(n), 700, 2600)
+    x = (lo * (1 - k) + hi * k * 0.8) * env * (0.8 + 0.2 * np.sin(2 * np.pi * 5.5 * t)); p = (k if to_left else 1 - k) * np.pi / 2
+    return np.stack([x * np.sin(p) * 1.2, x * np.cos(p) * 1.2], axis=1) * 0.5
+def creak(d=0.3, f0=190):
+    """끼익: 나무가 눌렸다 풀리는 소리(수레에서 사람이 내릴 때)"""
+    t = _t(d); f = f0 * (1 - 0.22 * t / d) + 9 * np.sin(2 * np.pi * 31 * t); saw = 2 * ((np.cumsum(f) / SR) % 1) - 1
+    return _bp(saw, 420, 2600) * (0.55 + 0.45 * np.sin(2 * np.pi * 37 * t)) * np.sin(np.pi * t / d) ** 0.8 * 0.4
 # ---------- 이 층에서 새로 만든 효과음(직접 합성) ----------
 _rng = np.random.default_rng(7)
 def _t(d): return np.arange(int(d * SR)) / SR

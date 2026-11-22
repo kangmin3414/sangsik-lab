@@ -5,13 +5,16 @@
 import sys, os, json
 from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
-FR = os.environ.get('ML_FR') or os.path.join(HERE, 'fr'); OUT = os.environ.get('ML_SHEETS', '/dev/shm/ml/sheets'); os.makedirs(OUT, exist_ok=True)
+FR = os.environ.get('ML_FR') or os.path.join(HERE, 'fr'); SUB = os.environ.get('ML_SUB') or os.path.join(HERE, 'sub'); OUT = os.environ.get('ML_SHEETS', '/dev/shm/ml/sheets'); os.makedirs(OUT, exist_ok=True)
 TL = json.load(open('timeline_ml.json')); FPS = 24
 FONT = next(f for f in ['/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc', '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc', '/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf'] if os.path.exists(f))
 F1 = ImageFont.truetype(FONT, 17); F2 = ImageFont.truetype(FONT, 15)
 def frame(t, w, h):
     i = max(0, min(int(TL['duration'] * FPS) - 1, round(t * FPS))); p = f'{FR}/f{i:05d}.jpg'
-    return Image.open(p).convert('RGB').resize((w, h), Image.LANCZOS) if os.path.exists(p) else Image.new('RGB', (w, h), '#553333')
+    if not os.path.exists(p): return Image.new('RGB', (w, h), '#553333')
+    im = Image.open(p).convert('RGB'); sp = f'{SUB}/s{i:05d}.png'
+    if os.path.exists(sp): ov = Image.open(sp).convert('RGBA'); im.paste(ov, (0, 820), ov)      # 자막을 따로 뽑았으면 얹어서 보여 준다
+    return im.resize((w, h), Image.LANCZOS)
 def lines_sheets(per=5, w=512):
     h = w * 9 // 16; bar = 30; L = TL['lines']; n = 0
     for k in range(0, len(L), per):

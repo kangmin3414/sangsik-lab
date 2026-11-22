@@ -10,7 +10,12 @@
 
 /* ---------- 1. 화면 좌표와 카메라 ---------- */
 // render()는 장면을 (960,100) 기준 0.88배로 그린다. gfxScreen 안에서는 1920×1080 화면 좌표를 그대로 쓴다(HUD·카메라·조명이 같은 좌표계).
-const gfxScreen = inner => `<g transform="translate(960 100) scale(${1 / 0.88}) translate(-960 -100)">${inner}</g>`;
+const gfxScreen = inner => { window.GFX_MARKS = window._gfxMk2 || []; window._gfxMk2 = null; window._gfxMk = []; return `<g transform="translate(960 100) scale(${1 / 0.88}) translate(-960 -100)">${inner}</g>`; };
+/* 점검용 표시: 인물 머리 같은 '화면 끝에 조금만 걸치면 안 되는 것'을 세계 좌표의 원으로 등록한다(그림에는 아무것도 더하지 않는다).
+   장면이 카메라를 정한 뒤 gfxMarksProject(cam)을 부르면 그 프레임의 화면 좌표가 window.GFX_MARKS = [{ n, x, y, r, l(왼쪽 반지름), rt(오른쪽 반지름) }]에 남는다 → edge_*.py가 프레임마다 읽어 '화면 끝 조각'을 찾는다. */
+const gfxMark = (name, x, y, r, depth = 1) => { (window._gfxMk = window._gfxMk || []).push([name, x, y, r, depth]); };
+const gfxMarksProject = cam => { window._gfxMk2 = (window._gfxMk || []).map(([n, x, y, r, d]) => { const p = gfxProj(cam, x, y, d), z = 1 + (cam.z - 1) * d, rr = Array.isArray(r) ? r : [r, r];      // r = [왼쪽, 오른쪽]이면 좌우가 다른 것(한쪽으로 날리는 머리띠 끝 등)
+  return { n, x: Math.round(p[0]), y: Math.round(p[1]), r: Math.round(Math.max(rr[0], rr[1]) * z), l: Math.round(rr[0] * z), rt: Math.round(rr[1] * z) }; }); };
 const _gfxEase = { io: easeInOut, out: easeOut, in: easeIn, lin: k => k, back: easeOutBack };
 /* 샷 키로 카메라를 만든다. keys = [[t, {x, y, z, r}, {d: 걸리는 초, ease: 'io'|'out'|'in'|'lin'|'back'|'cut'}], …] → { x, y, z, r }
    x·y는 화면 가운데에 올 세계 좌표, z는 확대(1 = 그대로), r은 기울기(도). 줌은 곱으로 보간해서 속도가 고르게 느껴진다. */
@@ -136,3 +141,28 @@ function gfxPeel(k, o = {}) { if (k <= 0 || k >= 2) return ''; const bg = o.bg |
   return grad('gfxPl', sg * 150, `<stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="${sh}"/><stop offset="1" stop-color="${bg}" stop-opacity="0"/>`) + grad('gfxPs', -sg * 70, `<stop offset="0" stop-color="#101630" stop-opacity=".4"/><stop offset="1" stop-color="#101630" stop-opacity="0"/>`) +
     `<path d="M${pt(a)} L${pt(b)} L${pt(sb)} L${pt(sa)} Z" fill="url(#gfxPs)"/><path d="M${pt(a)} L${pt(b)} L${pt(c)} L${pt(d)} Z" fill="${bg}"/>` + (o.dots === false ? '' : `<path d="M${pt(a)} L${pt(b)} L${pt(c)} L${pt(d)} Z" fill="url(#gfDots)" opacity=".5"/>`) +
     `<path d="M${pt(a)} L${pt(b)} L${pt(fb)} L${pt(fa)} Z" fill="url(#gfxPl)"/><path d="M${pt(a)} L${pt(b)}" stroke="${INK}" stroke-width="7"/>`; }
+
+/* ---------- 5. 자막: 말을 따라가는 대사 상자 ----------
+   gfSubtitle(게임 감각 층)과 같은 상자 · 이름표. 아직 말하지 않은 글자는 옅게(#727C9A: 흰 상자 위 대비 약 4:1, 미리 읽는 사람도 읽힌다) 두었다가 목소리를 따라 진하게 채운다(게임 대화창처럼 눈이 말을 따라간다).
+   글자 시각은 줄의 낱말 시각(TL.lines[i].words)에서 글자 수 비례로 구한다: 표기와 음성 인식 낱말이 조금 달라도 문장 안에서의 진행 비율은 거의 같다.
+   조각(cue)이 바뀌는 때도 실제 말이 그 조각에 닿는 때로 잡는다(gfSubtitle은 글자 수 비례). o.follow === false면 따라가지 않고 처음부터 진하다.
+   자막은 장면과 따로 그릴 수 있다: 장면은 자막 없이(깨끗한 판), 자막은 투명 그림으로 뽑아 인코딩 때 얹는다 → 자막만 바꿀 때 장면을 다시 그리지 않는다(milinda01/long/sub_ml.py). */
+const _gfxCnt = s => s.replace(/[\s.,!?…'"“”‘’·~\-]/g, '').length;
+function gfxSubtitle(t, o = {}) {
+  const L = TL.lines; let cur = null; for (const l of L) if (t >= l.t0 - 0.05 && t <= l.t1 + 0.25) cur = l; if (!cur || !cur.sub) return '';
+  if (!cur._gx) { const cs = cuesOf(cur), N = cs.reduce((a, c) => a + _gfxCnt(c.text), 0) || 1, ws = cur.words || [], M = ws.reduce((a, w) => a + _gfxCnt(w.w), 0) || 1, D = cur.t1 - cur.t0, pts = [[0, 0]]; let acc = 0;
+    ws.forEach(w => { if (w.t > pts[pts.length - 1][0] + 0.01) pts.push([w.t, acc / M]); acc += _gfxCnt(w.w); }); pts.push([Math.max(D - 0.1, pts[pts.length - 1][0] + 0.05), 1]);
+    const timeAt = x => { for (let i = 1; i < pts.length; i++) if (x <= pts[i][1]) { const [t0, f0] = pts[i - 1], [t1, f1b] = pts[i]; return f1b > f0 ? t0 + (t1 - t0) * (x - f0) / (f1b - f0) : t0; } return D; };
+    let a = 0; const cues = cs.map((c, i) => { const q = { text: c.text.replace(/^[“"]|[”"]$/g, ''), v: c.v, a, n: _gfxCnt(c.text) }; q.t0 = i === 0 ? 0 : Math.max(0, timeAt(a / N) - 0.1); a += q.n; return q; });
+    cur._gx = { cues, N, frac: u => { if (u <= 0) return 0; for (let i = 1; i < pts.length; i++) if (u <= pts[i][0]) { const [t0, f0] = pts[i - 1], [t1, f1b] = pts[i]; return f0 + (f1b - f0) * (u - t0) / Math.max(1e-6, t1 - t0); } return 1; } }; }
+  const G = cur._gx, u = t - cur.t0; let cue = G.cues[0]; for (const c of G.cues) if (u >= c.t0 - 0.02) cue = c;
+  const text = cue.text, fs = 46, done = o.follow === false ? cue.n : clamp(G.frac(u + 0.08) * G.N - cue.a, 0, cue.n);
+  const lines = gfTextW(text, fs, 800) > 1180 ? (() => { const m = Math.floor(text.length / 2); let sp = text.indexOf(' ', m); if (sp < 0 || sp - m > 8) sp = text.lastIndexOf(' ', m); return sp > 0 ? [text.slice(0, sp), text.slice(sp + 1)] : [text]; })() : [text];
+  const who = cue.v && cue.v !== 'N' ? (GF.names[cue.v] || null) : null, w = Math.max(...lines.map(s => gfTextW(s, fs, 800))) + 110, h = lines.length * 62 + 40, cy = 1046 - h / 2, k = gfIn(t, cur.t0 + cue.t0 - 0.05, 4.5, 0.6);
+  let s = `<g transform="translate(960 ${f1(cy)}) scale(1 ${f1((0.86 + 0.14 * k) * 1000) / 1000})"><rect x="${f1(-w / 2)}" y="${-h / 2 + 8}" width="${f1(w)}" height="${h}" rx="30" fill="${GFC.navy}" opacity=".25"/><rect x="${f1(-w / 2)}" y="${-h / 2}" width="${f1(w)}" height="${h}" rx="30" fill="#FFFDF6" fill-opacity=".97" stroke="${INK}" stroke-width="6"/>`;
+  let left = Math.floor(done + 1e-6);
+  lines.forEach((ln, i) => { let cut = ln.length, c = 0; for (let j = 0; j < ln.length; j++) { if (_gfxCnt(ln[j])) { if (c >= left) { cut = j; break; } c++; } } left -= c;
+    s += `<text x="0" y="${f1(-h / 2 + 64 + i * 62 - 4)}" text-anchor="middle" font-family="${FONT}" font-weight="800" font-size="${fs}" xml:space="preserve"><tspan fill="${GFC.navy}">${esc(ln.slice(0, cut))}</tspan>${cut < ln.length ? `<tspan fill="${o.dim || '#727C9A'}">${esc(ln.slice(cut))}</tspan>` : ''}</text>`; });
+  if (who) { const tw = gfTextW(who[0], 30) + 48; s += `<rect x="${f1(-w / 2 + 30)}" y="${-h / 2 - 36}" width="${f1(tw)}" height="48" rx="24" fill="${who[1]}" stroke="${INK}" stroke-width="6"/>` + gfT(-w / 2 + 30 + tw / 2, -h / 2 - 1, who[0], 30, '#fff'); }
+  return s + `</g>`;
+}

@@ -27,15 +27,17 @@ Object.assign(E, {
   'ml쓴웃음': Object.assign(zEyes(11, 13, 192), { bL: [146, 150, 164, 144, 182, 150], bR: [218, 144, 236, 138, 254, 146] }, { mouth: 'M184 234 Q196 242 206 234 Q212 229 216 232', mouthFill: 'none', sweat: true, fxEye: zHL2(192, 0.85) }),
 });
 const ML_SUIT = { vest: '#3D4F7A', vshade: 'rgba(0,0,0,0.2)', suit: true, collar: true, tie: '#E0574F', lanyard: true };
-const mlZ = (o, suit) => Z(Object.assign({}, suit ? ML_SUIT : {}, o));                                                        // 제로: 집에서는 주황 티, 회사·옛이야기에서는 재킷 + 사원증
-const mlB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7C8494', patch: false, tee: true, vshade: 'rgba(0,0,0,0.2)', hair: '#2B2B2B', suit: true, collar: true, tie: '#2F3E66' }, o)));   // 팀장
+// 점검용: 머리(중심 = 발에서 390s 위, 반지름 118s + 후광 18)를 등록한다 → edge_ml.py가 '화면 끝에 조금만 걸친 머리'를 찾는다. r: 머리띠 끝처럼 옆으로 더 나온 것까지 잡을 반지름. noMark: 구석 얼굴 창처럼 화면 좌표로 따로 그릴 때
+const mlHead = (n, o, r = 136) => { const k = o.s || 1; if (!o.noMark) gfxMark(n, o.x, o.y - 390 * k, Array.isArray(r) ? r.map(v => v * k) : r * k); return o; };
+const mlZ = (o, suit) => Z(Object.assign({}, suit ? ML_SUIT : {}, mlHead('제로', o)));                                                        // 제로: 집에서는 주황 티, 회사·옛이야기에서는 재킷 + 사원증
+const mlB = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7C8494', patch: false, tee: true, vshade: 'rgba(0,0,0,0.2)', hair: '#2B2B2B', suit: true, collar: true, tie: '#2F3E66' }, mlHead('팀장', o))));   // 팀장
 // 왕: 자주색 옷 + 크림색 망토(금색 줄), 짧은 곱슬머리에 흰 머리띠(끝이 옆으로 날림). 수염 없음(전해지는 동전의 젊은 왕 모습)
 const ML_KHAIR = t => `<path d="M88 150 Q80 56 200 48 Q320 56 312 150 Q304 120 286 128 Q282 102 258 112 Q246 88 222 104 Q200 84 178 104 Q154 88 142 112 Q118 102 114 128 Q96 120 88 150 Z" fill="#3B2A20" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/>` +
   `<path d="M92 124 Q200 86 308 124" fill="none" stroke="${INK}" stroke-width="19" stroke-linecap="round"/><path d="M92 124 Q200 86 308 124" fill="none" stroke="#FBF7EA" stroke-width="11" stroke-linecap="round"/>` +
   `<g transform="rotate(${f1(Math.sin(t * 2.2) * 5)} 310 126)"><path d="M306 122 Q336 146 330 188 M310 128 Q348 138 354 178" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round"/><path d="M306 122 Q336 146 330 188 M310 128 Q348 138 354 178" fill="none" stroke="#FBF7EA" stroke-width="7" stroke-linecap="round"/></g>`;
-const mlK = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7A3B8C', patch: false, tee: true, vshade: 'rgba(30,0,40,0.25)', toga: '#F4E8C8', togaStripe: '#F2B63C', hairFront: ML_KHAIR, dress: '#7A3B8C', browW: 15 }, o)));
+const mlK = o => HALO(char(Object.assign({ goggles: 'none', vest: '#7A3B8C', patch: false, tee: true, vshade: 'rgba(30,0,40,0.25)', toga: '#F4E8C8', togaStripe: '#F2B63C', hairFront: ML_KHAIR, dress: '#7A3B8C', browW: 15 }, mlHead('왕', o, [136, 184]))));   // 머리띠 끝은 오른쪽으로만 날린다(흔들림 + 후광까지 184)
 // 스님: 삭발, 황토색 가사(긴 자락 + 한쪽 어깨에 걸친 천)
-const mlM = o => HALO(char(Object.assign({ goggles: 'none', vest: '#E79A3C', patch: false, tee: true, vshade: 'rgba(120,50,0,0.22)', toga: '#C96F1E', dress: '#E79A3C', shade: '#EFD9C2' }, o)));
+const mlM = o => HALO(char(Object.assign({ goggles: 'none', vest: '#E79A3C', patch: false, tee: true, vshade: 'rgba(120,50,0,0.22)', toga: '#C96F1E', dress: '#E79A3C', shade: '#EFD9C2' }, mlHead('스님', o))));
 
 /* ---------- 딱지(속 캐릭터): 라벨 프린터 요정 ----------
    발 가운데가 (x, y). s = 1이면 키 약 150. o = { t, look: [x, y], ex: 'on'(기본) | 'proud' | 'shock' | 'sleep', talk: 0~1(입 벌림), out: 0~1(입에서 스티커가 나온 정도), label(나오는 스티커 SVG), sx, sy, rot, arm: 'up' | 'throw' | 'down' } */
@@ -106,7 +108,7 @@ function mlStickers(t, evs) {
 /* ---------- 장면 틀: 층 쌓기 ----------
    L = { cam, defs, far: [[depth, svg, {blur}], …](빛을 받지 않는 배경), cast(그림자), lit(빛 받는 인물·소품), light: 조명 id, glow(빛 번짐·효과: 세계 좌표), fg(카메라 앞 층), grade, vig, hud(화면 좌표) } */
 function mlCompose(L) {
-  const c = L.cam; let s = '';
+  const c = L.cam; let s = ''; gfxMarksProject(c);
   for (const [d, g, o] of L.far || []) s += gfxLayer(c, d, g, o || {});
   if (L.cast) s += gfxCast(L.cast[0], Object.assign({ cam: c }, L.cast[1]));
   s += L.light ? gfxLit(L.light, gfxLayer(c, 1, L.lit)) : gfxLayer(c, 1, L.lit);
@@ -126,6 +128,10 @@ const ML_DEFS = `<defs>${ML_TAK_CLIP}<clipPath id="mlPc"><circle cx="0" cy="-395
 </defs>`;
 
 /* ---------- [훅] 일요일 밤 11시, 제로의 방 ---------- */
+// 폰 위에 뜨는 '답 쓰는 중' 말풍선(점 셋, 꼬리가 폰을 가리킨다). t1에 톡 터지며 사라진다
+function mlTyping(t, t0, t1, x, y) { if (t < t0 || t > t1 + 0.25) return ''; const k = gfIn(t, t0, 3.4, 0.4) * (t > t1 ? 1 + 0.5 * gfK(t1, t1 + 0.12, t) : 1), op = t > t1 ? 1 - gfK(t1 + 0.05, t1 + 0.22, t) : 1;
+  return `<g transform="translate(${f1(x)} ${f1(y + Math.sin(t * 3) * 3)}) scale(${f1(k * 1000) / 1000})" opacity="${f1(op * 100) / 100}"><path d="M-44 22 L-118 74 L-10 30 Z" fill="#fff" stroke="#6C8CFF" stroke-width="6" stroke-linejoin="round"/><rect x="-62" y="-32" width="124" height="64" rx="32" fill="#fff" stroke="#6C8CFF" stroke-width="6"/><path d="M-40 26 L-16 28" stroke="#fff" stroke-width="9"/>` +
+    [0, 1, 2].map(i => `<circle cx="${-30 + i * 30}" cy="${f1(-7 * Math.max(0, Math.sin((t - t0) * 8 - i * 0.9)))}" r="9" fill="#8E9BB8"/>`).join('') + `</g>` + gfStarBurst(t, t1, x, y, { n: 6, r0: 30, r1: 130, size: 12 }); }
 const ML_N = { ZX: 1100, ZY: 936, S: 1.0, FY: 946 };
 // 제로 시점 폰(화면 좌표). 글자는 저절로 써지고, 보내기 단추는 눌림 표시만. 손가락이 화면을 누르지 않는다.
 function mlPhonePOV(t) {
@@ -182,14 +188,15 @@ function mlnightScene(t, lt, a) {
   const evs = [{ t0: tS, from: mouth, to: [ZX - 2, ZY - 226 * S], text: ['원래', '무대 체질 아님'], fs: 21, rot: -5, arc: -60, fly: 0.2, tp: n5.t0 - 0.1, te: n5.t1 - 0.1 },
     { t0: tG + 0.25, from: mouth, to: [675, 610], text: '원래 스탠드', fs: 28, rot: 6, arc: 150 }, { t0: tG + 0.8, from: mouth, to: [905, 756], text: '원래 베개', fs: 28, rot: -8, arc: 60 }, { t0: tG + 1.35, from: mouth, to: [402, 372], text: '원래 달', fs: 30, rot: 4, arc: 220 }];
   const tt = gfxStop(t, [[tS, 0.1, 0.22]]), st = mlStickers(t, evs);
+  const tB2 = mlAt('n2', '잠이', 0.26) - 0.12, tDots = mlAt('n2', '답은', 0.76) - 0.4, tDing = n2.t1 + 0.08, dingK = t >= tDing && id === 'n2' ? Math.exp(-(t - tDing) * 4.5) : 0;
   // 카메라
-  let cam = gfxCam([[0, { x: 960, y: 560, z: 1.0 }], [n2.t0 - 0.15, { x: 960, y: 566, z: 1.0 }, { ease: 'cut' }], [n2.t0 + 0.2, { x: 1040, y: 590, z: 1.24 }, { d: n2.t1 - n2.t0 + 0.4, ease: 'io' }],
+  let cam = gfxCam([[0, { x: 960, y: 560, z: 1.0 }], [n2.t0 - 0.15, { x: 960, y: 566, z: 1.0 }, { ease: 'cut' }], [n2.t0, { x: 990, y: 574, z: 1.1 }, { d: 2.2, ease: 'lin' }], [tB2, { x: 1120, y: 600, z: 1.58 }, { ease: 'cut' }], [tB2 + 0.02, { x: 1124, y: 596, z: 1.68 }, { d: n2.t1 - tB2 + 0.5 }],
     [n4.t0 - 0.15, { x: 1104, y: 560, z: 1.95 }, { ease: 'cut' }], [n4.t0, { x: 1104, y: 556, z: 2.05 }, { d: 2.4 }], [n5.t0 - 0.15, { x: 1110, y: 590, z: 1.5 }, { ease: 'cut' }], [n6.t0 - 0.1, { x: 960, y: 566, z: 1.0 }, { d: 1.3, ease: 'io' }]], t);
   cam = gfxShake(gfxDrift(cam, t, 3, 1), t, [[tS, 16, 0.3], [tG + 0.25, 5, 0.2], [tG + 0.8, 5, 0.2], [tG + 1.35, 5, 0.2]]);
   const close = cam.z > 1.7;
   // 제로
-  const nod = id === 'n4' ? actNod(t, mlAt('n4', '맞아', 0.35), 2, 10, 0.3) : 0, ta = gfxTalkAct(t, 'Z', 2), jz = actHit(tt, tS, 0.07, 5, 7);
-  const base = id === 'n2' ? 'z기본' : (id === 'n4' ? (t > mlAt('n4', '맞아', 0.35) ? 'z뿌듯' : 'z반짝') : (id === 'n5' ? (t > tS ? 'z뿌듯' : 'z기본') : (t > n6.t1 - 1.2 ? 'z졸음' : 'z뿌듯')));
+  const nod = id === 'n4' ? actNod(t, mlAt('n4', '맞아', 0.35), 2, 10, 0.3) : 0, ta = gfxTalkAct(t, 'Z', 2), jz = gfM(actHit(tt, tS, 0.07, 5, 7), actHit(tt, tDing, 0.05, 5.5, 8));
+  const base = id === 'n2' ? (t >= tDing ? 'z반짝' : 'z기본') : (id === 'n4' ? (t > mlAt('n4', '맞아', 0.35) ? 'z뿌듯' : 'z반짝') : (id === 'n5' ? (t > tS ? 'z뿌듯' : 'z기본') : (t > n6.t1 - 1.2 ? 'z졸음' : 'z뿌듯')));
   const look = id === 'n2' || id === 'n4' ? [0, 0.75] : (id === 'n5' ? (t < tS ? [0.5, -0.2] : [0, 0.85]) : [0, 0.8]);
   const kd = actGo(t, n5.t0 - 0.05, { f: 2.6, z: 0.7 }), pose = actPose([[0, 'ml폰'], [n5.t0 - 0.05, 'ml무릎', { f: 2.6, z: 0.7 }]], t), py = lerp(ZY - 196 * S, ZY - 150 * S, clamp(kd, 0, 1.1));
   const zero = mlZ({ x: ZX, y: ZY, s: S, t: tt, pose, ex: gfxFace('mlzf', base, t, 'Z'), look, headDy: nod + ta.headDy, tilt: ta.tilt, sx: jz.sx, sy: jz.sy * ta.sy, light: 1 });
@@ -199,9 +206,9 @@ function mlnightScene(t, lt, a) {
   const tak = t < tIn ? '' : mlTak(tak0[0], tak0[1] + (1 - Math.min(1, kin)) * 40 + nod + ta.headDy, 0.62 * Math.min(1.08, kin), Object.assign({ t, look: t < tS ? [-0.3, 0.9] : [-0.2, 0.6], talk: tv ? tv.e : 0, ex: t > tS + 0.2 && id === 'n5' ? 'proud' : (id === 'n6' && t > tG + 1.9 ? 'proud' : 'on'), ls: 0.72 }, st.tak, gfHop(tt, tS - 0.2, 14, 0.2)));
   const set = mlNightSet(t), kp = gfxProj(cam, ZX, py - 12), actors = set.back + zero + phone + set.front + tak + st.svg;
   const moon = gfxProj(cam, 402, 282, 0.94);
-  return mlCompose({ cam, defs: gfDefs() + ML_DEFS + gfxDefs({ shadow: '#070B20', lights: [{ id: 'mlLn', amb: '#3A4576', key: { x: kp[0], y: kp[1], z: 150 * cam.z, col: '#CFEAFF', k: 1.2 }, rim: { dx: -7, dy: -3, col: '#8FB0FF', k: 0.7 }, bump: 5, relief: 9 }] }),
+  return mlCompose({ cam, defs: gfDefs() + ML_DEFS + gfxDefs({ shadow: '#070B20', lights: [{ id: 'mlLn', amb: '#3A4576', key: { x: kp[0], y: kp[1], z: 150 * cam.z, col: '#CFEAFF', k: 1.2 + 0.85 * dingK }, rim: { dx: -7, dy: -3, col: '#8FB0FF', k: 0.7 }, bump: 5, relief: 9 }] }),
     far: [[0.94, set.wall, close ? { blur: 4 } : {}]], cast: [zero, { dx: -30, dy: -70, s: 1.32, cx: ZX, cy: ZY - 200, op: 0.42, soft: 3 }], lit: actors, light: 'mlLn',
-    glow: gfxGlow(ZX, py - 20, 250, '#CFEAFF', 0.36) + st.fx, grade: gfxGrade('night', 0.42) + `<g>${gfxGlow(moon[0], moon[1], 300 * cam.z, '#BFD0FF', 0.3)}</g>`, vig: gfxVignette(0.55),
+    glow: gfxGlow(ZX, py - 20, 250 + 150 * dingK, '#CFEAFF', 0.36 + 0.4 * dingK) + (id === 'n2' ? mlTyping(t, tDots, tDing, ZX + 196, py - 104) : '') + st.fx, grade: gfxGrade('night', 0.42) + `<g>${gfxGlow(moon[0], moon[1], 300 * cam.z, '#BFD0FF', 0.3)}</g>`, vig: gfxVignette(0.55),
     hud: gfChipAt(t, n2.t0 + 0.1, 250, 96, '일요일 밤 11:00', { size: 34, icon: 'moon' }) });
 }
 /* ---------- 제목 카드: 딱지가 뽑은 큰 스티커 ---------- */
@@ -248,8 +255,8 @@ function mlofficeScene(t, lt, a) {
   const tt = gfxStop(t, [[tB, 0.1, 0.22]]), st = mlStickers(t, evs);
   // 카메라: 전체 → 리모컨 따라가기 → 팀장 → 제로 → 탁자 → 전체 → 제로 가슴
   let cam = gfxCam([[0, { x: 960, y: 548, z: 1.02 }], [o7.t0, { x: 960, y: 552, z: 1.07 }, { d: tR1 - o7.t0 }], [tR1 - 0.1, { x: 1010, y: 626, z: 1.38 }, { d: 0.95, ease: 'io' }],
-    [o8.t0 - 0.15, { x: 615, y: 566, z: 1.6 }, { ease: 'cut' }], [o8.t0, { x: 637, y: 562, z: 1.66 }, { d: 3 }], [o9.t0 - 0.15, { x: 1350, y: 566, z: 1.58 }, { ease: 'cut' }], [o9.t0, { x: 1340, y: 562, z: 1.64 }, { d: 2.4 }], [tR2 - 0.05, { x: 1080, y: 640, z: 1.42 }, { d: 0.7 }],
-    [o10.t0 - 0.15, { x: 940, y: 640, z: 1.46 }, { d: 0.9 }], [o10.t0 + 1.0, { x: 880, y: 590, z: 1.3 }, { d: 1.2 }], [o11.t0 - 0.15, { x: 1300, y: 545, z: 1.64 }, { ease: 'cut' }], [o11.t0, { x: 1304, y: 541, z: 1.68 }, { d: 2.2 }], [tB - 0.38, { x: 660, y: 566, z: 1.7 }, { d: 0.4, ease: 'io' }], [o12.t0 + 0.5, { x: 990, y: 536, z: 1.04 }, { d: 0.62, ease: 'io' }],
+    [o8.t0 - 0.15, { x: 601, y: 566, z: 1.6 }, { ease: 'cut' }], [o8.t0, { x: 621, y: 562, z: 1.66 }, { d: 3 }], [o9.t0 - 0.15, { x: 1350, y: 566, z: 1.58 }, { ease: 'cut' }], [o9.t0, { x: 1340, y: 562, z: 1.64 }, { d: 2.4 }], [tR2 - 0.05, { x: 1080, y: 640, z: 1.42 }, { d: 0.7 }],
+    [o10.t0 - 0.15, { x: 940, y: 640, z: 1.46 }, { d: 0.9 }], [o10.t0 + 1.0, { x: 880, y: 590, z: 1.3 }, { d: 1.2 }], [o11.t0 - 0.15, { x: 1316, y: 545, z: 1.64 }, { ease: 'cut' }], [o11.t0, { x: 1320, y: 541, z: 1.68 }, { d: 2.2 }], [tB - 0.38, { x: 628, y: 566, z: 1.7 }, { d: 0.4, ease: 'io' }], [o12.t0 + 0.5, { x: 990, y: 536, z: 1.04 }, { d: 0.62, ease: 'io' }],
     [o13.t0 - 0.1, { x: ZX - 20, y: 600, z: 1.72 }, { d: 1.6, ease: 'io' }]], t);
   cam = gfxShake(gfxDrift(cam, t, 3, 2), t, [[tB, 14, 0.3], [tG + 0.3, 4, 0.2], [tG + 0.85, 4, 0.2], [tG + 1.4, 4, 0.2]]);
   // 팀장
@@ -275,7 +282,7 @@ function mlofficeScene(t, lt, a) {
 }
 
 /* ---------- 자막·전환 덮개(화면 좌표) ---------- */
-function mlSub(t) { return gfSubtitle(t); }
+function mlSub(t) { return window.ML_NOSUB ? '' : gfxSubtitle(t); }
 // 줄 경계에서 스티커 종이가 화면을 덮거나 벗겨진다. 장면이 바뀌는 순간(줄 시작 0.15초 전)에 다 덮인다.
 const ML_PEEL = { k0: 'cover', o7: 'reveal', s14: 'both' };
 function mlOver(t) { let h = '';

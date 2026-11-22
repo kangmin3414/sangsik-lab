@@ -10,6 +10,7 @@ def run(chunk):
     with sync_playwright() as p:
         br = p.chromium.launch(args=['--disable-gpu']); pg = br.new_page(viewport={'width': 1920, 'height': 1080})
         pg.goto('file://' + os.path.join(HERE, PAGE)); pg.evaluate('(tl) => { window.TL = tl; }', TL); pg.evaluate('window.AI_READY')
+        if os.environ.get('ML_NOSUB', '1') != '0': pg.evaluate('window.ML_NOSUB = 1')      # 기본: 자막 없는 깨끗한 판. 자막은 sub_ml.py가 투명 그림으로 따로 뽑아 인코딩 때 얹는다(ML_NOSUB=0이면 예전처럼 자막을 구워 넣는다)
         for i in chunk:
             pg.evaluate(f'render({i / FPS})'); pg.evaluate('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'); pg.screenshot(path=f'{FR}/f{i:05d}.jpg', type='jpeg', quality=88)
         br.close()
