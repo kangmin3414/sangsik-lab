@@ -82,7 +82,7 @@ fx(At('s27', '어디', 0.36), S.question(), 0.28, 900)
 for i in range(3): fx(T0('s28') - 0.5 + 0.12 + i * 0.22, S.blip(520), 0.16, 800)
 SN = 0.26
 for i, (k, fb, x, f) in enumerate([('끌채', 0.02, 1050, 440), ('굴대', 0.19, 620, 520), ('바퀴', 0.32, 640, 620)]):
-    r = At('s29', k, fb) + 0.1; fx(r, S.whoosh(SN, 600, 4000), 0.22, x, Y); fx(r + SN, GM.clack(f), 0.75, x, Y); fx(r + SN, S.note(660 * 2 ** (i * 3 / 12), 0.25, 0.14, 'sin'), 0.3, x)
+    r = At('s29', k, fb) + 0.1; fx(r, S.whoosh(SN, 600, 4000), 0.22, x, Y); fx(r + SN, GM.clack(f), 0.5, x, Y); fx(r + SN, S.note(660 * 2 ** (i * 3 / 12), 0.25, 0.14, 'sin'), 0.22, x)      # 낱말 위에 떨어지는 소리라 작게(0.75일 때 음성 인식이 '바퀴'를 '박귀'로 적었다)
 tName = At('s29', '수레라고', 0.7) + 0.2; fx(tName, S.pop(880), 0.3, 1100); fx(tName + 0.05, S.equip(), 0.3, 1100); fx(tName + 0.2, S.ding(), 0.22, 1500)
 tTagF = At('s30', '나가', 0.42) + 0.3; fx(tTagF, S.sparkle(4, 0.25), 0.28, 1500)
 tHop = T0('s31') - 0.55; fx(tHop, S.boing(), 0.3, 500, Y); fx(tHop + 0.5, S.land(), 0.5, 300, Y)

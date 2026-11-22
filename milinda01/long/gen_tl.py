@@ -8,7 +8,7 @@ takes = json.load(open('takes.json')); SR = 44100
 # 줄 앞의 쉼(초): 화면에서 일이 벌어질 자리(스티커가 붙고, 부품이 뜨고, 전환이 지나갈 시간)
 GAP = {'n1': 0.5, 'n2': 0.6, 'n3': 0.55, 'n4': 0.45, 'n5': 0.5, 'n6': 0.75, 'k0': 0.95, 'o7': 0.5, 'o8': 0.55, 'o9': 0.5, 'o10': 0.45, 'o11': 0.6, 'o12': 0.75, 'o13': 0.55,
        's14': 1.15, 's15': 0.5, 's16': 0.45, 's17': 0.75, 's18': 0.45, 's19': 0.4, 's20': 0.5, 's21': 0.4, 's22': 0.5, 's23': 0.55, 's24': 0.6, 's25': 0.35, 's26': 0.75, 's27': 0.95, 's28': 0.65, 's29': 0.85, 's30': 0.6, 's31': 0.85, 's32': 0.7}
-ANCHOR = {'s17': 72.711, 's27': 114.979, 's31': 134.333}
+ANCHOR = {}      # 렌더 도중 앞줄을 다시 녹음할 때만 쓴다: {'줄 id': 시작 시각}으로 뒤 줄의 시각을 묶어 두면 그 뒤를 다시 그리지 않아도 된다. 전체를 다시 그릴 때는 비운다(2026-11-22 13시: 비움. 그 전 값은 s17 72.711 · s27 114.979 · s31 134.333)
 from faster_whisper import WhisperModel
 asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=2)
 words = json.load(open('words.json')) if os.path.exists('words.json') else {}
@@ -40,5 +40,6 @@ pad = np.pad(chv, (0, max(0, nfr * hop - len(chv)))); rms = np.sqrt(np.mean(pad[
 envv = np.clip(rms / (np.percentile(rms[rms > 1e-4], 90) + 1e-9), 0, 1) if (rms > 1e-4).any() else rms
 json.dump({'duration': round(DUR, 3), 'lines': out, 'env': [round(float(x), 2) for x in envv]}, open('timeline_ml.json', 'w'), ensure_ascii=False, indent=1)
 os.makedirs('/dev/shm/ml', exist_ok=True); sf.write('/dev/shm/ml/voice_ml.wav', voice, SR)
+import backup_takes; backup_takes.sync(quiet=True)      # takes.json을 손으로 바꾼 뒤에도 백업이 따라오게
 print('duration', round(DUR, 1), 'lines', len(out))
 for l in out: print(l['id'], l['t0'], l['t1'], ' '.join(f"{w['w']}@{w['t']}" for w in l.get('words', []))[:150])

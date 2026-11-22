@@ -45,4 +45,5 @@ for lid, scene, v, txt, sp, args in LINES:
     good = [x for x in takes if x[0] < ok]; best = min(good, key=lambda x: x[3]) if good else min(takes)
     rep[lid] = {'take': best[1], 'cer': round(best[0], 3), 'hyp': best[2], 'text': txt}
     json.dump(rep, open('takes.json', 'w'), ensure_ascii=False, indent=1)
+import backup_takes; backup_takes.sync()      # 고른 테이크를 바로 takes_opus/에 백업(작업 공간이 꺼져도 남게)
 print('done')
