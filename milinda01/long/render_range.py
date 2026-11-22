@@ -2,7 +2,8 @@
 import json, os, sys
 from playwright.sync_api import sync_playwright
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
-TL = json.load(open('timeline_ml.json')); FPS = 24; FR = os.environ.get('ML_FR', '/dev/shm/ml/fr'); PAGE = os.environ.get('ML_PAGE', 'anim_ml.html'); os.makedirs(FR, exist_ok=True)   # v1을 다시 뽑으려면 WH_PAGE=anim_wh.html WH_FR=/dev/shm/wh/fr
+# 프레임 기본 위치는 편 폴더의 fr/(디스크, gitignore). /dev/shm에 두면 작업 공간이 꺼질 때 다 사라진다(2026-11-22에 3,729장을 잃음)
+TL = json.load(open('timeline_ml.json')); FPS = 24; FR = os.environ.get('ML_FR') or os.path.join(HERE, 'fr'); PAGE = os.environ.get('ML_PAGE', 'anim_ml.html'); os.makedirs(FR, exist_ok=True)   # v1을 다시 뽑으려면 WH_PAGE=anim_wh.html WH_FR=/dev/shm/wh/fr
 v = [int(x) for x in sys.argv[1:]]; todo = [i for a, b in zip(v[::2], v[1::2]) for i in range(a, b + 1)]
 todo = [i for i in todo if not (os.path.exists(f'{FR}/f{i:05d}.jpg') and os.path.getsize(f'{FR}/f{i:05d}.jpg') > 8000)]
 def run(chunk):

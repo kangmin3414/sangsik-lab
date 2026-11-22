@@ -5,7 +5,7 @@
 import sys, os, json
 from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__)); os.chdir(HERE)
-FR = os.environ.get('ML_FR', '/dev/shm/ml/fr'); OUT = os.environ.get('ML_SHEETS', '/dev/shm/ml/sheets'); os.makedirs(OUT, exist_ok=True)
+FR = os.environ.get('ML_FR') or os.path.join(HERE, 'fr'); OUT = os.environ.get('ML_SHEETS', '/dev/shm/ml/sheets'); os.makedirs(OUT, exist_ok=True)
 TL = json.load(open('timeline_ml.json')); FPS = 24
 FONT = next(f for f in ['/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc', '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc', '/usr/share/fonts/truetype/nanum/NanumGothicBold.ttf'] if os.path.exists(f))
 F1 = ImageFont.truetype(FONT, 17); F2 = ImageFont.truetype(FONT, 15)

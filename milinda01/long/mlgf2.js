@@ -94,7 +94,7 @@ function mlsagalaScene(t, lt, a) {
   const reins = onG || hk > 0 ? '' : (kP < 0.25 ? `<path d="M${f1(hl[0])} ${f1(hl[1])} Q${f1((hl[0] + ye[0]) / 2)} ${f1(hl[1] + 70)} ${f1(ye[0] - 8)} ${f1(ye[1] + 34)} M${f1(hr[0])} ${f1(hr[1])} Q${f1((hr[0] + ye[0]) / 2)} ${f1(hr[1] + 50)} ${f1(ye[0] - 8)} ${f1(ye[1] - 30)}" fill="none" stroke="#5E3B1E" stroke-width="6" stroke-linecap="round"/>` :
     `<path d="M${f1(hl[0])} ${f1(hl[1])} Q${f1(hl[0] + 60)} ${f1(hl[1] + 90)} ${f1(hl[0] + 150)} ${f1(GY + dropY * 0 - 6)} q30 8 60 -4 M${f1(hr[0])} ${f1(hr[1])} Q${f1(hr[0] + 50)} ${f1(hr[1] + 110)} ${f1(hr[0] + 110)} ${f1(GY - 4)} q30 6 50 -6" fill="none" stroke="#5E3B1E" stroke-width="6" stroke-linecap="round"/>`);
   /* --- 왕 --- */
-  const kHk = gfK(tKH, tKH + 0.55, t), kOn = t >= tKH + 0.55, kx = t < tKH ? cx - 128 : lerp(CX - 128, KX, easeInOut(kHk)), ky = t < tKH ? GY - 150 : lerp(GY - 150, GY, kHk) - Math.sin(Math.PI * kHk) * 170;
+  const kHk = gfK(tKH, tKH + 0.55, t), kOn = t >= tKH + 0.55, kx = t < tKH ? cx - 116 : lerp(CX - 116, KX, easeInOut(kHk)), ky = t < tKH ? GY - 150 : lerp(GY - 150, GY, kHk) - Math.sin(Math.PI * kHk) * 170;
   const kta = gfxTalkAct(t, 'K', 5), kj = actHit(t, tKH + 0.55, 0.11, 5, 8);
   const kBase = n <= 18 ? 'ml왕' : n <= 20 ? 'ml왕의심' : n === 21 ? 'ml왕' : n <= 28 ? (t > tX2 + 0.5 ? 'ml왕의심' : 'ml왕') : n === 29 ? (t < mlAt('s29', '모였', 0.42) ? 'ml왕의심' : 'ml왕깨달') : 'ml왕깨달';
   const kLook = n <= 21 ? [0.85, 0] : n <= 29 ? (t > rP && n === 29 ? [-0.8, 0.1] : [-0.7, 0.15]) : n === 30 ? [0.85, 0] : (t > tWave ? [0.6, 0] : [-0.85, 0.05]);
