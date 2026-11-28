@@ -115,7 +115,7 @@ function mlCompose(L) {
   if (L.glow) s += gfxLayer(c, 1, L.glow);
   if (L.fg) s += gfxLayer(c, L.fgDepth || 1.35, L.fg, { blur: L.fgBlur == null ? 7 : L.fgBlur });
   if (L.whip) s = `<g filter="url(#gfxMx)">${s}</g>`;                                 // 빠른 카메라 이동: 가로 번짐
-  return gfxScreen(L.defs + s + (L.grade || '') + (L.vig == null ? gfxVignette(0.4) : L.vig) + (L.hud || ''));
+  return gfxScreen(L.defs + s + (L.grade || '') + (L.mood || '') + (L.vig == null ? gfxVignette(0.4) : L.vig) + (L.hud || ''));
 }
 const ML_DEFS = `<defs>${ML_TAK_CLIP}<clipPath id="mlPc"><circle cx="0" cy="-395" r="166"/></clipPath>
 <linearGradient id="mlNSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16225A"/><stop offset="1" stop-color="#3A4E96"/></linearGradient>

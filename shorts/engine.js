@@ -215,7 +215,8 @@ function char(o) {
   // 머리 윤곽 층(고개 돌림에 밀리지 않음): 볼 부풀림·집중선·땀처럼 머리 모양에 붙는 것. 표정의 fxHead 또는 o.headFx
   { const hf = e.fxHead || o.headFx; if (hf) h += typeof hf === 'function' ? hf(t, o.look) : hf; }
   const turn = o.turn || 0; // 3/4 머리 돌리기(-1 왼쪽 ~ 1 오른쪽): 얼굴 부위가 옆으로 옮겨 간다
-  h += `<g transform="translate(${f1(turn * 26)} 0)">`;
+  const tsq = (o.turnSq || 0) * Math.abs(turn); // 돌린 만큼 얼굴이 가로로 눌린다(o.turnSq, 기본 0 = 예전과 같음). o.turnK: 옮겨 가는 거리(기본 26)
+  h += `<g transform="translate(${f1(turn * (o.turnK || 26))} 0)${tsq ? ` translate(200 0) scale(${f1((1 - tsq) * 1000) / 1000} 1) translate(-200 0)` : ''}">`;
   if (o.beard) h += `<path d="M90 176 Q94 300 200 322 Q306 300 310 176 Q296 236 252 252 Q226 262 200 262 Q174 262 148 252 Q104 236 90 176 Z" fill="${o.beard}" stroke="${INK}" stroke-width="6" stroke-linejoin="round"/><path d="M176 248 Q200 240 224 248" fill="none" stroke="${o.beard}" stroke-width="12" stroke-linecap="round"/>`;
   if (o.wreath) {
     const leaf = (x0, y0, cx, cy, x1, y1, side) => { let w = ''; for (let i = 0; i < 7; i++) { const k = 0.06 + i * 0.145, a = 1 - k; const x = a * a * x0 + 2 * a * k * cx + k * k * x1, y = a * a * y0 + 2 * a * k * cy + k * k * y1; const tx = 2 * a * (cx - x0) + 2 * k * (x1 - cx), ty = 2 * a * (cy - y0) + 2 * k * (y1 - cy); const ang = Math.atan2(ty, tx) * 180 / Math.PI; for (const sgn of [-1, 1]) w += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="17" ry="8" transform="rotate(${f1(ang + sgn * 38 * side)} ${f1(x)} ${f1(y)}) translate(${f1(12 * side)} 0)" fill="${sgn > 0 ? '#6DBE55' : '#4E9A3E'}" stroke="${INK}" stroke-width="4"/>`; } return w; };
