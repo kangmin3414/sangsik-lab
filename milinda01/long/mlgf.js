@@ -47,7 +47,7 @@ function mlTak(x, y, s, o = {}) {
   const arm = (sd) => { const a = (sd > 0 ? armA : 180 - armA) + sd * sw, r = a * Math.PI / 180, x0 = sd * 60, y0 = -70, x1 = x0 + Math.cos(r) * 34, y1 = y0 + Math.sin(r) * 34; return `<path d="M${x0} ${y0} L${f1(x1)} ${f1(y1)}" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><circle cx="${f1(x1)}" cy="${f1(y1)}" r="11" fill="#fff" stroke="${INK}" stroke-width="6"/>`; };
   let h = `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(o.rot || 0)}) scale(${f1(s * (o.sx || 1) * 1000) / 1000} ${f1(s * (o.sy || 1) * 1000) / 1000})">`;
   h += `<path d="M-24 -22 L-28 -4 M24 -22 L28 -4" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><ellipse cx="-32" cy="-2" rx="17" ry="9" fill="#fff" stroke="${INK}" stroke-width="6"/><ellipse cx="32" cy="-2" rx="17" ry="9" fill="#fff" stroke="${INK}" stroke-width="6"/>`;
-  h += `<g transform="translate(0 ${f1(bob)})">` + arm(-1) + arm(1);
+  h += `<g transform="translate(0 ${f1(bob)})">` + (o.arm === 'none' ? '' : arm(-1) + arm(1));      // arm: 'none'이면 팔을 그리지 않는다(장면이 따로 그린다: 눈 가리기)
   h += `<path d="M-10 -138 Q-14 -160 4 -166" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><circle cx="6" cy="-168" r="9" fill="#FFD84A" stroke="${INK}" stroke-width="5"/>`;
   h += `<rect x="-62" y="-136" width="124" height="116" rx="30" fill="${C}" stroke="${INK}" stroke-width="8"/><path d="M-58 -52 L58 -52 L58 -50 Q58 -24 32 -24 L-32 -24 Q-58 -24 -58 -50 Z" fill="${C2}"/><rect x="-46" y="-126" width="40" height="12" rx="6" fill="#fff" opacity=".45"/>`;
   // 눈
@@ -56,6 +56,7 @@ function mlTak(x, y, s, o = {}) {
   else if (ex === 'proud') h += `<path d="M-38 ${ey + 3} Q-26 ${ey - 10} -14 ${ey + 3} M14 ${ey + 3} Q26 ${ey - 10} 38 ${ey + 3}" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`;
   else { const r = ex === 'shock' ? 17 : 15, pr = ex === 'shock' ? 4.5 : 8, sc = f1((1 - 0.9 * bl) * 100) / 100;
     h += `<g transform="translate(0 ${ey}) scale(1 ${sc}) translate(0 ${-ey})"><circle cx="-26" cy="${ey}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="26" cy="${ey}" r="${r}" fill="#fff" stroke="${INK}" stroke-width="5"/><circle cx="${f1(-26 + ex0)}" cy="${f1(ey + ey0)}" r="${pr}" fill="${INK}"/><circle cx="${f1(26 + ex0)}" cy="${f1(ey + ey0)}" r="${pr}" fill="${INK}"/>` + (ex === 'shock' ? '' : `<circle cx="${f1(-23 + ex0)}" cy="${f1(ey - 3 + ey0)}" r="2.6" fill="#fff"/><circle cx="${f1(29 + ex0)}" cy="${f1(ey - 3 + ey0)}" r="2.6" fill="#fff"/>`) + `</g>`; }
+  if (ex === 'worry') h += `<path d="M-44 -112 L-14 -122 M44 -112 L14 -122" stroke="${INK}" stroke-width="6" stroke-linecap="round"/><path d="M58 -118 q8 12 0 20 q-8 -8 0 -20 Z" fill="#8FD3FF" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`;      // 걱정: 처진 눈썹 + 땀 한 방울(44번에서 처음 나오는 딱지의 다른 면)
   h += `<ellipse cx="-46" cy="-70" rx="9" ry="5" fill="#FF9BB0" opacity=".7"/><ellipse cx="46" cy="-70" rx="9" ry="5" fill="#FF9BB0" opacity=".7"/>`;
   // 입(인쇄구): 말하면 벌어지고, 스티커가 여기서 나온다
   const mo = clamp((o.talk || 0) * 0.9 + (o.out > 0 && o.out < 1 ? 0.5 : 0) + (ex === 'shock' ? 0.9 : 0), 0, 1), mh = 7 + 15 * mo;
@@ -159,7 +160,7 @@ function mlPhonePOV(t) {
   s += `<g transform="translate(${f1(960 + dx)} ${f1(600 + dy)}) scale(${f1(z * 1000) / 1000}) translate(-960 -600)">` + gfxGlow(960, 560, 980, '#CFE2FF', 0.28) + p + hand(-1) + hand(1) + `</g>`;
   return gfxScreen(ML_DEFS + s + gfxGrade('night', 0.25) + gfxVignette(0.55));
 }
-function mlNightSet(t) {
+function mlNightSet(t, hour = 11) {
   const { ZX, FY } = ML_N, sw = Math.sin(t * 0.7) * 3;
   let wall = `<rect x="-300" y="-300" width="2520" height="1700" fill="url(#mlNWall)"/>` + [0, 1, 2, 3, 4, 5, 6, 7].map(i => `<path d="M${-200 + i * 330} -200 V${FY}" stroke="#2A3872" stroke-width="5" opacity=".5"/>`).join('') + `<rect x="-300" y="${FY}" width="2520" height="600" fill="#131A3C"/><rect x="-300" y="${FY - 16}" width="2520" height="20" fill="#2F3D7A"/>`;
   // 창(달): 빛을 내는 것이라 조명 필터 밖에 둔다
@@ -167,7 +168,7 @@ function mlNightSet(t) {
     `<circle cx="402" cy="282" r="50" fill="#FFF3C4"/><circle cx="386" cy="270" r="9" fill="#F2E3A6"/><circle cx="420" cy="300" r="6" fill="#F2E3A6"/><path d="M340 160 V556 M176 358 H504" stroke="#0B1030" stroke-width="10"/>` +
     `<path d="M146 130 Q${f1(196 + sw)} 330 ${f1(170 + sw)} 590 L120 590 L120 130 Z" fill="#33407C" stroke="#0B1030" stroke-width="7"/><path d="M534 130 Q${f1(486 - sw)} 330 ${f1(510 - sw)} 590 L560 590 L560 130 Z" fill="#33407C" stroke="#0B1030" stroke-width="7"/><rect x="100" y="112" width="480" height="26" rx="13" fill="#3F4E92" stroke="#0B1030" stroke-width="7"/>`;
   // 벽시계 11시, 작은 액자(무대 위 세 사람 실루엣 — 뒤에 나올 10년 전 사진의 씨앗)
-  wall += `<g opacity=".95"><circle cx="1600" cy="250" r="66" fill="#D9E2F5" stroke="#0B1030" stroke-width="9"/>` + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => `<line x1="1600" y1="194" x2="1600" y2="${i % 3 ? 200 : 206}" stroke="#0B1030" stroke-width="${i % 3 ? 3 : 5}" transform="rotate(${i * 30} 1600 250)"/>`).join('') + `<line x1="1600" y1="250" x2="1600" y2="216" stroke="#0B1030" stroke-width="8" stroke-linecap="round" transform="rotate(-30 1600 250)"/><line x1="1600" y1="250" x2="1600" y2="202" stroke="#E5484D" stroke-width="6" stroke-linecap="round"/><line x1="1600" y1="250" x2="1600" y2="198" stroke="#0B1030" stroke-width="2.5" transform="rotate(${Math.floor(t) * 6} 1600 250)"/><circle cx="1600" cy="250" r="6" fill="#0B1030"/></g>`;
+  wall += `<g opacity=".95"><circle cx="1600" cy="250" r="66" fill="#D9E2F5" stroke="#0B1030" stroke-width="9"/>` + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => `<line x1="1600" y1="194" x2="1600" y2="${i % 3 ? 200 : 206}" stroke="#0B1030" stroke-width="${i % 3 ? 3 : 5}" transform="rotate(${i * 30} 1600 250)"/>`).join('') + `<line x1="1600" y1="250" x2="1600" y2="216" stroke="#0B1030" stroke-width="8" stroke-linecap="round" transform="rotate(${(hour - 12) * 30} 1600 250)"/><line x1="1600" y1="250" x2="1600" y2="202" stroke="#E5484D" stroke-width="6" stroke-linecap="round"/><line x1="1600" y1="250" x2="1600" y2="198" stroke="#0B1030" stroke-width="2.5" transform="rotate(${Math.floor(t) * 6} 1600 250)"/><circle cx="1600" cy="250" r="6" fill="#0B1030"/></g>`;
   wall += `<g transform="rotate(-3 1290 300)"><rect x="1210" y="244" width="160" height="116" rx="8" fill="#E9E2D0" stroke="#0B1030" stroke-width="8"/><rect x="1224" y="258" width="132" height="88" fill="#3B2F5C"/><path d="M1224 330 H1356 V346 H1224 Z" fill="#231B3C"/>` + [[1256, 0], [1290, 1], [1324, 2]].map(([x, i]) => `<circle cx="${x}" cy="${306 - (i === 1 ? 6 : 0)}" r="9" fill="#F4EAD0"/><path d="M${x} ${316 - (i === 1 ? 6 : 0)} V332" stroke="#F4EAD0" stroke-width="6" stroke-linecap="round"/>`).join('') + `<path d="M1240 262 L1262 300 M1340 262 L1318 300" stroke="#FFE9A8" stroke-width="5" opacity=".5"/></g>`;
   // 뒤(제로 뒤): 침대 머리판, 베개, 협탁 + 스탠드
   let back = `<rect x="800" y="560" width="720" height="290" rx="34" fill="#8A6A4E" stroke="${INK}" stroke-width="9"/><rect x="830" y="590" width="660" height="60" rx="20" fill="#A07E5E" opacity=".7"/>` +
@@ -289,6 +290,7 @@ function mlSub(t) { return window.ML_NOSUB ? '' : gfxSubtitle(t); }
 const ML_PEEL = { k0: 'cover', o7: 'reveal', s14: 'both' };
 function mlOver(t) { let h = '';
   for (const id in ML_PEEL) { const l = mlL(id); if (!l) continue; const tc = l.t0 - 0.15, u = t - tc, m = ML_PEEL[id], a = 0.5, b = 0.55; if (u < -a || u > b) continue;
+    if (m === 'dip' || m === 'flash') { const k = u < 0 ? gfK(-0.4, 0, u) : 1 - gfK(0, 0.45, u); if (k > 0.004) h += `<rect x="-10" y="-10" width="1940" height="1100" fill="${m === 'dip' ? '#0B1030' : '#FFF8E6'}" opacity="${f1(easeInOut(k) * 1000) / 1000}"/>`; continue; }      // dip: 어둡게 잠겼다가(밤 장면으로), flash: 환하게 번졌다가
     if (u < 0 && m !== 'reveal') h += gfxPeel(gfK(-a, 0, u)); else if (u >= 0 && m !== 'cover') h += gfxPeel(1 + gfK(0, b, u)); }
   return h ? gfDefs() + h : ''; }
 

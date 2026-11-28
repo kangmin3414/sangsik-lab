@@ -4,7 +4,7 @@ import json, os, re, sys, time
 import numpy as np, requests, soundfile as sf
 from scipy.signal import resample_poly
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, '/home/claude/sangsik-lab/gtts'); sys.path.insert(0, HERE); import vx
-from lines_ml import LINES, VOICES, STYLES, LINE_STYLE, SAMPLE
+from lines_ml import LINES, VOICES, STYLES, LINE_STYLE, SAMPLE, FULL
 os.chdir(HERE); T = '/dev/shm/ml/takes'; os.makedirs(T, exist_ok=True)
 URL = f'https://aiplatform.googleapis.com/v1beta1/projects/{vx.PROJECT}/locations/global/publishers/google/models/gemini-3.8-flash-tts:generateContent'
 def synth(text, voice, style, path):
@@ -33,7 +33,7 @@ vx.token()
 rep = json.load(open('takes.json')) if os.path.exists('takes.json') else {}
 only = sys.argv[1:]
 for lid, scene, v, txt, sp, args in LINES:
-    if txt is None or lid not in SAMPLE or (lid in rep and lid not in only) or (only and lid not in only): continue
+    if txt is None or lid not in FULL or (lid in rep and lid not in only) or (only and lid not in only): continue
     sp = sp or txt; style = STYLES[v] + (' ' + LINE_STYLE[lid] if lid in LINE_STYLE else ''); ok = 0.25 if re.search(r'[\dA-Za-z%]', txt) else 0.08; takes = []
     for k in range(4):
         path = f'{T}/{lid}_{k}.wav'; synth(sp, VOICES[v], style, path)
